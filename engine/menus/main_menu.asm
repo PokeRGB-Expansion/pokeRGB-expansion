@@ -711,6 +711,9 @@ CheckForPlayerNameInSRAM:
 	ld [rBMODE], a
 	ASSERT BANK(sPlayerName) == BMODE_ADVANCED
 	ld [rRAMB], a
+; Load handling also reports an interrupted first save with no complete name.
+	farcall IsSaveTransactionPending
+	jr z, .found
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName
 .loop

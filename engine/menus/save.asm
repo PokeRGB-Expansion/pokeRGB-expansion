@@ -2,6 +2,11 @@ TryLoadSaveFile:
 	call ClearScreen
 	call LoadFontTilePatterns
 	call LoadTextBoxTilePatterns
+	call OpenSaveTransactionBank
+	call IsSaveTransactionPending
+	call GoodCheckSum ; close SRAM without changing flags
+	ld hl, InterruptedSaveText
+	jr z, .invalidSave
 	call LoadMainData
 	jr c, .badsum
 	call LoadCurrentBoxData
@@ -11,14 +16,16 @@ TryLoadSaveFile:
 	ld a, $2 ; good checksum
 	jr .done
 .badsum
-	ld hl, wStatusFlags5
-	push hl
-	set BIT_NO_TEXT_DELAY, [hl]
 	ld hl, FileDataDestroyedText
+.invalidSave
+	push hl
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
+	pop hl
 	call PrintText
 	ld c, 100
 	call DelayFrames
-	pop hl
+	ld hl, wStatusFlags5
 	res BIT_NO_TEXT_DELAY, [hl]
 	ld a, $1 ; bad checksum
 .done
@@ -27,6 +34,12 @@ TryLoadSaveFile:
 
 FileDataDestroyedText:
 	text_far _FileDataDestroyedText
+	text_end
+
+InterruptedSaveText:
+	text "Save interrupted."
+	line "Restore a backup."
+	prompt
 	text_end
 
 LoadMainData:
@@ -206,6 +219,11 @@ OlderFileWillBeErasedText:
 	text_end
 
 SaveMainData:
+	call BeginSaveTransaction
+	call WriteMainData
+	jp CommitSaveTransaction
+
+WriteMainData:
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
@@ -244,6 +262,11 @@ SaveMainData:
 	ret
 
 SaveCurrentBoxData:
+	call BeginSaveTransaction
+	call WriteCurrentBoxData
+	jp CommitSaveTransaction
+
+WriteCurrentBoxData:
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
@@ -264,6 +287,12 @@ SaveCurrentBoxData:
 	ret
 
 SavePartyAndDexData:
+; Completed link trades persist party and Pokédex data through this entry.
+	call BeginSaveTransaction
+	call WritePartyAndDexData
+	jp CommitSaveTransaction
+
+WritePartyAndDexData:
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
@@ -288,11 +317,60 @@ SavePartyAndDexData:
 	ret
 
 SaveGameData::
+	call BeginSaveTransaction
+WriteGameSaveAndCommit:
 	ld a, $2
 	ld [wSaveFileStatus], a
-	call SaveMainData
-	call SaveCurrentBoxData
-	jp SavePartyAndDexData
+	call WriteMainData
+	call WriteCurrentBoxData
+	call WritePartyAndDexData
+	jp CommitSaveTransaction
+
+DEF SAVE_TRANSACTION_PENDING EQU $5a
+
+IsSaveTransactionPending::
+; Return Z only when the save bank is open and the transaction is pending.
+	ld a, [sSaveTransactionState]
+	cp SAVE_TRANSACTION_PENDING
+	ret nz
+	ld hl, sSaveTransactionTag
+	ld de, SaveTransactionTag
+	ld c, SaveTransactionTagEnd - SaveTransactionTag
+	jp StringCmp
+
+BeginSaveTransaction:
+	call OpenSaveTransactionBank
+	call IsSaveTransactionPending
+	jp z, GoodCheckSum ; keep a box or Hall of Fame transaction pending
+	xor a
+	ld [sSaveTransactionState], a
+	ld hl, SaveTransactionTag
+	ld de, sSaveTransactionTag
+	ld bc, SaveTransactionTagEnd - SaveTransactionTag
+	call CopyData
+	ld a, SAVE_TRANSACTION_PENDING
+	ld [sSaveTransactionState], a
+	jp GoodCheckSum
+
+CommitSaveTransaction:
+	call OpenSaveTransactionBank
+	xor a
+	ld [sSaveTransactionState], a
+	jp GoodCheckSum
+
+OpenSaveTransactionBank:
+	ld a, RAMG_SRAM_ENABLE
+	ld [rRAMG], a
+	ld a, BMODE_ADVANCED
+	ld [rBMODE], a
+	ASSERT BANK(sSaveTransactionTag) == BMODE_ADVANCED
+	ld [rRAMB], a
+	ret
+
+SaveTransactionTag:
+	db "RGB-SAVE"
+SaveTransactionTagEnd:
+	ASSERT SaveTransactionTagEnd - SaveTransactionTag == sSaveTransactionState - sSaveTransactionTag
 
 CalcCheckSum:
 ;Check Sum (result[1 byte] is complemented)
@@ -379,7 +457,8 @@ ChangeBox::
 	bit B_PAD_B, a
 	ret nz
 
-; Initialize the new adventure's boxes only after the player selects a box.
+; Only the confirmed path writes any save data.
+	call BeginSaveTransaction
 	ld hl, wCurrentBoxNum
 	bit BIT_HAS_CHANGED_BOXES, [hl]
 	call z, EmptyAllSRAMBoxes
@@ -402,7 +481,7 @@ ChangeBox::
 	ld a, [hl]
 	ld [de], a
 	call RestoreMapTextPointer
-	call SaveGameData
+	call WriteGameSaveAndCommit
 	ld hl, wChangeBoxSavedMapTextPointer
 	call SetMapTextPointer
 	ld a, SFX_SAVE
@@ -708,6 +787,8 @@ CheckPreviousSaveFile:
 	ret
 
 SaveHallOfFameTeams:
+; The Hall of Fame script commits the main save after the credits.
+	call BeginSaveTransaction
 	ld a, [wNumHoFTeams]
 	dec a
 	cp HOF_TEAM_CAPACITY
@@ -757,17 +838,19 @@ HallOfFame_Copy:
 
 ; Fill SRAM with $ff, erasing save data. Used by DoClearSaveDialogue
 ClearAllSRAMBanks:
+; Erase the marker last so a reset cannot load an old save with erased boxes.
+	call BeginSaveTransaction
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
 	ld [rBMODE], a
 	xor a
 	call .PadSRAM_FF
-	ld a, 1
-	call .PadSRAM_FF
 	ld a, 2
 	call .PadSRAM_FF
 	ld a, 3
+	call .PadSRAM_FF
+	ld a, 1
 	call .PadSRAM_FF
 	xor a
 	ld [rBMODE], a

@@ -23,6 +23,10 @@ sTileAnimations:: db
 sGameDataEnd::
 sMainDataCheckSum:: db
 
+; Sidecar in previously unused SRAM. Keep the stock payload and checksum offsets.
+sSaveTransactionTag:: ds 8
+sSaveTransactionState:: db
+
 
 ; The PC boxes will not fit into one SRAM bank,
 ; so they use multiple SECTIONs
