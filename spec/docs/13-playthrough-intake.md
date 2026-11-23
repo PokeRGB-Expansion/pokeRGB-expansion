@@ -4,31 +4,31 @@ Keep new reports and accepted requirements here. Source confirmation, default in
 
 | Note | Date | Requirement | Default disposition | Delivery |
 |---|---|---|---|---|
-| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | Accepted item-safety safeguard | Not implemented |
-| [PN-002](#pn-002) | 2026-10-14 | Register a key item to SELECT, including the Bicycle | Accepted usability feature | Not implemented |
-| [PN-003](#pn-003) | 2026-10-14 | Browse the current box with a full party | Accepted usability feature | Not implemented |
-| [PN-004](#pn-004) | 2026-10-14 | Contextual HM prompts from A at a suitable target | Accepted interface feature | Not implemented |
-| [PN-005](#pn-005) / RGB-010c | 2026-10-14 | Correct Oak's geting spelling error | Accepted Core text correction | Not implemented |
-| [PN-006](#pn-006) | 2026-10-14 | Directional STATS navigation and page support | Accepted Core interface feature | Not implemented |
-| [PN-007](#pn-007) | 2026-10-14 | Clear release identity and No default | Accepted Core safety feature | Not implemented |
-| [PN-008](#pn-008) | 2026-10-15 | Return shop refusals and failed purchases to the relevant item list | Accepted Core interface feature | Not implemented |
-| [PN-009](#pn-009) | 2026-10-15 | Make party action-menu CANCEL return to the Pokémon list | Accepted Core interface feature | Not implemented |
-| [PN-010](#pn-010) / RGB-031 | 2026-10-15 | Correct selected vending-price checks | Accepted Core defect repair | Not implemented |
-| [PN-011](#pn-011) / RGB-032 | 2026-10-15 | Make Flute feedback reflect actual wake-ups | Accepted Core feedback repair | Not implemented |
-| [PN-012](#pn-012) / RGB-010b | 2026-10-15 | Correct the Raichu trade evolution claim | Accepted Core text repair | Not implemented |
-| [PN-013](#pn-013) | 2026-10-15 | Mark the current floor and prevent same-floor travel | Accepted Core interface requirement | Not implemented |
-| [PN-014](#pn-014) | 2026-10-15 | Left/right quantity steps of ten | Accepted Core control shortcut | Not implemented |
-| [PN-015](#pn-015) / RGB-030 | 2026-10-15 | Preserve rooftop payment when TM delivery fails | Core defect repair under the existing bug policy | Not implemented |
-| [PN-016](#pn-016) | 2026-10-15 | TM/HM names and move INFO before and after ownership | Minimal and Core under D61 | Not implemented |
-| [PN-017](#pn-017) | 2026-10-15 | Bag, item-PC and Pokémon-box capacity counts | Minimal and Core under D53/D62 | Not implemented |
-| [PN-018](#pn-018) | 2026-10-15 | Known and offered move INFO, optional live types | INFO in Minimal and Core. Live types are optional. | Not implemented |
-| [PN-019](#pn-019) | 2026-10-20 | Preserve item-list selection and scroll after actions | Accepted Core interface requirement | Not implemented |
+| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | Accepted item-safety safeguard | Implemented |
+| [PN-002](#pn-002) | 2026-10-14 | Register a key item to SELECT, including the Bicycle | Accepted usability feature | Implemented |
+| [PN-003](#pn-003) | 2026-10-14 | Browse the current box with a full party | Accepted usability feature | Implemented |
+| [PN-004](#pn-004) | 2026-10-14 | Contextual HM prompts from A at a suitable target | Accepted interface feature | Implemented |
+| [PN-005](#pn-005) / RGB-010c | 2026-10-14 | Correct Oak's geting spelling error | Accepted Core text correction | Implemented |
+| [PN-006](#pn-006) | 2026-10-14 | Directional STATS navigation and page support | Accepted Core interface feature | Implemented |
+| [PN-007](#pn-007) | 2026-10-14 | Clear release identity and No default | Accepted Core safety feature | Implemented |
+| [PN-008](#pn-008) | 2026-10-15 | Return shop refusals and failed purchases to the relevant item list | Accepted Core interface feature | Implemented |
+| [PN-009](#pn-009) | 2026-10-15 | Make party action-menu CANCEL return to the Pokémon list | Accepted Core interface feature | Implemented |
+| [PN-010](#pn-010) / RGB-031 | 2026-10-15 | Correct selected vending-price checks | Accepted Core defect repair | Implemented |
+| [PN-011](#pn-011) / RGB-032 | 2026-10-15 | Make Flute feedback reflect actual wake-ups | Accepted Core feedback repair | Implemented |
+| [PN-012](#pn-012) / RGB-010b | 2026-10-15 | Correct the Raichu trade evolution claim | Accepted Core text repair | Implemented |
+| [PN-013](#pn-013) | 2026-10-15 | Mark the current floor and prevent same-floor travel | Accepted Core interface requirement | Implemented |
+| [PN-014](#pn-014) | 2026-10-15 | Left/right quantity steps of ten | Accepted Core control shortcut | Implemented |
+| [PN-015](#pn-015) / RGB-030 | 2026-10-15 | Preserve rooftop payment when TM delivery fails | Core defect repair under the existing bug policy | Implemented |
+| [PN-016](#pn-016) | 2026-10-15 | TM/HM names and move INFO before and after ownership | Minimal and Core under D61 | Implemented |
+| [PN-017](#pn-017) | 2026-10-15 | Bag, item-PC and Pokémon-box capacity counts | Minimal and Core under D53/D62 | Implemented |
+| [PN-018](#pn-018) | 2026-10-15 | Known and offered move INFO, optional live types | INFO in Minimal and Core. Live types are optional. | Implemented |
+| [PN-019](#pn-019) | 2026-10-20 | Preserve item-list selection and scroll after actions | Accepted Core interface requirement | Implemented |
 | [PN-020](#pn-020) | 2026-10-20 | Optional item capacity with a 64-slot bag target | Accepted Extension and separate reserve; save/runtime design pending | Not implemented |
-| [PN-021](#pn-021) | 2026-10-24 | Retain the battle move cursor through SELECT reordering | Accepted Core interface requirement | Not implemented |
-| [PN-022](#pn-022) | 2026-10-24 | Append new boxed Pokémon consistently with deposits | Accepted Core usability policy | Not implemented |
-| [PN-023](#pn-023) | 2026-10-24; revised 2026-10-25 | Restore normal Mansion Burglar sight engagement | Accepted scoped Core correction; original intent unproven | Not implemented |
-| [PN-024](#pn-024) | 2026-10-25 | Viridian Forest star grass produces no encounters | Source-confirmed; accepted scoped Core correction | Not implemented |
-| [PN-025](#pn-025) | 2026-11-22 | Acid Armor leaves the active picture invisible | Stock ROMs confirmed. Restore the same sprite at animation end in Core under D41. | Accepted |
+| [PN-021](#pn-021) | 2026-10-24 | Retain the battle move cursor through SELECT reordering | Accepted Core interface requirement | Implemented |
+| [PN-022](#pn-022) | 2026-10-24 | Append new boxed Pokémon consistently with deposits | Accepted Core usability policy | Implemented |
+| [PN-023](#pn-023) | 2026-10-24; revised 2026-10-25 | Restore normal Mansion Burglar sight engagement | Accepted scoped Core correction; original intent unproven | Implemented |
+| [PN-024](#pn-024) | 2026-10-25 | Viridian Forest star grass produces no encounters | Source-confirmed; accepted scoped Core correction | Implemented |
+| [PN-025](#pn-025) | 2026-11-22 | Acid Armor leaves the active picture invisible | Stock ROMs confirmed. Restore the same sprite at animation end in Core under D41. | Implemented |
 
 <a id="pn-001"></a>
 
@@ -55,7 +55,7 @@ The follow-up playthrough report identifies selling EXP. ALL for zero. Its liste
 
 **Configuration:** provide a developer option if straightforward. Protection is enabled in the default core and does not depend on adding a toggle.
 
-**Status:** source-confirmed; inclusion accepted; no game implementation or executable reproduction in this repository.
+**Status:** The Bag, item PC and shop use the key-item safeguards. [Cartridge checks](../../tests/item_safety.py)
 
 <a id="pn-002"></a>
 
@@ -80,7 +80,7 @@ The follow-up playthrough report identifies selling EXP. ALL for zero. Its liste
 
 **Configuration:** enabled in the default core. Provide developer configuration when straightforward. Registering an item is a player control, not a choice between competing battle rules.
 
-**Status:** source paths checked; inclusion accepted; no game implementation or executable shortcut test in this repository.
+**Status:** The Bicycle is eligible in both presets. The game saves its item ID and checks the Bag before use. [Cartridge checks](../../tests/bicycle_shortcut.py)
 
 <a id="pn-003"></a>
 
@@ -106,7 +106,7 @@ The follow-up playthrough report identifies selling EXP. ALL for zero. Its liste
 
 **Configuration:** enabled in the default core. Provide developer configuration when straightforward; a toggle is not required to deliver the feature.
 
-**Status:** source-confirmed flow; inclusion accepted; no game patch or executable PC-menu test in this repository.
+**Status:** The list opens with a full party. The capacity check runs when the player chooses a Pokémon to withdraw.
 
 <a id="pn-004"></a>
 
@@ -142,7 +142,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Configuration:** enabled in Core. Provide a developer control when straightforward; it is not a player rule setting or a prerequisite to deliver the feature.
 
-**Status:** source paths reviewed; default inclusion accepted; no game shortcut, executable regression, or new save layout is implemented in this repository.
+**Status:** The field offers Cut, Surf, and Strength through A at eligible targets. [Route 14 Cut check](../../tests/route_cut_tree.py)
 
 <a id="pn-005"></a>
 

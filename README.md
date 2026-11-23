@@ -19,21 +19,16 @@ The reference baseline is pret/pokered at `ba9c0568f64ae602fadda577a08c66639f930
 
 ## Tests
 
-CI builds each preset and checks gameplay tables across reference colors. To run the linked-cartridge smoke tests locally, point this command at your SameBoy 1.0.5 core library and its DMG boot file.
+GitHub Actions builds each color and preset on Linux and macOS. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
 
 ```sh
-python3 tests/cartridge_smoke.py build/core --sameboy /path/to/library --boot /path/to/dmg_boot.bin
+python3 tests/run.py build/core --sameboy /path/to/library \
+  --boot /path/to/dmg_boot.bin --sgb-boot /path/to/sgb_boot.bin
 ```
 
-The smoke tests reach New Game in each color, test confirmed and cancelled box changes against a disposable save, and exercise Bag Move INFO and STATS navigation.
+Use `build/minimal` for Minimal. Pass `--all-link-pairs` to test all Core color pairings in both cable roles. Pass `--rgbds /path/to/rgbds` when the tools are outside your path.
 
-The move authoring test builds a temporary sample hack from the current commit. It changes a TM and verifies that the new move name, stats, and effect appear in the Bag, shop, item PC, prize counter, STATS, FIGHT, and level-up prompt.
-
-```sh
-python3 tests/move_info_authoring.py --sameboy /path/to/library --boot /path/to/dmg_boot.bin
-```
-
-Pass `--rgbds /path/to/rgbds` if the tools are outside your path.
+Core's checks include a separate sample hack with a changed TM and move. The shop, item PC, Bag, prize counter, STATS, FIGHT, and level-up prompt all display the sample's move data. [Test plan](spec/docs/07-testing-ci.md)
 
 ## Credits
 

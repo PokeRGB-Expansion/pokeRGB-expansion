@@ -1,6 +1,6 @@
 # PokéRGB Expansion
 
-**A shared base for making Generation I Pokémon ROM hacks.** Specification **0.1.48**, revised November 23, 2026. This repository contains the design and its evidence. Game features described below are planned unless a record gives a released game version.
+**A shared base for making Generation I Pokémon ROM hacks.** Specification **0.1.48**, revised November 23, 2026. This is the implementation baseline. The [source tree](../README.md) builds the game. The [release checks](docs/09-roadmap.md) track what must pass before publication.
 
 ## Charter
 

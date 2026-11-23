@@ -124,7 +124,7 @@ For an alternative trainer AI or random-number generator, test the original path
 
 Use warnings and assertions meaningfully. Do not remove a truncation warning to hide an 8-bit overflow. Add a capacity report and fail when a required section overflows; establish acceptable headroom from actual use.
 
-Provide one local entry point for clean builds of supported targets, data checks, and the required focused/protected-mechanics tests. CI should use the same checks. Keep longer adventure, two-endpoint, and physical-device runs separately callable, with their release requirements stated. The interface is planned work, not a command supplied by this specification.
+Run the [test command](../../README.md#tests) on a built preset to use the same checks as GitHub Actions. The individual scripts are also callable for specific tests. The full color matrix and physical hardware are separate release checks.
 
 ## Reproducibility and release claims
 

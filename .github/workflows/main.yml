@@ -46,6 +46,7 @@ jobs:
         run: make -j4 PRESET=${{ matrix.preset }} RGBDS="$GITHUB_WORKSPACE/.rgbds/"
 
       - name: Check reference color data
+        if: runner.os == 'macOS'
         run: python3 tools/check_reference_colors.py build/${{ matrix.preset }}
 
       - name: Check out SameBoy 1.0.5
@@ -60,78 +61,17 @@ jobs:
         if: runner.os == 'Linux'
         run: make -C .sameboy -j4 lib bootroms RGBDS="$GITHUB_WORKSPACE/.rgbds/"
 
-      - name: Test linked cartridges
+      - name: Test the built game
         if: runner.os == 'Linux'
         run: >-
-          python3 tests/cartridge_smoke.py build/${{ matrix.preset }}
+          python3 tests/run.py build/${{ matrix.preset }}
+          --rgbds .rgbds
           --sameboy .sameboy/build/lib/libsameboy.so
           --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
-
-      - name: Check the Super Game Boy titles
-        if: runner.os == 'Linux'
-        run: >-
-          python3 tests/title_smoke.py build/${{ matrix.preset }}
-          --sameboy .sameboy/build/lib/libsameboy.so
-          --boot .sameboy/build/bin/BootROMs/sgb_boot.bin
-
-      - name: Test battle rules, saves, and the Safari Zone
-        if: runner.os == 'Linux'
-        env:
-          PRESET: ${{ matrix.preset }}
-        run: |
-          sameboy=.sameboy/build/lib/libsameboy.so
-          boot=.sameboy/build/bin/BootROMs/dmg_boot.bin
-          python3 tests/adventure_checkpoints.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/battle_turn_state.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/critical_hits.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/status_medicine.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/presentation_events.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/bike_shop_sign.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/npc_entry_position.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/bicycle_fall.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/sprite_storage.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          python3 tests/interrupted_save_smoke.py "build/$PRESET"/poke*.gbc --library "$sameboy" --boot "$boot"
-          if [ "$PRESET" = minimal ]; then
-            python3 tests/move_swap_smoke.py "build/$PRESET"/poke*.gbc --sameboy "$sameboy" --boot "$boot" --minimal
-            python3 tests/adventure_event_states.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot" --minimal
-          else
-            python3 tests/move_swap_smoke.py "build/$PRESET"/poke*.gbc --sameboy "$sameboy" --boot "$boot"
-            python3 tests/safari_session.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-            python3 tests/adventure_event_states.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-            python3 tests/route_cut_tree.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-            python3 tests/npc_return.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-            python3 tests/ledge_landing.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
-          fi
-
-      - name: Test a live Cable Club connection
-        if: runner.os == 'Linux' && matrix.preset == 'core'
-        run: |
-          for room in trade battle; do
-            python3 tests/link_cable_smoke.py build/core/pokered.gbc build/core/pokegreen.gbc               --room "$room" --sameboy .sameboy/build/lib/libsameboy.so               --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
-          done
-
-      - name: Check a custom move in the game menus
-        if: runner.os == 'Linux' && matrix.preset == 'core'
-        run: >-
-          python3 tests/move_info_authoring.py --rgbds .rgbds
-          --sameboy .sameboy/build/lib/libsameboy.so
-          --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
-
-      - name: Check a custom trainer loss speech
-        if: runner.os == 'Linux' && matrix.preset == 'core'
-        run: >-
-          python3 tests/trainer_loss_authoring.py --rgbds .rgbds
-          --sameboy .sameboy/build/lib/libsameboy.so
-          --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
-
-      - name: Check author name lists
-        if: runner.os == 'Linux' && matrix.preset == 'core'
-        run: >-
-          python3 tests/name_list_authoring.py --rgbds .rgbds
-          --sameboy .sameboy/build/lib/libsameboy.so
-          --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
+          --sgb-boot .sameboy/build/bin/BootROMs/sgb_boot.bin
 
       - name: Check specification references
+        if: runner.os == 'macOS'
         run: python3 spec/tools/validate_spec.py
 
       - name: Check tracked files
