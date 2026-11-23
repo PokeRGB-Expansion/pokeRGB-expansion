@@ -1,4 +1,35 @@
+IF DEF(_POKERGB_CORE)
+ClearSafariSessionOutsideMaps::
+	ld a, [wCurMap]
+	cp SAFARI_ZONE_GATE
+	ret z
+	; Both the grounds and their houses are part of the same visit.
+	cp SAFARI_ZONE_EAST
+	jr c, .outside
+	cp SAFARI_ZONE_NORTH_REST_HOUSE + 1
+	ret c
+.outside
+	call ClearSafariSession
+	ld [wSafariZoneGateCurScript], a
+	ret
+
+ClearSafariSession::
+	ResetEvents EVENT_IN_SAFARI_ZONE, EVENT_SAFARI_GAME_OVER
+	xor a
+	ld [wSafariZoneGameOver], a
+	ld [wNumSafariBalls], a
+	ld [wSafariSteps], a
+	ld [wSafariSteps + 1], a
+	ret
+ENDC
+
 SafariZoneCheck::
+IF DEF(_POKERGB_CORE)
+	; The gate handles the end of a visit after the PA warp.
+	ld a, [wCurMap]
+	cp SAFARI_ZONE_GATE
+	jr z, SafariZoneGameStillGoing
+ENDC
 	CheckEventHL EVENT_IN_SAFARI_ZONE ; if we are not in the Safari Zone,
 	jr z, SafariZoneGameStillGoing ; don't bother printing game over text
 	ld a, [wNumSafariBalls]

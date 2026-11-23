@@ -18,7 +18,19 @@ SafariZoneGate_ScriptPointers:
 SafariZoneGateDefaultScript:
 	ld hl, .PlayerNextToSafariZoneWorker1CoordsArray
 	call ArePlayerCoordsInArray
+IF DEF(_POKERGB_CORE)
+	jr c, .at_counter
+	; A save can keep the visit after losing the gate's next script.
+	CheckEvent EVENT_IN_SAFARI_ZONE
+	ret z
+	ld hl, .SafariSideCoordsArray
+	call ArePlayerCoordsInArray
 	ret nc
+	jp SafariZoneGateLeavingSafariScript
+.at_counter
+ELSE
+	ret nc
+ENDC
 	ld a, TEXT_SAFARIZONEGATE_SAFARI_ZONE_WORKER1_1
 	ldh [hTextID], a
 	call DisplayTextID
@@ -49,6 +61,13 @@ SafariZoneGateDefaultScript:
 	dbmapcoord  4,  2
 	db -1 ; end
 
+IF DEF(_POKERGB_CORE)
+.SafariSideCoordsArray:
+	dbmapcoord 3, 0
+	dbmapcoord 4, 0
+	db -1
+ENDC
+
 SafariZoneGatePlayerMovingRightScript:
 	call SafariZoneGateReturnSimulatedJoypadStateScript
 	ret nz
@@ -78,15 +97,21 @@ SafariZoneGateLeavingSafariScript:
 	ld [wPlayerMovingDirection], a
 	CheckAndResetEvent EVENT_SAFARI_GAME_OVER
 	jr z, .leaving_early
+IF DEF(_POKERGB_CORE)
+	farcall ClearSafariSession
+ELSE
 	ResetEventReuseHL EVENT_IN_SAFARI_ZONE
+ENDC
 	call UpdateSprites
 	ld a, PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, TEXT_SAFARIZONEGATE_SAFARI_ZONE_WORKER1_GOOD_HAUL_COME_AGAIN
 	ldh [hTextID], a
 	call DisplayTextID
+IF !DEF(_POKERGB_CORE)
 	xor a
 	ld [wNumSafariBalls], a
+ENDC
 	ld a, PAD_DOWN
 	ld c, 3
 	call SafariZoneEntranceAutoWalk
@@ -238,7 +263,11 @@ SafariZoneGateSafariZoneWorker1LeavingEarlyText:
 	ld a, PAD_DOWN
 	ld c, 3
 	call SafariZoneEntranceAutoWalk
+IF DEF(_POKERGB_CORE)
+	farcall ClearSafariSession
+ELSE
 	ResetEvents EVENT_SAFARI_GAME_OVER, EVENT_IN_SAFARI_ZONE
+ENDC
 	ld a, SCRIPT_SAFARIZONEGATE_DEFAULT
 	ld [wNextSafariZoneGateScript], a
 	jr .set_current_script

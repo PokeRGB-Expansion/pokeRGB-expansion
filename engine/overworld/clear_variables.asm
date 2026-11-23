@@ -17,4 +17,8 @@ ClearVariablesOnEnterMap::
 	ld hl, wWhichTrade
 	ld bc, wStandingOnWarpPadOrHole - wWhichTrade
 	call FillMemory
+IF DEF(_POKERGB_CORE)
+	farjp ClearSafariSessionOutsideMaps
+ELSE
 	ret
+ENDC
