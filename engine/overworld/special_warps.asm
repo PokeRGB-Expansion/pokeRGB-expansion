@@ -1,4 +1,14 @@
 PrepareForSpecialWarp::
+IF DEF(_POKERGB_CORE)
+	; The fossil script can set this again after the exit is requested.
+	; Clear it while we still know which map is being left.
+	ld a, [wCurMap]
+	cp MT_MOON_B2F
+	jr nz, .keepBattleSetting
+	ld hl, wStatusFlags4
+	res BIT_NO_BATTLES, [hl]
+.keepBattleSetting
+ENDC
 	call LoadSpecialWarpData
 	predef LoadTilesetHeader
 	ld hl, wStatusFlags6

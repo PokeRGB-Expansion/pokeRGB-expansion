@@ -114,6 +114,21 @@ MainMenu:
 	ld [wPlayerDirection], a
 	ld c, 10
 	call DelayFrames
+IF DEF(_POKERGB_CORE)
+	; A saved party with no conscious Pokémon must black out before taking a step.
+	ld a, [wPartyCount]
+	and a
+	jr z, .partyCanContinue ; saves before receiving a starter have no party
+	farcall AnyPartyAlive
+	ld a, d
+	and a
+	jr nz, .partyCanContinue
+	call ResetPlayerSpriteData
+	call LoadMapData
+	farcall ShowPoisonBlackoutText
+	jp HandleBlackOut
+.partyCanContinue
+ENDC
 	ld a, [wNumHoFTeams]
 	and a
 	jp z, SpecialEnterMap

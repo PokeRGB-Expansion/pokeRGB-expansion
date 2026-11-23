@@ -98,10 +98,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld a, d
 	and a
 	jr nz, .noBlackOut
-	call EnableAutoTextBoxDrawing
-	ld a, TEXT_BLACKED_OUT
-	ldh [hTextID], a
-	call DisplayTextID
+	call ShowPoisonBlackoutText
 	ld hl, wStatusFlags4
 	set BIT_BATTLE_OVER_OR_BLACKOUT, [hl]
 	ld a, $ff
@@ -111,3 +108,9 @@ ApplyOutOfBattlePoisonDamage:
 .done
 	ld [wOutOfBattleBlackout], a
 	ret
+
+ShowPoisonBlackoutText::
+	call EnableAutoTextBoxDrawing
+	ld a, TEXT_BLACKED_OUT
+	ldh [hTextID], a
+	jp DisplayTextID
