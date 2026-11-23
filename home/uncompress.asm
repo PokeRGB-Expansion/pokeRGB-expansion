@@ -2,6 +2,7 @@
 	const_def
 	const BIT_USE_SPRITE_BUFFER_2 ; 0
 	const BIT_LAST_SPRITE_CHUNK   ; 1
+	const BIT_SPRITE_INPUT_ENDED  ; 2
 
 ; bankswitches and runs _UncompressSpriteData
 ; bank is given in a, sprite input stream is pointed to in wSpriteInputPtr
@@ -24,11 +25,7 @@ UncompressSpriteData::
 
 ; initializes necessary data to load a sprite and runs UncompressSpriteDataLoop
 _UncompressSpriteData::
-	ld hl, sSpriteBuffer1
-	ld c, LOW(2 * SPRITEBUFFERSIZE)
-	ld b, HIGH(2 * SPRITEBUFFERSIZE)
-	xor a
-	call FillMemory           ; clear sprite buffer 1 and 2
+	call ClearSpriteChunks
 	ld a, $1
 	ld [wSpriteInputBitCounter], a
 	ld a, $3
@@ -38,7 +35,8 @@ _UncompressSpriteData::
 	ld [wSpriteCurPosY], a
 	ld [wSpriteLoadFlags], a
 	call ReadNextInputByte    ; first byte of input determines sprite width (high nybble) and height (low nybble) in tiles (8x8 pixels)
-	ld b, a
+	call ValidateSpriteDimensions
+	ret nc                     ; an invalid header leaves both chunks blank
 	and $f
 	add a
 	add a
@@ -52,7 +50,9 @@ _UncompressSpriteData::
 	add a
 	ld [wSpriteWidth], a
 	call ReadNextInputBit
-	ld [wSpriteLoadFlags], a ; initialize bit1 to 0 and bit0 to the first input bit
+	ld hl, wSpriteLoadFlags
+	or [hl]                   ; keep the input end flag if the header was at the last ROM byte
+	ld [hl], a               ; initialize bit1 to 0 and bit0 to the first input bit
                              ; this will load two chunks of data to sSpriteBuffer1 and sSpriteBuffer2
                              ; bit 0 decides in which one the first chunk is placed
 	; fall through
@@ -100,6 +100,9 @@ UncompressSpriteDataLoop::
 	and a
 	jr z, .countConsecutiveOnesFinished
 	inc c
+	ld a, c
+	cp (LengthEncodingOffsetList.end - LengthEncodingOffsetList) / 2
+	jp nc, ClearSpriteChunks
 	jr .countConsecutiveOnesLoop
 .countConsecutiveOnesFinished
 	ld a, c
@@ -208,7 +211,31 @@ MoveToNextBufferPosition::
 	ld [wSpriteLoadFlags], a
 	jp UncompressSpriteDataLoop
 .done
+	bit BIT_SPRITE_INPUT_ENDED, a
+	jr nz, ClearSpriteChunks
 	jp UnpackSprite
+
+ClearSpriteChunks:
+	ld hl, sSpriteBuffer1
+	ld bc, 2 * SPRITEBUFFERSIZE
+	xor a
+	jp FillMemory
+
+ValidateSpriteDimensions::
+; Keep the packed dimensions in a and b. Set carry if both sides fit.
+	ld b, a
+	and $f
+	dec a
+	cp PIC_HEIGHT
+	jr nc, .done
+	ld a, b
+	swap a
+	and $f
+	dec a
+	cp PIC_WIDTH
+.done
+	ld a, b
+	ret
 
 ; writes 2 bits (from a) to the output buffer (pointed to from wSpriteOutputPtr)
 WriteSpriteBitsToBuffer::
@@ -259,6 +286,8 @@ ReadNextInputByte::
 	ld a, [wSpriteInputPtr]
 	ld l, a
 	ld a, [wSpriteInputPtr+1]
+	cp HIGH(vChars0)
+	jr nc, .endOfROM
 	ld h, a
 	ld a, [hli]
 	ld b, a
@@ -267,6 +296,11 @@ ReadNextInputByte::
 	ld a, h
 	ld [wSpriteInputPtr+1], a
 	ld a, b
+	ret
+.endOfROM
+	ld hl, wSpriteLoadFlags
+	set BIT_SPRITE_INPUT_ENDED, [hl]
+	xor a
 	ret
 
 ; the nth item is 2^n - 1
@@ -287,6 +321,7 @@ LengthEncodingOffsetList::
 	dw %0011111111111111
 	dw %0111111111111111
 	dw %1111111111111111
+.end
 
 ; unpacks the sprite data depending on the unpack mode
 UnpackSprite::

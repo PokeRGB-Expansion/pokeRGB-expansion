@@ -368,3 +368,8 @@ INCLUDE "engine/items/tm_prices.asm"
 SECTION "Move INFO", ROMX
 
 INCLUDE "engine/pokemon/move_info.asm"
+
+
+SECTION "Sprite alignment", ROMX
+
+INCLUDE "engine/gfx/center_sprite.asm"
