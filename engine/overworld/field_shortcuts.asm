@@ -132,15 +132,17 @@ BoulderShortcutText::
 OfferBoulderShortcut::
 	ld a, [wSpriteIndex]
 	push af
+	push bc ; keep the stock text's cursor
 	call FindBoulderShortcut
+	pop bc
 	jr nc, .original
 	ld hl, StrengthShortcutPrompt
 	call ConfirmFieldShortcut
 	pop bc
-	jp nz, TextScriptEnd
+	jr nz, .finish
 	ld a, b
 	call FindBoulderShortcut
-	jp nc, TextScriptEnd
+	jr nc, .finish
 	ld [wWhichPokemon], a
 	ld hl, wPartyMon1Species
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -151,9 +153,12 @@ OfferBoulderShortcut::
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	predef PrintStrengthText
+.finish
+	ld a, 1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	jp TextScriptEnd
 .original
-	pop bc
+	pop af
 	ld hl, BoulderStockText
 	ret
 
