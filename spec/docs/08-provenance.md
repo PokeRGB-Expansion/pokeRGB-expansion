@@ -28,9 +28,21 @@ Use a simple `CREDITS.md` plus a structured import ledger when code imports begi
 
 ## Release form
 
-Proposed consumer distribution is patches with exact Red/Blue input hashes and clear build instructions. Green uses an English Blue input because its gameplay foundation is Blue. Select the patch format during release preparation; verify applying it to the documented base and checking the resulting hash.
+The release package uses BPS patches. Apply Red to the original English Red cartridge image. Apply Blue and Green to the original English Blue cartridge image. The package's `patches.json` records the exact input SHA-1 and output SHA-256 for each color, plus each patch's SHA-256.
 
-The current artifact is Markdown and research data only. No consumer ROM, Nintendo asset pack, donor source archive, or ready-to-publish release is included.
+Build all three colors from the same checkout and preset before you package a release. Use the Floating IPS v198 command-line tool. If you build the tool from its tagged source, use `make TARGET=cli COMMIT_COUNT=198 CFLAGS=-O2`. [Floating IPS v198](https://github.com/Alcaro/Flips/tree/v198)
+
+```sh
+python3 tools/release_patches.py create \
+  --base-red /path/to/original-red.gb \
+  --base-blue /path/to/original-blue.gb \
+  --build-dir build/core --output build/release-core \
+  --flips /path/to/flips
+```
+
+The command creates an output directory with three patches and the manifest after it checks the original cartridge hashes and applies each patch to verify its result against the corresponding build. Run the command again with `verify` in place of `create` to check an existing package. To check reproducibility, build again from clean inputs, create a second package in a fresh directory, and compare the two packages.
+
+The source tree also builds each color directly. See the [build instructions](../../README.md#build).
 
 Public project text can identify the project as an unofficial fan effort and credit the original game rights holders and community sources. Do not claim Nintendo, Game Freak, Creatures, or The Pokémon Company approval. Do not invent special wording that supposedly prevents enforcement.
 
