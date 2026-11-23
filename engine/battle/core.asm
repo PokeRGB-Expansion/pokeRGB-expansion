@@ -360,9 +360,18 @@ MainInBattleLoop:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
+IF DEF(_POKERGB_CORE)
+	; The other Game Boy reads the selected slot after the switch.
+	cp METRONOME
+	jr z, .restoreCopyingMove
+	cp MIRROR_MOVE
+	jr nz, .specialMoveNotUsed
+.restoreCopyingMove
+ELSE
 	cp METRONOME ; a MIRROR MOVE check is missing, might lead to a desync in link battles
 	             ; when combined with multi-turn moves
 	jr nz, .specialMoveNotUsed
+ENDC
 	ld [wPlayerSelectedMove], a
 .specialMoveNotUsed
 	callfar SwitchEnemyMon

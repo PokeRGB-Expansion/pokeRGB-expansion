@@ -39,5 +39,11 @@ DecrementPP:
 	ld b, 0
 	add hl, bc           ; calculate the address in memory of the PP we need to decrement
 	                     ; based on the move chosen.
+IF DEF(_POKERGB_CORE)
+	; Reusing a trapping move after a switch can reach an empty slot.
+	ld a, [hl]
+	and PP_MASK
+	ret z
+ENDC
 	dec [hl]             ; Decrement PP
 	ret

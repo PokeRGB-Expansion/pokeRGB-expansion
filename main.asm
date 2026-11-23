@@ -211,6 +211,10 @@ SECTION "Battle Core", ROMX
 
 INCLUDE "engine/battle/core.asm"
 INCLUDE "engine/battle/effects.asm"
+IF DEF(_POKERGB_CORE)
+; The Red title bank is full. Keep Core's PP code with its caller.
+INCLUDE "engine/battle/decrement_pp.asm"
+ENDC
 
 
 SECTION "bank10", ROMX
@@ -314,7 +318,9 @@ INCLUDE "engine/events/hidden_events/pokecenter_pc.asm"
 
 SECTION "Battle Engine 11", ROMX
 
+IF !DEF(_POKERGB_CORE)
 INCLUDE "engine/battle/decrement_pp.asm"
+ENDC
 INCLUDE "gfx/version.asm"
 
 
