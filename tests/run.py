@@ -39,9 +39,10 @@ def main():
 
     for test in (
         "cartridge_smoke", "critical_hits", "battle_fixes", "battle_turn_state", "status_medicine",
-        "acid_armor", "pp_restore_readout", "pokedex_capture_return", "bicycle_shortcut", "bicycle_fall",
+        "acid_armor", "battle_stats_return", "pp_restore_readout", "pokedex_capture_return", "bicycle_shortcut", "bicycle_fall",
         "bike_shop_sign", "npc_entry_position", "item_safety", "storage_counts", "shop_carry_count",
         "sprite_storage", "map_signs", "presentation_events", "adventure_checkpoints",
+        "field_shortcuts", "pc_browsing",
     ):
         run_script(f"tests/{test}.py", directory, *emulator)
 
@@ -54,7 +55,7 @@ def main():
     run_script("tests/interrupted_save_smoke.py", *roms, "--library", sameboy, "--boot", boot)
 
     if core:
-        for test in ("safari_session", "route_cut_tree", "npc_return", "ledge_landing"):
+        for test in ("safari_session", "route_cut_tree", "npc_return", "ledge_landing", "pokedex_area"):
             run_script(f"tests/{test}.py", directory, *emulator)
 
         pairs = product(roms, repeat=2) if args.all_link_pairs else ((roms[0], roms[2]),)

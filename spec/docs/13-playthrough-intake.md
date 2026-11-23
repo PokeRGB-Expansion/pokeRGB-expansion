@@ -106,7 +106,7 @@ The follow-up playthrough report identifies selling EXP. ALL for zero. Its liste
 
 **Configuration:** enabled in the default core. Provide developer configuration when straightforward; a toggle is not required to deliver the feature.
 
-**Status:** The list opens with a full party. The capacity check runs when the player chooses a Pokémon to withdraw.
+**Status:** The list opens with a full party. The capacity check runs when the player chooses a Pokémon to withdraw. [Cartridge checks](../../tests/pc_browsing.py)
 
 <a id="pn-004"></a>
 
@@ -142,7 +142,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Configuration:** enabled in Core. Provide a developer control when straightforward; it is not a player rule setting or a prerequisite to deliver the feature.
 
-**Status:** The field offers Cut, Surf, and Strength through A at eligible targets. [Route 14 Cut check](../../tests/route_cut_tree.py)
+**Status:** The field offers Cut, Surf, and Strength through A at eligible targets. [Surf and Strength checks](../../tests/field_shortcuts.py) · [Route 14 Cut check](../../tests/route_cut_tree.py)
 
 <a id="pn-005"></a>
 
