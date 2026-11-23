@@ -118,6 +118,21 @@ Begin with checks over existing assembly data and clearer macros. Introduce a ge
 
 Large changes can break downstream source integration. Publish migration notes for deliberate interface changes. This is useful maintenance, not a promise to avoid rewrites.
 
+## Trainer win and loss speech
+
+A map trainer can take a sixth argument for a line shown when the player loses.
+
+```asm
+trainer EVENT_BEAT_ROUTE_3_TRAINER_0, 2, ChallengeText, PlayerWonText, AfterBattleText, PlayerLostText
+
+PlayerLostText:
+	text_start
+	line "Try again later."
+	prompt
+```
+
+The fourth argument is the trainer's speech when the player wins. The fifth is for talking to the trainer again after winning. Give the sixth argument a text script in the trainer's map bank. Use a local `text_far` wrapper if the dialogue itself lives in another bank. The game adds the trainer's name, so the example starts the speech on the next line. The loss speech plays before the usual blackout message and leaves the penalty and return point in place. Existing five-argument declarations keep their usual speech and blackout behavior. [Cartridge check](../../tests/trainer_loss_authoring.py)
+
 ## Later presentation and solo-play features
 
 SELECT item registration is an accepted default feature, separate from the later capabilities below. Store an item ID rather than a bag position, validate possession and eligibility at use, and share the existing item's use restrictions. Bicycle checks span two paths: the forced-riding guard is in the menu, while other use checks are in the effect routine. A shortcut must retain both. Persist the registered choice through save/load, with no registration as the safe value for new games or imported saves lacking that field. The exact storage location and import handling require implementation review. See [PN-002](13-playthrough-intake.md#pn-002).

@@ -8,3 +8,6 @@ DEF TRAINER_AFTER_BATTLE_TEXT  rw ;  6
 DEF TRAINER_WON_BATTLE_TEXT    rw ;  8
 DEF TRAINER_LOST_BATTLE_TEXT   rw ; 10
 DEF TRAINER_STRUCT_SIZE EQU _RS   ; 12
+
+; Marks an explicit loss speech in the high byte of its ROM pointer.
+DEF BIT_TRAINER_CUSTOM_LOSS_TEXT EQU 7

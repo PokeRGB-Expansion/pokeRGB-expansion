@@ -1207,6 +1207,7 @@ HandlePlayerBlackOut:
 	cp OAKS_LAB
 	ret z            ; starter battle in oak's lab: don't black out
 .notRival1Battle
+	call PrintCustomTrainerLossText
 	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
 	ld hl, PlayerBlackedOutText2
@@ -1221,6 +1222,30 @@ HandlePlayerBlackOut:
 	ld [wStatusFlags6], a
 	call ClearScreen
 	scf
+	ret
+
+PrintCustomTrainerLossText:
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	ret z
+	ld a, [wIsInBattle]
+	cp TRAINER_BATTLE
+	ret nz
+	ld hl, wStatusFlags3
+	bit BIT_PRINT_END_BATTLE_TEXT, [hl]
+	ret z
+	ld a, [wEndBattleLoseTextPointer]
+	bit BIT_TRAINER_CUSTOM_LOSS_TEXT, a
+	ret z
+	res BIT_PRINT_END_BATTLE_TEXT, [hl]
+	; Select the loss speech even when the party entered the battle fainted.
+	ld a, [wBattleResult]
+	push af
+	ld a, 1
+	ld [wBattleResult], a
+	call PrintSavedEndBattleText
+	pop af
+	ld [wBattleResult], a
 	ret
 
 Rival1WinText:

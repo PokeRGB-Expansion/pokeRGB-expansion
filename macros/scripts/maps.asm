@@ -111,10 +111,12 @@ ENDM
 
 ;\1 event flag
 ;\2 view range
-;\3 TextBeforeBattle
-;\4 TextEndBattle
-;\5 TextAfterBattle
+;\3 text before battle
+;\4 text after the player wins
+;\5 text when talked to after the battle
+;\6 optional text before the player blacks out
 MACRO trainer
+	ASSERT _NARG == 5 || _NARG == 6, "Expected five trainer arguments and optional loss text"
 	DEF _ev_bit = \1 % 8
 	DEF _cur_bit = CURRENT_TRAINER_BIT % 8
 	ASSERT _ev_bit == _cur_bit, \
@@ -122,7 +124,13 @@ MACRO trainer
 	db CURRENT_TRAINER_BIT
 	db \2 << 4
 	dw wEventFlags + (\1 - CURRENT_TRAINER_BIT) / 8
-	dw \3, \5, \4, \4
+	dw \3, \5, \4
+	IF _NARG == 6
+		ASSERT BANK(\6) == BANK(@), "Trainer loss text must be in the map bank"
+		dw \6 | (1 << (8 + BIT_TRAINER_CUSTOM_LOSS_TEXT))
+	ELSE
+		dw \4
+	ENDC
 	DEF CURRENT_TRAINER_BIT += 1
 ENDM
 

@@ -37,11 +37,10 @@ LoadGymLeaderAndCityName::
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-; reads specific information from trainer header (pointed to at wTrainerHeaderPtr)
-; a: offset in header data
 ReadTrainerHeaderInfo::
+; A is the offset of the flag bit or a word pointer in the header.
+; Return the header address for the flag bit and the stored value for pointers.
 	push de
-	push af
 	ld d, 0
 	ld e, a
 	ld hl, wTrainerHeaderPtr
@@ -49,33 +48,17 @@ ReadTrainerHeaderInfo::
 	ld l, [hl]
 	ld h, a
 	add hl, de
-	pop af
+	ld a, e
+	pop de
 	and a
-	jr nz, .nonZeroOffset
+	jr nz, .readPointer
 	ld a, [hl]
 	ld [wTrainerHeaderFlagBit], a
-	jr .done
-.nonZeroOffset
-	cp TRAINER_EVENT_FLAG_POINTER
-	jr z, .readPointer
-	cp TRAINER_BEFORE_BATTLE_TEXT
-	jr z, .readPointer
-	cp TRAINER_AFTER_BATTLE_TEXT
-	jr z, .readPointer
-	cp TRAINER_WON_BATTLE_TEXT
-	jr z, .readPointer
-	cp TRAINER_LOST_BATTLE_TEXT
-	jr nz, .done
-	ld a, [hli] ; TRAINER_LOST_BATTLE_TEXT pointer is overwritten afterwards (XXX why, bug?)
-	ld d, [hl]
-	ld e, a
-	jr .done
+	ret
 .readPointer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-.done
-	pop de
 	ret
 
 TrainerFlagAction::
@@ -103,10 +86,10 @@ TalkToTrainer::
 	call PrintText
 	ld a, TRAINER_LOST_BATTLE_TEXT
 	call ReadTrainerHeaderInfo
-	push de
+	ld d, h
+	ld e, l
 	ld a, TRAINER_WON_BATTLE_TEXT
 	call ReadTrainerHeaderInfo
-	pop de
 	call SaveEndBattleTextPointers
 	ld hl, wStatusFlags7
 	set BIT_USE_CUR_MAP_SCRIPT, [hl] ; activate map script index override (index is set below)
@@ -338,6 +321,11 @@ PrintEndBattleText::
 	res BIT_PRINT_END_BATTLE_TEXT, [hl]
 	pop hl
 	ret z
+	call PrintSavedEndBattleText
+	farcall SetEnemyTrainerToStayAndFaceAnyDirection
+	jp WaitForSoundToFinish
+
+PrintSavedEndBattleText::
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [wEndBattleTextRomBank]
@@ -351,24 +339,20 @@ PrintEndBattleText::
 	pop af
 	ldh [hLoadedROMBank], a
 	ld [rROMB], a
-	farcall SetEnemyTrainerToStayAndFaceAnyDirection
-	jp WaitForSoundToFinish
+	ret
 
 GetSavedEndBattleTextPointer::
+	ld hl, wEndBattleWinTextPointer
 	ld a, [wBattleResult]
 	and a
-	jr nz, .lostBattle
-; won battle
-	ld a, [wEndBattleWinTextPointer]
+	jr z, .read
+	inc hl
+	inc hl
+.read
+	ld a, [hli]
+	ld l, [hl]
+	and ~(1 << BIT_TRAINER_CUSTOM_LOSS_TEXT)
 	ld h, a
-	ld a, [wEndBattleWinTextPointer + 1]
-	ld l, a
-	ret
-.lostBattle
-	ld a, [wEndBattleLoseTextPointer]
-	ld h, a
-	ld a, [wEndBattleLoseTextPointer + 1]
-	ld l, a
 	ret
 
 TrainerEndBattleText::
