@@ -102,6 +102,20 @@ The following support matrix is a proposal for Q03, not a claim that any interac
 
 Publish the tested subset, exact rules/save versions, and known incompatibilities. Being in this matrix is not a commitment to support every historical device or game.
 
+### Verified reference configurations
+
+The checks below use the Core Red, Blue and Green reference builds in SameBoy 1.0.5. Each test identifies the cartridge mode and operation it covers.
+
+| Configuration | Checks |
+| --- | --- |
+| Game Boy mode | Adventure checkpoints, Move INFO, box operations, legacy save imports and re-saves. [Adventure checks](../../tests/adventure_checkpoints.py) · [Reference imports](../../tests/reference_save_import.py) |
+| Super Game Boy mode | The first title Pokémon, English title tiles, the Green border and battle slide timing on all three colors. [Title checks](../../tests/title_smoke.py) · [Slide checks](../../tests/battle_slide_timing.py) |
+| Game Boy Color compatibility mode | New Game, Bag TM INFO, and a save followed by CONTINUE on a fresh CGB-E instance. [Color compatibility checks](../../tests/cgb_compatibility.py) |
+| Core cable connection | The nine ordered Red, Blue and Green pairings in both Trade Center and Colosseum, with each endpoint checked for the expected party record, battle state or save. The sessions start from seeded parties. [Cable checks](../../tests/link_cable_smoke.py) |
+| Interrupted save | Detection before CONTINUE after incomplete main, box, link or Hall of Fame writes. Valid older records still load. Detection requires a backup to recover the interrupted save. [Save checks](../../tests/interrupted_save_smoke.py) |
+
+The release records state which of these checks apply to the released source and package hashes. Use the matrix above to decide when another game version, emulator or physical device needs its own check.
+
 ## Proposed CI jobs
 
 | Job | Frequency | Purpose |

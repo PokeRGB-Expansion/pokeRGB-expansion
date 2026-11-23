@@ -1,8 +1,8 @@
 # Remaining engineering work
 
-**The move and inventory screens have preset decisions.** D61/D62 put them in the complete public Core and identify what also ships in Minimal. The [decision audit](../research/sweep-decisions.md) records the player effects. Integrated implementation and verification remain.
+**The move and inventory screens have preset decisions.** D61/D62 put them in the complete public Core and identify what also ships in Minimal. The [decision audit](../research/sweep-decisions.md) records the player effects. Both screens are implemented in the buildable source.
 
-**Before publication**, establish which save, trade, battle and hardware combinations pass on the finished builds (Q03–Q04). If meeting an existing requirement would mean changing game behavior or dropping promised support, review that specific tradeoff. The CI runner, save-recovery design and screen layouts are engineering work.
+The [compatibility checks](07-testing-ci.md#verified-reference-configurations) record the support tested for Core. The complete [release check](09-roadmap.md#public-release-checks) still applies.
 
 D50 settles the new Core battle data. D54–D56 settle equivalent shortcuts, manual box selection and the use of shared code. Save recovery for automatic placement and a high-ID link exchange remain engineering gates for their respective options. [Minimal decisions](../research/minimal-action-review.md) · [Storage](../research/storage-policy-and-code.md) · [Large rosters](../research/species-id-architecture.md)
 
@@ -12,19 +12,11 @@ D50 settles the new Core battle data. D54–D56 settle equivalent shortcuts, man
 
 ## Q03
 
-**Establish the save and link support the first game release can advertise.**
-
-Recommended: match PokéRGB mechanics versions for supported link battles; preserve initial vanilla save representation where practical and test import before promising it. Vanilla trading is a separate interoperability target. Do not guarantee vanilla battles after changing Focus Energy or other shared rules.
-
-Publish the tested matrix before a public game release. The [test plan](07-testing-ci.md#link-and-save-testing) separates matching-build, vanilla, cross-release, Time Capsule, and Stadium targets. Full vanilla interoperability is not required to start implementing fixes.
+**Closed for the first Core release.** The tested profile covers same-release Core trades and battles. Save imports cover the pinned English Red and Blue bases, with Blue imports for Green. [Verified configurations](07-testing-ci.md#verified-reference-configurations)
 
 ## Q04
 
-**Choose the emulator runner and checks used for release evidence.**
-
-Recommended: start with a runner that executes compiled assembly with symbol access and controlled RNG, then an independent emulator/hardware check for meaningful integration. Preserve DMG-compatible behavior. A supported hardware list depends on measured tests.
-
-SameBoy has already run stock battle fixtures for this project. First check whether the same setup can run the Core battle routines with controlled rolls and produce repeatable results in CI. Choose the runner during internal baseline work. Publish a tested hardware matrix with Core.
+**Closed.** The cartridge tests use SameBoy 1.0.5. The release records separately identify Game Boy, Super Game Boy, and Game Boy Color compatibility-mode evidence. [Verified configurations](07-testing-ci.md#verified-reference-configurations)
 
 ## Q05
 
