@@ -42,6 +42,11 @@ EnterMapAnim::
 	ld c, 50
 	call DelayFrames
 	call PlayerSpinWhileMovingDown
+	; The fall dismounts the player. Use the destination's music on landing.
+	ld hl, wBikeFallMusicPending
+	bit 0, [hl]
+	res 0, [hl]
+	jr nz, .restoreDefaultMusic
 	jr .done
 .flyAnimation
 	pop hl
@@ -202,6 +207,13 @@ FlyAnimationScreenCoords2:
 	db $F0, $00
 
 LeaveMapThroughHoleAnim:
+	ld a, [wLastMusicSoundID]
+	cp MUSIC_BIKE_RIDING
+	ld a, 0
+	jr nz, .saveMusicState
+	inc a
+.saveMusicState
+	ld [wBikeFallMusicPending], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a ; disable UpdateSprites
 	; shift upper half of player's sprite down 8 pixels and hide lower half

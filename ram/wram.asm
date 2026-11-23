@@ -1051,7 +1051,8 @@ wNPCMovementScriptSpriteOffset:: db
 
 wScriptedNPCWalkCounter:: db
 
-	ds 1
+; Set while a bicycle fall is waiting for the destination music.
+wBikeFallMusicPending:: db
 
 ; always 0 since full CGB support was not implemented
 wOnCGB:: db
