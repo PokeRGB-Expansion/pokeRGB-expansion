@@ -2545,6 +2545,11 @@ BattleMenu_RunWasSelected:
 	jp DisplayBattleMenu
 
 MoveSelectionMenu:
+IF DEF(_POKERGB_CORE)
+	xor a
+	ld [wMoveSwapCursor], a
+.redrawAfterSwap
+ENDC
 	ld a, [wMoveMenuType]
 	dec a
 	jr z, .mimicmenu
@@ -2627,6 +2632,11 @@ MoveSelectionMenu:
 	jr z, .selectedmoveknown
 	ld a, $1
 	jr nc, .selectedmoveknown
+IF DEF(_POKERGB_CORE)
+	ld a, [wMoveSwapCursor]
+	and a
+	jr nz, .selectedmoveknown
+ENDC
 	ld a, [wPlayerMoveListIndex]
 	inc a
 .selectedmoveknown
@@ -2683,6 +2693,11 @@ SelectMenuItem:
 	; MoveSelectionMenu still draws part of its window, an issue
 	; which did not seem to exist in the Japanese versions.
 	jr nz, .select
+IF DEF(_POKERGB_CORE)
+	ld a, [wMoveSwapCursor]
+	and a
+	call nz, RestoreFightMoveHover
+ENDC
 	call PrintMenuItem
 	hlcoord 9, 7
 	ld de, FightMoveInfoHint
@@ -2724,7 +2739,13 @@ SelectMenuItem:
 .ordinaryInput
 	bit B_PAD_B, a
 	push af
+IF DEF(_POKERGB_CORE)
+	call ResolveFightSwapCursor
+ENDC
 	xor a
+IF DEF(_POKERGB_CORE)
+	ld [wMoveSwapCursor], a
+ENDC
 	ld [wMenuItemToSwap], a
 	ld a, [wCurrentMenuItem]
 	dec a
@@ -2795,6 +2816,10 @@ WhichTechniqueString:
 	db "WHICH TECHNIQUE?@"
 
 SelectMenuItem_CursorUp:
+IF DEF(_POKERGB_CORE)
+	xor a
+	ld [wMoveSwapCursor], a
+ENDC
 	ld a, [wCurrentMenuItem]
 	and a
 	jp nz, SelectMenuItem
@@ -2805,6 +2830,10 @@ SelectMenuItem_CursorUp:
 	jp SelectMenuItem
 
 SelectMenuItem_CursorDown:
+IF DEF(_POKERGB_CORE)
+	xor a
+	ld [wMoveSwapCursor], a
+ENDC
 	ld a, [wCurrentMenuItem]
 	ld b, a
 	ld a, [wNumMovesMinusOne]
@@ -2925,7 +2954,11 @@ IF DEF(_POKERGB_CORE)
 ENDC
 	xor a
 	ld [wMenuItemToSwap], a ; deselect the item
+IF DEF(_POKERGB_CORE)
+	jr .redraw
+ELSE
 	jp MoveSelectionMenu
+ENDC
 .swapBytes
 	push hl
 	ld a, [wMenuItemToSwap]
@@ -2950,7 +2983,50 @@ ENDC
 .noMenuItemSelected
 	ld a, [wCurrentMenuItem]
 	ld [wMenuItemToSwap], a ; select the current menu item for swapping
+IF DEF(_POKERGB_CORE)
+.redraw
+	ld a, [wCurrentMenuItem]
+	ld [wMoveSwapCursor], a
+	jp MoveSelectionMenu.redrawAfterSwap
+ELSE
 	jp MoveSelectionMenu
+ENDC
+
+IF DEF(_POKERGB_CORE)
+RestoreFightMoveHover:
+	; Stock SELECT redraws hover the remembered row. Enemy Counter can read this
+	; move and its data even when the player backs out and switches Pokémon.
+	ld a, [wPlayerMoveListIndex]
+	inc a
+RecordEnabledFightMoveHover:
+	ld c, a
+	ld a, [wPlayerDisabledMove]
+	swap a
+	and $f
+	cp c
+	ret z
+	ld a, c
+	dec a
+	call RecordFightMoveHover
+	jp GetCurrentMove
+
+ResolveFightSwapCursor:
+	ld c, a
+	ld a, [wMoveSwapCursor]
+	and a
+	ret z
+	bit B_PAD_B, c
+	jr nz, .cancel
+	; Accepting a move records the highlight and its data as usual.
+	ld a, [wCurrentMenuItem]
+	jr RecordEnabledFightMoveHover
+.cancel
+	; If the player backs out after SELECT, keep the stock remembered row.
+	ld a, [wPlayerMoveListIndex]
+	inc a
+	ld [wCurrentMenuItem], a
+	ret
+ENDC
 
 PrintMenuItem:
 	xor a
@@ -2975,16 +3051,14 @@ PrintMenuItem:
 .notDisabled
 	ld hl, wCurrentMenuItem
 	dec [hl]
-	xor a
-	ldh [hWhoseTurn], a
-	ld hl, wBattleMonMoves
+IF DEF(_POKERGB_CORE)
+	ld a, [wMoveSwapCursor]
+	and a
+	jr nz, .readPP
+ENDC
 	ld a, [wCurrentMenuItem]
-	ld c, a
-	ld b, $0 ; which item in the menu is the cursor pointing to? (0-3)
-	add hl, bc ; point to the item (move) in memory
-	ld a, [hl]
-	ld [wPlayerSelectedMove], a ; update wPlayerSelectedMove even if the move
-	                            ; isn't actually selected (just pointed to by the cursor)
+	call RecordFightMoveHover
+.readPP
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
 	ld a, BATTLE_MON_DATA
@@ -3015,6 +3089,14 @@ PrintMenuItem:
 	ld de, wMaxPP
 	lb bc, 1, 2
 	call PrintNumber
+IF DEF(_POKERGB_CORE)
+	ld a, [wMoveSwapCursor]
+	and a
+	jr z, .printType
+	farcall PrintSwapMoveCursorType
+	jr .moveDisabled
+.printType
+ENDC
 	call GetCurrentMove
 	hlcoord 2, 10
 	predef PrintMoveType
@@ -3022,6 +3104,18 @@ PrintMenuItem:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
+
+; a = zero-based move row
+RecordFightMoveHover:
+	ld c, a
+	ld b, 0
+	xor a
+	ldh [hWhoseTurn], a
+	ld hl, wBattleMonMoves
+	add hl, bc
+	ld a, [hl]
+	ld [wPlayerSelectedMove], a
+	ret
 
 FightMoveInfoHint: db "START INFO@"
 
