@@ -134,8 +134,12 @@ _SaffronGymYoungster1EndBattleText::
 
 _SaffronGymYoungster1AfterBattleText::
 	text "Psychic #MON"
+IF GHOST_PSYCHIC_EFFECTIVENESS > EFFECTIVE
 	line "fear only ghosts"
 	cont "and bugs!"
+ELSE
+	line "fear only bugs!"
+ENDC
 	done
 
 _SaffronGymChanneler2BattleText::

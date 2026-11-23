@@ -1,18 +1,25 @@
-"""Read the corrected Celadon and Safari signs on the linked cartridge."""
+"""Read corrected signs and type advice on the linked cartridge."""
 
 import argparse
 from pathlib import Path
 
-from adventure_checkpoints import A, LEFT, UP, advance_text_until, checkpoint, hold_until, position, shows
+from adventure_checkpoints import (
+    A, LEFT, UP, advance_text_until, checkpoint, hold_until, position, set_event, shows,
+)
 from cartridge_smoke import Game, seed_party
 from safari_session import seed_session
 
 
 CELADON_CITY = 0x06
 FUCHSIA_CITY = 0x07
+SAFFRON_CITY = 0x0A
+SAFFRON_GYM = 0xB2
 SAFARI_EAST = 0xD9
 SAFARI_NORTH = 0xDA
 SAFARI_CENTER = 0xDC
+DEFEATED_SAFFRON_TRAINER = 0x363
+GHOST_TYPE = 0x08
+PSYCHIC_TYPE = 0x18
 
 
 def check_celadon(game):
@@ -56,6 +63,28 @@ def check_safari(game):
         assert safari_steps(game) == steps - 1
 
 
+def check_saffron(game, cartridge):
+    # Look up the exact pairing from the linked chart used in battle.
+    bank, address = game.addresses["TypeEffects"]
+    chart = cartridge.read_bytes()
+    start = bank * 0x4000 + (address & 0x3FFF)
+    end = chart.index(0xFF, start)
+    ghost_effect = next(factor for attack, target, factor in
+                        zip(chart[start:end:3], chart[start + 1:end:3], chart[start + 2:end:3])
+                        if (attack, target) == (GHOST_TYPE, PSYCHIC_TYPE))
+
+    set_event(game, DEFEATED_SAFFRON_TRAINER)
+    checkpoint(game, SAFFRON_GYM, 10, 17, 2, last_map=SAFFRON_CITY)
+    game.press(UP)
+    assert position(game) == (17, 2)
+    game.press(A)
+    if ghost_effect > 10:
+        shows(game, "fear only ghosts")
+        advance_text_until(game, lambda: "and bugs" in game.visible_text())
+    else:
+        shows(game, "fear only bugs")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
@@ -68,7 +97,11 @@ def main():
             with Game(args.sameboy, args.boot, cartridge) as game:
                 game.new_game()
                 check(game)
-        print(f"{cartridge}: Guard Spec. and Safari sign text and routes passed", flush=True)
+        with Game(args.sameboy, args.boot, cartridge) as game:
+            game.new_game()
+            check_saffron(game, cartridge)
+        print(f"{cartridge}: Guard Spec., Safari signs and routes, and Saffron advice passed",
+              flush=True)
 
 
 if __name__ == "__main__":
