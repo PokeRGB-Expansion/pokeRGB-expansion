@@ -324,6 +324,106 @@ def check_hall_of_fame(library, boot, rom):
 
 
 
+def talk_to_first_npc(game):
+    game.put("hTextID", (1,))
+    game.invoke("DisplayTextID")
+
+
+def check_fossil_lab(library, boot, rom):
+    with Game(library, boot, rom) as game:
+        game.new_game()
+        seed_party(game)
+        game.put("wOptions", (0xc1,))
+        game.put("wNumBagItems", (1, 0x2a, 1, 0xff))  # Helix Fossil
+        game.enter_map(0xaa, 4, 5, 3, last_map=0xa7)
+        talk_to_first_npc(game)
+        shows(game, "HELIX FOSSIL", accept=True)
+        game.tick(15)
+        game.press(A)
+        shows(game, "YES", "NO", accept=True)
+        game.tick(10)
+        game.press(A)
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get("wNumBagItems") == 0
+        assert game.get("wFossilMon") == 0x62
+        assert game.get("wPartyCount") == 2
+
+        talk_to_first_npc(game)
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get("wPartyCount") == 2
+        game.enter_map(0x08, 10, 9, 9)  # Walk outside onto Cinnabar Island.
+        game.tick(30)
+        game.enter_map(0xaa, 4, 5, 3, last_map=0xa7)
+        talk_to_first_npc(game)
+        for _ in range(220):
+            if game.cpu.pc == 0xc900:
+                break
+            text = game.visible_text()
+            game.press(5 if "nickname" in text and "YES" in text else A)
+            game.tick(8)
+        else:
+            raise AssertionError(game.visible_text())
+        assert game.get("wPartyCount") == 3
+        assert game.get("wPartyMon3Species") == 0x62
+        assert game.get("wPartyMon3Level") == 30
+
+        talk_to_first_npc(game)
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get("wPartyCount") == 3
+
+
+def check_captain(library, boot, rom):
+    with Game(library, boot, rom) as game:
+        game.new_game()
+        game.put("wOptions", (0xc1,))
+        game.enter_map(0x65, 3, 4, 3)
+        full_bag = bytes((20,)) + bytes(value for item in range(0x0a, 0x1e)
+                                        for value in (item, 1)) + b"\xff"
+        game.put("wNumBagItems", full_bag)
+        talk_to_first_npc(game)
+        advance_text_until(game, lambda: "no room for this" in game.visible_text())
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get_bytes("wNumBagItems", len(full_bag)) == full_bag
+
+        game.put("wNumBagItems", (0, 0xff))
+        talk_to_first_npc(game)
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get_bytes("wNumBagItems", 4) == bytes((1, 0xc4, 1, 0xff))
+
+        talk_to_first_npc(game)
+        advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+        assert game.get_bytes("wNumBagItems", 4) == bytes((1, 0xc4, 1, 0xff))
+
+
+def check_victory_road(library, boot, rom):
+    with Game(library, boot, rom) as game:
+        game.new_game()
+        seed_party(game)
+        game.put("wStatusFlags4", (game.get("wStatusFlags4") | 0x10,))
+        game.enter_map(0x6c, 10, 15, 13, last_map=ROUTE_23)
+        game.put("wGrassRate", (0,))
+        game.put("wStatusFlags1", (game.get("wStatusFlags1") | 1,))
+
+        # Start one push before the 1F switch. Coordinates in the sprite
+        # record include the four-tile border around the map.
+        game.put("wSprite05StateData2MapY", (17, 20))
+        game.put("wSprite05StateData1YPixels", (60, 0, 80))
+        game.put("wSprite05StateData1MovementStatus", (2, 0, 0))
+        game.tick(10)
+        switch_event = 0x917
+        gate_block_offset = (6 + 3) * (10 + 6) + 4 + 3
+        assert not event(game, switch_event)
+        assert game.get("wOverworldMap", gate_block_offset) != 0x1d
+        hold_until(game, RIGHT, lambda: event(game, switch_event))
+        game.wait(lambda: game.get("wOverworldMap", gate_block_offset) == 0x1d)
+        assert game.get("wSprite05StateData2MapX") == 21
+
+        game.enter_map(ROUTE_23, 10, 9, 15, last_map=ROUTE_23)
+        game.enter_map(0x6c, 10, 15, 13, last_map=ROUTE_23)
+        assert event(game, switch_event)
+        assert game.get("wOverworldMap", gate_block_offset) == 0x1d
+
+
 def check_evolution(library, boot, rom):
     pikachu, raichu = 0x54, 0x55
     pidgey, pidgeotto = 0x24, 0x96
@@ -374,7 +474,8 @@ def main():
     for color in ("red", "blue", "green"):
         rom = args.directory / f"poke{color}.gbc"
         for check in (check_starter, check_gym, check_tower, check_silph, check_safari,
-                      check_evolution, check_league_badges, check_league_room, check_hall_of_fame):
+                      check_evolution, check_fossil_lab, check_captain, check_league_badges,
+                      check_victory_road, check_league_room, check_hall_of_fame):
             check(args.sameboy, args.boot, rom)
             print(f"{args.directory.name} {color}: {check.__name__.removeprefix('check_')} passed",
                   flush=True)
