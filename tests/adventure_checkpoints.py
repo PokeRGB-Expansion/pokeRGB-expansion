@@ -323,6 +323,48 @@ def check_hall_of_fame(library, boot, rom):
         hold_until(game, UP, lambda: game.get("wCurMap") == CERULEAN_CAVE_1F)
 
 
+
+def check_evolution(library, boot, rom):
+    pikachu, raichu = 0x54, 0x55
+    pidgey, pidgeotto = 0x24, 0x96
+    kadabra, alakazam = 0x26, 0x95
+    thunder_stone = 0x21
+    core = rom.parent.name == "core"
+    cases = (
+        (pikachu, 18, "level", pikachu if core else raichu),
+        (pidgey, 18, "level", pidgeotto),
+        (pikachu, 18, "item", raichu),
+        (kadabra, 24, "trade", alakazam),
+    )
+    for species, level, trigger, expected in cases:
+        with Game(library, boot, rom) as game:
+            game.new_game()
+            seed_party(game)
+            game.put("wPartySpecies", (species, 0x1b, 0xff))
+            game.put("wPartyMon1Species", (species,))
+            game.put("wPartyMon1Level", (level,))
+            game.put("wPartyMon1BoxLevel", (level,))
+            game.put("wWhichPokemon", (0,))
+            game.put("wCanEvolveFlags", (1,))
+            game.put("wForceEvolution", (0,))
+            # This shared slot can hold a species ID after an ordinary battle.
+            game.put("wCurItem", (thunder_stone,))
+            if trigger == "item":
+                game.put("wNumBagItems", (1, thunder_stone, 1, 0xff))
+                game.invoke("ItemUseEvoStone")
+                shows(game, "TEST")
+            elif trigger == "trade":
+                game.put("wLinkState", (0x32,))
+                game.invoke("TryEvolvingMon")
+            else:
+                game.invoke("EvolutionAfterBattle")
+            advance_text_until(game, lambda: game.cpu.pc == 0xc900)
+            assert game.get("wPartySpecies") == expected, (species, trigger)
+            assert game.get("wPartyMon1Species") == expected
+            if trigger == "item":
+                assert game.get("wNumBagItems") == 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
@@ -332,7 +374,7 @@ def main():
     for color in ("red", "blue", "green"):
         rom = args.directory / f"poke{color}.gbc"
         for check in (check_starter, check_gym, check_tower, check_silph, check_safari,
-                      check_league_badges, check_league_room, check_hall_of_fame):
+                      check_evolution, check_league_badges, check_league_room, check_hall_of_fame):
             check(args.sameboy, args.boot, rom)
             print(f"{args.directory.name} {color}: {check.__name__.removeprefix('check_')} passed",
                   flush=True)

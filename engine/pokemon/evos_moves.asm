@@ -8,8 +8,7 @@ TryEvolvingMon:
 	ld b, FLAG_SET
 	call Evolution_FlagAction
 
-; this is only called after battle
-; it is supposed to do level up evolutions, though there is a bug that allows item evolutions to occur
+; Check flagged party members after a battle, item use, or trade.
 EvolutionAfterBattle:
 	ldh a, [hTileAnimations]
 	push af
@@ -94,9 +93,12 @@ Evolution_PartyMonLoop: ; loop over party mons
 	jr .doEvolution
 .checkItemEvo
 	ld a, [hli]
-	; Bug: Wild encounters can cause stone evolutions without
-	; having any stones available. This was fixed in Yellow.
 	ld b, a ; evolution item
+IF DEF(_POKERGB_CORE)
+	ld a, [wForceEvolution]
+	and a
+	jp z, .nextEvoEntry1
+ENDC
 	ld a, [wCurItem] ; same as [wCurPartySpecies]
 	cp b ; was the evolution item in this entry used?
 	jp nz, .nextEvoEntry1 ; if not, go to the next evolution entry
