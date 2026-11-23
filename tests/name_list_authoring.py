@@ -29,11 +29,14 @@ def extend_names(source):
         rows = [
             end_check,
             f"REPT HM01 - 2 - {count}",
-            f'\t{macro} "PADDING"',
+            f'\t{macro} "X"',
             "ENDR",
             *(f'\t{macro} "{prefix} {name}"' for prefix in ("LOW", "MID", "TOP")),
         ]
-        table.write_text(original.replace(end_check, "\n".join(rows)))
+        names = original.replace(end_check, "\n".join(rows))
+        if folder == "trainers":
+            names = 'PUSHS\nSECTION "Sample Trainer Names", ROMX\n' + names + 'POPS\n'
+        table.write_text(names)
 
 
 def read_name(game, list_id, bank, index):
@@ -62,7 +65,7 @@ def main():
         with tarfile.open(fileobj=BytesIO(archive)) as files:
             files.extractall(source, filter="data")
         extend_names(source)
-        command = ["make", "-j4", "red"]
+        command = ["make", "-s", "-j4", "red"]
         if args.rgbds:
             command.append(f"RGBDS={args.rgbds.resolve()}/")
         build = subprocess.run(command, cwd=source, capture_output=True, text=True)
