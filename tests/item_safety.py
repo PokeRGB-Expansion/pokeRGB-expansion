@@ -76,6 +76,41 @@ def check_shop_sale(game):
     assert game.get_bytes("wPlayerMoney", 3) == money
 
 
+def check_hidden_coins(game, core):
+    game.enter_map(0x87, 10, 4, 4)
+    game.put("wNumBagItems", (1, COIN_CASE, 1, 0xff))
+    for x, y, amount, before, after, spill in (
+        (0, 8, 10, (0x99, 0x89), (0x99, 0x99), False),
+        (1, 16, 10, (0x99, 0x90), (0x99, 0x99), True),
+        (11, 7, 40, (0, 0), (0, 0x40 if core else 0x20), False),
+    ):
+        game.put("wPlayerCoins", before)
+        game.put("wHiddenEventX", (x,))
+        game.put("wHiddenEventY", (y,))
+        game.put("wHiddenEventFunctionArgument", (0x3b + amount,))
+        game.invoke("HiddenCoins")
+        saw_spill = False
+        for frame in range(250):
+            saw_spill |= "Dropped" in game.visible_text()
+            if game.cpu.pc == 0xc900:
+                break
+            if frame % 8 == 7:
+                game.press(A)
+            else:
+                game.tick(2)
+        else:
+            raise AssertionError(game.visible_text())
+        assert game.get_bytes("wPlayerCoins", 2) == bytes(after), (amount, before)
+        assert saw_spill == spill, (amount, before, game.visible_text())
+
+        game.put("wHiddenEventX", (x,))
+        game.put("wHiddenEventY", (y,))
+        game.put("wHiddenEventFunctionArgument", (0x3b + amount,))
+        game.invoke("HiddenCoins")
+        game.return_to_stub()
+        assert game.get_bytes("wPlayerCoins", 2) == bytes(after)
+
+
 def check_red_game_corner(game):
     seed_party(game)
     game.put("wNumBagItems", (1, COIN_CASE, 1, 0xff))
@@ -136,6 +171,10 @@ def main():
                 check(game)
             print(f"{args.directory.name} {color}: {check.__name__.removeprefix('check_')} passed",
                   flush=True)
+        with Game(args.sameboy, args.boot, rom) as game:
+            game.new_game()
+            check_hidden_coins(game, args.directory.name == "core")
+        print(f"{args.directory.name} {color}: hidden coin awards and messages passed", flush=True)
 
 
 if __name__ == "__main__":
