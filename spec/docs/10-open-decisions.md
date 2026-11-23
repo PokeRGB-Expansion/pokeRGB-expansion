@@ -2,7 +2,7 @@
 
 **The move and inventory screens have preset decisions.** D61/D62 put them in the complete public Core and identify what also ships in Minimal. The [decision audit](../research/sweep-decisions.md) records the player effects. Integrated implementation and verification remain.
 
-**Before publication**, choose and credit Green’s actual presentation (Q05). Establish which save, trade, battle and hardware combinations pass on the finished builds (Q03–Q04). If meeting an existing requirement would mean changing game behavior or dropping promised support, review that specific tradeoff. The CI runner, save-recovery design and screen layouts are engineering work.
+**Before publication**, establish which save, trade, battle and hardware combinations pass on the finished builds (Q03–Q04). If meeting an existing requirement would mean changing game behavior or dropping promised support, review that specific tradeoff. The CI runner, save-recovery design and screen layouts are engineering work.
 
 D50 settles the new Core battle data. D54–D56 settle equivalent shortcuts, manual box selection and the use of shared code. Save recovery for automatic placement and a high-ID link exchange remain engineering gates for their respective options. [Minimal decisions](../research/minimal-action-review.md) · [Storage](../research/storage-policy-and-code.md) · [Large rosters](../research/species-id-architecture.md)
 
@@ -28,11 +28,7 @@ SameBoy has already run stock battle fixtures for this project. First check whet
 
 ## Q05
 
-**Choose the actual Green visual assets.**
-
-Recommended minimum: title name/art and mascot plus SGB colors/border and header identity, with all gameplay inherited from Blue. Record the actual asset sources. Keep battle/overworld art shared initially unless a specific cosmetic override is wanted.
-
-Choose these assets before the public Core release. Upstream reproduction and battle work can proceed in parallel.
+**Closed.** Green uses Bulbasaur on the English title, the Green cartridge name, and the original Green Super Game Boy border with a Green palette. The [presentation record](06-build-variants.md#green-presentation-scope) lists the sources and checks.
 
 ## Settled and deferred records
 

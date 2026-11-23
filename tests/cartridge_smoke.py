@@ -10,7 +10,7 @@ class Registers(C.Structure):
 
 
 class Game:
-    def __init__(self, library, boot, rom):
+    def __init__(self, library, boot, rom, *, model=0x002):
         self.core = C.CDLL(str(library))
         ptr, byte, word = C.c_void_p, C.c_uint8, C.c_uint16
         signatures = {
@@ -33,7 +33,7 @@ class Game:
             function = getattr(self.core, "GB_" + name)
             function.restype = result
             function.argtypes = args
-        self.gb = self.core.GB_init(self.core.GB_alloc(), 0x002)
+        self.gb = self.core.GB_init(self.core.GB_alloc(), model)
         assert self.core.GB_load_rom(self.gb, bytes(rom)) == 0
         assert self.core.GB_load_boot_rom(self.gb, bytes(boot)) == 0
         self.core.GB_set_rendering_disabled(self.gb, True)

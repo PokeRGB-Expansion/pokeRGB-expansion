@@ -14,15 +14,15 @@ Red and Blue remain distinct games where upstream defines a gameplay difference.
 
 Solus and PureRGB have cosmetic RGB variants because they consolidate availability. That is a useful presentation model, not a reason to merge this foundation's Red/Blue distributions. [E33–E34](../research/evidence.md#e33)
 
-## Proposed implementation
+## Build implementation
 
 Keep one source tree and use per-target object outputs. Upstream already assembles `_red.o`, `_blue.o`, and `_blue_debug.o` separately and defines `_RED` or `_BLUE` for each target. [E02](../research/evidence.md#e02)
 
-The simplest proposed Green build uses `_BLUE` for gameplay selection plus a new `_GREEN_VISUALS` definition. It never defines `_RED`. Add explicit Green cases only in presentation code/data. This avoids an incomplete third gameplay branch.
+Green sets `_BLUE` for gameplay and `_GREEN_VISUALS` for presentation. The assembler checks that Green uses the Blue selection. Keep new Green cases in presentation code and data.
 
 Do not define `_RED` and `_BLUE` together. Upstream sometimes uses separate `IF DEF(...)` blocks, so defining both can emit both variants. Invalid or contradictory target selections must fail before assembly.
 
-Add planned targets `red`, `blue`, and `green` and keep names stable once shipped. Output names such as `pokergb-red.gbc` are proposed, not existing commands in this specification repository. The `.gbc` suffix alone does not establish a hardware requirement.
+The `red`, `blue`, and `green` targets write `pokered.gbc`, `pokeblue.gbc`, and `pokegreen.gbc` under the selected preset directory. The filename suffix is shared across Game Boy models.
 
 Reuse the shared engine and shared graphics inputs, with variant-safe dependency tracking. A source or asset change must invalidate the correct objects for every target. Build in isolated per-target directories or fix shared generated-file races. Verify clean parallel builds, sequential Red→Green→Blue builds, and rebuilds after a variant-specific edit.
 
@@ -43,11 +43,16 @@ Preserve Red/Blue's actual data wherever it differs. Do not create differences w
 
 ## Green presentation scope
 
-The minimum proposed scope is title name/art, an appropriate mascot/title image, ROM identity text, and Green SGB presentation. Keep ordinary battle sprites, menus, map logic, audio and gameplay data shared unless a visual asset is deliberately included in the cosmetic manifest.
+Green uses a `POKEMON GREEN` cartridge header and an English GREEN VERSION title. Bulbasaur appears first, using its English-game sprite. Red starts with Charmander, and Blue starts with Squirtle.
 
-Exact assets remain Q05. A Green title using Venusaur is a possible visual choice, not a third gameplay distribution. No Japanese text or restored Japanese engine behavior is implied. Plain DMG output can only express identity through monochrome graphics and text; SGB colors/borders are a separate tested presentation path.
+| Green change | Source |
+|---|---|
+| Cartridge name and checksum | Green target in [Makefile](../../Makefile) |
+| Title text and Bulbasaur | [Title code](../../engine/movie/title.asm) and the shared English font |
+| Super Game Boy title colors and Bulbasaur palette | [Palettes](../../data/sgb/sgb_palettes.asm) and [title palette command](../../data/sgb/sgb_packets.asm) |
+| Super Game Boy border | [Border selection and colors](../../data/sgb/sgb_border.asm). The tiles and tilemap are the original Green border assets already tracked by pret/pokered. [Upstream import](https://github.com/pret/pokered/commit/2ebbb0d95eead4f40ec0bb7e9edd19526c2b2f3a) |
 
-Record every intended Blue→Green difference in a small manifest with the affected asset, symbol or header field. Compare Blue and Green at the first gameplay decision with controlled random inputs. Cosmetic changes must preserve gameplay roll sites and rules. Document any timing differences from title art or input. Real-time timer samples may differ across playthroughs.
+The [title test](../../tests/title_smoke.py) checks the first Pokémon, English title tiles, and rendered palette in Super Game Boy mode. Green keeps Blue's gameplay, including the names, encounters, and scripts used after the title. Compare Blue and Green at the first gameplay decision with controlled random inputs. Real-time timer samples can vary across title sequences.
 
 ## Equality checks
 
