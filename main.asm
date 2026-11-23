@@ -124,6 +124,9 @@ SECTION "Doors and Ledges", ROMX
 INCLUDE "engine/overworld/auto_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
+IF DEF(_POKERGB_CORE)
+INCLUDE "engine/overworld/cut_connection.asm"
+ENDC
 
 
 SECTION "Pokémon Names", ROMX

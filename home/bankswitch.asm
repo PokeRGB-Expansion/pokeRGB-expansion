@@ -33,3 +33,19 @@ Bankswitch::
 	ldh [hLoadedROMBank], a
 	ld [rROMB], a
 	ret
+
+
+IF DEF(_POKERGB_CORE)
+LoadTileBlockMapPreservingBank::
+; A is the current map. The loader reads map blocks from several ROM banks.
+	ld b, a
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, b
+	call SwitchToMapRomBank
+	call LoadTileBlockMap
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [rROMB], a
+	ret
+ENDC

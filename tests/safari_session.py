@@ -35,18 +35,6 @@ def seed_session(game, *, balls=21, steps=350):
     game.put("wSafariZoneGateCurScript", (LEAVING_SAFARI,))
 
 
-def load_map(game, map_id, width, x, y):
-    game.put("wCurMap", (map_id,))
-    game.put("wYCoord", (y, x, y % 2, x % 2))
-    map_start = game.addresses["wOverworldMap"][1]
-    view_start = map_start + (width + 6) * (y // 2 + 1) + x // 2 + 1
-    game.put("wCurrentTileBlockMapViewPointer", view_start.to_bytes(2, "little"))
-    game.put("wLastMap", (FUCHSIA,))
-    game.invoke("EnterMap")
-    game.wait(lambda: game.get("wCurMap") == map_id and game.get("wCurMapWidth") == width)
-    game.tick(45)
-
-
 def walk(game, key):
     game.core.GB_set_key_state(game.gb, key, True)
     game.tick(35)
@@ -88,7 +76,7 @@ def check_decline_reload_and_fee(library, boot, rom, x):
         seed_party(game)
         game.put("wOptions", (1,))
         seed_session(game)
-        load_map(game, CENTER, 15, x, 24)
+        game.enter_map(CENTER, 15, x, 24, last_map=FUCHSIA)
 
         walk(game, DOWN)
         wait_choice(game, "Leaving early")
@@ -148,7 +136,7 @@ def check_timeout(library, boot, rom, *, balls, steps):
         game.new_game()
         game.put("wOptions", (1,))
         seed_session(game, balls=balls, steps=steps)
-        load_map(game, CENTER, 15, 14, 24)
+        game.enter_map(CENTER, 15, 14, 24, last_map=FUCHSIA)
         if balls:
             walk(game, UP)
         gate_lobby(game)
@@ -166,7 +154,7 @@ def check_poison_blackout(library, boot, rom):
         game.put("wOptions", (1,))
         game.put("wLastBlackoutMap", (FUCHSIA,))
         seed_session(game)
-        load_map(game, CENTER, 15, 14, 24)
+        game.enter_map(CENTER, 15, 14, 24, last_map=FUCHSIA)
 
         game.put("wStepCounter", (1,))
         walk(game, UP)
@@ -181,12 +169,12 @@ def check_house_and_stale_state(library, boot, rom):
     with Game(library, boot, rom) as game:
         game.new_game()
         seed_session(game)
-        load_map(game, CENTER_REST_HOUSE, 4, 2, 4)
+        game.enter_map(CENTER_REST_HOUSE, 4, 2, 4, last_map=FUCHSIA)
         assert session(game) == (ACTIVE, 21, 350)
         assert game.get("wSafariZoneGateCurScript") == LEAVING_SAFARI
 
         # A save made outside the Safari Zone by an older build can have live counters.
-        load_map(game, FUCHSIA, 20, 18, 4)
+        game.enter_map(FUCHSIA, 20, 18, 4)
         seed_session(game, balls=0)
         game.invoke("SaveGameData")
         game.return_to_stub()

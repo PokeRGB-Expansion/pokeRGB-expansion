@@ -100,6 +100,20 @@ class Game:
                 self.tick(2)
         raise AssertionError(f"Timed out at {self.cpu.pc:04x}.\n{self.visible_text()}")
 
+    def enter_map(self, map_id, width, x, y, *, last_map=None):
+        """Place the player at a map position and run the normal map loader."""
+        self.put("wCurMap", (map_id,))
+        self.put("wYCoord", (y, x, y % 2, x % 2))
+        map_start = self.addresses["wOverworldMap"][1]
+        # Match the offset that event_displacement writes for map warps.
+        view_start = map_start + (width + 6) * (y // 2 + 1) + x // 2 + 1
+        self.put("wCurrentTileBlockMapViewPointer", view_start.to_bytes(2, "little"))
+        if last_map is not None:
+            self.put("wLastMap", (last_map,))
+        self.invoke("EnterMap")
+        self.wait(lambda: self.get("wCurMap") == map_id and self.get("wCurMapWidth") == width)
+        self.tick(45)
+
     def enter_new_game(self, continue_present=False):
         if continue_present:
             self.press(3)

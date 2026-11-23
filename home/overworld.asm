@@ -691,7 +691,11 @@ CheckMapConnections::
 ; Since the sprite set shouldn't change, this will just update VRAM slots at
 ; x#SPRITESTATEDATA2_IMAGEBASEOFFSET without loading any tile patterns.
 	farcall InitMapSprites
+IF DEF(_POKERGB_CORE)
+	farcall LoadConnectedTileBlockMap
+ELSE
 	call LoadTileBlockMap
+ENDC
 	jp OverworldLoopLessDelay
 
 .didNotEnterConnectedMap
