@@ -131,10 +131,9 @@ _CeladonCityTrainerTips2Text::
 	text "TRAINER TIPS"
 
 	para "GUARD SPEC."
-	line "protects #MON"
-	cont "against SPECIAL"
-	cont "attacks such as"
-	cont "fire and water!"
+	line "stops moves like"
+	cont "GROWL from"
+	cont "lowering stats."
 
 	para "Get your items at"
 	line "CELADON DEPT."
