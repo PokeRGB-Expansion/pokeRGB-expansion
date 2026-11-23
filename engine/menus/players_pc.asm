@@ -26,6 +26,7 @@ PlayerPCMenu:
 	ld b, $8
 	ld c, $e
 	call TextBoxBorder
+	farcall DrawItemPCMenuCapacity
 	call UpdateSprites
 	hlcoord 2, 2
 	ld de, PlayersPCMenuEntries

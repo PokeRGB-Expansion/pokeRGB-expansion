@@ -379,3 +379,7 @@ INCLUDE "engine/pokemon/move_info.asm"
 SECTION "Sprite alignment", ROMX
 
 INCLUDE "engine/gfx/center_sprite.asm"
+
+SECTION "Storage counts", ROMX
+
+INCLUDE "engine/menus/storage_counts.asm"

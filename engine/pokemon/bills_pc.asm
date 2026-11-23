@@ -123,6 +123,7 @@ BillsPCMenu:
 	ld b, 10
 	ld c, 12
 	call TextBoxBorder
+	farcall DrawBoxPCMenuCapacity
 	hlcoord 2, 2
 	ld de, BillsPCMenuText
 	call PlaceString

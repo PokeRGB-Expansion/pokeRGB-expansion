@@ -59,6 +59,7 @@ DisplayListMenuIDLoop::
 	xor a
 	ldh [hAutoBGTransferEnabled], a ; disable transfer
 	call PrintListMenuEntries
+	farcall DrawStorageListCapacity
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a ; enable transfer
 	call Delay3
