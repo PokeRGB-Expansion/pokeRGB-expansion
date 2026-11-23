@@ -452,7 +452,8 @@ InitializeSpriteStatus:
 	ld a, $8
 	ld [hli], a   ; [x#SPRITESTATEDATA2_YDISPLACEMENT] = 8
 	ld [hl], a    ; [x#SPRITESTATEDATA2_XDISPLACEMENT] = 8
-	ret
+	; Place the sprite before a menu or dialogue can make it visible.
+	; Keep the first movement update on the usual path.
 
 ; calculates the sprite's screen position from its map position and the player position
 InitializeSpriteScreenPosition:
