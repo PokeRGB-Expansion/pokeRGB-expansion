@@ -1790,6 +1790,11 @@ _AnimationSlideMonOff:
 	ld d, 8 ; d's value is unused
 .slideLoop ; iterates once for each time the pic slides by one tile
 	push hl
+	; Do not let VBlank copy a partly updated slide step.
+	ldh a, [hAutoBGTransferEnabled]
+	push af
+	xor a
+	ldh [hAutoBGTransferEnabled], a
 	ld b, 7
 .rowLoop ; iterates once for each row
 	ld c, 8
@@ -1811,6 +1816,8 @@ _AnimationSlideMonOff:
 	pop de
 	dec b
 	jr nz, .rowLoop
+	pop af
+	ldh [hAutoBGTransferEnabled], a
 	ld a, [wSlideMonDelay]
 	ld c, a
 	call DelayFrames

@@ -1261,7 +1261,6 @@ LinkBattleLostText:
 	text_end
 
 ; slides pic of fainted mon downwards until it disappears
-; bug: when this is called, [hAutoBGTransferEnabled] is non-zero, so there is screen tearing
 SlideDownFaintedMonPic:
 	ld a, [wStatusFlags5]
 	push af
@@ -1272,6 +1271,11 @@ SlideDownFaintedMonPic:
 	push bc
 	push de
 	push hl
+	; Do not let VBlank copy a partly updated slide step.
+	ldh a, [hAutoBGTransferEnabled]
+	push af
+	xor a
+	ldh [hAutoBGTransferEnabled], a
 	ld b, PIC_HEIGHT - 1 ; number of rows
 .rowLoop
 	push bc
@@ -1297,6 +1301,8 @@ SlideDownFaintedMonPic:
 	add hl, bc
 	ld de, SevenSpacesText
 	call PlaceString
+	pop af
+	ldh [hAutoBGTransferEnabled], a
 	ld c, 2
 	call DelayFrames
 	pop hl
@@ -1315,13 +1321,17 @@ SevenSpacesText:
 ; slides the player or enemy trainer off screen
 ; a is the number of tiles to slide it horizontally (always 9 for the player trainer or 8 for the enemy trainer)
 ; if a is 8, the slide is to the right, else it is to the left
-; bug: when this is called, [hAutoBGTransferEnabled] is non-zero, so there is screen tearing
 SlideTrainerPicOffScreen:
 	ldh [hSlideAmount], a
 	ld c, a
 .slideStepLoop ; each iteration, the trainer pic is slid one tile left/right
 	push bc
 	push hl
+	; Do not let VBlank copy a partly updated slide step.
+	ldh a, [hAutoBGTransferEnabled]
+	push af
+	xor a
+	ldh [hAutoBGTransferEnabled], a
 	ld b, PIC_HEIGHT ; number of rows
 .rowLoop
 	push hl
@@ -1348,6 +1358,8 @@ SlideTrainerPicOffScreen:
 	add hl, de
 	dec b
 	jr nz, .rowLoop
+	pop af
+	ldh [hAutoBGTransferEnabled], a
 	ld c, 2
 	call DelayFrames
 	pop hl
