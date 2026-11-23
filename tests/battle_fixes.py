@@ -156,20 +156,29 @@ def check_self_damage(game, core):
 
 
 def check_interrupted_charge(game, core):
-    charging, invulnerable = 1 << 4, 1 << 6
+    charging, invulnerable, confused = 1 << 4, 1 << 6, 1 << 7
     for actor in (PLAYER, ENEMY):
         for move in (0x13, 0x5b):  # Fly and Dig
-            seed_actions(game, actor, move)
-            game.put("hWhoseTurn", (actor == ENEMY,))
-            game.put(mon_label(actor) + "Status", (1 << 6,))  # Paralysis.
-            game.put(f"w{actor}MoveEffect", (0x2b,))  # FLY_EFFECT.
-            game.put(f"w{actor}BattleStatus1", (charging | invulnerable,))
-            random_bytes(game, 0)
-            stop = invoke_visual(game, f"Execute{actor}Move")
-            game.wait(lambda: game.cpu.pc == stop, accept=True)
-            assert game.get(f"w{actor}BattleStatus1") == (0 if core else invulnerable)
-            assert game.get_bytes(mon_label(actor) + "PP", 4) == bytes((15, 0, 0, 0))
-            assert stat(game, other(actor), "HP") == 160
+            for self_hit in (False, True):
+                seed_actions(game, actor, move)
+                game.put("hWhoseTurn", (actor == ENEMY,))
+                game.put(f"w{actor}MoveEffect", (0x2b,))  # FLY_EFFECT.
+                if self_hit:
+                    game.put(f"w{actor}BattleStatus1", (charging | invulnerable | confused,))
+                    game.put(f"w{actor}ConfusedCounter", (3,))
+                    random_bytes(game, 255)
+                else:
+                    game.put(mon_label(actor) + "Status", (1 << 6,))  # Paralysis.
+                    game.put(f"w{actor}BattleStatus1", (charging | invulnerable,))
+                    random_bytes(game, 0)
+
+                stop = invoke_visual(game, f"Execute{actor}Move")
+                game.wait(lambda: game.cpu.pc == stop, accept=True)
+                flags = game.get(f"w{actor}BattleStatus1") & (charging | invulnerable)
+                assert flags == (0 if core or self_hit else invulnerable), (actor, move, self_hit)
+                assert (stat(game, actor, "HP") < 160) == self_hit
+                assert stat(game, other(actor), "HP") == 160
+                assert game.get_bytes(mon_label(actor) + "PP", 4) == bytes((15, 0, 0, 0))
 
 
 def main():
