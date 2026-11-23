@@ -319,8 +319,10 @@ BillsPCRelease:
 	call PrintText
 	call SaveScreenTilesToBuffer1
 	call InitYesNoTextBoxParameters
+	push hl
 	ld hl, wTwoOptionMenuID
 	set BIT_SECOND_MENU_OPTION_DEFAULT, [hl]
+	pop hl
 	call DisplayYesNoChoice
 	pop af
 	ld [wWhichPokemon], a
@@ -562,9 +564,10 @@ ReleaseWhichMonText:
 ReleaseIdentityText:
 	text "Release @"
 	text_ram wStringBuffer
-	line "Species @"
+	text_low
+	text "Species @"
 	text_ram wNameBuffer
-	done
+	text_end
 
 MonWasReleasedText:
 	text_far _MonWasReleasedText
