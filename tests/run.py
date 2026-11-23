@@ -42,7 +42,7 @@ def main():
         "acid_armor", "battle_stats_return", "pp_restore_readout", "pokedex_capture_return", "bicycle_shortcut", "bicycle_fall",
         "bike_shop_sign", "npc_entry_position", "item_safety", "storage_counts", "shop_carry_count",
         "sprite_storage", "map_signs", "presentation_events", "adventure_checkpoints",
-        "field_shortcuts", "pc_browsing",
+        "field_shortcuts", "pc_browsing", "shift_prompt", "celadon_roof_transactions",
     ):
         run_script(f"tests/{test}.py", directory, *emulator)
 
