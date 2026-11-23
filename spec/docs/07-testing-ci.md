@@ -1,6 +1,6 @@
 # Testing and continuous integration
 
-This is a test plan. This repository does not include a game test runner, an assembled ROM, or a working game CI workflow. The research calculator checks arithmetic derived from source; it is not a substitute for exercising the assembly.
+The [build and test instructions](../../README.md#tests) show how to run the checks that exist today. The [GitHub workflow](../../.github/workflows/main.yml) builds each color and preset and runs cartridge tests on Linux. This document gives the full test plan for release.
 
 ## Baselines and test oracles
 
@@ -10,9 +10,9 @@ Keep two independent builds: pristine upstream and the modified foundation. Firs
 
 Upstream's `compare` target checks Red, Blue, Blue debug and VC patch outputs. Its CI runs hash comparison only when the owner is `pret`; forks take a build-only branch. A fork must add an explicit pristine-reference comparison job if it wants that guarantee. [E01–E03](../research/evidence.md#e01)
 
-## Test runner proposal
+## Cartridge tests
 
-Prototype an emulator-based runner with symbol access, deterministic input, controlled `BattleRandom` results and bounded execution. SameBoy, BGB, mGBA and PyBoy are candidates to evaluate against those needs. Their current platform support and runner APIs were not evaluated in this task; no specific API is assumed.
+The tests use SameBoy 1.0.5 to run the built game. They use its symbol files to set up cases and the Game Boy buttons to drive menus. Critical-hit checks supply controlled rolls through the link battle random number list. They exercise the shared random byte reader in one game instance. The two-endpoint tests below cover separate link requirements.
 
 A small test-only assembly entry point may initialize a routine fixture and write result bytes to a mailbox in RAM. The runner can stop at a symbol or completion byte. It must execute the compiled routine, preserve registers/banks needed by production, and fail on timeout. A Python reimplementation alone cannot prove the game's implementation correct.
 

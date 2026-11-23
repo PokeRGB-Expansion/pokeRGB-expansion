@@ -67,6 +67,29 @@ jobs:
           --sameboy .sameboy/build/lib/libsameboy.so
           --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
 
+      - name: Check the Super Game Boy titles
+        if: runner.os == 'Linux'
+        run: >-
+          python3 tests/title_smoke.py build/${{ matrix.preset }}
+          --sameboy .sameboy/build/lib/libsameboy.so
+          --boot .sameboy/build/bin/BootROMs/sgb_boot.bin
+
+      - name: Test battle rules, saves, and the Safari Zone
+        if: runner.os == 'Linux'
+        env:
+          PRESET: ${{ matrix.preset }}
+        run: |
+          sameboy=.sameboy/build/lib/libsameboy.so
+          boot=.sameboy/build/bin/BootROMs/dmg_boot.bin
+          python3 tests/critical_hits.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+          python3 tests/interrupted_save_smoke.py "build/$PRESET"/poke*.gbc --library "$sameboy" --boot "$boot"
+          if [ "$PRESET" = minimal ]; then
+            python3 tests/move_swap_smoke.py "build/$PRESET"/poke*.gbc --sameboy "$sameboy" --boot "$boot" --minimal
+          else
+            python3 tests/move_swap_smoke.py "build/$PRESET"/poke*.gbc --sameboy "$sameboy" --boot "$boot"
+            python3 tests/safari_session.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+          fi
+
       - name: Check a custom move in the game menus
         if: runner.os == 'Linux' && matrix.preset == 'core'
         run: >-
