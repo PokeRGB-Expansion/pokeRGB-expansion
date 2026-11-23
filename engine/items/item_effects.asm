@@ -740,6 +740,12 @@ ItemUseBicycle:
 	ld hl, GotOnBicycleText
 	call PlayDefaultMusic ; play bike riding music
 .printText
+	push hl
+	ld a, BICYCLE
+	ld [wNamedObjectIndex], a
+	call GetItemName
+	call CopyToStringBuffer
+	pop hl
 	jp PrintText
 .cannotDismount
 	ld hl, CannotGetOffHereText
