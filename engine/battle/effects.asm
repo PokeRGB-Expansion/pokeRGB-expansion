@@ -453,6 +453,11 @@ UpdateStat:
 	ld [hli], a
 	ldh a, [hProduct + 3]
 	ld [hl], a
+IF DEF(_POKERGB_CORE)
+	ldh a, [hWhoseTurn]
+	and a
+	call z, RecordStatBeforeStatusPenalties
+ENDC
 	pop hl
 UpdateStatDone:
 	ld b, c
@@ -671,6 +676,11 @@ UpdateLoweredStat:
 	ld [hli], a
 	ldh a, [hProduct + 3]
 	ld [hl], a
+IF DEF(_POKERGB_CORE)
+	ldh a, [hWhoseTurn]
+	and a
+	call nz, RecordStatBeforeStatusPenalties
+ENDC
 	pop de
 	pop hl
 UpdateLoweredStatDone:

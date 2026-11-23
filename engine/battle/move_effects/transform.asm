@@ -167,6 +167,13 @@ ENDC
 	ld hl, wEnemyMonStatMods
 	ld de, wPlayerMonStatMods
 	call .copyBasedOnTurn ; stat mods
+IF DEF(_POKERGB_CORE)
+	ldh a, [hWhoseTurn]
+	and a
+	jr nz, .printTransformed
+	callfar RecordStatsBeforeStatusPenalties
+.printTransformed
+ENDC
 	ld hl, TransformedText
 	jp PrintText
 

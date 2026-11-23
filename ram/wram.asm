@@ -514,7 +514,14 @@ wLowHealthAlarmDisabled:: db
 
 wPlayerMonMinimized:: db
 
+IF DEF(_POKERGB_CORE)
+; Active stats with the player's status penalties left out.
+wPlayerAttackWithoutBurn:: dw
+wPlayerSpeedWithoutParalysis:: dw
+	ds 9
+ELSE
 	ds 13
+ENDC
 
 UNION
 ; the amount of damage accumulated by the enemy while biding

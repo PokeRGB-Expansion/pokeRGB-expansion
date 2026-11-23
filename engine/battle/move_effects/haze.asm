@@ -9,6 +9,9 @@ HazeEffect_:
 	ld hl, wPlayerMonUnmodifiedAttack
 	ld de, wBattleMonAttack
 	call ResetStats
+IF DEF(_POKERGB_CORE)
+	callfar RecordStatsBeforeStatusPenalties
+ENDC
 	ld hl, wEnemyMonUnmodifiedAttack
 	ld de, wEnemyMonAttack
 	call ResetStats

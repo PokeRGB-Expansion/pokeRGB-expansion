@@ -979,6 +979,9 @@ ItemUseMedicine:
 	cp d ; is pokemon the item was used on active in battle?
 	jp nz, .doneHealing
 ; if it is active in battle
+IF DEF(_POKERGB_CORE)
+	call CureActiveMonWithMedicine
+ELSE
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
 	push hl
@@ -991,6 +994,7 @@ ItemUseMedicine:
 	ld bc, NUM_STATS * 2
 	call CopyData ; copy party stats to in-battle stat data
 	predef DoubleOrHalveSelectedStats
+ENDC
 	jp .doneHealing
 .healHP
 	inc hl ; hl = address of current HP
@@ -1253,8 +1257,12 @@ ItemUseMedicine:
 	ld a, [wCurItem]
 	cp FULL_RESTORE
 	jr nz, .calculateHPBarCoords
+IF DEF(_POKERGB_CORE)
+	call CureActiveMonWithMedicine
+ELSE
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
+ENDC
 .calculateHPBarCoords
 	hlcoord 4, -1
 	ld bc, 2 * SCREEN_WIDTH
@@ -1497,6 +1505,34 @@ ItemUseMedicine:
 	pop af
 	ld [wWhichPokemon], a
 	jp RemoveUsedItem
+
+IF DEF(_POKERGB_CORE)
+CureActiveMonWithMedicine:
+	ld a, [wIsInBattle]
+	and a
+	ret z
+	ld a, [wBattleMonStatus]
+	ld c, a
+	xor a
+	ld [wBattleMonStatus], a
+	ld hl, wPlayerBattleStatus3
+	res BADLY_POISONED, [hl]
+	; Restore only the stats affected by the cured status.
+	bit BRN, c
+	jr z, .checkParalysis
+	ld a, [wPlayerAttackWithoutBurn]
+	ld [wBattleMonAttack], a
+	ld a, [wPlayerAttackWithoutBurn + 1]
+	ld [wBattleMonAttack + 1], a
+.checkParalysis
+	bit PAR, c
+	ret z
+	ld a, [wPlayerSpeedWithoutParalysis]
+	ld [wBattleMonSpeed], a
+	ld a, [wPlayerSpeedWithoutParalysis + 1]
+	ld [wBattleMonSpeed + 1], a
+	ret
+ENDC
 
 VitaminStatRoseText:
 	text_far _VitaminStatRoseText

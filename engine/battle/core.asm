@@ -6773,6 +6773,9 @@ ScrollTrainerPicAfterBattle:
 	jpfar _ScrollTrainerPicAfterBattle
 
 ApplyBurnAndParalysisPenaltiesToPlayer:
+IF DEF(_POKERGB_CORE)
+	call RecordStatsBeforeStatusPenalties
+ENDC
 	ld a, $1
 	jr ApplyBurnAndParalysisPenalties
 
@@ -6783,6 +6786,36 @@ ApplyBurnAndParalysisPenalties:
 	ldh [hWhoseTurn], a
 	call QuarterSpeedDueToParalysis
 	jp HalveAttackDueToBurn
+
+IF DEF(_POKERGB_CORE)
+; A freshly loaded or replaced stat has no penalty from the player's status yet.
+RecordStatsBeforeStatusPenalties:
+	ld hl, wBattleMonAttack
+	ld de, wPlayerAttackWithoutBurn
+	ld bc, 2
+	call CopyData
+	ld hl, wBattleMonSpeed
+	ld de, wPlayerSpeedWithoutParalysis
+	ld bc, 2
+	jp CopyData
+
+; C selects the player's stat. HL points at the lower byte of its new value.
+RecordStatBeforeStatusPenalties:
+	ld a, c
+	ld de, wPlayerAttackWithoutBurn + 1
+	and a ; MOD_ATTACK
+	jr z, .copy
+	cp MOD_SPEED
+	ret nz
+	ld de, wPlayerSpeedWithoutParalysis + 1
+.copy
+	ld a, [hld]
+	ld [de], a
+	dec de
+	ld a, [hl]
+	ld [de], a
+	ret
+ENDC
 
 QuarterSpeedDueToParalysis:
 	ldh a, [hWhoseTurn]
@@ -6991,13 +7024,37 @@ ENDC
 ; Volcano (bit 6) - special
 .loop
 	srl b
+IF DEF(_POKERGB_CORE)
+	call c, .boostActiveAndCureStats
+ELSE
 	call c, .applyBoostToStat
+ENDC
 	inc hl
 	inc hl
 	srl b
 	dec c
 	jr nz, .loop
 	ret
+
+IF DEF(_POKERGB_CORE)
+.boostActiveAndCureStats
+	call .applyBoostToStat
+	; Keep the same boost, rounding and cap for the unpenalized stat.
+	ld a, c
+	cp 4
+	ld de, wPlayerAttackWithoutBurn
+	jr z, .boostCureStat
+	cp 2
+	ret nz
+	ld de, wPlayerSpeedWithoutParalysis
+.boostCureStat
+	push hl
+	ld h, d
+	ld l, e
+	call .applyBoostToStat
+	pop hl
+	ret
+ENDC
 
 ; multiply stat at hl by 1.125
 ; cap stat at MAX_STAT_VALUE
