@@ -214,7 +214,12 @@ DisplayTwoOptionMenu:
 	ld [wChosenMenuItem], a
 	ld [wMenuExitMethod], a
 
+	ld a, [wMoveInfoQuestion]
+	and a
 	ld a, PAD_A | PAD_B
+	jr z, .storeKeys
+	set B_PAD_START, a
+.storeKeys
 	ld [wMenuWatchedKeys], a
 	ld a, $1
 	ld [wMaxMenuItem], a
@@ -307,7 +312,23 @@ DisplayTwoOptionMenu:
 .notNoYesMenu
 	xor a
 	ld [wTwoOptionMenuID], a
+.questionInput
+	ld a, [wMoveInfoQuestion]
+	and a
+	jr z, .pollQuestion
+	farcall HandleLearnerMoveInfoInput
+	ld a, [wMoveInfoNumber]
+	jr .readQuestion
+.pollQuestion
 	call HandleMenuInput
+.readQuestion
+	bit B_PAD_START, a
+	jr z, .questionAnswered
+	and PAD_A | PAD_B
+	jr nz, .questionAnswered
+	farcall InspectIncomingMove
+	jr .questionInput
+.questionAnswered
 	pop hl
 	bit B_PAD_B, a
 	jr nz, .choseSecondMenuItem ; automatically choose the second option if B is pressed

@@ -744,6 +744,9 @@ FaintEnemyPokemon:
 .wild
 	ld hl, wPlayerBattleStatus1
 	res ATTACKING_MULTIPLE_TIMES, [hl]
+IF DEF(_POKERGB_CORE)
+; Clear accumulated Bide damage on the surviving side.
+ELSE
 ; Bug. This only zeroes the high byte of the player's accumulated damage,
 ; setting the accumulated damage to itself mod 256 instead of 0 as was probably
 ; intended. That alone is problematic, but this mistake has another more severe
@@ -753,8 +756,15 @@ FaintEnemyPokemon:
 ; the enemy mon (the player mon from the other side's perspective) fainting,
 ; and the states of the two Game Boys will go out of sync unless the damage
 ; was congruent to 0 modulo 256.
+ENDC
 	xor a
+IF DEF(_POKERGB_CORE)
+	ld hl, wPlayerBideAccumulatedDamage
+	ld [hli], a
+	ld [hl], a
+ELSE
 	ld [wPlayerBideAccumulatedDamage], a
+ENDC
 	ld hl, wEnemyStatsToDouble ; clear enemy statuses
 	ld [hli], a
 	ld [hli], a
@@ -791,11 +801,7 @@ FaintEnemyPokemon:
 	jr .sfxplayed
 .wild_win
 	call EndLowHealthAlarm
-	ld a, MUSIC_DEFEATED_WILD_MON
-	call PlayBattleVictoryMusic
 .sfxplayed
-; bug: win sfx is played for wild battles before checking for player mon HP
-; this can lead to odd scenarios where both player and enemy faint, as the win sfx plays yet the player never won the battle
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
@@ -809,6 +815,12 @@ FaintEnemyPokemon:
 	ld a, d
 	and a
 	ret z
+	ld a, [wIsInBattle]
+	cp WILD_BATTLE
+	jr nz, .announceFaint
+	ld a, MUSIC_DEFEATED_WILD_MON
+	call PlayBattleVictoryMusic
+.announceFaint
 	ld hl, EnemyMonFaintedText
 	call PrintText
 	call PrintEmptyString
@@ -817,29 +829,65 @@ FaintEnemyPokemon:
 	ld [wBattleResult], a
 	ld b, EXP_ALL
 	call IsItemInBag
+IF DEF(_POKERGB_CORE)
+	jr nz, .shareExperience
+ENDC
 	push af
+IF DEF(_POKERGB_CORE)
+	call .awardParticipants
+	pop af
+	ret
+ELSE
 	jr z, .giveExpToMonsThatFought ; if no exp all, then jump
+ENDC
 
+IF DEF(_POKERGB_CORE)
+.shareExperience
+; Save the halved base values before GainExperience divides them.
+ELSE
 ; the player has exp all
 ; first, we halve the values that determine exp gain
 ; the enemy mon base stats are added to stat exp, so they are halved
 ; the base exp (which determines normal exp) is also halved
+ENDC
 	ld hl, wEnemyMonBaseStats
+IF DEF(_POKERGB_CORE)
+	ld b, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
+ELSE
 	ld b, NUM_STATS + 2
+ENDC
 .halveExpDataLoop
 	srl [hl]
+IF DEF(_POKERGB_CORE)
+	ld a, [hli]
+	push af
+ELSE
 	inc hl
+ENDC
 	dec b
 	jr nz, .halveExpDataLoop
 
+IF DEF(_POKERGB_CORE)
+	call .awardParticipants
+	ld hl, wEnemyMonBaseExp
+	ld b, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
+.restoreHalf
+ELSE
 ; give exp (divided evenly) to the mons that actually fought in battle against the enemy mon that has fainted
 ; if exp all is in the bag, this will be only be half of the stat exp and normal exp, due to the above loop
 .giveExpToMonsThatFought
 	xor a
 	ld [wBoostExpByExpAll], a
 	callfar GainExperience
+ENDC
 	pop af
+IF DEF(_POKERGB_CORE)
+	ld [hld], a
+	dec b
+	jr nz, .restoreHalf
+ELSE
 	ret z ; return if no exp all
+ENDC
 
 ; the player has exp all
 ; now, set the gain exp flag for every party member
@@ -855,6 +903,13 @@ FaintEnemyPokemon:
 	jr nz, .gainExpFlagsLoop
 	ld a, b
 	ld [wPartyGainExpFlags], a
+IF DEF(_POKERGB_CORE)
+	jpfar GainExperience
+
+.awardParticipants
+	xor a
+	ld [wBoostExpByExpAll], a
+ENDC
 	jpfar GainExperience
 
 EnemyMonFaintedText:
@@ -1015,7 +1070,11 @@ RemoveFaintedPlayerMon:
 	ld [wLowHealthAlarm], a
 	call WaitForSoundToFinish
 .skipWaitForSound
+IF DEF(_POKERGB_CORE)
+	xor a
+ELSE
 ; a is 0, so this zeroes the enemy's accumulated damage.
+ENDC
 	ld hl, wEnemyBideAccumulatedDamage
 	ld [hli], a
 	ld [hl], a
@@ -2163,7 +2222,7 @@ DisplayBattleMenu::
 .throwSafariBallWasSelected
 	ld a, SAFARI_BALL
 	ld [wCurItem], a
-	jr UseBagItem
+	jp UseBagItem
 
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
 	cp $2
@@ -2236,6 +2295,10 @@ DisplayBagMenu:
 	ld [wMenuWatchMovingOutOfBounds], a
 	ld [wMenuItemToSwap], a
 	jp c, DisplayBattleMenu ; go back to battle menu if an item was not selected
+	ld a, [wBattleType]
+	and a
+	jr nz, UseBagItem
+	farcall SaveItemListPosition
 
 UseBagItem:
 	; either use an item from the bag or use a safari zone item
@@ -2256,8 +2319,15 @@ UseBagItem:
 
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; was the item used successfully?
-	jp z, BagWasSelected ; if not, go back to the bag menu
-
+	jr nz, .usedItem
+	ld a, [wBattleType]
+	and a
+	jp nz, BagWasSelected
+	farcall RestoreBagItemListPosition
+	ld a, [wCurrentMenuItem]
+	ld [wBagSavedMenuItem], a
+	jp BagWasSelected
+.usedItem
 	ld a, [wPlayerBattleStatus1]
 	bit USING_TRAPPING_MOVE, a ; is the player using a multi-turn move like wrap?
 	jr z, .checkIfMonCaptured
@@ -2369,8 +2439,14 @@ PartyMenuOrRockOrRun:
 	call ClearSprites
 ; display the two status screens
 	predef StatusScreen
-	predef StatusScreen2
-; now we need to reload the enemy mon pic
+	ld a, [wWhichPokemon]
+	ld [wPartyAndBillsPCSavedMenuItem], a
+; Reload the enemy's visible form, including an unidentified ghost.
+	ld a, [wCurOpponent]
+	cp RESTLESS_SOUL
+	jr z, .reloadGhost
+	call IsGhostBattle
+	jr z, .reloadGhost
 	ld a, [wEnemyBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a ; does the enemy mon have a substitute?
 	ld hl, AnimationSubstitute
@@ -2388,9 +2464,19 @@ PartyMenuOrRockOrRun:
 	ld de, vFrontPic
 	call LoadMonFrontSprite
 	jr .enemyMonPicReloaded
+.reloadGhost
+	call LoadDisguisedGhostFrontPic
+	jr .enemyMonPicReloaded
 .doEnemyMonAnimation
-	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	ldh a, [hWhoseTurn]
+	push af
+	ld a, 1
+	ldh [hWhoseTurn], a
+	assert BANK(AnimationSubstitute) == BANK(AnimationMinimizeMon)
+	ld b, BANK(AnimationSubstitute)
 	call Bankswitch
+	pop af
+	ldh [hWhoseTurn], a
 .enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
 	jp .partyMenuWasSelected
 .switchMon
@@ -2557,13 +2643,14 @@ MoveSelectionMenu:
 	dec a
 	ld b, PAD_UP | PAD_DOWN | PAD_A | PAD_B
 	jr z, .matchedkeyspicked
+	set B_PAD_START, b
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .matchedkeyspicked
 	; Disable left, right, and START buttons in regular battles.
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
-	ld b, ~(PAD_LEFT | PAD_RIGHT | PAD_START)
+	ld b, ~(PAD_LEFT | PAD_RIGHT)
 	jr z, .matchedkeyspicked
 	ld b, PAD_CTRL_PAD | PAD_BUTTONS
 .matchedkeyspicked
@@ -2583,7 +2670,7 @@ SelectMenuItem:
 	and a
 	jr z, .battleselect
 	dec a
-	jr nz, .select
+	jr nz, .ppTarget
 	hlcoord 1, 14
 	ld de, WhichTechniqueString
 	call PlaceString
@@ -2597,6 +2684,9 @@ SelectMenuItem:
 	; which did not seem to exist in the Japanese versions.
 	jr nz, .select
 	call PrintMenuItem
+	hlcoord 9, 7
+	ld de, FightMoveInfoHint
+	call PlaceString
 	ld a, [wMenuItemToSwap]
 	and a
 	jr z, .select
@@ -2605,6 +2695,9 @@ SelectMenuItem:
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
 	ld [hl], '▷'
+	jr .select
+.ppTarget
+	farcall DrawPPRestoreTargetInfo
 .select
 	ld hl, hUILayoutFlags
 	set BIT_DOUBLE_SPACED_MENU, [hl]
@@ -2617,6 +2710,18 @@ SelectMenuItem:
 	jp nz, SelectMenuItem_CursorDown
 	bit B_PAD_SELECT, a
 	jp nz, SwapMovesInMenu
+	bit B_PAD_START, a
+	jr z, .ordinaryInput
+	bit B_PAD_A, a
+	jr nz, .ordinaryInput
+	bit B_PAD_B, a
+	jr nz, .ordinaryInput
+	ld a, [wMoveMenuType]
+	and a
+	jr nz, .select
+	farcall InspectFightMove
+	jr .select
+.ordinaryInput
 	bit B_PAD_B, a
 	push af
 	xor a
@@ -2745,7 +2850,11 @@ AnyMoveToSelect:
 	or c
 	jr .handleDisabledMovePPLoop
 .allMovesChecked
+IF DEF(_POKERGB_CORE)
+	and PP_MASK ; any usable PP left?
+ELSE
 	and a ; any PP left?
+ENDC
 	ret nz ; return if a move has PP left
 .noMovesLeft
 	ld hl, NoMovesLeftText
@@ -2796,6 +2905,11 @@ SwapMovesInMenu:
 	add b
 	ld [hl], a
 .swapMovesInPartyMon
+IF DEF(_POKERGB_CORE)
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	jr nz, .finishSwap
+ENDC
 	ld hl, wPartyMon1Moves
 	ld a, [wPlayerMonNumber]
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -2806,6 +2920,9 @@ SwapMovesInMenu:
 	ld bc, MON_PP - MON_MOVES
 	add hl, bc
 	call .swapBytes ; swap move PP
+IF DEF(_POKERGB_CORE)
+.finishSwap
+ENDC
 	xor a
 	ld [wMenuItemToSwap], a ; deselect the item
 	jp MoveSelectionMenu
@@ -2905,6 +3022,8 @@ PrintMenuItem:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
+
+FightMoveInfoHint: db "START INFO@"
 
 DisabledText:
 	db "disabled!@"
@@ -3110,9 +3229,13 @@ CheckIfPlayerNeedsToChargeUp:
 ; in-battle stuff
 PlayerCanExecuteChargingMove:
 	ld hl, wPlayerBattleStatus1
+IF DEF(_POKERGB_CORE)
+	res CHARGING_UP, [hl]
+ELSE
 	res CHARGING_UP, [hl] ; reset charging up and invulnerability statuses if mon was charging up for an attack
 	                    ; being fully paralyzed or hurting oneself in confusion removes charging up status
 	                    ; resulting in the Pokemon being invulnerable for the whole battle
+ENDC
 	res INVULNERABLE, [hl]
 PlayerCanExecuteMove:
 	call DisplayUsedMoveText
@@ -3460,7 +3583,11 @@ CheckPlayerStatusConditions:
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
+IF DEF(_POKERGB_CORE)
+	and ~((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << INVULNERABLE) | (1 << USING_TRAPPING_MOVE))
+ELSE
 	and ~((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
+ENDC
 	ld [hl], a
 	ld a, [wPlayerMoveEffect]
 	cp FLY_EFFECT
@@ -3657,7 +3784,12 @@ PrintMoveIsDisabledText:
 	ld de, wEnemyBattleStatus1
 .removeChargingUp
 	ld a, [de]
+IF DEF(_POKERGB_CORE)
+	res CHARGING_UP, a
+	res INVULNERABLE, a
+ELSE
 	res CHARGING_UP, a ; end the pokemon's
+ENDC
 	ld [de], a
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
@@ -4026,7 +4158,11 @@ IgnoredOrdersText:
 	text_far _IgnoredOrdersText
 	text_end
 
+IF DEF(_POKERGB_CORE)
+; sets b, c, d, e, and h for the CalculateDamage routine in the case of an attack by the player mon
+ELSE
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the player mon
+ENDC
 GetDamageVarsForPlayerAttack:
 	xor a
 	ld hl, wDamage ; damage to eventually inflict, initialise to zero
@@ -4081,8 +4217,10 @@ GetDamageVarsForPlayerAttack:
 ; if the enemy has used Light Screen, double the enemy's special
 	sla c
 	rl b
+IF !DEF(_POKERGB_CORE)
 ; reflect and light screen boosts do not cap the stat at MAX_STAT_VALUE, so weird things will happen during stats scaling
 ; if a Pokemon with 512 or more Defense has used Reflect, or if a Pokemon with 512 or more Special has used Light Screen
+ENDC
 .specialAttackCritCheck
 	ld hl, wBattleMonSpecial
 	ld a, [wCriticalHitOrOHKO]
@@ -4102,8 +4240,12 @@ GetDamageVarsForPlayerAttack:
 	call AddNTimes
 	pop bc
 ; if either the offensive or defensive stat is too large to store in a byte, scale both stats by dividing them by 4
+IF DEF(_POKERGB_CORE)
+; Keep both bytes of the scaled defensive stat for the damage division.
+ELSE
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
+ENDC
 .scaleStats
 	ld a, [hli]
 	ld l, [hl]
@@ -4115,7 +4257,9 @@ GetDamageVarsForPlayerAttack:
 	rr c
 	srl b
 	rr c
+IF !DEF(_POKERGB_CORE)
 ; defensive stat can actually end up as 0, leading to a division by 0 freeze during damage calculation
+ENDC
 ; hl /= 4 (scale player's offensive stat)
 	srl h
 	rr l
@@ -4126,8 +4270,13 @@ GetDamageVarsForPlayerAttack:
 	jr nz, .next
 	inc l ; if the player's offensive stat is 0, bump it up to 1
 .next
+IF DEF(_POKERGB_CORE)
+	ld h, b ; high byte of the enemy's defensive stat
+	ld b, l ; player's offensive stat
+ELSE
 	ld b, l ; b = player's offensive stat (possibly scaled)
 	        ; (c already contains enemy's defensive stat (possibly scaled))
+ENDC
 	ld a, [wBattleMonLevel]
 	ld e, a ; e = level
 	ld a, [wCriticalHitOrOHKO]
@@ -4139,7 +4288,11 @@ GetDamageVarsForPlayerAttack:
 	and a
 	ret
 
+IF DEF(_POKERGB_CORE)
+; sets b, c, d, e, and h for the CalculateDamage routine in the case of an attack by the enemy mon
+ELSE
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the enemy mon
+ENDC
 GetDamageVarsForEnemyAttack:
 	ld hl, wDamage ; damage to eventually inflict, initialise to zero
 	xor a
@@ -4194,8 +4347,10 @@ GetDamageVarsForEnemyAttack:
 ; if the player has used Light Screen, double the player's special
 	sla c
 	rl b
+IF !DEF(_POKERGB_CORE)
 ; reflect and light screen boosts do not cap the stat at MAX_STAT_VALUE, so weird things will happen during stats scaling
 ; if a Pokemon with 512 or more Defense has used Reflect, or if a Pokemon with 512 or more Special has used Light Screen
+ENDC
 .specialAttackCritCheck
 	ld hl, wEnemyMonSpecial
 	ld a, [wCriticalHitOrOHKO]
@@ -4215,8 +4370,12 @@ GetDamageVarsForEnemyAttack:
 	ld hl, hProduct + 2
 	pop bc
 ; if either the offensive or defensive stat is too large to store in a byte, scale both stats by dividing them by 4
+IF DEF(_POKERGB_CORE)
+; Keep both bytes of the scaled defensive stat for the damage division.
+ELSE
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
+ENDC
 .scaleStats
 	ld a, [hli]
 	ld l, [hl]
@@ -4228,7 +4387,9 @@ GetDamageVarsForEnemyAttack:
 	rr c
 	srl b
 	rr c
+IF !DEF(_POKERGB_CORE)
 ; defensive stat can actually end up as 0, leading to a division by 0 freeze during damage calculation
+ENDC
 ; hl /= 4 (scale enemy's offensive stat)
 	srl h
 	rr l
@@ -4239,8 +4400,13 @@ GetDamageVarsForEnemyAttack:
 	jr nz, .next
 	inc l ; if the enemy's offensive stat is 0, bump it up to 1
 .next
+IF DEF(_POKERGB_CORE)
+	ld h, b ; high byte of the player's defensive stat
+	ld b, l ; enemy's offensive stat
+ELSE
 	ld b, l ; b = enemy's offensive stat (possibly scaled)
 	        ; (c already contains player's defensive stat (possibly scaled))
+ENDC
 	ld a, [wEnemyMonLevel]
 	ld e, a
 	ld a, [wCriticalHitOrOHKO]
@@ -4299,7 +4465,11 @@ GetEnemyMonStat:
 CalculateDamage:
 ; input:
 ;   b: attack
+IF DEF(_POKERGB_CORE)
+;   h:c: opponent defense, high byte in h
+ELSE
 ;   c: opponent defense
+ENDC
 ;   d: base power
 ;   e: level
 
@@ -4313,9 +4483,14 @@ CalculateDamage:
 ; EXPLODE_EFFECT halves defense.
 	cp EXPLODE_EFFECT
 	jr nz, .ok
+IF DEF(_POKERGB_CORE)
+	srl h
+	rr c
+ELSE
 	srl c
 	jr nz, .ok
 	inc c ; ...with a minimum value of 1 (used as a divisor later on)
+ENDC
 .ok
 
 ; Multi-hit attacks may or may not have 0 bp.
@@ -4333,6 +4508,14 @@ CalculateDamage:
 	and a
 	ret z
 .skipbp
+IF DEF(_POKERGB_CORE)
+	ld a, h
+	or c
+	jr nz, .useDefense
+	inc c ; a zero divisor can result from scaling or Explosion
+.useDefense
+	push hl
+ENDC
 
 	xor a
 	ld hl, hDividend
@@ -4374,11 +4557,26 @@ CalculateDamage:
 	ld [hl], b
 	call Multiply
 
+IF DEF(_POKERGB_CORE)
+; Divide by defender's defense stat.
+	pop de ; d = high byte of the scaled defensive stat
+	ld a, d
+	and a
+	jr nz, .wideDefense
+ELSE
 ; Divide by defender's defense stat
+ENDC
 	ld [hl], c
 	ld b, 4
 	call Divide
+IF DEF(_POKERGB_CORE)
+	jr .divideBy50
+.wideDefense
+	call DivideDamageByWideDefense
+.divideBy50
+ELSE
 
+ENDC
 ; Divide by 50
 	ld [hl], 50
 	ld b, 4
@@ -4464,6 +4662,46 @@ CalculateDamage:
 	and a
 	ret
 
+IF DEF(_POKERGB_CORE)
+DivideDamageByWideDefense:
+; Divide the big-endian hDividend by d:c. Write the quotient in place.
+; The defensive stat is at most floor(2 * MAX_STAT_VALUE / 4).
+	push hl
+	ld hl, 0 ; remainder
+	ld b, 32
+.loop
+	ldh a, [hDividend + 3]
+	sla a
+	ldh [hDividend + 3], a
+	ldh a, [hDividend + 2]
+	rla
+	ldh [hDividend + 2], a
+	ldh a, [hDividend + 1]
+	rla
+	ldh [hDividend + 1], a
+	ldh a, [hDividend]
+	rla
+	ldh [hDividend], a
+	rl l
+	rl h
+	ld a, l
+	sub c
+	ld e, a
+	ld a, h
+	sbc d
+	jr c, .nextBit
+	ld h, a
+	ld l, e
+	ldh a, [hDividend + 3]
+	inc a ; set the quotient bit
+	ldh [hDividend + 3], a
+.nextBit
+	dec b
+	jr nz, .loop
+	pop hl
+	ret
+
+ENDC
 JumpToOHKOMoveEffect:
 	call JumpMoveEffect
 	ld a, [wMoveMissed]
@@ -4471,6 +4709,10 @@ JumpToOHKOMoveEffect:
 	ret
 
 INCLUDE "data/battle/unused_critical_hit_moves.asm"
+IF DEF(_POKERGB_CORE)
+
+DEF POKERGB_FOCUS_ENERGY_FIXED EQU 1
+ENDC
 
 ; determines if attack is a critical hit
 ; Azure Heights claims "the fastest pokémon (who are, not coincidentally,
@@ -4502,6 +4744,9 @@ CriticalHitTest:
 	ret z                        ; do nothing if zero
 	dec hl
 	ld c, [hl]                   ; read move id
+IF DEF(_POKERGB_CORE)
+	sla b                        ; double floor(base Speed / 2)
+ELSE
 	ld a, [de]
 	bit GETTING_PUMPED, a        ; test for focus energy
 	jr nz, .focusEnergyUsed      ; bug: using focus energy causes a shift to the right instead of left,
@@ -4513,6 +4758,7 @@ CriticalHitTest:
 .focusEnergyUsed
 	srl b
 .noFocusEnergyUsed
+ENDC
 	ld hl, HighCriticalMoves     ; table of high critical hit moves
 .Loop
 	ld a, [hli]                  ; read move from move table
@@ -4531,6 +4777,19 @@ CriticalHitTest:
 	jr nc, .SkipHighCritical
 	ld b, $ff
 .SkipHighCritical
+IF DEF(_POKERGB_CORE)
+	; Multiply the completed threshold, then cap at 255.
+	ld a, [de]
+	bit GETTING_PUMPED, a
+	jr z, .useThreshold
+	sla b
+	jr c, .capPumpedThreshold
+	sla b
+	jr nc, .useThreshold
+.capPumpedThreshold
+	ld b, $ff
+.useThreshold
+ENDC
 	call BattleRandom            ; generates a random value, in "a"
 	rlc a
 	rlc a
@@ -4654,8 +4913,13 @@ ApplyAttackToEnemyPokemon:
 	ld b, DRAGON_RAGE_DAMAGE ; 40
 	cp DRAGON_RAGE
 	jr z, .storeDamage
+IF !DEF(_POKERGB_CORE)
 ; Psywave
+ENDC
 	ld a, [hl]
+IF DEF(_POKERGB_CORE)
+	call GetPsywaveDamage
+ELSE
 	ld b, a
 	srl a
 	add b
@@ -4668,6 +4932,7 @@ ApplyAttackToEnemyPokemon:
 	cp b
 	jr nc, .loop
 	ld b, a
+ENDC
 .storeDamage ; store damage value at b
 	ld hl, wDamage
 	xor a
@@ -4684,7 +4949,11 @@ ApplyDamageToEnemyPokemon:
 	jr z, ApplyAttackToEnemyPokemonDone ; we're done if damage is 0
 	ld a, [wEnemyBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a ; does the enemy have a substitute?
+IF DEF(_POKERGB_CORE)
+	jp nz, AttackEnemySubstitute
+ELSE
 	jp nz, AttackSubstitute
+ENDC
 ; subtract the damage from the pokemon's current HP
 ; also, save the current HP at wHPBarOldHP
 	ld a, [hld]
@@ -4773,8 +5042,13 @@ ApplyAttackToPlayerPokemon:
 	ld b, DRAGON_RAGE_DAMAGE
 	cp DRAGON_RAGE
 	jr z, .storeDamage
+IF !DEF(_POKERGB_CORE)
 ; Psywave
+ENDC
 	ld a, [hl]
+IF DEF(_POKERGB_CORE)
+	call GetPsywaveDamage
+ELSE
 	ld b, a
 	srl a
 	add b
@@ -4787,6 +5061,7 @@ ApplyAttackToPlayerPokemon:
 	cp b
 	jr nc, .loop
 	ld b, a
+ENDC
 .storeDamage
 	ld hl, wDamage
 	xor a
@@ -4803,7 +5078,11 @@ ApplyDamageToPlayerPokemon:
 	jr z, ApplyAttackToPlayerPokemonDone ; we're done if damage is 0
 	ld a, [wPlayerBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a ; does the player have a substitute?
+IF DEF(_POKERGB_CORE)
+	jp nz, AttackPlayerSubstitute
+ELSE
 	jp nz, AttackSubstitute
+ENDC
 ; subtract the damage from the pokemon's current HP
 ; also, save the current HP at wHPBarOldHP and the new HP at wHPBarNewHP
 	ld a, [hld]
@@ -4846,7 +5125,45 @@ ApplyDamageToPlayerPokemon:
 ApplyAttackToPlayerPokemonDone:
 	jp DrawHUDsAndHPBars
 
+IF DEF(_POKERGB_CORE)
+GetPsywaveDamage:
+; Return damage in b. Level one has no valid positive roll.
+	ld b, 1
+	cp 2
+	ret c
+	ld b, a
+	srl a
+	add b
+	ld b, a ; exclusive upper limit
+.roll
+	call BattleRandom
+	and a
+	jr z, .roll
+	cp b
+	jr nc, .roll
+	ld b, a
+	ret
+
+AttackEnemySubstitute:
+	ld de, wEnemySubstituteHP
+	ld bc, wEnemyBattleStatus2
+	ld a, 1 ; animate the enemy if its substitute breaks
+	jr AttackSubstitute
+
+AttackPlayerSubstitute:
+	ld de, wPlayerSubstituteHP
+	ld bc, wPlayerBattleStatus2
+	xor a ; animate the player if its substitute breaks
+	; fallthrough
+
+ENDC
 AttackSubstitute:
+IF DEF(_POKERGB_CORE)
+; The damage routine identifies the owner even for self-inflicted damage.
+	push af
+	push bc
+	push de
+ELSE
 ; Unlike the two ApplyAttackToPokemon functions, Attack Substitute is shared by player and enemy.
 ; Self-confusion damage as well as Hi-Jump Kick and Jump Kick recoil cause a momentary turn swap before being applied.
 ; If the user has a Substitute up and would take damage because of that,
@@ -4854,8 +5171,13 @@ AttackSubstitute:
 ; Normal recoil such as from Double-Edge isn't affected by this glitch,
 ; because this function is never called in that case.
 
+ENDC
 	ld hl, SubstituteTookDamageText
 	call PrintText
+IF DEF(_POKERGB_CORE)
+	pop de
+	pop bc
+ELSE
 ; values for player turn
 	ld de, wEnemySubstituteHP
 	ld bc, wEnemyBattleStatus2
@@ -4866,6 +5188,7 @@ AttackSubstitute:
 	ld de, wPlayerSubstituteHP
 	ld bc, wPlayerBattleStatus2
 .applyDamageToSubstitute
+ENDC
 	ld hl, wDamage
 	ld a, [hli]
 	and a
@@ -4874,7 +5197,14 @@ AttackSubstitute:
 	ld a, [de]
 	sub [hl]
 	ld [de], a
+IF DEF(_POKERGB_CORE)
+	jr c, .substituteBroke
+	inc sp ; discard saved owner, keeping damage flags
+	inc sp
+	ret
+ELSE
 	ret nc
+ENDC
 .substituteBroke
 ; If the target's Substitute breaks, wDamage isn't updated with the amount of HP
 ; the Substitute had before being attacked.
@@ -4883,14 +5213,29 @@ AttackSubstitute:
 	res HAS_SUBSTITUTE_UP, [hl] ; unset the substitute bit
 	ld hl, SubstituteBrokeText
 	call PrintText
+IF DEF(_POKERGB_CORE)
+	pop af
+	ld b, a
+ELSE
 ; flip whose turn it is for the next function call
+ENDC
 	ldh a, [hWhoseTurn]
+IF DEF(_POKERGB_CORE)
+	push af
+	ld a, b
+ELSE
 	xor $01
+ENDC
 	ldh [hWhoseTurn], a
+IF DEF(_POKERGB_CORE)
+	callfar HideSubstituteShowMonAnim ; animate the owner's substitute breaking
+	pop af
+ELSE
 	callfar HideSubstituteShowMonAnim ; animate the substitute breaking
 ; flip the turn back to the way it was
 	ldh a, [hWhoseTurn]
 	xor $01
+ENDC
 	ldh [hWhoseTurn], a
 	ld hl, wPlayerMoveEffect ; value for player's turn
 	and a
@@ -5144,12 +5489,32 @@ AdjustDamageForMoveType:
 	push hl
 	push bc
 	inc hl
-	ld a, [wDamageMultipliers]
-	and 1 << BIT_STAB_DAMAGE
-	ld b, a
 	ld a, [hl] ; a = damage multiplier
 	ldh [hMultiplier], a
-	add b
+	ld c, a
+	ld a, [wDamageMultipliers]
+	ld b, a
+	and EFFECTIVENESS_MASK
+	ld h, a
+	ld a, c
+	and a
+	jr z, .storeEffectiveness
+	cp NOT_VERY_EFFECTIVE
+	jr z, .halveEffectiveness
+	cp SUPER_EFFECTIVE
+	ld a, h
+	jr nz, .storeEffectiveness
+	add a
+	jr .storeEffectiveness
+.halveEffectiveness
+	ld a, h
+	srl a
+.storeEffectiveness
+	bit BIT_STAB_DAMAGE, b
+	jr z, .saveEffectiveness
+	set BIT_STAB_DAMAGE, a
+.saveEffectiveness
+; Save the combined type feedback. Damage still applies each type in order.
 	ld [wDamageMultipliers], a
 	xor a
 	ldh [hMultiplicand], a
@@ -5248,10 +5613,18 @@ MoveHitTest:
 	ld a, [de]
 	cp SWIFT_EFFECT
 	ret z ; Swift never misses (this was fixed from the Japanese versions)
+IF DEF(_POKERGB_CORE)
+	call CheckTargetSubstitute
+ELSE
 	call CheckTargetSubstitute ; substitute check (note that this overwrites a)
+ENDC
 	jr z, .checkForDigOrFlyStatus
+IF DEF(_POKERGB_CORE)
+	ld a, [de] ; reload the move effect after checking the target
+ELSE
 ; The fix for Swift broke this code. It's supposed to prevent HP draining moves from working on Substitutes.
 ; Since CheckTargetSubstitute overwrites a with either $00 or $01, it never works.
+ENDC
 	cp DRAIN_HP_EFFECT
 	jp z, .moveMissed
 	cp DREAM_EATER_EFFECT
@@ -5837,7 +6210,11 @@ CheckEnemyStatusConditions:
 	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
+IF DEF(_POKERGB_CORE)
+	and ~((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << INVULNERABLE) | (1 << USING_TRAPPING_MOVE))
+ELSE
 	and ~((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
+ENDC
 	ld [hl], a
 	ld a, [wEnemyMoveEffect]
 	cp FLY_EFFECT
@@ -6129,12 +6506,19 @@ LoadEnemyMonData:
 	ld a, [wEnemyMonSpecies2]
 	ld [wPokedexNum], a
 	predef IndexToPokedex
+IF DEF(_POKERGB_CORE)
+	call IsGhostBattle
+	jr z, .skipSeenFlag
+ENDC
 	ld a, [wPokedexNum]
 	dec a
 	ld c, a
 	ld b, FLAG_SET
 	ld hl, wPokedexSeen
 	predef FlagActionPredef ; mark this mon as seen in the pokedex
+IF DEF(_POKERGB_CORE)
+.skipSeenFlag
+ENDC
 	ld hl, wEnemyMonLevel
 	ld de, wEnemyMonUnmodifiedLevel
 	ld bc, 1 + NUM_STATS * 2
@@ -6451,19 +6835,39 @@ CalculateModifiedStat:
 	pop bc
 	ret
 
+IF DEF(_POKERGB_CORE)
+DEF BADGE_DEFENSE_SPEED_MASK EQU (1 << BIT_THUNDERBADGE) | (1 << BIT_SOULBADGE)
+
+ENDC
 ApplyBadgeStatBoosts:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
 	ld a, [wObtainedBadges]
 	ld b, a
+IF DEF(_POKERGB_CORE)
+; Stat RAM places Defense before Speed. Swap the two badge bits locally.
+	and BADGE_DEFENSE_SPEED_MASK
+	jr z, .boost
+	cp BADGE_DEFENSE_SPEED_MASK
+	jr z, .boost
+	ld a, b
+	xor BADGE_DEFENSE_SPEED_MASK
+	ld b, a
+.boost
+ENDC
 	ld hl, wBattleMonAttack
 	ld c, $4
 ; the boost is applied for badges whose bit position is even
 ; the order of boosts matches the order they are laid out in RAM
 ; Boulder (bit 0) - attack
+IF DEF(_POKERGB_CORE)
+; Soul (from bit 4) - defense
+; Thunder (from bit 2) - speed
+ELSE
 ; Thunder (bit 2) - defense
 ; Soul (bit 4) - speed
+ENDC
 ; Volcano (bit 6) - special
 .loop
 	srl b
@@ -6692,6 +7096,24 @@ InitBattleCommon:
 	ld [wIsInBattle], a
 	jp _InitBattleCommon
 
+LoadDisguisedGhostFrontPic:
+	ld hl, wMonHSpriteDim
+	ld a, $66
+	ld [hli], a
+	ld bc, GhostPic
+	ld [hl], c
+	inc hl
+	ld [hl], b
+	ld a, [wCurPartySpecies]
+	push af
+	ld a, MON_GHOST
+	ld [wCurPartySpecies], a
+	ld de, vFrontPic
+	call LoadMonFrontSprite
+	pop af
+	ld [wCurPartySpecies], a
+	ret
+
 InitWildBattle:
 	ld a, WILD_BATTLE
 	ld [wIsInBattle], a
@@ -6703,23 +7125,9 @@ InitWildBattle:
 	call IsGhostBattle
 	jr nz, .isNoGhost
 .isGhost
-	ld hl, wMonHSpriteDim
-	ld a, $66
-	ld [hli], a   ; write sprite dimensions
-	ld bc, GhostPic
-	ld a, c
-	ld [hli], a   ; write front sprite pointer
-	ld [hl], b
-	ld hl, wEnemyMonNick  ; set name to "GHOST"
+	ld hl, wEnemyMonNick
 	ld_hli_a_string "GHOST@"
-	ld a, [wCurPartySpecies]
-	push af
-	ld a, MON_GHOST
-	ld [wCurPartySpecies], a
-	ld de, vFrontPic
-	call LoadMonFrontSprite ; load ghost sprite
-	pop af
-	ld [wCurPartySpecies], a
+	call LoadDisguisedGhostFrontPic
 	jr .spriteLoaded
 .isNoGhost
 	ld de, vFrontPic

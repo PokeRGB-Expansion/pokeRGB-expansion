@@ -84,9 +84,7 @@ ExitPlayerPC:
 	ret
 
 PlayerPCDeposit:
-	xor a
-	ld [wCurrentMenuItem], a
-	ld [wListScrollOffset], a
+	call ResetItemListPosition
 	ld a, [wNumBagItems]
 	and a
 	jr nz, .loop
@@ -105,8 +103,10 @@ PlayerPCDeposit:
 	ld [wPrintItemPrices], a
 	ld a, ITEMLISTMENU
 	ld [wListMenuID], a
+	call RestoreItemListPosition
 	call DisplayListMenuID
 	jp c, PlayerPCMenu
+	call SaveItemListPosition
 	call IsKeyItem
 	ld a, 1
 	ld [wItemQuantity], a
@@ -138,9 +138,7 @@ PlayerPCDeposit:
 	jp .loop
 
 PlayerPCWithdraw:
-	xor a
-	ld [wCurrentMenuItem], a
-	ld [wListScrollOffset], a
+	call ResetItemListPosition
 	ld a, [wNumBoxItems]
 	and a
 	jr nz, .loop
@@ -159,8 +157,10 @@ PlayerPCWithdraw:
 	ld [wPrintItemPrices], a
 	ld a, ITEMLISTMENU
 	ld [wListMenuID], a
+	call RestoreItemListPosition
 	call DisplayListMenuID
 	jp c, PlayerPCMenu
+	call SaveItemListPosition
 	call IsKeyItem
 	ld a, 1
 	ld [wItemQuantity], a
@@ -192,9 +192,7 @@ PlayerPCWithdraw:
 	jp .loop
 
 PlayerPCToss:
-	xor a
-	ld [wCurrentMenuItem], a
-	ld [wListScrollOffset], a
+	call ResetItemListPosition
 	ld a, [wNumBoxItems]
 	and a
 	jr nz, .loop
@@ -213,10 +211,12 @@ PlayerPCToss:
 	ld [wPrintItemPrices], a
 	ld a, ITEMLISTMENU
 	ld [wListMenuID], a
+	call RestoreItemListPosition
 	push hl
 	call DisplayListMenuID
 	pop hl
 	jp c, PlayerPCMenu
+	call SaveItemListPosition
 	push hl
 	call IsKeyItem
 	pop hl
@@ -301,3 +301,60 @@ WhatToTossText:
 TossHowManyText:
 	text_far _TossHowManyText
 	text_end
+
+ResetItemListPosition:
+	xor a
+	ld [wActionListPreviousRow], a
+	ld [wActionListPreviousScroll], a
+	ret
+
+SaveItemListPosition:
+	ld a, [wCurrentMenuItem]
+	ld [wActionListPreviousRow], a
+	ld a, [wListScrollOffset]
+	ld [wActionListPreviousScroll], a
+	ret
+
+RestoreReleaseListPosition:
+	ld hl, wBoxCount
+	jr RestoreItemListPosition
+
+RestoreBagItemListPosition:
+	ld hl, wNumBagItems
+
+RestoreItemListPosition:
+; hl points to the current list count. Three rows include the Cancel entry.
+	ld a, [hl]
+	and a
+	jr z, .empty
+	ld d, a
+	ld a, [wActionListPreviousScroll]
+	ld c, a
+	ld a, [wActionListPreviousRow]
+	add c
+	ld b, a
+	ld a, d
+	dec a
+	cp b
+	jr nc, .fitViewport
+	ld b, a ; the selected stack was the last one and was removed
+.fitViewport
+	ld a, d
+	sub 2
+	jr nc, .haveLastViewport
+	xor a
+.haveLastViewport
+	cp c
+	jr nc, .setCursor
+	ld c, a
+.setCursor
+	ld a, c
+	ld [wListScrollOffset], a
+	ld a, b
+	sub c
+	ld [wCurrentMenuItem], a
+	ret
+.empty
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
+	ret

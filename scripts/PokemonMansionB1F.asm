@@ -74,7 +74,11 @@ PokemonMansionB1F_TextPointers:
 Mansion4TrainerHeaders:
 	def_trainers
 Mansion4TrainerHeader0:
+IF DEF(_POKERGB_CORE)
+	trainer EVENT_BEAT_MANSION_4_TRAINER_0, 1, PokemonMansionB1FBurglarBattleText, PokemonMansionB1FBurglarEndBattleText, PokemonMansionB1FBurglarAfterBattleText
+ELSE
 	trainer EVENT_BEAT_MANSION_4_TRAINER_0, 0, PokemonMansionB1FBurglarBattleText, PokemonMansionB1FBurglarEndBattleText, PokemonMansionB1FBurglarAfterBattleText
+ENDC
 Mansion4TrainerHeader1:
 	trainer EVENT_BEAT_MANSION_4_TRAINER_1, 3, PokemonMansionB1FScientistBattleText, PokemonMansionB1FScientistEndBattleText, PokemonMansionB1FScientistAfterBattleText
 	db -1 ; end

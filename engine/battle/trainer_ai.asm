@@ -218,6 +218,9 @@ AIMoveChoiceModification3:
 	push hl
 	push de
 	push bc
+IF DEF(_POKERGB_CORE)
+	dec e ; current move slot's low address (de pointed to the next slot)
+ENDC
 	ld a, [wEnemyMoveType]
 	ld d, a
 	ld hl, wEnemyMonMoves  ; enemy moves
@@ -226,6 +229,12 @@ AIMoveChoiceModification3:
 .loopMoves
 	dec b
 	jr z, .done
+IF DEF(_POKERGB_CORE)
+; Low bytes are distinct within the four-byte move list.
+	ld a, l
+	cp e
+	jr z, .skipCurrentSlot
+ENDC
 	ld a, [hli]
 	and a
 	jr z, .done
@@ -243,6 +252,11 @@ AIMoveChoiceModification3:
 	ld a, [wEnemyMovePower]
 	and a
 	jr nz, .betterMoveFound ; damaging moves of a different type are considered to be better moves
+IF DEF(_POKERGB_CORE)
+	jr .loopMoves
+.skipCurrentSlot
+	inc hl
+ENDC
 	jr .loopMoves
 .betterMoveFound
 	ld c, a
@@ -387,6 +401,13 @@ KogaAI:
 BlaineAI:
 	cp 25 percent + 1
 	ret nc
+IF DEF(_POKERGB_CORE)
+	ld de, wEnemyMonHP
+	ld hl, wEnemyMonMaxHP
+	ld c, 2
+	call StringCmp
+	ret z
+ENDC
 	jp AIUseSuperPotion
 
 SabrinaAI:

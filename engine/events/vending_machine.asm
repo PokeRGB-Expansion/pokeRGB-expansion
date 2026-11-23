@@ -36,17 +36,28 @@ VendingMachineMenu::
 	ld a, [wCurrentMenuItem]
 	cp 3 ; chose Cancel?
 	jr z, .notThirsty
+IF DEF(_POKERGB_CORE)
+	call LoadVendingMachineItem
+; Check the same selected price that will be deducted after delivery.
+	ld hl, hVendingMachinePrice
+	ld de, wPlayerMoney
+	ld c, 3
+	call StringCmp
+ELSE
 	xor a
 	ldh [hMoney], a
 	ldh [hMoney + 2], a
 	ld a, $2
 	ldh [hMoney + 1], a
 	call HasEnoughMoney
+ENDC
 	jr nc, .enoughMoney
 	ld hl, VendingMachineText4
 	jp PrintText
 .enoughMoney
+IF !DEF(_POKERGB_CORE)
 	call LoadVendingMachineItem
+ENDC
 	ldh a, [hVendingMachineItem]
 	ld b, a
 	ld c, 1

@@ -159,10 +159,19 @@ GainExperience:
 	pop hl
 	ld a, [hl] ; current level
 	cp d
+IF DEF(_POKERGB_CORE)
+	jp nc, .nextMon ; no levels gained
+	ld c, a ; previous level
+	ld b, d ; final level
+ELSE
 	jp z, .nextMon ; if level didn't change, go to next mon
+ENDC
 	ld a, [wCurEnemyLevel]
 	push af
 	push hl
+IF DEF(_POKERGB_CORE)
+	push bc
+ENDC
 	ld a, d
 	ld [wCurEnemyLevel], a
 	ld [hl], a
@@ -249,11 +258,20 @@ GainExperience:
 	callfar PrintStatsBox
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
+IF DEF(_POKERGB_CORE)
+	pop bc
+ELSE
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
+ENDC
 	ld a, [wCurSpecies]
+IF DEF(_POKERGB_CORE)
+	ld d, a
+	call LearnMovesAtReachedLevels
+ELSE
 	ld [wPokedexNum], a
 	predef LearnMoveFromLevelUp
+ENDC
 	ld hl, wCanEvolveFlags
 	ld a, [wWhichPokemon]
 	ld c, a
@@ -289,6 +307,29 @@ GainExperience:
 	ld [hl], a
 	pop bc
 	predef_jump FlagActionPredef ; set the fought current enemy flag for the mon that is currently out
+IF DEF(_POKERGB_CORE)
+
+LearnMovesAtReachedLevels:
+; b = final level, c = previous level, d = species of the party mon.
+; The party and battle stats already reflect the final level.
+.loop
+	ld a, c
+	cp b
+	ret nc
+	inc c
+	ld a, c
+	ld [wCurEnemyLevel], a
+	ld a, d
+	ld [wPokedexNum], a
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
+	push bc
+	push de
+	predef LearnMoveFromLevelUp
+	pop de
+	pop bc
+	jr .loop
+ENDC
 
 ; divide enemy base stats, catch rate, and base exp by the number of mons gaining exp
 DivideExpDataByNumMonsGainingExp:

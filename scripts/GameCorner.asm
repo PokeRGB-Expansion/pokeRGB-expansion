@@ -13,7 +13,11 @@ GameCornerSelectLuckySlotMachine:
 	ret z
 	call Random
 	ldh a, [hRandomAdd]
+IF DEF(_POKERGB_CORE)
+	cp $8
+ELSE
 	cp $7
+ENDC
 	jr nc, .not_max
 	ld a, $8
 .not_max

@@ -19,31 +19,41 @@ CanMoveBouldersText:
 	text_end
 
 IsSurfingAllowed:
-; Returns whether surfing is allowed in BIT_SURF_ALLOWED of wStatusFlags1.
-; Surfing isn't allowed on the Cycling Road or in the lowest level of the
-; Seafoam Islands before the current has been slowed with boulders.
+; Report a refusal through the same text and status bit as the party action.
+	call GetSurfMapRestriction
+	jr c, .refuse
 	ld hl, wStatusFlags1
 	set BIT_SURF_ALLOWED, [hl]
+	ret
+.refuse
+	push hl
+	ld hl, wStatusFlags1
+	res BIT_SURF_ALLOWED, [hl]
+	pop hl
+	jp PrintText
+
+GetSurfMapRestriction::
+; Carry indicates that Surf is prohibited here. HL points to the reason.
 	ld a, [wStatusFlags6]
 	bit BIT_ALWAYS_ON_BIKE, a
-	jr nz, .forcedToRideBike
+	jr nz, .forcedBike
 	ld a, [wCurMap]
 	cp SEAFOAM_ISLANDS_B4F
-	ret nz
+	jr nz, .allowed
 	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
-	ret z
+	jr z, .allowed
 	ld hl, SeafoamIslandsB4FStairsCoords
 	call ArePlayerCoordsInArray
 	ret nc
-	ld hl, wStatusFlags1
-	res BIT_SURF_ALLOWED, [hl]
 	ld hl, CurrentTooFastText
-	jp PrintText
-.forcedToRideBike
-	ld hl, wStatusFlags1
-	res BIT_SURF_ALLOWED, [hl]
+	ret
+.forcedBike
 	ld hl, CyclingIsFunText
-	jp PrintText
+	scf
+	ret
+.allowed
+	and a
+	ret
 
 SeafoamIslandsB4FStairsCoords:
 	dbmapcoord  7, 11

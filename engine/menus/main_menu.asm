@@ -105,6 +105,9 @@ MainMenu:
 	jp nz, .mainMenuLoop
 	jr .inputLoop
 .pressedA
+	xor a
+	ld [wPokedexSavedRow], a
+	ld [wPokedexSavedScrollOffset], a
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld a, PLAYER_DIR_DOWN
@@ -319,6 +322,8 @@ StartNewGame:
 	res BIT_DEBUG_MODE, [hl]
 	; fallthrough
 StartNewGameDebug:
+	ld hl, wStatusFlags6
+	res BIT_ALWAYS_ON_BIKE, [hl]
 	call OakSpeech
 	ld c, 20
 	call DelayFrames

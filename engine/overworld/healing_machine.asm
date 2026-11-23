@@ -1,7 +1,7 @@
 AnimateHealingMachine:
 	ld de, PokeCenterFlashingMonitorAndHealBall
 	ld hl, vChars0 tile $7c
-	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), 3 ; should be 2
+	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), (PokeCenterFlashingMonitorAndHealBallEnd - PokeCenterFlashingMonitorAndHealBall) / TILE_SIZE
 	call CopyVideoData
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
@@ -64,6 +64,7 @@ AnimateHealingMachine:
 
 PokeCenterFlashingMonitorAndHealBall:
 	INCBIN "gfx/overworld/heal_machine.2bpp"
+PokeCenterFlashingMonitorAndHealBallEnd:
 
 PokeCenterOAMData:
 	; heal machine monitor

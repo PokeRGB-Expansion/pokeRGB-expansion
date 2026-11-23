@@ -95,7 +95,11 @@ PokemonMansion3F_TextPointers:
 Mansion3TrainerHeaders:
 	def_trainers
 Mansion3TrainerHeader0:
+IF DEF(_POKERGB_CORE)
+	trainer EVENT_BEAT_MANSION_3_TRAINER_0, 1, PokemonMansion3FSuperNerdBattleText, PokemonMansion3FSuperNerdEndBattleText, PokemonMansion3FSuperNerdAfterBattleText
+ELSE
 	trainer EVENT_BEAT_MANSION_3_TRAINER_0, 0, PokemonMansion3FSuperNerdBattleText, PokemonMansion3FSuperNerdEndBattleText, PokemonMansion3FSuperNerdAfterBattleText
+ENDC
 Mansion3TrainerHeader1:
 	trainer EVENT_BEAT_MANSION_3_TRAINER_1, 2, PokemonMansion3FScientistBattleText, PokemonMansion3FScientistEndBattleText, PokemonMansion3FScientistAfterBattleText
 	db -1 ; end

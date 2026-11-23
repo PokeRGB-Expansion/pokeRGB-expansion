@@ -11,13 +11,26 @@ HealEffect_:
 .healEffect
 	ld b, a
 	ld a, [de]
+IF DEF(_POKERGB_CORE)
+	cp [hl]
+ELSE
 	cp [hl] ; most significant bytes comparison is ignored
 	        ; causes the move to miss if max HP is 255 or 511 points higher than the current HP
+ENDC
 	inc de
 	inc hl
+IF DEF(_POKERGB_CORE)
+	jr nz, .missingHP
+ENDC
 	ld a, [de]
+IF DEF(_POKERGB_CORE)
+	cp [hl]
+	jp z, .failed
+.missingHP
+ELSE
 	sbc [hl]
 	jp z, .failed ; no effect if user's HP is already at its maximum
+ENDC
 	ld a, b
 	cp REST
 	jr nz, .healHP
@@ -27,11 +40,22 @@ HealEffect_:
 	ld c, 50
 	call DelayFrames
 	ld hl, wBattleMonStatus
+IF DEF(_POKERGB_CORE)
+	ld de, wPlayerBattleStatus3
+ENDC
 	ldh a, [hWhoseTurn]
 	and a
 	jr z, .restEffect
 	ld hl, wEnemyMonStatus
+IF DEF(_POKERGB_CORE)
+	ld de, wEnemyBattleStatus3
+ENDC
 .restEffect
+IF DEF(_POKERGB_CORE)
+	ld a, [de]
+	res BADLY_POISONED, a
+	ld [de], a
+ENDC
 	ld a, [hl]
 	and a
 	ld [hl], 2 ; clear status and set number of turns asleep to 2

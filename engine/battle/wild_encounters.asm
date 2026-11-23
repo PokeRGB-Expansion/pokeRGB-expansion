@@ -43,7 +43,23 @@ TryDoWildEncounter:
 	jr c, .CantEncounter2
 	ld a, [wCurMapTileset]
 	cp FOREST ; Viridian Forest/Safari Zone
+IF DEF(_POKERGB_CORE)
+	jr nz, .indoorGrass
+	ld a, [wCurMap]
+	cp VIRIDIAN_FOREST
+	jr nz, .CantEncounter2
+; The star can occupy the lower-right corner of an ordinary grass square.
+	ld a, c
+	cp $34
+	jr nz, .CantEncounter2
+	dec hl
+	ld a, [wGrassTile]
+	cp [hl]
+	jr nz, .CantEncounter2
+.indoorGrass
+ELSE
 	jr z, .CantEncounter2
+ENDC
 	ld a, [wGrassRate]
 .CanEncounter
 ; compare encounter chance with a random number to determine if there will be an encounter

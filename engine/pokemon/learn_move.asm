@@ -99,11 +99,15 @@ TryingToLearn:
 	push hl
 	ld hl, TryingToLearnText
 	call PrintText
+	ld a, 1
+	ld [wMoveInfoQuestion], a
 	hlcoord 14, 7
 	lb bc, 8, 15
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; yes/no menu
+	xor a
+	ld [wMoveInfoQuestion], a
 	pop hl
 	ld a, [wCurrentMenuItem]
 	rra
@@ -143,12 +147,21 @@ TryingToLearn:
 	inc hl
 	ld a, [wNumMovesMinusOne]
 	ld [hli], a ; wMaxMenuItem
-	ld a, PAD_A | PAD_B
+	ld a, PAD_A | PAD_B | PAD_START
 	ld [hli], a ; wMenuWatchedKeys
 	ld [hl], 0 ; wLastMenuItem
 	ld hl, hUILayoutFlags
 	set BIT_DOUBLE_SPACED_MENU, [hl]
-	call HandleMenuInput
+.chooseSlot
+	farcall HandleLearnerMoveInfoInput
+	ld a, [wMoveInfoNumber]
+	bit B_PAD_START, a
+	jr z, .confirmSlot
+	and PAD_A | PAD_B
+	jr nz, .confirmSlot
+	farcall InspectReplacementMove
+	jr .chooseSlot
+.confirmSlot
 	ld hl, hUILayoutFlags
 	res BIT_DOUBLE_SPACED_MENU, [hl]
 	push af
@@ -178,7 +191,7 @@ TryingToLearn:
 	ld hl, HMCantDeleteText
 	call PrintText
 	pop hl
-	jr .loop
+	jp .loop
 .cancel
 	scf
 	ret
@@ -209,9 +222,40 @@ OneTwoAndText:
 	text_far _OneTwoAndText
 	text_pause
 	text_asm
-	ld a, SFX_SWAP
-	call PlaySoundWaitForCurrent
+	call PlayMoveReplacementSound
 	ld hl, PoofText
+	ret
+
+PlayMoveReplacementSound:
+	ld a, [wMuteAudioAndPauseMusic]
+	push af
+	ld a, [wAudioROMBank]
+	push af
+	ld a, [wAudioSavedROMBank]
+	push af
+	ld a, 1
+	ld [wMuteAudioAndPauseMusic], a
+	call DelayFrame
+	call WaitForSoundToFinish
+	ld a, BANK(SFX_Swap_1)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
+	ld a, SFX_SWAP
+	call PlaySound
+.wait
+	call DelayFrame
+	ld a, [wChannelSoundIDs + CHAN5]
+	cp SFX_SWAP
+	jr z, .wait
+	ld a, [wChannelSoundIDs + CHAN6]
+	cp SFX_SWAP
+	jr z, .wait
+	pop af
+	ld [wAudioSavedROMBank], a
+	pop af
+	ld [wAudioROMBank], a
+	pop af
+	ld [wMuteAudioAndPauseMusic], a
 	ret
 
 PoofText:

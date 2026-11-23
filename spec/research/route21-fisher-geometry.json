@@ -1,0 +1,216 @@
+{
+  "checked_date": "2026-10-25",
+  "repository": "https://github.com/pret/pokered",
+  "commit": "af519899719f0754965776faac0e836a3b906e6d",
+  "scope": "Source map geometry and rendered tiles; no game execution or original-intent proof",
+  "method": "Decode the 10 by 45 map blocks through the overworld blockset. Each block is four by four 8-pixel graphic tiles, or two by two 16-pixel movement squares. Combine the four Fisher object positions and fixed directions with the square immediately ahead. Inspect rendered northern and southern land patches.",
+  "source_files": [
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "path": "data/maps/objects/Route21.asm",
+      "start_line": 19,
+      "end_line": 28,
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/data/maps/objects/Route21.asm#L19-L28",
+      "file_sha256": "9001ae6f965c477a5e476daeb4e2b7e4c2d239d52a8379251cabb2ed80f0ec74"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "path": "data/maps/headers/Route21.asm",
+      "start_line": 1,
+      "end_line": 4,
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/data/maps/headers/Route21.asm#L1-L4",
+      "file_sha256": "cb8638c60b2875827519242f1e02f7dcdccc0973a77d7b0ce005701ef75bbd88"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "path": "constants/map_constants.asm",
+      "start_line": 62,
+      "end_line": 62,
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/constants/map_constants.asm#L62-L62",
+      "file_sha256": "4129ef4e6908267e554c0308254f2269f1fb8f75b5c529faad6fd14c92119271"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "path": "engine/items/item_effects.asm",
+      "start_line": 2826,
+      "end_line": 2851,
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/engine/items/item_effects.asm#L2826-L2851",
+      "file_sha256": "76b570b5216bbbcf6d9528c4704d931744a3740cce88afdc4f4f8f700449dda1"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "kind": "git-binary",
+      "binary_path": "maps/Route21.blk",
+      "bytes": 450,
+      "file_sha256": "fa7abd7efe3f9d2332da34f5f31774d6984555fc9dbc808ea164b43dc5f5a1fa",
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/maps/Route21.blk"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "kind": "git-binary",
+      "binary_path": "gfx/blocksets/overworld.bst",
+      "bytes": 2048,
+      "file_sha256": "c4f6d88cc7dea8196aa51d3aa059c6d1da0ea45718dd12870fcddee9f9304d50",
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/gfx/blocksets/overworld.bst"
+    },
+    {
+      "repository_key": "pokered",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "kind": "git-binary",
+      "binary_path": "gfx/tilesets/overworld.png",
+      "bytes": 1309,
+      "file_sha256": "580a310bef9f446c62d75994db3197b3f511aeed5f055ded9f38c36c8a152bdb",
+      "url": "https://github.com/pret/pokered/blob/af519899719f0754965776faac0e836a3b906e6d/gfx/tilesets/overworld.png"
+    }
+  ],
+  "fishers": [
+    {
+      "id": "F1",
+      "position": [
+        4,
+        24
+      ],
+      "direction": [
+        -1,
+        0
+      ],
+      "standing_tiles": [
+        [
+          60,
+          60
+        ],
+        [
+          60,
+          60
+        ]
+      ],
+      "front_position": [
+        3,
+        24
+      ],
+      "front_tiles": [
+        [
+          20,
+          20
+        ],
+        [
+          20,
+          20
+        ]
+      ]
+    },
+    {
+      "id": "F2",
+      "position": [
+        6,
+        25
+      ],
+      "direction": [
+        0,
+        1
+      ],
+      "standing_tiles": [
+        [
+          60,
+          60
+        ],
+        [
+          60,
+          60
+        ]
+      ],
+      "front_position": [
+        6,
+        26
+      ],
+      "front_tiles": [
+        [
+          49,
+          49
+        ],
+        [
+          20,
+          20
+        ]
+      ]
+    },
+    {
+      "id": "F3",
+      "position": [
+        14,
+        56
+      ],
+      "direction": [
+        -1,
+        0
+      ],
+      "standing_tiles": [
+        [
+          60,
+          60
+        ],
+        [
+          60,
+          60
+        ]
+      ],
+      "front_position": [
+        13,
+        56
+      ],
+      "front_tiles": [
+        [
+          20,
+          20
+        ],
+        [
+          20,
+          20
+        ]
+      ]
+    },
+    {
+      "id": "F4",
+      "position": [
+        17,
+        57
+      ],
+      "direction": [
+        1,
+        0
+      ],
+      "standing_tiles": [
+        [
+          60,
+          60
+        ],
+        [
+          60,
+          60
+        ]
+      ],
+      "front_position": [
+        18,
+        57
+      ],
+      "front_tiles": [
+        [
+          20,
+          20
+        ],
+        [
+          20,
+          20
+        ]
+      ]
+    }
+  ],
+  "finding": "All four stand at the edge of the two land patches and face adjacent water. The south-facing Fisher faces a shoreline square with a shore lip above water; the other three front squares are entirely water. The adjacent square in every case includes water tile 0x14.",
+  "interpretation": "This context fits fishing and limits their value as an analogy for Mansion Burglars. It does not establish the original reason for either zero-range setting."
+}

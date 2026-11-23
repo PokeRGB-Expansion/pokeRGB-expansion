@@ -362,18 +362,27 @@ ChangeBox::
 	ld a, [wCurrentMenuItem]
 	and a
 	ret nz ; return if No was chosen
-	ld hl, wCurrentBoxNum
-	bit BIT_HAS_CHANGED_BOXES, [hl] ; is it the first time player is changing the box?
-	call z, EmptyAllSRAMBoxes ; if so, empty all boxes in SRAM
 	call DisplayChangeBoxMenu
 	call UpdateSprites
 	ld hl, hUILayoutFlags
 	set BIT_DOUBLE_SPACED_MENU, [hl]
+.chooseBox
+	call DrawHighlightedBoxCount
 	call HandleMenuInput
+	bit B_PAD_B, a
+	jr nz, .finishChoice
+	bit B_PAD_A, a
+	jr z, .chooseBox
+.finishChoice
 	ld hl, hUILayoutFlags
 	res BIT_DOUBLE_SPACED_MENU, [hl]
 	bit B_PAD_B, a
 	ret nz
+
+; Initialize the new adventure's boxes only after the player selects a box.
+	ld hl, wCurrentBoxNum
+	bit BIT_HAS_CHANGED_BOXES, [hl]
+	call z, EmptyAllSRAMBoxes
 	call GetBoxSRAMLocation
 	ld e, l
 	ld d, h
@@ -437,7 +446,7 @@ CopyBoxToOrFromSRAM:
 DisplayChangeBoxMenu:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	ld a, PAD_A | PAD_B
+	ld a, PAD_A | PAD_B | PAD_UP | PAD_DOWN
 	ld [wMenuWatchedKeys], a
 	ld a, 11
 	ld [wMaxMenuItem], a
@@ -504,6 +513,40 @@ DisplayChangeBoxMenu:
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	ret
+
+DrawHighlightedBoxCount:
+	xor a
+	ldh [hAutoBGTransferEnabled], a
+	hlcoord 0, 5
+	lb bc, 2, 9
+	call TextBoxBorder
+	hlcoord 1, 6
+	ld de, .label
+	call PlaceString
+	ld a, [wCurrentMenuItem]
+	ld c, a
+	ld b, 0
+	ld hl, wBoxMonCounts
+	add hl, bc
+	ld d, h
+	ld e, l
+	hlcoord 1, 7
+	lb bc, 1, 2
+	call PrintNumber
+	hlcoord 3, 7
+	ld a, '/'
+	ld [hli], a
+	ld de, .capacity
+	lb bc, 1 | LEFT_ALIGN, 2
+	call PrintNumber
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	ret
+
+.label
+	db "OCCUPIED@"
+.capacity
+	db MONS_PER_BOX
 
 ChooseABoxText:
 	text_far _ChooseABoxText
@@ -575,6 +618,17 @@ EmptySRAMBox:
 GetMonCountsForAllBoxes:
 	ld hl, wBoxMonCounts
 	push hl
+	ld a, [wCurrentBoxNum]
+	bit BIT_HAS_CHANGED_BOXES, a
+	jr nz, .readStoredCounts
+
+; The saved inactive boxes may belong to a previous adventure.
+	xor a
+	ld bc, NUM_BOXES
+	call FillMemory
+	jr .copyCurrentBoxCount
+
+.readStoredCounts
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
@@ -588,6 +642,7 @@ GetMonCountsForAllBoxes:
 	xor a
 	ld [rBMODE], a
 	ld [rRAMG], a
+.copyCurrentBoxCount
 	pop hl
 
 ; copy the count for the current box from WRAM

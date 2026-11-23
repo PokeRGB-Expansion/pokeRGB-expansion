@@ -62,6 +62,244 @@ DrawHP_:
 	ret
 
 StatusScreen:
+	ld a, [wWhichPokemon]
+	push af
+	call StatusScreenListLength
+	ld b, a
+	pop af
+	cp b
+	ret nc ; no entry at this index
+
+	ld a, [wCurEnemyLevel]
+	push af
+	ldh a, [hTileAnimations]
+	push af
+	ldh a, [rAUDVOL]
+	push af
+	ld a, [wStatusFlags2]
+	push af
+	ld hl, wStatusFlags2
+	set BIT_NO_AUDIO_FADE_OUT, [hl]
+	ld a, $33
+	ldh [rAUDVOL], a
+	xor a
+	ldh [hTileAnimations], a
+	call .waitForRelease
+	xor a ; first page
+.withCry
+	ld b, 1
+	jr .draw
+.withoutCry
+	ld b, 0
+.draw
+	push bc
+	push af
+	call StatusScreen_DrawBase
+	pop af
+	push af
+	ld hl, .pageTable
+	add a
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call .jumpToPage
+	pop af
+	pop bc
+	push af ; keep the page while drawing and polling
+	push bc
+	hlcoord 9, 0
+	ld de, .navigationHint
+	cp 1
+	jr nz, .showHint
+	call .canInspect
+	jr z, .showHint
+	ld de, .infoHint
+.showHint
+	call PlaceString
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	call Delay3
+	call GBPalNormal
+	pop bc
+	bit 0, b
+	jr z, .readInput
+	ld a, [wCurPartySpecies]
+	call PlayCry
+.readInput
+	call DelayFrame
+	call Joypad
+	predef CableClub_Run
+	ldh a, [hJoyPressed]
+	and PAD_A | PAD_B | PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_START
+	jr z, .readInput
+	ld c, a
+	pop af
+	bit B_PAD_B, c
+	jp nz, .close
+	bit B_PAD_UP, c
+	jr nz, .previousMon
+	bit B_PAD_DOWN, c
+	jr nz, .nextMon
+	bit B_PAD_LEFT, c
+	jr nz, .previousPage
+	bit B_PAD_RIGHT, c
+	jr nz, .nextPage
+	bit B_PAD_START, c
+	jr nz, .inspect
+	; A advances as before and exits from the last page.
+	cp NUM_STATUS_SCREEN_PAGES - 1
+	jp z, .close
+.nextPage
+	inc a
+	cp NUM_STATUS_SCREEN_PAGES
+	jp c, .withoutCry
+	xor a
+	jp .withoutCry
+.previousPage
+	and a
+	jr z, .wrapToLastPage
+	dec a
+	jp .withoutCry
+.wrapToLastPage
+	ld a, NUM_STATUS_SCREEN_PAGES - 1
+	jp .withoutCry
+
+.previousMon
+	push af
+	ld hl, wWhichPokemon
+	ld a, [hl]
+	and a
+	pop bc
+	ld a, b
+	jr z, .keepPage
+	dec [hl]
+	jp .withCry
+.nextMon
+	push af
+	call StatusScreenListLength
+	ld hl, wWhichPokemon
+	ld b, a
+	ld a, [hl]
+	inc a
+	cp b
+	pop bc
+	ld a, b
+	jr nc, .keepPage
+	inc [hl]
+	jp .withCry
+
+.inspect
+	cp 1
+	jr nz, .keepPage
+	call .canInspect
+	ld a, 1
+	jr z, .keepPage
+	push af
+	farcall InspectStatsMove
+	jp .readInput
+.keepPage
+	push af
+	jp .readInput
+.close
+	call .waitForRelease
+	pop af
+	ld hl, wStatusFlags2
+	res BIT_NO_AUDIO_FADE_OUT, [hl]
+	bit BIT_NO_AUDIO_FADE_OUT, a
+	jr z, .restoreSound
+	set BIT_NO_AUDIO_FADE_OUT, [hl]
+.restoreSound
+	pop af
+	ldh [rAUDVOL], a
+	pop af
+	ldh [hTileAnimations], a
+	pop af
+	ld [wCurEnemyLevel], a
+	call GBPalWhiteOut
+	jp ClearScreen
+
+.waitForRelease
+	call DelayFrame
+	call Joypad
+	predef CableClub_Run
+	ldh a, [hJoyHeld]
+	and PAD_A | PAD_B | PAD_START
+	jr nz, .waitForRelease
+	xor a
+	ldh [hJoyFiltered], a
+	ret
+
+.canInspect
+	; Signal availability in NZ. Trade and other unsupported sources use
+	; the ordinary STATS pages without opening an inspection overlay.
+	ld a, [wLinkState]
+	and a
+	jr nz, .noInfo
+	ld a, [wMonDataLocation]
+	and a
+	jr z, .checkMove
+	cp BOX_DATA
+	jr nz, .noInfo
+.checkMove
+	ld a, [wLoadedMonMoves]
+	and a
+	ret
+.noInfo
+	xor a
+	ret
+
+.jumpToPage
+	jp hl
+
+; Add new page renderers here. The controller uses the table size.
+.pageTable
+	dw StatusScreen_DrawStatsPage
+	dw StatusScreen_DrawMovesPage
+DEF NUM_STATUS_SCREEN_PAGES EQU (@ - .pageTable) / 2
+
+.navigationHint: db "D-PAD NAV@"
+.infoHint:       db "START INFO@"
+
+StatusScreenListLength:
+	ld a, [wMonDataLocation]
+	and a
+	jr z, .player
+	cp ENEMY_PARTY_DATA
+	jr z, .enemy
+	cp BOX_DATA
+	jr z, .box
+	cp DAYCARE_DATA
+	jr nz, .empty
+	ld a, [wDayCareMonSpecies]
+	and a
+	ret z
+	ld a, 1
+	ret
+.player
+	ld a, [wPartyCount]
+	jr .limitParty
+.enemy
+	ld a, [wEnemyPartyCount]
+.limitParty
+	cp PARTY_LENGTH + 1
+	ret c
+	jr .empty
+.box
+	ld a, [wBoxCount]
+	cp MONS_PER_BOX + 1
+	ret c
+.empty
+	xor a
+	ret
+
+StatusScreen_DrawStatsPage:
+	ld d, STATUS_SCREEN_STATS_BOX
+	jp PrintStatsBox
+
+StatusScreen_DrawBase:
 	call LoadMonData
 	ld a, [wMonDataLocation]
 	cp BOX_DATA
@@ -75,11 +313,8 @@ StatusScreen:
 	ld b, $1
 	call CalcStats
 .DontRecalculate
-	ld hl, wStatusFlags2
-	set BIT_NO_AUDIO_FADE_OUT, [hl]
-	ld a, $33
-	ldh [rAUDVOL], a ; Reduce the volume
 	call GBPalWhiteOutWithDelay3
+	call ClearSprites
 	call ClearScreen
 	call UpdateSprites
 	call LoadHpBarAndStatusTilePatterns
@@ -99,10 +334,8 @@ StatusScreen:
 	ld hl, vChars2 tile $72
 	lb bc, BANK(PTile), 1
 	call CopyVideoDataDouble ; bold P (for PP)
-	ldh a, [hTileAnimations]
-	push af
 	xor a
-	ldh [hTileAnimations], a
+	ldh [hAutoBGTransferEnabled], a
 	hlcoord 19, 1
 	lb bc, 6, 10
 	call DrawLineBox ; Draws the box around name, HP and status
@@ -162,18 +395,8 @@ StatusScreen:
 	ld de, wLoadedMonOTID
 	lb bc, LEADING_ZEROES | 2, 5
 	call PrintNumber ; ID Number
-	ld d, STATUS_SCREEN_STATS_BOX
-	call PrintStatsBox
-	call Delay3
-	call GBPalNormal
 	hlcoord 1, 0
-	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
-	ld a, [wCurPartySpecies]
-	call PlayCry
-	call WaitForTextScrollButtonPress
-	pop af
-	ldh [hTileAnimations], a
-	ret
+	jp LoadFlippedFrontSpriteByMonIndex
 
 .GetStringPointer
 	ld a, [wMonDataLocation]
@@ -287,10 +510,27 @@ PrintStatsBox:
 	next "SPECIAL@"
 
 StatusScreen2:
+; Kept as a standalone moves page for callers using this predef.
 	ldh a, [hTileAnimations]
 	push af
 	xor a
 	ldh [hTileAnimations], a
+	call StatusScreen_DrawMovesPage
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	call Delay3
+	farcall WaitForStatsMoveInfo
+	pop af
+	ldh [hTileAnimations], a
+	ld hl, wStatusFlags2
+	res BIT_NO_AUDIO_FADE_OUT, [hl]
+	ld a, $77
+	ldh [rAUDVOL], a
+	call GBPalWhiteOut
+	jp ClearScreen
+
+StatusScreen_DrawMovesPage:
+	xor a
 	ldh [hAutoBGTransferEnabled], a
 	ld bc, NUM_MOVES + 1
 	ld hl, wMoves
@@ -417,19 +657,7 @@ StatusScreen2:
 	ld [wNamedObjectIndex], a
 	call GetMonName
 	hlcoord 9, 1
-	call PlaceString
-	ld a, $1
-	ldh [hAutoBGTransferEnabled], a
-	call Delay3
-	call WaitForTextScrollButtonPress
-	pop af
-	ldh [hTileAnimations], a
-	ld hl, wStatusFlags2
-	res BIT_NO_AUDIO_FADE_OUT, [hl]
-	ld a, $77
-	ldh [rAUDVOL], a
-	call GBPalWhiteOut
-	jp ClearScreen
+	jp PlaceString
 
 CalcExpToLevelUp:
 	ld a, [wLoadedMonLevel]

@@ -1,3 +1,8 @@
+IF DEF(_GREEN_VISUALS)
+	ASSERT DEF(_BLUE), "Green presentation requires Blue gameplay."
+	ASSERT !DEF(_RED), "Green presentation requires Blue gameplay."
+ENDC
+
 INCLUDE "macros/asserts.asm"
 INCLUDE "macros/const.asm"
 INCLUDE "macros/predef.asm"

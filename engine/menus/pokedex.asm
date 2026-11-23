@@ -1,14 +1,19 @@
 ShowPokedexMenu:
+	ld a, [wCurrentMenuItem]
+	push af
+	ld a, [wLastMenuItem]
+	push af
+	ld a, [wListScrollOffset]
+	push af
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites
-	ld a, [wListScrollOffset]
-	push af
-	xor a
+	ld a, [wPokedexSavedRow]
 	ld [wCurrentMenuItem], a
-	ld [wListScrollOffset], a
 	ld [wLastMenuItem], a
-	inc a
+	ld a, [wPokedexSavedScrollOffset]
+	ld [wListScrollOffset], a
+	ld a, 1
 	ld [wPokedexNum], a
 	ldh [hJoy7], a
 .setUpGraphics
@@ -31,15 +36,21 @@ ShowPokedexMenu:
 	call HandlePokedexListMenu
 	jr c, .goToSideMenu ; if the player chose a pokemon from the list
 .exitPokedex
+	ld a, [wCurrentMenuItem]
+	ld [wPokedexSavedRow], a
+	ld a, [wListScrollOffset]
+	ld [wPokedexSavedScrollOffset], a
 	xor a
 	ld [wMenuWatchMovingOutOfBounds], a
-	ld [wCurrentMenuItem], a
-	ld [wLastMenuItem], a
 	ldh [hJoy7], a
 	ld [wUnusedOverrideSimulatedJoypadStatesIndex], a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	pop af
 	ld [wListScrollOffset], a
+	pop af
+	ld [wLastMenuItem], a
+	pop af
+	ld [wCurrentMenuItem], a
 	call GBPalWhiteOutWithDelay3
 	call RunDefaultPaletteCommand
 	jp ReloadMapData
@@ -209,11 +220,18 @@ HandlePokedexListMenu:
 	jr c, .storeMaxSeenPokemon
 	dec c
 	jr nz, .maxSeenPokemonInnerLoop
-	jr .maxSeenPokemonLoop
-
+	ld a, b
+	dec a
+	jr nz, .maxSeenPokemonLoop
+; With no entries seen, show the first entry as unseen.
 .storeMaxSeenPokemon
 	ld a, b
+	cp NUM_POKEMON + 1
+	jr c, .setMaxSeenPokemon
+	ld a, NUM_POKEMON
+.setMaxSeenPokemon
 	ld [wDexMaxSeenMon], a
+	call ClampPokedexListPosition
 .loop
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -345,6 +363,34 @@ HandlePokedexListMenu:
 	ret
 .buttonBPressed
 	and a
+	ret
+
+ClampPokedexListPosition:
+; Clamp both parts of the cursor to the current list before drawing it.
+	ld a, [wDexMaxSeenMon]
+	ld b, a
+	sub 7
+	jr nc, .checkOffset
+	xor a
+.checkOffset
+	ld hl, wListScrollOffset
+	cp [hl]
+	jr nc, .checkRow
+	ld [hl], a
+.checkRow
+	ld a, b
+	cp 7
+	jr c, .getLastRow
+	ld a, 7
+.getLastRow
+	dec a
+	ld hl, wCurrentMenuItem
+	cp [hl]
+	jr nc, .setLastRow
+	ld [hl], a
+.setLastRow
+	ld a, [hl]
+	ld [wLastMenuItem], a
 	ret
 
 DrawPokedexVerticalLine:

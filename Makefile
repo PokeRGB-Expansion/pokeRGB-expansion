@@ -1,10 +1,19 @@
-roms := \
-	pokered.gbc \
-	pokeblue.gbc \
-	pokeblue_debug.gbc
-patches := \
-	pokered.patch \
-	pokeblue.patch
+PRESET ?= core
+ifeq (,$(filter $(PRESET),core minimal))
+$(error PRESET must be core or minimal)
+endif
+ifneq ($(words $(PRESET)),1)
+$(error Select one PRESET)
+endif
+
+.DEFAULT_GOAL := all
+output := build/$(PRESET)
+red_rom        := $(output)/pokered.gbc
+blue_rom       := $(output)/pokeblue.gbc
+green_rom      := $(output)/pokegreen.gbc
+blue_debug_rom := $(output)/pokeblue_debug.gbc
+red_vc_rom     := $(output)/pokered_vc.gbc
+blue_vc_rom    := $(output)/pokeblue_vc.gbc
 
 rom_obj := \
 	audio.o \
@@ -16,13 +25,6 @@ rom_obj := \
 	gfx/pics.o \
 	gfx/sprites.o \
 	gfx/tilesets.o
-
-pokered_obj        := $(rom_obj:.o=_red.o)
-pokeblue_obj       := $(rom_obj:.o=_blue.o)
-pokeblue_debug_obj := $(rom_obj:.o=_blue_debug.o)
-pokered_vc_obj     := $(rom_obj:.o=_red_vc.o)
-pokeblue_vc_obj    := $(rom_obj:.o=_blue_vc.o)
-
 
 ### Build tools
 
@@ -44,30 +46,25 @@ RGBFIXFLAGS  ?= -Weverything
 RGBGFXFLAGS  ?= -Weverything
 
 
-### Build targets
+red_obj        := $(addprefix $(output)/red/,$(rom_obj))
+blue_obj       := $(addprefix $(output)/blue/,$(rom_obj))
+green_obj      := $(addprefix $(output)/green/,$(rom_obj))
+blue_debug_obj := $(addprefix $(output)/blue_debug/,$(rom_obj))
+red_vc_obj     := $(addprefix $(output)/red_vc/,$(rom_obj))
+blue_vc_obj    := $(addprefix $(output)/blue_vc/,$(rom_obj))
 
 .SUFFIXES:
-.SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: \
-	all \
-	red \
-	blue \
-	blue_debug \
-	red_vc \
-	blue_vc \
-	clean \
-	tidy \
-	compare \
-	tools
+.PHONY: all red blue green blue_debug red_vc blue_vc clean tidy compare tools
 
-all: $(roms)
-red:        pokered.gbc
-blue:       pokeblue.gbc
-blue_debug: pokeblue_debug.gbc
-red_vc:     pokered.patch
-blue_vc:    pokeblue.patch
+all: red blue green
+red: $(red_rom)
+blue: $(blue_rom)
+green: $(green_rom)
+blue_debug: $(blue_debug_rom)
+red_vc: $(output)/pokered.patch
+blue_vc: $(output)/pokeblue.patch
 
 clean: tidy
 	find gfx \
@@ -77,89 +74,69 @@ clean: tidy
 	     -delete
 
 tidy:
-	$(RM) $(roms) \
-	      $(roms:.gbc=.sym) \
-	      $(roms:.gbc=.map) \
-	      $(patches) \
-	      $(patches:.patch=_vc.gbc) \
-	      $(patches:.patch=_vc.sym) \
-	      $(patches:.patch=_vc.map) \
-	      $(patches:%.patch=vc/%.constants.sym) \
-	      $(pokered_obj) \
-	      $(pokeblue_obj) \
-	      $(pokered_vc_obj) \
-	      $(pokeblue_vc_obj) \
-	      $(pokeblue_debug_obj) \
-	      rgbdscheck.o
+	$(RM) -r $(output)
 	$(MAKE) clean -C tools/
 
-compare: $(roms) $(patches)
-	@$(SHA1) -c roms.sha1
+# The checksums describe pristine upstream outputs.
+compare:
+	@test -n "$(BASELINE_DIR)" || { echo "Set BASELINE_DIR to the verified upstream outputs." >&2; exit 1; }
+	@cd "$(BASELINE_DIR)" && $(SHA1) -c "$(CURDIR)/roms.sha1"
 
 tools:
 	$(MAKE) -C tools/
 
-
-RGBASMFLAGS += -Q8 -P includes.asm
-# Create a sym/map for debug purposes if `make` run with `DEBUG=1`
-ifeq ($(DEBUG),1)
-RGBASMFLAGS += -E
+# Export local labels in the symbol map for debugging and tests.
+RGBASMFLAGS += -Q8 -P includes.asm -E
+ifeq ($(PRESET),core)
+RGBASMFLAGS += -D _POKERGB_CORE
 endif
 
-$(pokered_obj):        RGBASMFLAGS += -D _RED
-$(pokeblue_obj):       RGBASMFLAGS += -D _BLUE
-$(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
-$(pokered_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC
-$(pokeblue_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC
-
-%.patch: %_vc.gbc %.gbc vc/%.patch.template
-	tools/make_patch $*_vc.sym $^ $@
-
-rgbdscheck.o: rgbdscheck.asm
+$(output)/rgbdscheck.o: rgbdscheck.asm
+	@mkdir -p $(dir $@)
 	$(RGBASM) -o $@ $<
 
-# Build tools when building the rom.
-# This has to happen before the rules are processed, since that's when scan_includes is run.
-ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
+$(red_obj):        RGBASMFLAGS += -D _RED
+$(blue_obj):       RGBASMFLAGS += -D _BLUE
+$(green_obj):      RGBASMFLAGS += -D _BLUE -D _GREEN_VISUALS
+$(blue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
+$(red_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC
+$(blue_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC
+
+$(output)/%.patch: $(output)/%_vc.gbc $(output)/%.gbc vc/%.patch.template
+	tools/make_patch $(output)/$*_vc.sym $^ $@
+
+ifeq (,$(filter clean tidy compare tools,$(MAKECMDGOALS)))
 
 $(info $(shell $(MAKE) -C tools))
 
-# The dep rules have to be explicit or else missing files won't be reported.
-# As a side effect, they're evaluated immediately instead of when the rule is invoked.
-# It doesn't look like $(shell) can be deferred so there might not be a better way.
-preinclude_deps := includes.asm $(shell tools/scan_includes includes.asm)
+preinclude_deps := Makefile includes.asm $(shell tools/scan_includes includes.asm)
 define DEP
-$1: $2 $$(shell tools/scan_includes $2) $(preinclude_deps) | rgbdscheck.o
+$1: $2 $$(shell tools/scan_includes $2) $(preinclude_deps) | $(output)/rgbdscheck.o
+	@mkdir -p $$(dir $$@)
 	$$(RGBASM) $$(RGBASMFLAGS) -o $$@ $$<
 endef
 
-# Dependencies for objects (drop _red and _blue from asm file basenames)
-$(foreach obj, $(pokered_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
-$(foreach obj, $(pokeblue_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
-$(foreach obj, $(pokeblue_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
-$(foreach obj, $(pokered_vc_obj), $(eval $(call DEP,$(obj),$(obj:_red_vc.o=.asm))))
-$(foreach obj, $(pokeblue_vc_obj), $(eval $(call DEP,$(obj),$(obj:_blue_vc.o=.asm))))
+define COLOR_DEPS
+$(foreach obj,$($(1)_obj),$(eval $(call DEP,$(obj),$(patsubst $(output)/$(1)/%.o,%.asm,$(obj)))))
+endef
+$(foreach color,red blue green blue_debug red_vc blue_vc,$(call COLOR_DEPS,$(color)))
 
 endif
 
-
 RGBLINKFLAGS += -d
-pokered.gbc:        RGBLINKFLAGS += -p 0x00
-pokeblue.gbc:       RGBLINKFLAGS += -p 0x00
-pokeblue_debug.gbc: RGBLINKFLAGS += -p 0xff
-pokered_vc.gbc:     RGBLINKFLAGS += -p 0x00
-pokeblue_vc.gbc:    RGBLINKFLAGS += -p 0x00
-
 RGBFIXFLAGS += -jsv -n 0 -k 01 -l 0x33 -m MBC3+RAM+BATTERY -r 03
-pokered.gbc:        RGBFIXFLAGS += -p 0x00 -t "POKEMON RED"
-pokeblue.gbc:       RGBFIXFLAGS += -p 0x00 -t "POKEMON BLUE"
-pokeblue_debug.gbc: RGBFIXFLAGS += -p 0xff -t "POKEMON BLUE"
-pokered_vc.gbc:     RGBFIXFLAGS += -p 0x00 -t "POKEMON RED"
-pokeblue_vc.gbc:    RGBFIXFLAGS += -p 0x00 -t "POKEMON BLUE"
 
-%.gbc: $$(%_obj) layout.link
-	$(RGBLINK) $(RGBLINKFLAGS) -l layout.link -m $*.map -n $*.sym -o $@ $(filter %.o,$^)
-	$(RGBFIX) $(RGBFIXFLAGS) $@
+define CARTRIDGE
+$1: $2 layout.link
+	$$(RGBLINK) $$(RGBLINKFLAGS) -p $3 -l layout.link -m $$(@:.gbc=.map) -n $$(@:.gbc=.sym) -o $$@ $$(filter %.o,$$^)
+	$$(RGBFIX) $$(RGBFIXFLAGS) -p $3 -t "$4" $$@
+endef
+$(eval $(call CARTRIDGE,$(red_rom),$(red_obj),0x00,POKEMON RED))
+$(eval $(call CARTRIDGE,$(blue_rom),$(blue_obj),0x00,POKEMON BLUE))
+$(eval $(call CARTRIDGE,$(green_rom),$(green_obj),0x00,POKEMON GREEN))
+$(eval $(call CARTRIDGE,$(blue_debug_rom),$(blue_debug_obj),0xff,POKEMON BLUE))
+$(eval $(call CARTRIDGE,$(red_vc_rom),$(red_vc_obj),0x00,POKEMON RED))
+$(eval $(call CARTRIDGE,$(blue_vc_rom),$(blue_vc_obj),0x00,POKEMON BLUE))
 
 
 ### Misc file-specific graphics rules

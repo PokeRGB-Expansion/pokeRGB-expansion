@@ -15,6 +15,11 @@ HandleMenuInput_::
 	xor a
 	ld [wAnimCounter], a ; counter for pokemon shaking animation
 	call PlaceMenuCursor
+	ld a, [wMoveInfoHint]
+	and a
+	jr z, .afterInfoHint
+	farcall DrawMoveInfoCursorHint
+.afterInfoHint
 	call Delay3
 .loop2
 	push hl

@@ -1,0 +1,3914 @@
+{
+  "checked_date": "2026-11-22",
+  "emulator": "SameBoy 1.0.5 core",
+  "comparison": "Unmodified English cartridge ROMs. Later official animations and donor patches were compared in source.",
+  "method": "Start a fresh game in memory. Seed a disposable party and wild opponent. Play both sides through the normal battle command loop with controlled move slots. Read the Defense stage, battle flags, loaded picture tiles, and rendered pixels.",
+  "rom_sha1": {
+    "red": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+    "blue": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+    "yellow": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1"
+  },
+  "symbol_revisions": {
+    "pokered": "af519899719f0754965776faac0e836a3b906e6d",
+    "pokeyellow": "e89ead154b9968aa50eed9328ff2b38b6c194382"
+  },
+  "move_cases": [
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 2,
+        "target_hp_delta": -21,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -7,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -9,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -10,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -10,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -7,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -9,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 2,
+        "target_hp_delta": -9,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -9,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 2,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "player",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -7,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -9,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -9,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "DMG-B",
+      "side": "enemy",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -9,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 2,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -7,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -6,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -10,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "ordinary",
+      "animations_on": false,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": false,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": true,
+      "visible_after": true,
+      "after_tiles_nonzero": true,
+      "displayed_tile_counts": [
+        0,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "cap",
+      "animations_on": true,
+      "stage_before": 6,
+      "stage_after": 6,
+      "visible_before": false,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": false
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "minimized",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": false,
+      "minimized_after": true,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": -35,
+        "substitute_hp_delta": 0,
+        "target_visible": false
+      }
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "setup": "substitute",
+      "animations_on": true,
+      "stage_before": 0,
+      "stage_after": 2,
+      "visible_before": true,
+      "visible_after": false,
+      "after_tiles_nonzero": false,
+      "displayed_tile_counts": [
+        0,
+        21,
+        35,
+        49
+      ],
+      "invul_after": false,
+      "substitute_after": true,
+      "minimized_after": false,
+      "later_hit": {
+        "turns": 1,
+        "target_hp_delta": 0,
+        "substitute_hp_delta": -10,
+        "target_visible": false
+      }
+    }
+  ],
+  "follow_up_cases": [
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "red",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "player",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "blue",
+      "model": "DMG-B",
+      "side": "enemy",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "player",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "case": "ordinary_turns",
+      "closing_visibility": false,
+      "turns": 3
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "case": "transform",
+      "closing_visibility": true,
+      "turns": 1
+    },
+    {
+      "version": "yellow",
+      "model": "CGB-E",
+      "side": "enemy",
+      "case": "substitute_break",
+      "closing_visibility": true,
+      "turns": 2
+    }
+  ],
+  "return_path_method": "Use normal battle menu input in the controlled stock-ROM fixture. For STATS, measure picture tile bytes and rendered pixels after closing the party menu and after a later sprite draw. Also run a case with a draw of the blank tiles before STATS. Measure Defense stage, picture bytes, and the active Substitute and Minimize flags.",
+  "return_path_cases": [
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "switch_out_and_back",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_with_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_redraw",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "red",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "switch",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "switch_out_and_back",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_with_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_redraw",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 432,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "blue",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "switch",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "player",
+      "case": "switch_out_and_back",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_with_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_redraw",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "DMG-B",
+      "acid_armor_user": "opponent",
+      "case": "switch",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "player",
+      "case": "switch_out_and_back",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 592,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "party_cancel",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "stats",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "own_haze",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 0,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "new_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "new_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": false
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "substitute_user_attacks",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "stats_with_substitute",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 64,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": true,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_minimize",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 10,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": true
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "stats_after_redraw",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": true,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 461,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": true
+    },
+    {
+      "version": "yellow",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "model": "CGB-E",
+      "acid_armor_user": "opponent",
+      "case": "switch",
+      "after_acid_armor": {
+        "picture_visible": false,
+        "placed_tile_count": 0,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after_action": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "after": {
+        "picture_visible": false,
+        "placed_tile_count": 49,
+        "picture_tile_bytes_nonzero": 0,
+        "defense_stage": 2,
+        "species": 105,
+        "substitute_active": false,
+        "minimized": false
+      },
+      "matches_picture_before_acid_armor": false
+    }
+  ]
+}

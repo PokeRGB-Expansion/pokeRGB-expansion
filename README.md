@@ -1,31 +1,32 @@
-# Pokémon Red and Blue [![Build Status][ci-badge]][ci]
+# PokéRGB Expansion
 
-This is a disassembly of Pokémon Red and Blue.
+PokéRGB Expansion is a developer foundation for English Generation I Pokémon ROM hacks. It builds Red, Blue, and a cosmetic Green from one source tree. Green uses Blue's gameplay with a Bulbasaur title and its own Super Game Boy colors.
 
-It builds the following ROMs:
+Core is the default preset. Minimal keeps the original battle and resource rules while sharing selected interface and safety fixes. The complete public Core release is in development. [Project specification](spec/README.md) · [Core release checks](spec/docs/09-roadmap.md)
 
-- Pokemon Red (UE) [S][!].gb `sha1: ea9bcae617fdf159b045185467ae58b2e4a48b9a`
-- Pokemon Blue (UE) [S][!].gb `sha1: d7037c83e1ae5b39bde3c30787637ba1d4c48ce2`
-- BLUEMONS.GB (debug build) `sha1: 5b1456177671b79b263c614ea0e7cc9ac542e9c4`
-- dmgapae0.e69.patch `sha1: 0fb5f743696adfe1dbb2e062111f08f9bc5a293a`
-- dmgapee0.e68.patch `sha1: ed4be94dc29c64271942c87f2157bca9ca1019c7`
+## Build
 
-To set up the repository, see [**INSTALL.md**](INSTALL.md).
+Install GNU Make, a C compiler, libpng, and RGBDS 1.0.4. [Platform instructions](INSTALL.md)
 
+```sh
+make -j4
+make -j4 PRESET=minimal
+```
 
-## See also
+Each command builds all three colors. To build just one, pass `red`, `blue`, or `green` to Make. The cartridge and matching map and symbol files go under `build/core/` or `build/minimal/`. If RGBDS is outside your path, set `RGBDS` to its tool directory with a trailing slash.
 
-- [**Wiki**][wiki] (includes [tutorials][tutorials])
-- [**Symbols**][symbols]
-- [**Tools**][tools]
+The reference baseline is pret/pokered at `ba9c0568f64ae602fadda577a08c66639f93082a`. To check five existing upstream outputs against the original hashes, run `make compare BASELINE_DIR=/path/to/upstream/outputs`. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a)
 
-You can find us on [Discord (pret, #pokered)](https://discord.gg/d5dubZ3).
+## Tests
 
-For other pret projects, see [pret.github.io](https://pret.github.io/).
+CI builds each preset and checks gameplay tables across reference colors. To run the linked-cartridge smoke tests locally, point this command at your SameBoy 1.0.5 core library and its DMG boot file.
 
-[wiki]: https://github.com/pret/pokered/wiki
-[tutorials]: https://github.com/pret/pokered/wiki/Tutorials
-[symbols]: https://github.com/pret/pokered/tree/symbols
-[tools]: https://github.com/pret/gb-asm-tools
-[ci]: https://github.com/pret/pokered/actions
-[ci-badge]: https://github.com/pret/pokered/actions/workflows/main.yml/badge.svg
+```sh
+python3 tests/cartridge_smoke.py build/core --sameboy /path/to/library --boot /path/to/dmg_boot.bin
+```
+
+The smoke tests reach New Game in each color, test confirmed and cancelled box changes against a disposable save, and exercise Bag Move INFO and STATS navigation.
+
+## Credits
+
+This unofficial project builds on [pret/pokered](https://github.com/pret/pokered). See its [tutorials](https://github.com/pret/pokered/wiki/Tutorials), [symbols](https://github.com/pret/pokered/tree/symbols), and [tools](https://github.com/pret/gb-asm-tools). Pokémon and the original games are the work of their respective creators and rights holders. [Research and source credits](spec/docs/08-provenance.md)

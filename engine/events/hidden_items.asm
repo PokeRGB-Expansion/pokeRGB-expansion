@@ -77,7 +77,11 @@ HiddenCoins:
 	cp 20
 	jr z, .bcd20
 	cp 40
+IF DEF(_POKERGB_CORE)
+	jr z, .bcd40
+ELSE
 	jr z, .bcd20 ; should be bcd40
+ENDC
 	jr .bcd100
 .bcd10
 	ld a, $10
@@ -87,7 +91,11 @@ HiddenCoins:
 	ld a, $20
 	ldh [hCoins + 1], a
 	jr .bcdDone
+IF DEF(_POKERGB_CORE)
+.bcd40
+ELSE
 .bcd40 ; due to a typo, this is never used
+ENDC
 	ld a, $40
 	ldh [hCoins + 1], a
 	jr .bcdDone
@@ -95,22 +103,16 @@ HiddenCoins:
 	ld a, $1
 	ldh [hCoins], a
 .bcdDone
-	ld de, wPlayerCoins + 1
-	ld hl, hCoins + 1
-	ld c, $2
-	predef AddBCDPredef
+	farcall AddHiddenCoins
+	push af ; keep the overflow flag across the pickup bookkeeping
 	ld hl, wObtainedHiddenCoinsFlags
 	ld a, [wHiddenItemOrCoinsIndex]
 	ld c, a
 	ld b, FLAG_SET
 	predef FlagActionPredef
 	call EnableAutoTextBoxDrawing
-	ld a, [wPlayerCoins]
-	cp $99
-	jr nz, .roomInCoinCase
-	ld a, [wPlayerCoins + 1]
-	cp $99
-	jr nz, .roomInCoinCase
+	pop af
+	jr nc, .roomInCoinCase
 	tx_pre_id DroppedHiddenCoinsText
 	jr .done
 .roomInCoinCase

@@ -1,0 +1,72 @@
+{
+  "checked_date": "2026-10-23",
+  "kind": "RAM allocation/link audit; no gameplay or save-compatibility result",
+  "pokered_commit": "af519899719f0754965776faac0e836a3b906e6d",
+  "toolchain": {
+    "rgbasm": "rgbasm v1.0.4",
+    "rgblink": "rgblink v1.0.4"
+  },
+  "source_sha256": {
+    "ram/wram.asm": "00683cd430a9ef30794d2aeaee51f3a5440e4bb14dca13e9f9cb5fa88f130e34",
+    "constants/menu_constants.asm": "fbd0e91bd6ac5f8a491a4d5df3ccbc4438f34c234ce9be684f82b2537c6022ac",
+    "layout.link": "70c20fcaa2fb04b007589c8fc512fdf3e9141d90b05bab955f39582f12ac9bf9"
+  },
+  "method": "Link upstream RAM sections in upstream order with -d; omit the OAM DMA section from the RAM-only script. Compare WRAM labels only.",
+  "constant_only_experiments": [
+    {
+      "capacity": 20,
+      "allocation_passed": true,
+      "wNumBagItems": "00:d31d",
+      "wBagItems": "00:d31e",
+      "wPlayerMoney": "00:d347",
+      "wMainDataEnd": "00:da80",
+      "wBoxDataEnd": "00:dee2"
+    },
+    {
+      "capacity": 21,
+      "allocation_passed": true,
+      "wNumBagItems": "00:d31d",
+      "wBagItems": "00:d31e",
+      "wPlayerMoney": "00:d349",
+      "wMainDataEnd": "00:da82",
+      "wBoxDataEnd": "00:dee4"
+    },
+    {
+      "capacity": 40,
+      "allocation_passed": false,
+      "error": "error: Cannot decrease the current address (from $df0a to $df00)\n    at ram-layout.link(12)\nerror: The linker script assigns section \"Stack\" to address $df0a, but then it would overflow WRAM0 by 10 bytes\n    at ram-layout.link(13)\nLinking failed with 2 errors"
+    },
+    {
+      "capacity": 60,
+      "allocation_passed": false,
+      "error": "error: Cannot decrease the current address (from $df32 to $df00)\n    at ram-layout.link(12)\nerror: The linker script assigns section \"Stack\" to address $df32, but then it would overflow WRAM0 by 50 bytes\n    at ram-layout.link(13)\nLinking failed with 2 errors"
+    }
+  ],
+  "separate_134_byte_reserve_with_4_byte_marker": [
+    {
+      "capacity": 60,
+      "allocation_passed": true,
+      "wNumBagItems": "00:d66e",
+      "wBagItems": "00:d66f",
+      "wPlayerMoney": "00:d347",
+      "wMainDataEnd": "00:da80",
+      "wBoxDataEnd": "00:dee2",
+      "other_wram_address_changes": {}
+    },
+    {
+      "capacity": 64,
+      "allocation_passed": true,
+      "wNumBagItems": "00:d66e",
+      "wBagItems": "00:d66f",
+      "wPlayerMoney": "00:d347",
+      "wMainDataEnd": "00:da80",
+      "wBoxDataEnd": "00:dee2",
+      "other_wram_address_changes": {}
+    },
+    {
+      "capacity": 65,
+      "allocation_passed": false,
+      "error": "error: Assertion failed\n    at ram/wram.asm(2050)\n    <- ram.asm(5)\nAssembly aborted with 1 error"
+    }
+  ]
+}

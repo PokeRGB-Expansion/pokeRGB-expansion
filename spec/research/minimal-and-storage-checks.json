@@ -1,0 +1,405 @@
+{
+  "source_commit": "ba9c0568f64ae602fadda577a08c66639f93082a",
+  "runtime": "RGBDS 1.0.4 and SameBoy 1.0.5 in DMG-B mode",
+  "unchanged_rom_hashes_with_common_label": {
+    "pokered": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+    "pokeblue": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2"
+  },
+  "enabled_read_only_probe": [
+    {
+      "color": "red",
+      "tests": {
+        "stock_reader": 12,
+        "only_free": 132,
+        "all_full": 12,
+        "several_free": 12,
+        "before_first_switch": 12
+      },
+      "rom_sha1": "43986685d1c566f5f655339bb477e4f62df0c02d",
+      "probe_rom_bytes": 69
+    },
+    {
+      "color": "blue",
+      "tests": {
+        "stock_reader": 12,
+        "only_free": 132,
+        "all_full": 12,
+        "several_free": 12,
+        "before_first_switch": 12
+      },
+      "rom_sha1": "775c05b5c3c1c60a6929aa66199d42b7be7ac777",
+      "probe_rom_bytes": 69
+    }
+  ],
+  "save_path_cases": [
+    {
+      "color": "red",
+      "saver": "SaveGameData",
+      "before": {
+        "first_member_hp": 14,
+        "money_low": 16,
+        "owned_first_byte": 1,
+        "live_box_count": 0
+      },
+      "ram_before_saving": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "reloaded": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "numbered_box_banks_identical": true,
+      "valid_main_save": true
+    },
+    {
+      "color": "red",
+      "saver": "SavePartyAndDexData",
+      "before": {
+        "first_member_hp": 14,
+        "money_low": 16,
+        "owned_first_byte": 1,
+        "live_box_count": 0
+      },
+      "ram_before_saving": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "reloaded": {
+        "first_member_hp": 13,
+        "money_low": 16,
+        "owned_first_byte": 3,
+        "live_box_count": 0
+      },
+      "numbered_box_banks_identical": true,
+      "valid_main_save": true
+    },
+    {
+      "color": "blue",
+      "saver": "SaveGameData",
+      "before": {
+        "first_member_hp": 14,
+        "money_low": 16,
+        "owned_first_byte": 1,
+        "live_box_count": 0
+      },
+      "ram_before_saving": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "reloaded": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "numbered_box_banks_identical": true,
+      "valid_main_save": true
+    },
+    {
+      "color": "blue",
+      "saver": "SavePartyAndDexData",
+      "before": {
+        "first_member_hp": 14,
+        "money_low": 16,
+        "owned_first_byte": 1,
+        "live_box_count": 0
+      },
+      "ram_before_saving": {
+        "first_member_hp": 13,
+        "money_low": 32,
+        "owned_first_byte": 3,
+        "live_box_count": 1
+      },
+      "reloaded": {
+        "first_member_hp": 13,
+        "money_low": 16,
+        "owned_first_byte": 3,
+        "live_box_count": 0
+      },
+      "numbered_box_banks_identical": true,
+      "valid_main_save": true
+    }
+  ],
+  "counter_menu_cases": [
+    {
+      "color": "red",
+      "marked_with_select": true,
+      "hover_water_gun": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        1,
+        33,
+        35,
+        0
+      ],
+      "after_cancel": [
+        0,
+        33,
+        35,
+        0
+      ]
+    },
+    {
+      "color": "red",
+      "marked_with_select": false,
+      "hover_water_gun": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after_cancel": [
+        0,
+        55,
+        40,
+        21
+      ]
+    },
+    {
+      "color": "blue",
+      "marked_with_select": true,
+      "hover_water_gun": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        1,
+        33,
+        35,
+        0
+      ],
+      "after_cancel": [
+        0,
+        33,
+        35,
+        0
+      ]
+    },
+    {
+      "color": "blue",
+      "marked_with_select": false,
+      "hover_water_gun": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after_cancel": [
+        0,
+        55,
+        40,
+        21
+      ]
+    }
+  ],
+  "counter_turn_cases": [
+    {
+      "color": "red",
+      "marked": true,
+      "prior_damage": 19,
+      "hover": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        1,
+        33,
+        35,
+        0
+      ],
+      "cancel": [
+        0,
+        33,
+        35,
+        0
+      ],
+      "new_member_hp": 122,
+      "enemy_move": 68,
+      "last_damage": 38
+    },
+    {
+      "color": "red",
+      "marked": false,
+      "prior_damage": 19,
+      "hover": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "cancel": [
+        0,
+        55,
+        40,
+        21
+      ],
+      "new_member_hp": 160,
+      "enemy_move": 68,
+      "last_damage": 19
+    },
+    {
+      "color": "blue",
+      "marked": true,
+      "prior_damage": 17,
+      "hover": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        1,
+        33,
+        35,
+        0
+      ],
+      "cancel": [
+        0,
+        33,
+        35,
+        0
+      ],
+      "new_member_hp": 126,
+      "enemy_move": 68,
+      "last_damage": 34
+    },
+    {
+      "color": "blue",
+      "marked": false,
+      "prior_damage": 17,
+      "hover": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "after": [
+        3,
+        55,
+        40,
+        21
+      ],
+      "cancel": [
+        0,
+        55,
+        40,
+        21
+      ],
+      "new_member_hp": 160,
+      "enemy_move": 68,
+      "last_damage": 17
+    }
+  ],
+  "received_move_cases": [
+    {
+      "color": "red",
+      "charizard_can_be_taught_fly": false,
+      "fly_in_received_record": true,
+      "field_menu_move_indexes": [
+        2,
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    },
+    {
+      "color": "red",
+      "charizard_can_be_taught_fly": false,
+      "fly_in_received_record": false,
+      "field_menu_move_indexes": [
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    },
+    {
+      "color": "blue",
+      "charizard_can_be_taught_fly": false,
+      "fly_in_received_record": true,
+      "field_menu_move_indexes": [
+        2,
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    },
+    {
+      "color": "blue",
+      "charizard_can_be_taught_fly": false,
+      "fly_in_received_record": false,
+      "field_menu_move_indexes": [
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    },
+    {
+      "color": "yellow",
+      "charizard_can_be_taught_fly": true,
+      "fly_in_received_record": true,
+      "field_menu_move_indexes": [
+        2,
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    },
+    {
+      "color": "yellow",
+      "charizard_can_be_taught_fly": true,
+      "fly_in_received_record": false,
+      "field_menu_move_indexes": [
+        1
+      ],
+      "pp_after": [
+        0,
+        7
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "source_revision": "ba9c0568f64ae602fadda577a08c66639f93082a",
+  "emulator": "SameBoy 1.0.5",
+  "method": "Run LearnMoveFromLevelUp with Alakazam in party slot one, player party data and the specified level, moves and PP. Stop at TryingToLearn before replacement, at PrintLearnedMove after automatic learning, or at return when no offer is due. The tests exercise the stock move and PP writes, not the proposed INFO interface.",
+  "runs": [
+    {
+      "color": "red",
+      "sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "stock_levelup": [
+        {
+          "case": "four known",
+          "level": 31,
+          "result": "TryingToLearn",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            11
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            11
+          ]
+        },
+        {
+          "case": "one vacancy",
+          "level": 31,
+          "result": "PrintLearnedMove",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            0
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            0
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            20
+          ]
+        },
+        {
+          "case": "already knows Recover",
+          "level": 31,
+          "result": "returned without offer",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            6
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            6
+          ]
+        },
+        {
+          "case": "no move offered",
+          "level": 32,
+          "result": "returned without offer",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            11
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "color": "blue",
+      "sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "stock_levelup": [
+        {
+          "case": "four known",
+          "level": 31,
+          "result": "TryingToLearn",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            11
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            11
+          ]
+        },
+        {
+          "case": "one vacancy",
+          "level": 31,
+          "result": "PrintLearnedMove",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            0
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            0
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            20
+          ]
+        },
+        {
+          "case": "already knows Recover",
+          "level": 31,
+          "result": "returned without offer",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            6
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            105
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            6
+          ]
+        },
+        {
+          "case": "no move offered",
+          "level": 32,
+          "result": "returned without offer",
+          "move_ids_before": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_before": [
+            5,
+            12,
+            8,
+            11
+          ],
+          "move_ids_after": [
+            91,
+            93,
+            50,
+            60
+          ],
+          "pp_after": [
+            5,
+            12,
+            8,
+            11
+          ]
+        }
+      ]
+    }
+  ]
+}

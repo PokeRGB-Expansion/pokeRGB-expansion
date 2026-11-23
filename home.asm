@@ -9,6 +9,7 @@ SECTION "High Home", ROM0
 INCLUDE "home/lcd.asm"
 INCLUDE "home/clear_sprites.asm"
 INCLUDE "home/copy.asm"
+INCLUDE "home/bankswitch.asm"
 
 
 SECTION "Home", ROM0
@@ -56,7 +57,6 @@ INCLUDE "home/trainers.asm"
 INCLUDE "home/map_objects.asm"
 INCLUDE "home/trainers2.asm"
 INCLUDE "home/money.asm"
-INCLUDE "home/bankswitch.asm"
 INCLUDE "home/yes_no.asm"
 INCLUDE "home/pathfinding.asm"
 INCLUDE "home/load_font.asm"

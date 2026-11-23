@@ -1,0 +1,742 @@
+{
+  "checked_date": "2026-11-22",
+  "emulator": "SameBoy 1.0.5",
+  "setup": "Unmodified English Red, Blue, and Yellow ROMs. Seeded party, encounter, and move fixtures in memory. Used normal battle and STATS menus. Recorded changes in video-memory graphics, screen colors, and trainer decisions.",
+  "graphics_cases": [
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "minimize_cancel_fight",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_after": {
+        "tile_sha256": "b6438f6bc0b41419af595ec7d5369489beeabadf7299b7fe1841b0af78797f6c",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "substitute_cancel_fight",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "fd75e07c751d7db32f998e455a58c9685b1ab37ce7063ba00a6a4603fc419a72",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "b6438f6bc0b41419af595ec7d5369489beeabadf7299b7fe1841b0af78797f6c",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "minimize_unchanged_side",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "substitute_unchanged_side",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "ordinary_gastly",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "ghost",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "c567a4616c3ae6042fca94b99f6fc6e49682d638d55c76fb5473a642a4931bc1",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "red",
+      "mode": "DMG-B",
+      "case": "tower_scoped",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "minimize_cancel_fight",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_after": {
+        "tile_sha256": "b6438f6bc0b41419af595ec7d5369489beeabadf7299b7fe1841b0af78797f6c",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "substitute_cancel_fight",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "fd75e07c751d7db32f998e455a58c9685b1ab37ce7063ba00a6a4603fc419a72",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "b6438f6bc0b41419af595ec7d5369489beeabadf7299b7fe1841b0af78797f6c",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "minimize_unchanged_side",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "substitute_unchanged_side",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "ordinary_gastly",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "ghost",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "c567a4616c3ae6042fca94b99f6fc6e49682d638d55c76fb5473a642a4931bc1",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "blue",
+      "mode": "DMG-B",
+      "case": "tower_scoped",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "a6b82f257b0d38147cfdf03dbadeb9143573909ff20b3dae80f3b74e1f65606a",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "minimize_cancel_fight",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "substitute_cancel_fight",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "minimize_unchanged_side",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "substitute_unchanged_side",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "ordinary_gastly",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "ghost",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "c567a4616c3ae6042fca94b99f6fc6e49682d638d55c76fb5473a642a4931bc1",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "DMG-B",
+      "case": "tower_scoped",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "minimize_cancel_fight",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "substitute_cancel_fight",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 0,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "minimize_unchanged_side",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "3e7e5ccdee25f6e1ef329e28d84cafb0829dd17d0ed0556cfd9e9eddf34668b2",
+        "drawn_colors": 2
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "substitute_unchanged_side",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "da1c0a720fe5ae7ebd87cc587979d45528b242ac5b1fdde1630c76778863f46d",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "ordinary_gastly",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "ghost",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "c567a4616c3ae6042fca94b99f6fc6e49682d638d55c76fb5473a642a4931bc1",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    },
+    {
+      "version": "yellow",
+      "mode": "CGB-E",
+      "case": "tower_scoped",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "side_before_stats": 1,
+      "player_before": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_before": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "player_after": {
+        "tile_sha256": "26bf34be5fa0f33158a2837270f8056e0026f732b5ef435d403ea5ad6163a241",
+        "drawn_colors": 4
+      },
+      "enemy_after": {
+        "tile_sha256": "622d7e000660bec6fb8d50cb1d731555cd4b7d0fff22aedca3787f6a3682706e",
+        "drawn_colors": 4
+      },
+      "enemy_name_unchanged": true
+    }
+  ],
+  "trainer_cases": [
+    {
+      "version": "red",
+      "case": "blaine_full_hp",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "turns": 1,
+      "calls": [
+        {
+          "hp": 104,
+          "maximum_hp": 104,
+          "item_uses_before": 2
+        }
+      ]
+    },
+    {
+      "version": "blue",
+      "case": "blaine_full_hp",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "turns": 9,
+      "calls": [
+        {
+          "hp": 104,
+          "maximum_hp": 104,
+          "item_uses_before": 2
+        }
+      ]
+    },
+    {
+      "version": "yellow",
+      "case": "blaine_full_hp",
+      "rom_sha1": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+      "turns": 34,
+      "calls": []
+    },
+    {
+      "version": "red",
+      "case": "shift_replacement_prompt",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "reserve_healthy": false,
+      "prompt_seen": true
+    },
+    {
+      "version": "red",
+      "case": "shift_replacement_prompt",
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "reserve_healthy": true,
+      "prompt_seen": true
+    },
+    {
+      "version": "blue",
+      "case": "shift_replacement_prompt",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "reserve_healthy": false,
+      "prompt_seen": true
+    },
+    {
+      "version": "blue",
+      "case": "shift_replacement_prompt",
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "reserve_healthy": true,
+      "prompt_seen": true
+    }
+  ]
+}

@@ -1,0 +1,633 @@
+{
+  "stock_red_blue_move_turns": {
+    "method": "SameBoy 1.0.5 DMG-B, stock English retail. Same two-member disposable party and stock wild battle entry as the foundation battle fixtures. Set both target type slots to the named type, select the move using FIGHT and record target HP before and after the turn. The opposing move was Splash. No patch and no forced damage roll.",
+    "cases": [
+      {
+        "version": "red",
+        "move": "Lick",
+        "target": "Psychic",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 176,
+        "damage": 0
+      },
+      {
+        "version": "red",
+        "move": "Lick",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 164,
+        "damage": 12
+      },
+      {
+        "version": "red",
+        "move": "Lick",
+        "target": "Normal",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 176,
+        "damage": 0
+      },
+      {
+        "version": "red",
+        "move": "Night Shade",
+        "target": "Psychic",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 131,
+        "damage": 45
+      },
+      {
+        "version": "red",
+        "move": "Night Shade",
+        "target": "Normal",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 131,
+        "damage": 45
+      },
+      {
+        "version": "red",
+        "move": "Gust",
+        "target": "Ghost",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 176,
+        "damage": 0
+      },
+      {
+        "version": "red",
+        "move": "Gust",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 153,
+        "damage": 23
+      },
+      {
+        "version": "red",
+        "move": "Karate Chop",
+        "target": "Ghost",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 176,
+        "damage": 0
+      },
+      {
+        "version": "red",
+        "move": "Karate Chop",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 176,
+        "target_hp_after": 126,
+        "damage": 50
+      },
+      {
+        "version": "blue",
+        "move": "Lick",
+        "target": "Psychic",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 175,
+        "damage": 0
+      },
+      {
+        "version": "blue",
+        "move": "Lick",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 165,
+        "damage": 10
+      },
+      {
+        "version": "blue",
+        "move": "Lick",
+        "target": "Normal",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 175,
+        "damage": 0
+      },
+      {
+        "version": "blue",
+        "move": "Night Shade",
+        "target": "Psychic",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 130,
+        "damage": 45
+      },
+      {
+        "version": "blue",
+        "move": "Night Shade",
+        "target": "Normal",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 130,
+        "damage": 45
+      },
+      {
+        "version": "blue",
+        "move": "Gust",
+        "target": "Ghost",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 175,
+        "damage": 0
+      },
+      {
+        "version": "blue",
+        "move": "Gust",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 155,
+        "damage": 20
+      },
+      {
+        "version": "blue",
+        "move": "Karate Chop",
+        "target": "Ghost",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 175,
+        "damage": 0
+      },
+      {
+        "version": "blue",
+        "move": "Karate Chop",
+        "target": "Water",
+        "attacker_level": 45,
+        "target_hp_before": 175,
+        "target_hp_after": 125,
+        "damage": 50
+      }
+    ]
+  },
+  "stock_three_color_ghost_turns": {
+    "method": "Level 45 attacker, X Accuracy active and target typed pure Psychic or Water. Read target HP loss and confusion after a normal turn.",
+    "fields": [
+      "color",
+      "target_type_id",
+      "move_id",
+      "damage",
+      "confused"
+    ],
+    "cases": [
+      [
+        "red",
+        24,
+        122,
+        0,
+        false
+      ],
+      [
+        "red",
+        24,
+        101,
+        45,
+        false
+      ],
+      [
+        "red",
+        24,
+        109,
+        0,
+        true
+      ],
+      [
+        "red",
+        21,
+        122,
+        11,
+        false
+      ],
+      [
+        "red",
+        21,
+        101,
+        45,
+        false
+      ],
+      [
+        "red",
+        21,
+        109,
+        0,
+        true
+      ],
+      [
+        "blue",
+        24,
+        122,
+        0,
+        false
+      ],
+      [
+        "blue",
+        24,
+        101,
+        45,
+        false
+      ],
+      [
+        "blue",
+        24,
+        109,
+        0,
+        true
+      ],
+      [
+        "blue",
+        21,
+        122,
+        10,
+        false
+      ],
+      [
+        "blue",
+        21,
+        101,
+        45,
+        false
+      ],
+      [
+        "blue",
+        21,
+        109,
+        0,
+        true
+      ],
+      [
+        "yellow",
+        24,
+        122,
+        0,
+        false
+      ],
+      [
+        "yellow",
+        24,
+        101,
+        45,
+        false
+      ],
+      [
+        "yellow",
+        24,
+        109,
+        0,
+        true
+      ],
+      [
+        "yellow",
+        21,
+        122,
+        10,
+        false
+      ],
+      [
+        "yellow",
+        21,
+        101,
+        45,
+        false
+      ],
+      [
+        "yellow",
+        21,
+        109,
+        0,
+        true
+      ]
+    ]
+  },
+  "stock_wandering_routine": {
+    "method": "SameBoy DMG-B, direct execution of CanWalkOntoTile. Each color has two return-to-south fixtures and one impassable-water control. Each return result records number of prior north steps, whether a south step was accepted, then final displacement.",
+    "colors": [
+      {
+        "version": "red",
+        "hash": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "after_north_then_south": [
+          [
+            4,
+            true,
+            5
+          ],
+          [
+            5,
+            false,
+            3
+          ]
+        ],
+        "water_refused": true
+      },
+      {
+        "version": "blue",
+        "hash": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "after_north_then_south": [
+          [
+            4,
+            true,
+            5
+          ],
+          [
+            5,
+            false,
+            3
+          ]
+        ],
+        "water_refused": true
+      },
+      {
+        "version": "yellow",
+        "hash": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1",
+        "after_north_then_south": [
+          [
+            4,
+            true,
+            5
+          ],
+          [
+            5,
+            true,
+            4
+          ]
+        ],
+        "water_refused": true
+      }
+    ]
+  },
+  "stock_guard_spec": {
+    "method": "On each color use Guard Spec. from a normal bag as a separate control, then exercise Growl, Flamethrower and Water Gun with the defending flag clear or set.",
+    "bag_use_fields": [
+      "color",
+      "move_id_zero_for_bag_use",
+      "use_item",
+      "resulting_status2_byte",
+      "remaining_bag_entries"
+    ],
+    "bag_use_cases": [
+      [
+        "red",
+        0,
+        true,
+        2,
+        0
+      ],
+      [
+        "blue",
+        0,
+        true,
+        2,
+        0
+      ]
+    ],
+    "move_fields": [
+      "color",
+      "move_id",
+      "defender_has_mist",
+      "hp_lost",
+      "attack_stage_change"
+    ],
+    "move_cases": [
+      [
+        "red",
+        45,
+        false,
+        0,
+        -1
+      ],
+      [
+        "red",
+        45,
+        true,
+        0,
+        0
+      ],
+      [
+        "red",
+        53,
+        false,
+        14,
+        0
+      ],
+      [
+        "red",
+        53,
+        true,
+        14,
+        0
+      ],
+      [
+        "red",
+        55,
+        false,
+        9,
+        0
+      ],
+      [
+        "red",
+        55,
+        true,
+        9,
+        0
+      ],
+      [
+        "blue",
+        45,
+        false,
+        0,
+        -1
+      ],
+      [
+        "blue",
+        45,
+        true,
+        0,
+        0
+      ],
+      [
+        "blue",
+        53,
+        false,
+        24,
+        0
+      ],
+      [
+        "blue",
+        53,
+        true,
+        24,
+        0
+      ],
+      [
+        "blue",
+        55,
+        false,
+        8,
+        0
+      ],
+      [
+        "blue",
+        55,
+        true,
+        8,
+        0
+      ]
+    ]
+  },
+  "charizard_machine_option": {
+    "format": "Routine test at CanLearnTM, return value C. One permission edited on the pinned English Red/Blue tree. No release build.",
+    "binary_diff": {
+      "red": [
+        {
+          "offset": "0x14f",
+          "stock": 230,
+          "edited": 238
+        },
+        {
+          "offset": "0x38484",
+          "stock": 38,
+          "edited": 46
+        }
+      ],
+      "blue": [
+        {
+          "offset": "0x14f",
+          "stock": 10,
+          "edited": 18
+        },
+        {
+          "offset": "0x38484",
+          "stock": 38,
+          "edited": 46
+        }
+      ]
+    },
+    "routine_checks": [
+      {
+        "build": "red",
+        "species": "Charizard",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "red",
+        "species": "Charizard",
+        "move": "Cut",
+        "can_learn": true
+      },
+      {
+        "build": "red",
+        "species": "Charizard",
+        "move": "Strength",
+        "can_learn": true
+      },
+      {
+        "build": "red",
+        "species": "Gyarados",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "blue",
+        "species": "Charizard",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "blue",
+        "species": "Charizard",
+        "move": "Cut",
+        "can_learn": true
+      },
+      {
+        "build": "blue",
+        "species": "Charizard",
+        "move": "Strength",
+        "can_learn": true
+      },
+      {
+        "build": "blue",
+        "species": "Gyarados",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "red+Fly",
+        "species": "Charizard",
+        "move": "Fly",
+        "can_learn": true
+      },
+      {
+        "build": "red+Fly",
+        "species": "Charizard",
+        "move": "Cut",
+        "can_learn": true
+      },
+      {
+        "build": "red+Fly",
+        "species": "Charizard",
+        "move": "Strength",
+        "can_learn": true
+      },
+      {
+        "build": "red+Fly",
+        "species": "Gyarados",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "blue+Fly",
+        "species": "Charizard",
+        "move": "Fly",
+        "can_learn": true
+      },
+      {
+        "build": "blue+Fly",
+        "species": "Charizard",
+        "move": "Cut",
+        "can_learn": true
+      },
+      {
+        "build": "blue+Fly",
+        "species": "Charizard",
+        "move": "Strength",
+        "can_learn": true
+      },
+      {
+        "build": "blue+Fly",
+        "species": "Gyarados",
+        "move": "Fly",
+        "can_learn": false
+      },
+      {
+        "build": "yellow",
+        "species": "Charizard",
+        "move": "Fly",
+        "can_learn": true
+      },
+      {
+        "build": "yellow",
+        "species": "Charizard",
+        "move": "Cut",
+        "can_learn": true
+      },
+      {
+        "build": "yellow",
+        "species": "Charizard",
+        "move": "Strength",
+        "can_learn": true
+      },
+      {
+        "build": "yellow",
+        "species": "Gyarados",
+        "move": "Fly",
+        "can_learn": false
+      }
+    ]
+  }
+}

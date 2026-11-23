@@ -88,12 +88,19 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 ; gave Lemonade
 	CheckEvent EVENT_GOT_TM49
 	jr nz, .alreadyGaveDrink
+IF DEF(_POKERGB_CORE)
+	lb bc, TM_TRI_ATTACK, 1
+	call .tradeDrink
+	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlYayLemonadeText
 	call PrintText
+IF !DEF(_POKERGB_CORE)
 	call RemoveItemByIDBank12
 	lb bc, TM_TRI_ATTACK, 1
 	call GiveItem
 	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlReceivedTM49Text
 	call PrintText
 	SetEvent EVENT_GOT_TM49
@@ -101,12 +108,19 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 .gaveSodaPop
 	CheckEvent EVENT_GOT_TM48
 	jr nz, .alreadyGaveDrink
+IF DEF(_POKERGB_CORE)
+	lb bc, TM_ROCK_SLIDE, 1
+	call .tradeDrink
+	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlYaySodaPopText
 	call PrintText
+IF !DEF(_POKERGB_CORE)
 	call RemoveItemByIDBank12
 	lb bc, TM_ROCK_SLIDE, 1
 	call GiveItem
 	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlReceivedTM48Text
 	call PrintText
 	SetEvent EVENT_GOT_TM48
@@ -114,12 +128,19 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 .gaveFreshWater
 	CheckEvent EVENT_GOT_TM13
 	jr nz, .alreadyGaveDrink
+IF DEF(_POKERGB_CORE)
+	lb bc, TM_ICE_BEAM, 1
+	call .tradeDrink
+	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlYayFreshWaterText
 	call PrintText
+IF !DEF(_POKERGB_CORE)
 	call RemoveItemByIDBank12
 	lb bc, TM_ICE_BEAM, 1
 	call GiveItem
 	jr nc, .bagFull
+ENDC
 	ld hl, CeladonMartRoofLittleGirlReceivedTM13Text
 	call PrintText
 	SetEvent EVENT_GOT_TM13
@@ -130,6 +151,47 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 .alreadyGaveDrink
 	ld hl, CeladonMartRoofLittleGirlImNotThirstyText
 	jp PrintText
+IF DEF(_POKERGB_CORE)
+
+.tradeDrink
+; Match the first stack, as RemoveItemByID does. A single drink can make
+; room for its reward. Otherwise deliver first, while the bag is intact.
+	ldh a, [hItemToRemoveID]
+	ld d, a
+	ld hl, wBagItems
+.findDrink
+	ld a, [hli]
+	cp $ff
+	jr z, .drinkMissing
+	cp d
+	jr z, .foundDrink
+	inc hl
+	jr .findDrink
+.foundDrink
+	ld a, [hl]
+	cp 1
+	jr z, .oneDrinkLeft
+	ldh a, [hItemToRemoveID]
+	push af
+	call GiveItem
+	pop bc
+	ret nc
+	ld a, b
+	ldh [hItemToRemoveID], a
+	call RemoveItemByIDBank12
+	scf
+	ret
+.oneDrinkLeft
+; The vacancy guarantees insertion in a valid inventory. No call between
+; removal and delivery can display text or save the bag.
+	push bc
+	call RemoveItemByIDBank12
+	pop bc
+	jp GiveItem
+.drinkMissing
+	and a
+	ret
+ENDC
 
 RemoveItemByIDBank12:
 	farjp RemoveItemByID

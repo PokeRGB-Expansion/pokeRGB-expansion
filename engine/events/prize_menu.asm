@@ -13,7 +13,7 @@ CeladonPrizeMenu::
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
-	ld a, PAD_A | PAD_B
+	ld a, PAD_A | PAD_B | PAD_START
 	ld [wMenuWatchedKeys], a
 	ld a, $03
 	ld [wMaxMenuItem], a
@@ -30,7 +30,16 @@ CeladonPrizeMenu::
 	call UpdateSprites
 	ld hl, WhichPrizeText
 	call PrintText
-	call HandleMenuInput ; menu choice handler
+.choosePrize
+	farcall HandlePrizeMoveInfoInput
+	ld a, [wMoveInfoNumber]
+	bit B_PAD_START, a
+	jr z, .ordinaryChoice
+	and PAD_A | PAD_B
+	jr nz, .ordinaryChoice
+	farcall InspectPrizeMove
+	jr .choosePrize
+.ordinaryChoice
 	bit B_PAD_B, a
 	jr nz, .noChoice
 	ld a, [wCurrentMenuItem]

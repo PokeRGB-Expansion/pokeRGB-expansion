@@ -35,14 +35,22 @@ _ItemUseBallText05::
 	text_end
 
 _ItemUseBallText07::
+IF DEF(_POKERGB_CORE)
+	text_ram wNameBuffer
+ELSE
 	text_ram wBoxMonNicks
+ENDC
 	text " was"
 	line "transferred to"
 	cont "BILL's PC!"
 	prompt
 
 _ItemUseBallText08::
+IF DEF(_POKERGB_CORE)
+	text_ram wNameBuffer
+ELSE
 	text_ram wBoxMonNicks
+ENDC
 	text " was"
 	line "transferred to"
 	cont "someone's PC!"

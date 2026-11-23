@@ -75,6 +75,12 @@ INCLUDE "engine/events/hidden_events/town_map.asm"
 INCLUDE "engine/events/hidden_events/pokemon_stuff.asm"
 
 
+SECTION "Field shortcuts", ROMX
+
+INCLUDE "engine/overworld/field_shortcuts.asm"
+INCLUDE "engine/overworld/registered_item.asm"
+
+
 SECTION "Font Graphics", ROMX
 
 INCLUDE "gfx/font.asm"
@@ -354,3 +360,8 @@ INCLUDE "data/battle_anims/frame_blocks.asm"
 INCLUDE "engine/movie/evolution.asm"
 INCLUDE "engine/overworld/elevator.asm"
 INCLUDE "engine/items/tm_prices.asm"
+
+
+SECTION "Move INFO", ROMX
+
+INCLUDE "engine/pokemon/move_info.asm"

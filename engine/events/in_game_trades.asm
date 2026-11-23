@@ -324,7 +324,7 @@ Thanks2Text:
 	text_end
 
 AfterTrade2Text:
-	text_far _AfterTrade2Text
+	text_far _AfterTrade3Text
 	text_end
 
 WannaTrade3Text:

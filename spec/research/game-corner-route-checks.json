@@ -1,0 +1,825 @@
+{
+  "source": "https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a",
+  "emulator": "SameBoy 1.0.5, DMG-B",
+  "assembler": "RGBDS 1.0.4",
+  "scope": {
+    "runtime": "The clerk runs began immediately after its Yes/No choice. Each purchase used the previous balances. Party, cash, Coin Case and zero coins were set up initially. The normal prize menu, its confirmation, delivery and debit ran on each game build.",
+    "linked_roms": "All three rows at each of three prize windows were read from each stock ROM with its corresponding symbol file. Prices use two packed-decimal bytes.",
+    "model": "Each integer from 0 through 9999 is a possible starting balance. Assume the player has a Coin Case and enough money. Only buy coins from the clerk until the price is affordable or another purchase is refused. An already affordable price counts. For Red Porygon, enough coins means exactly 9999.",
+    "earlier_clerk_boundaries": "See stock_and_prototype_results.coins and coins-edited in scope-sweep-checks.json for the original 10 single-attempt cases per color and build. Those tests ended at the receipt or refusal."
+  },
+  "runtime": {
+    "clerk_to_porygon": [
+      {
+        "build": "retail",
+        "color": "red",
+        "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "initial_coins": 0,
+        "initial_money": 200000,
+        "accepted_sales": 200,
+        "refused_sales": 0,
+        "checkpoints": [
+          {
+            "attempt": 1,
+            "cash": 199000,
+            "coins": 50
+          },
+          {
+            "attempt": 199,
+            "cash": 1000,
+            "coins": 9950
+          },
+          {
+            "attempt": 200,
+            "cash": 0,
+            "coins": 9999
+          }
+        ],
+        "price": 9999,
+        "porygon_received": true,
+        "party_before": 2,
+        "party_after": 3,
+        "porygon_level": 26,
+        "final_coins": 0,
+        "final_cash": 0
+      },
+      {
+        "build": "retail",
+        "color": "blue",
+        "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "initial_coins": 0,
+        "initial_money": 130000,
+        "accepted_sales": 130,
+        "refused_sales": 0,
+        "checkpoints": [
+          {
+            "attempt": 1,
+            "cash": 129000,
+            "coins": 50
+          },
+          {
+            "attempt": 129,
+            "cash": 1000,
+            "coins": 6450
+          },
+          {
+            "attempt": 130,
+            "cash": 0,
+            "coins": 6500
+          }
+        ],
+        "price": 6500,
+        "porygon_received": true,
+        "party_before": 2,
+        "party_after": 3,
+        "porygon_level": 18,
+        "final_coins": 0,
+        "final_cash": 0
+      },
+      {
+        "build": "withdrawn_full_lot",
+        "color": "red",
+        "rom_sha1": "e7a9844510cdfe6e731ad6c7a1f103d053f91d2c",
+        "initial_coins": 0,
+        "initial_money": 200000,
+        "accepted_sales": 199,
+        "refused_sales": 1,
+        "checkpoints": [
+          {
+            "attempt": 1,
+            "cash": 199000,
+            "coins": 50
+          },
+          {
+            "attempt": 199,
+            "cash": 1000,
+            "coins": 9950
+          },
+          {
+            "attempt": 200,
+            "cash": 1000,
+            "coins": 9950
+          }
+        ],
+        "price": 9999,
+        "porygon_received": false,
+        "party_before": 2,
+        "party_after": 2,
+        "porygon_level": null,
+        "final_coins": 9950,
+        "final_cash": 1000
+      },
+      {
+        "build": "withdrawn_full_lot",
+        "color": "blue",
+        "rom_sha1": "cc161040364d02f4992e5782f2a0df259bb2f03c",
+        "initial_coins": 0,
+        "initial_money": 130000,
+        "accepted_sales": 130,
+        "refused_sales": 0,
+        "checkpoints": [
+          {
+            "attempt": 1,
+            "cash": 129000,
+            "coins": 50
+          },
+          {
+            "attempt": 129,
+            "cash": 1000,
+            "coins": 6450
+          },
+          {
+            "attempt": 130,
+            "cash": 0,
+            "coins": 6500
+          }
+        ],
+        "price": 6500,
+        "porygon_received": true,
+        "party_before": 2,
+        "party_after": 3,
+        "porygon_level": 18,
+        "final_coins": 0,
+        "final_cash": 0
+      }
+    ],
+    "retail_porygon_guards": [
+      {
+        "color": "red",
+        "case": "insufficient",
+        "price": 9999,
+        "coins_before": 9998,
+        "coins_after": 9998,
+        "party_before": 2,
+        "party_after": 2,
+        "box_before": 0,
+        "box_after": 0,
+        "returned_to_caller": true
+      },
+      {
+        "color": "red",
+        "case": "decline",
+        "price": 9999,
+        "coins_before": 9999,
+        "coins_after": 9999,
+        "party_before": 2,
+        "party_after": 2,
+        "box_before": 0,
+        "box_after": 0,
+        "returned_to_caller": true
+      },
+      {
+        "color": "red",
+        "case": "boxed",
+        "price": 9999,
+        "coins_before": 9999,
+        "coins_after": 0,
+        "party_before": 6,
+        "party_after": 6,
+        "box_before": 0,
+        "box_after": 1,
+        "returned_to_caller": true
+      },
+      {
+        "color": "red",
+        "case": "storage_full",
+        "price": 9999,
+        "coins_before": 9999,
+        "coins_after": 9999,
+        "party_before": 6,
+        "party_after": 6,
+        "box_before": 20,
+        "box_after": 20,
+        "returned_to_caller": true
+      },
+      {
+        "color": "blue",
+        "case": "insufficient",
+        "price": 6500,
+        "coins_before": 6499,
+        "coins_after": 6499,
+        "party_before": 2,
+        "party_after": 2,
+        "box_before": 0,
+        "box_after": 0,
+        "returned_to_caller": true
+      },
+      {
+        "color": "blue",
+        "case": "decline",
+        "price": 6500,
+        "coins_before": 6500,
+        "coins_after": 6500,
+        "party_before": 2,
+        "party_after": 2,
+        "box_before": 0,
+        "box_after": 0,
+        "returned_to_caller": true
+      },
+      {
+        "color": "blue",
+        "case": "boxed",
+        "price": 6500,
+        "coins_before": 6500,
+        "coins_after": 0,
+        "party_before": 6,
+        "party_after": 6,
+        "box_before": 0,
+        "box_after": 1,
+        "returned_to_caller": true
+      },
+      {
+        "color": "blue",
+        "case": "storage_full",
+        "price": 6500,
+        "coins_before": 6500,
+        "coins_after": 6500,
+        "party_before": 6,
+        "party_after": 6,
+        "box_before": 20,
+        "box_after": 20,
+        "returned_to_caller": true
+      }
+    ],
+    "red_100_coin_pickup": [
+      {
+        "color": "red",
+        "build": "retail",
+        "pickup_previously_claimed": false,
+        "coins_before": 9950,
+        "coins_after": 9999,
+        "pickup_claimed_after": true
+      },
+      {
+        "color": "red",
+        "build": "retail",
+        "pickup_previously_claimed": true,
+        "coins_before": 9950,
+        "coins_after": 9950,
+        "pickup_claimed_after": true
+      },
+      {
+        "color": "red",
+        "build": "withdrawn_prototype",
+        "pickup_previously_claimed": false,
+        "coins_before": 9950,
+        "coins_after": 9999,
+        "pickup_claimed_after": true
+      },
+      {
+        "color": "red",
+        "build": "withdrawn_prototype",
+        "pickup_previously_claimed": true,
+        "coins_before": 9950,
+        "coins_after": 9950,
+        "pickup_claimed_after": true
+      }
+    ],
+    "retail_clerk_to_tm50": [
+      {
+        "color": "red",
+        "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "reward": "TM50 Substitute",
+        "price": 7700,
+        "from_zero": true,
+        "clerk_returns": 154,
+        "checkpoints": [
+          [
+            1,
+            153000,
+            50
+          ],
+          [
+            153,
+            1000,
+            7650
+          ],
+          [
+            154,
+            0,
+            7700
+          ]
+        ],
+        "bag_count_before": 1,
+        "bag_count_after": 2,
+        "received_item_id": 250,
+        "received_quantity": 1,
+        "party_after": 2,
+        "coins_after_redemption": 0,
+        "money_after": 0
+      },
+      {
+        "color": "blue",
+        "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "reward": "TM50 Substitute",
+        "price": 7700,
+        "from_zero": true,
+        "clerk_returns": 154,
+        "checkpoints": [
+          [
+            1,
+            153000,
+            50
+          ],
+          [
+            153,
+            1000,
+            7650
+          ],
+          [
+            154,
+            0,
+            7700
+          ]
+        ],
+        "bag_count_before": 1,
+        "bag_count_after": 2,
+        "received_item_id": 250,
+        "received_quantity": 1,
+        "party_after": 2,
+        "coins_after_redemption": 0,
+        "money_after": 0
+      }
+    ]
+  },
+  "balance_model": {
+    "valid_initial_balances": 10000,
+    "lot_size": 50,
+    "lot_price": 1000,
+    "first_refusal": {
+      "retail": 9990,
+      "withdrawn_full_lot": 9950
+    },
+    "changed_single_purchase": {
+      "first": 9950,
+      "last": 9989,
+      "count": 40
+    },
+    "can_reach_or_already_hold_9999": {
+      "retail": 8200,
+      "withdrawn_full_lot": 200
+    },
+    "can_reach_or_already_hold_9999_comparison": {
+      "both": 200,
+      "retail_only": 8000,
+      "withdrawn_only": 0,
+      "neither": 1800
+    }
+  },
+  "prize_tables": {
+    "red": [
+      {
+        "window": "Mon1",
+        "row": 1,
+        "entry": "ABRA",
+        "entry_id": 148,
+        "price": 180,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 4,
+            "money_spent": 4000,
+            "balance_at_prize_counter": 200,
+            "coins_after_redemption": 20
+          },
+          "withdrawn_full_lot": {
+            "purchases": 4,
+            "money_spent": 4000,
+            "balance_at_prize_counter": 200,
+            "coins_after_redemption": 20
+          }
+        }
+      },
+      {
+        "window": "Mon1",
+        "row": 2,
+        "entry": "CLEFAIRY",
+        "entry_id": 4,
+        "price": 500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 10,
+            "money_spent": 10000,
+            "balance_at_prize_counter": 500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 10,
+            "money_spent": 10000,
+            "balance_at_prize_counter": 500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon1",
+        "row": 3,
+        "entry": "NIDORINA",
+        "entry_id": 168,
+        "price": 1200,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 24,
+            "money_spent": 24000,
+            "balance_at_prize_counter": 1200,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 24,
+            "money_spent": 24000,
+            "balance_at_prize_counter": 1200,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 1,
+        "entry": "DRATINI",
+        "entry_id": 88,
+        "price": 2800,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 56,
+            "money_spent": 56000,
+            "balance_at_prize_counter": 2800,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 56,
+            "money_spent": 56000,
+            "balance_at_prize_counter": 2800,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 2,
+        "entry": "SCYTHER",
+        "entry_id": 26,
+        "price": 5500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 3,
+        "entry": "PORYGON",
+        "entry_id": 170,
+        "price": 9999,
+        "starting_balances_that_can_afford": {
+          "retail": 8200,
+          "withdrawn_full_lot": 200
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 200,
+            "money_spent": 200000,
+            "balance_at_prize_counter": 9999,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 199,
+            "money_spent": 199000,
+            "balance_at_prize_counter": 9950,
+            "coins_after_redemption": null
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 1,
+        "entry": "TM_DRAGON_RAGE",
+        "entry_id": 223,
+        "price": 3300,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 66,
+            "money_spent": 66000,
+            "balance_at_prize_counter": 3300,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 66,
+            "money_spent": 66000,
+            "balance_at_prize_counter": 3300,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 2,
+        "entry": "TM_HYPER_BEAM",
+        "entry_id": 215,
+        "price": 5500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 3,
+        "entry": "TM_SUBSTITUTE",
+        "entry_id": 250,
+        "price": 7700,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 154,
+            "money_spent": 154000,
+            "balance_at_prize_counter": 7700,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 154,
+            "money_spent": 154000,
+            "balance_at_prize_counter": 7700,
+            "coins_after_redemption": 0
+          }
+        }
+      }
+    ],
+    "blue": [
+      {
+        "window": "Mon1",
+        "row": 1,
+        "entry": "ABRA",
+        "entry_id": 148,
+        "price": 120,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 3,
+            "money_spent": 3000,
+            "balance_at_prize_counter": 150,
+            "coins_after_redemption": 30
+          },
+          "withdrawn_full_lot": {
+            "purchases": 3,
+            "money_spent": 3000,
+            "balance_at_prize_counter": 150,
+            "coins_after_redemption": 30
+          }
+        }
+      },
+      {
+        "window": "Mon1",
+        "row": 2,
+        "entry": "CLEFAIRY",
+        "entry_id": 4,
+        "price": 750,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 15,
+            "money_spent": 15000,
+            "balance_at_prize_counter": 750,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 15,
+            "money_spent": 15000,
+            "balance_at_prize_counter": 750,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon1",
+        "row": 3,
+        "entry": "NIDORINO",
+        "entry_id": 167,
+        "price": 1200,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 24,
+            "money_spent": 24000,
+            "balance_at_prize_counter": 1200,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 24,
+            "money_spent": 24000,
+            "balance_at_prize_counter": 1200,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 1,
+        "entry": "PINSIR",
+        "entry_id": 29,
+        "price": 2500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 50,
+            "money_spent": 50000,
+            "balance_at_prize_counter": 2500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 50,
+            "money_spent": 50000,
+            "balance_at_prize_counter": 2500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 2,
+        "entry": "DRATINI",
+        "entry_id": 88,
+        "price": 4600,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 92,
+            "money_spent": 92000,
+            "balance_at_prize_counter": 4600,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 92,
+            "money_spent": 92000,
+            "balance_at_prize_counter": 4600,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "Mon2",
+        "row": 3,
+        "entry": "PORYGON",
+        "entry_id": 170,
+        "price": 6500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 130,
+            "money_spent": 130000,
+            "balance_at_prize_counter": 6500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 130,
+            "money_spent": 130000,
+            "balance_at_prize_counter": 6500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 1,
+        "entry": "TM_DRAGON_RAGE",
+        "entry_id": 223,
+        "price": 3300,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 66,
+            "money_spent": 66000,
+            "balance_at_prize_counter": 3300,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 66,
+            "money_spent": 66000,
+            "balance_at_prize_counter": 3300,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 2,
+        "entry": "TM_HYPER_BEAM",
+        "entry_id": 215,
+        "price": 5500,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 110,
+            "money_spent": 110000,
+            "balance_at_prize_counter": 5500,
+            "coins_after_redemption": 0
+          }
+        }
+      },
+      {
+        "window": "TMs",
+        "row": 3,
+        "entry": "TM_SUBSTITUTE",
+        "entry_id": 250,
+        "price": 7700,
+        "starting_balances_that_can_afford": {
+          "retail": 10000,
+          "withdrawn_full_lot": 10000
+        },
+        "route_from_zero": {
+          "retail": {
+            "purchases": 154,
+            "money_spent": 154000,
+            "balance_at_prize_counter": 7700,
+            "coins_after_redemption": 0
+          },
+          "withdrawn_full_lot": {
+            "purchases": 154,
+            "money_spent": 154000,
+            "balance_at_prize_counter": 7700,
+            "coins_after_redemption": 0
+          }
+        }
+      }
+    ]
+  }
+}

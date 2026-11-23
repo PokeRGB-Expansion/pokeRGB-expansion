@@ -219,11 +219,12 @@ BillsPCDeposit:
 	call PrintText
 	jp BillsPCMenu
 .boxNotFull
+.browse
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
 	call DisplayDepositWithdrawMenu
-	jp nc, BillsPCMenu
+	jr nc, .browse
 	ld a, [wCurPartySpecies]
 	call GetCryData
 	call PlaySoundWaitForCurrent
@@ -261,18 +262,19 @@ BillsPCWithdraw:
 	call PrintText
 	jp BillsPCMenu
 .boxNotEmpty
+.browse
+	ld hl, wBoxCount
+	call DisplayMonListMenu
+	jp c, BillsPCMenu
+	call DisplayDepositWithdrawMenu
+	jr nc, .browse
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jr nz, .partyNotFull
 	ld hl, CantTakeMonText
 	call PrintText
-	jp BillsPCMenu
+	jr .browse
 .partyNotFull
-	ld hl, wBoxCount
-	call DisplayMonListMenu
-	jp c, BillsPCMenu
-	call DisplayDepositWithdrawMenu
-	jp nc, BillsPCMenu
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
@@ -293,17 +295,34 @@ BillsPCWithdraw:
 BillsPCRelease:
 	ld a, [wBoxCount]
 	and a
-	jr nz, .loop
+	jr nz, .start
 	ld hl, NoMonText
 	call PrintText
 	jp BillsPCMenu
+.start
+	farcall ResetItemListPosition
 .loop
+	farcall RestoreReleaseListPosition
+	ld a, [wCurrentMenuItem]
+	ld [wPartyAndBillsPCSavedMenuItem], a
 	ld hl, wBoxCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	ld hl, OnceReleasedText
+	farcall SaveItemListPosition
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wCurPartySpecies]
+	ld [wNamedObjectIndex], a
+	call GetMonName
+	ld hl, ReleaseIdentityText
 	call PrintText
-	call YesNoChoice
+	call SaveScreenTilesToBuffer1
+	call InitYesNoTextBoxParameters
+	ld hl, wTwoOptionMenuID
+	set BIT_SECOND_MENU_OPTION_DEFAULT, [hl]
+	call DisplayYesNoChoice
+	pop af
+	ld [wWhichPokemon], a
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .loop
@@ -380,6 +399,29 @@ HMMoveArray:
 INCLUDE "data/moves/hm_moves.asm"
 
 DisplayDepositWithdrawMenu:
+; The action menu and STATS reuse the browsing list's cursor variables.
+	ld a, [wListScrollOffset]
+	push af
+	ld a, [wPartyAndBillsPCSavedMenuItem]
+	push af
+	call SaveScreenTilesToBuffer1
+	call .display
+	push af
+	call LoadScreenTilesFromBuffer1
+	pop af
+	ld c, a
+	pop de
+	ld a, d
+	ld [wPartyAndBillsPCSavedMenuItem], a
+	pop de
+	ld a, d
+	ld [wListScrollOffset], a
+	ret c ; transfer chosen
+	ld a, c
+	and a
+	ret z ; action cancelled
+	jr RestoreStatsPCSelection
+.display
 	hlcoord 9, 10
 	ld b, 6
 	ld c, 9
@@ -424,13 +466,12 @@ DisplayDepositWithdrawMenu:
 	dec a
 	jr z, .viewStats
 .exit
-	and a
+	xor a
 	ret
 .choseDepositWithdraw
 	scf
 	ret
 .viewStats
-	call SaveScreenTilesToBuffer1
 	ld a, [wParentMenuItem]
 	and a
 	ld a, PLAYER_PARTY_DATA
@@ -439,12 +480,37 @@ DisplayDepositWithdrawMenu:
 .next2
 	ld [wMonDataLocation], a
 	predef StatusScreen
-	predef StatusScreen2
-	call LoadScreenTilesFromBuffer1
 	call ReloadTilesetTilePatterns
 	call RunDefaultPaletteCommand
 	call LoadGBPal
-	jr .loop
+	ld a, 1
+	and a
+	ret
+
+RestoreStatsPCSelection:
+; Keep the old viewport while the viewed entry is within its three rows.
+	ld a, [wWhichPokemon]
+	ld b, a
+	ld a, [wListScrollOffset]
+	ld c, a
+	ld a, b
+	sub c
+	jr c, .scrollUp
+	cp 3
+	jr c, .storeRow
+	ld a, b
+	sub 2
+	ld [wListScrollOffset], a
+	ld a, 2
+	jr .storeRow
+.scrollUp
+	ld a, b
+	ld [wListScrollOffset], a
+	xor a
+.storeRow
+	ld [wPartyAndBillsPCSavedMenuItem], a
+	and a
+	ret
 
 DepositPCText:  db "DEPOSIT@"
 WithdrawPCText: db "WITHDRAW@"
@@ -492,9 +558,12 @@ ReleaseWhichMonText:
 	text_far _ReleaseWhichMonText
 	text_end
 
-OnceReleasedText:
-	text_far _OnceReleasedText
-	text_end
+ReleaseIdentityText:
+	text "Release @"
+	text_ram wStringBuffer
+	line "Species @"
+	text_ram wNameBuffer
+	done
 
 MonWasReleasedText:
 	text_far _MonWasReleasedText

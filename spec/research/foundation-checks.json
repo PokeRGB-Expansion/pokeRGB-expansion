@@ -1,0 +1,842 @@
+{
+  "source": "ba9c0568f64ae602fadda577a08c66639f93082a",
+  "method": "SameBoy 1.0.5, DMG-B, hash-checked English Red and Blue. Disposable RAM fixtures followed by the stock battle menus and turn handlers. The map byte checks read the linked ROM and symbols independently of the emulator. See foundation-audit.md for inputs and controls.",
+  "battle_cases": [
+    {
+      "version": "red",
+      "case": "exp",
+      "participants": 1,
+      "exp_all": false,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          420,
+          120
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "version": "red",
+      "case": "exp",
+      "participants": 1,
+      "exp_all": true,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          315,
+          90
+        ],
+        [
+          105,
+          30
+        ]
+      ]
+    },
+    {
+      "version": "red",
+      "case": "exp",
+      "participants": 2,
+      "exp_all": false,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          210,
+          60
+        ],
+        [
+          210,
+          60
+        ]
+      ]
+    },
+    {
+      "version": "red",
+      "case": "exp",
+      "participants": 2,
+      "exp_all": true,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          156,
+          45
+        ],
+        [
+          156,
+          45
+        ]
+      ]
+    },
+    {
+      "version": "red",
+      "case": "drain",
+      "enemy_user": false,
+      "substitute": false,
+      "user_hp_after": 72,
+      "target_hp_after": 152,
+      "substitute_hp_after": 200
+    },
+    {
+      "version": "red",
+      "case": "drain",
+      "enemy_user": false,
+      "substitute": true,
+      "user_hp_after": 72,
+      "target_hp_after": 176,
+      "substitute_hp_after": 176
+    },
+    {
+      "version": "red",
+      "case": "drain",
+      "enemy_user": true,
+      "substitute": false,
+      "user_hp_after": 79,
+      "target_hp_after": 121,
+      "substitute_hp_after": 200
+    },
+    {
+      "version": "red",
+      "case": "drain",
+      "enemy_user": true,
+      "substitute": true,
+      "user_hp_after": 79,
+      "target_hp_after": 160,
+      "substitute_hp_after": 161
+    },
+    {
+      "version": "red",
+      "case": "rest",
+      "enemy_user": false,
+      "toxic_before": false,
+      "status_after": 2,
+      "toxic_after": false
+    },
+    {
+      "version": "red",
+      "case": "rest",
+      "enemy_user": false,
+      "toxic_before": true,
+      "status_after": 2,
+      "toxic_after": true
+    },
+    {
+      "version": "red",
+      "case": "rest",
+      "enemy_user": true,
+      "toxic_before": false,
+      "status_after": 2,
+      "toxic_after": false
+    },
+    {
+      "version": "red",
+      "case": "rest",
+      "enemy_user": true,
+      "toxic_before": true,
+      "status_after": 2,
+      "toxic_after": true
+    },
+    {
+      "version": "blue",
+      "case": "exp",
+      "participants": 1,
+      "exp_all": false,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          420,
+          120
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "version": "blue",
+      "case": "exp",
+      "participants": 1,
+      "exp_all": true,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          315,
+          90
+        ],
+        [
+          105,
+          30
+        ]
+      ]
+    },
+    {
+      "version": "blue",
+      "case": "exp",
+      "participants": 2,
+      "exp_all": false,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          210,
+          60
+        ],
+        [
+          210,
+          60
+        ]
+      ]
+    },
+    {
+      "version": "blue",
+      "case": "exp",
+      "participants": 2,
+      "exp_all": true,
+      "delta_xp_and_hp_stat_exp": [
+        [
+          156,
+          45
+        ],
+        [
+          156,
+          45
+        ]
+      ]
+    },
+    {
+      "version": "blue",
+      "case": "drain",
+      "enemy_user": false,
+      "substitute": false,
+      "user_hp_after": 72,
+      "target_hp_after": 150,
+      "substitute_hp_after": 200
+    },
+    {
+      "version": "blue",
+      "case": "drain",
+      "enemy_user": false,
+      "substitute": true,
+      "user_hp_after": 72,
+      "target_hp_after": 175,
+      "substitute_hp_after": 175
+    },
+    {
+      "version": "blue",
+      "case": "drain",
+      "enemy_user": true,
+      "substitute": false,
+      "user_hp_after": 80,
+      "target_hp_after": 119,
+      "substitute_hp_after": 200
+    },
+    {
+      "version": "blue",
+      "case": "drain",
+      "enemy_user": true,
+      "substitute": true,
+      "user_hp_after": 80,
+      "target_hp_after": 160,
+      "substitute_hp_after": 159
+    },
+    {
+      "version": "blue",
+      "case": "rest",
+      "enemy_user": false,
+      "toxic_before": false,
+      "status_after": 2,
+      "toxic_after": false
+    },
+    {
+      "version": "blue",
+      "case": "rest",
+      "enemy_user": false,
+      "toxic_before": true,
+      "status_after": 2,
+      "toxic_after": true
+    },
+    {
+      "version": "blue",
+      "case": "rest",
+      "enemy_user": true,
+      "toxic_before": false,
+      "status_after": 2,
+      "toxic_after": false
+    },
+    {
+      "version": "blue",
+      "case": "rest",
+      "enemy_user": true,
+      "toxic_before": true,
+      "status_after": 2,
+      "toxic_after": true
+    }
+  ],
+  "move_swap_cases": [
+    {
+      "version": "red",
+      "transformed": false,
+      "before": {
+        "wBattleMonMoves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          5,
+          4,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          5,
+          4,
+          0,
+          0
+        ]
+      },
+      "after": {
+        "wBattleMonMoves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          4,
+          5,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          4,
+          5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "version": "red",
+      "transformed": true,
+      "before": {
+        "wBattleMonMoves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          5,
+          4,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          144,
+          150,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          9,
+          20,
+          0,
+          0
+        ]
+      },
+      "after": {
+        "wBattleMonMoves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          4,
+          5,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          150,
+          144,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          20,
+          9,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "version": "blue",
+      "transformed": false,
+      "before": {
+        "wBattleMonMoves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          5,
+          4,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          5,
+          4,
+          0,
+          0
+        ]
+      },
+      "after": {
+        "wBattleMonMoves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          4,
+          5,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          4,
+          5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "version": "blue",
+      "transformed": true,
+      "before": {
+        "wBattleMonMoves": [
+          33,
+          45,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          5,
+          4,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          144,
+          150,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          9,
+          20,
+          0,
+          0
+        ]
+      },
+      "after": {
+        "wBattleMonMoves": [
+          45,
+          33,
+          0,
+          0
+        ],
+        "wBattleMonPP": [
+          4,
+          5,
+          0,
+          0
+        ],
+        "wPartyMon1Moves": [
+          150,
+          144,
+          0,
+          0
+        ],
+        "wPartyMon1PP": [
+          20,
+          9,
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "trainer_scoring_cases": [
+    {
+      "version": "red",
+      "player_type": 24,
+      "enemy_move_ids": [
+        60,
+        105,
+        149,
+        115
+      ],
+      "scores": [
+        11,
+        10,
+        11,
+        11
+      ],
+      "eligible_slots": [
+        2
+      ]
+    },
+    {
+      "version": "red",
+      "player_type": 24,
+      "enemy_move_ids": [
+        60,
+        105,
+        60,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "version": "red",
+      "player_type": 0,
+      "enemy_move_ids": [
+        60,
+        105,
+        149,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "version": "red",
+      "player_type": 0,
+      "enemy_move_ids": [
+        60,
+        105,
+        60,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "version": "blue",
+      "player_type": 24,
+      "enemy_move_ids": [
+        60,
+        105,
+        149,
+        115
+      ],
+      "scores": [
+        11,
+        10,
+        11,
+        11
+      ],
+      "eligible_slots": [
+        2
+      ]
+    },
+    {
+      "version": "blue",
+      "player_type": 24,
+      "enemy_move_ids": [
+        60,
+        105,
+        60,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "version": "blue",
+      "player_type": 0,
+      "enemy_move_ids": [
+        60,
+        105,
+        149,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "version": "blue",
+      "player_type": 0,
+      "enemy_move_ids": [
+        60,
+        105,
+        60,
+        115
+      ],
+      "scores": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "eligible_slots": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "binary_and_source_models": {
+    "red": {
+      "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+      "tower_2f": {
+        "expected_xy": [
+          [
+            15,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        "pairs_before_terminator": 46,
+        "extra_xy_within_20_by_18": [
+          [
+            2,
+            6
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "terrain": [
+          {
+            "xy": [
+              15,
+              5
+            ],
+            "lower_left_tile": 1,
+            "walkable": true
+          },
+          {
+            "xy": [
+              14,
+              6
+            ],
+            "lower_left_tile": 1,
+            "walkable": true
+          },
+          {
+            "xy": [
+              2,
+              6
+            ],
+            "lower_left_tile": 25,
+            "walkable": false
+          },
+          {
+            "xy": [
+              0,
+              0
+            ],
+            "lower_left_tile": 17,
+            "walkable": false
+          }
+        ]
+      },
+      "slot_machine": {
+        "random_byte_with_unmatchable_zero": [
+          7
+        ],
+        "byte_count": 256
+      },
+      "sprite_movement": {
+        "table_address": "D4E4",
+        "slot_14_expected_and_read": "D4FE",
+        "slot_15_expected": "D500",
+        "slot_15_read": "D400"
+      },
+      "bench_text": {
+        "records": 12,
+        "bytes_each": 3,
+        "terminator_offset": 36,
+        "offset_after_facing_mismatch_on_first_record": 2
+      }
+    },
+    "blue": {
+      "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+      "tower_2f": {
+        "expected_xy": [
+          [
+            15,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        "pairs_before_terminator": 46,
+        "extra_xy_within_20_by_18": [
+          [
+            2,
+            6
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "terrain": [
+          {
+            "xy": [
+              15,
+              5
+            ],
+            "lower_left_tile": 1,
+            "walkable": true
+          },
+          {
+            "xy": [
+              14,
+              6
+            ],
+            "lower_left_tile": 1,
+            "walkable": true
+          },
+          {
+            "xy": [
+              2,
+              6
+            ],
+            "lower_left_tile": 25,
+            "walkable": false
+          },
+          {
+            "xy": [
+              0,
+              0
+            ],
+            "lower_left_tile": 17,
+            "walkable": false
+          }
+        ]
+      },
+      "slot_machine": {
+        "random_byte_with_unmatchable_zero": [
+          7
+        ],
+        "byte_count": 256
+      },
+      "sprite_movement": {
+        "table_address": "D4E4",
+        "slot_14_expected_and_read": "D4FE",
+        "slot_15_expected": "D500",
+        "slot_15_read": "D400"
+      },
+      "bench_text": {
+        "records": 12,
+        "bytes_each": 3,
+        "terminator_offset": 36,
+        "offset_after_facing_mismatch_on_first_record": 2
+      }
+    }
+  }
+}

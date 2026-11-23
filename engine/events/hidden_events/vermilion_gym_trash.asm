@@ -45,6 +45,11 @@ GymTrashScript:
 	ld d, 0
 	ld e, a
 	add hl, de
+IF DEF(_POKERGB_CORE)
+	ld b, [hl] ; number of adjacent cans
+	inc hl
+.chooseNeighbor
+ELSE
 	ld a, [hli]
 
 ; Bug: This code should calculate a value in the range [0, 3],
@@ -58,8 +63,27 @@ GymTrashScript:
 
 	ldh [hGymTrashCanRandNumMask], a
 	push hl
+ENDC
 	call Random
 	swap a
+IF DEF(_POKERGB_CORE)
+	ld c, a
+	ld a, b
+	cp 3
+	jr z, .threeNeighbors
+	dec a ; 2 or 4 neighbors: keep the lowest one or two bits
+	and c
+	jr .storeNeighbor
+.threeNeighbors
+	ld a, c
+	cp $ff
+	jr z, .chooseNeighbor ; 255 remaining values divide evenly
+.reduceIndex
+	sub 3
+	jr nc, .reduceIndex
+	add 3
+.storeNeighbor
+ELSE
 	ld b, a
 	ldh a, [hGymTrashCanRandNumMask]
 	and b
@@ -67,10 +91,13 @@ GymTrashScript:
 	pop hl
 
 	ld d, 0
+ENDC
 	ld e, a
 	add hl, de
 	ld a, [hl]
+IF !DEF(_POKERGB_CORE)
 	and $f
+ENDC
 	ld [wSecondLockTrashCanIndex], a
 
 	tx_pre_id VermilionGymTrashSuccessText1
@@ -105,12 +132,17 @@ GymTrashScript:
 	jp PrintPredefTextID
 
 GymTrashCans:
+IF DEF(_POKERGB_CORE)
+; First byte: count of adjacent cans.
+; Next four bytes: their indices, padded with zeroes when the count is smaller.
+ELSE
 ; byte 0: mask for random number
 ; bytes 1-4: indices of the trash cans that can have the second lock
 ;            (but see the comment above explaining a bug regarding this)
 ; Note that the mask is simply the number of valid trash can indices that
 ; follow. The remaining bytes are filled with 0 to pad the length of each entry
 ; to 5 bytes.
+ENDC
 	db 2,  1,  3,  0,  0 ; 0
 	db 3,  0,  2,  4,  0 ; 1
 	db 2,  1,  5,  0,  0 ; 2

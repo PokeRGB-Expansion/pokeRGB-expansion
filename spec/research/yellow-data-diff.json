@@ -1,0 +1,126 @@
+{
+  "rom_sha1": {
+    "pokered": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+    "pokeblue": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+    "pokeyellow": "cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1"
+  },
+  "species_count": 151,
+  "machine_count": 55,
+  "move_count": 165,
+  "non_neutral_chart_rows": 82,
+  "red_blue_equal_in_scope": true,
+  "yellow_machine_move_table_equal": true,
+  "yellow_type_table_equal_in_order": true,
+  "yellow_changed_move_rows": [],
+  "yellow_species_changed_by_field": {
+    "base_stats": [],
+    "types": [],
+    "catch_rate": [
+      "DRAGONAIR",
+      "DRAGONITE"
+    ],
+    "base_exp": [],
+    "starting_moves": [
+      "VENOMOTH",
+      "PRIMEAPE",
+      "KADABRA",
+      "ALAKAZAM",
+      "CUBONE",
+      "MAROWAK",
+      "CHANSEY",
+      "TANGELA",
+      "GYARADOS",
+      "EEVEE",
+      "VAPOREON",
+      "JOLTEON",
+      "FLAREON"
+    ],
+    "growth_rate": [],
+    "machines": [
+      "CHARIZARD",
+      "BUTTERFREE",
+      "VENONAT",
+      "VENOMOTH",
+      "DIGLETT",
+      "DUGTRIO",
+      "KABUTOPS",
+      "MEWTWO"
+    ],
+    "evolutions": [],
+    "level_moves": [
+      "METAPOD",
+      "BUTTERFREE",
+      "PIKACHU",
+      "NIDORAN_F",
+      "NIDORINA",
+      "NIDOQUEEN",
+      "NIDORAN_M",
+      "NIDORINO",
+      "NIDOKING",
+      "VENONAT",
+      "VENOMOTH",
+      "MANKEY",
+      "PRIMEAPE",
+      "CUBONE",
+      "MAROWAK",
+      "CHANSEY",
+      "TANGELA",
+      "SCYTHER",
+      "PINSIR",
+      "EEVEE",
+      "VAPOREON",
+      "JOLTEON",
+      "FLAREON"
+    ]
+  },
+  "yellow_machine_changes": {
+    "CHARIZARD": {
+      "added": [
+        "FLY"
+      ],
+      "removed": []
+    },
+    "BUTTERFREE": {
+      "added": [
+        "FLASH"
+      ],
+      "removed": []
+    },
+    "VENONAT": {
+      "added": [
+        "FLASH"
+      ],
+      "removed": []
+    },
+    "VENOMOTH": {
+      "added": [
+        "FLASH"
+      ],
+      "removed": []
+    },
+    "DIGLETT": {
+      "added": [
+        "CUT"
+      ],
+      "removed": []
+    },
+    "DUGTRIO": {
+      "added": [
+        "CUT"
+      ],
+      "removed": []
+    },
+    "KABUTOPS": {
+      "added": [
+        "CUT"
+      ],
+      "removed": []
+    },
+    "MEWTWO": {
+      "added": [],
+      "removed": [
+        "PAY_DAY"
+      ]
+    }
+  }
+}

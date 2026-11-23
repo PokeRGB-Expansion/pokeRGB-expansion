@@ -72,7 +72,7 @@ StartMenu_Pokemon::
 	ld b, a
 	ld a, [wCurrentMenuItem] ; menu selection
 	cp b
-	jp z, .exitMenu ; if the player chose Cancel
+	jp z, .loop ; if the player chose Cancel
 	dec b
 	cp b
 	jr z, .choseSwitch
@@ -98,7 +98,8 @@ StartMenu_Pokemon::
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	predef StatusScreen
-	predef StatusScreen2
+	ld a, [wWhichPokemon]
+	ld [wPartyAndBillsPCSavedMenuItem], a
 	call ReloadMapData
 	jp StartMenu_Pokemon
 .choseOutOfBattleMove
@@ -299,6 +300,11 @@ ItemMenuLoop:
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
 	call RunDefaultPaletteCommand
 
+RestoreBagListPosition:
+	farcall RestoreBagItemListPosition
+	ld a, [wCurrentMenuItem]
+	ld [wBagSavedMenuItem], a
+
 StartMenu_Item::
 	ld a, [wLinkState]
 	dec a ; is the player in the Colosseum or Trade Centre?
@@ -328,6 +334,7 @@ StartMenu_Item::
 	call UpdateSprites
 	jp RedisplayStartMenu
 .choseItem
+	farcall SaveItemListPosition
 ; erase menu cursor (blank each tile in front of an item name)
 	ld a, ' '
 	ldcoord_a 5, 4
@@ -339,8 +346,11 @@ StartMenu_Item::
 	ld [wMenuItemToSwap], a
 	ld a, [wCurItem]
 	cp BICYCLE
-	jp z, .useOrTossItem
-; not Bicycle
+	jr nz, .otherItem
+	farcall ShowBicycleActions
+	jp c, .useItem_closeMenu
+	jp ItemMenuLoop
+.otherItem
 	ld a, USE_TOSS_MENU_TEMPLATE
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
@@ -368,16 +378,6 @@ StartMenu_Item::
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	call CopyToStringBuffer
-	ld a, [wCurItem]
-	cp BICYCLE
-	jr nz, .notBicycle
-	ld a, [wStatusFlags6]
-	bit BIT_ALWAYS_ON_BIKE, a
-	jr z, .useItem_closeMenu
-	ld hl, CannotGetOffHereText
-	call PrintText
-	jp ItemMenuLoop
-.notBicycle
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .tossItem
@@ -416,7 +416,7 @@ StartMenu_Item::
 	call RestoreScreenTilesAndReloadTilePatterns
 	pop af
 	ld [wUpdateSpritesEnabled], a
-	jp StartMenu_Item
+	jp RestoreBagListPosition
 .partyMenuNotDisplayed
 	pop af
 	ld [wUpdateSpritesEnabled], a
@@ -440,10 +440,6 @@ StartMenu_Item::
 
 CannotUseItemsHereText:
 	text_far _CannotUseItemsHereText
-	text_end
-
-CannotGetOffHereText:
-	text_far _CannotGetOffHereText
 	text_end
 
 INCLUDE "data/items/use_party.asm"

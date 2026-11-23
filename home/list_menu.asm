@@ -50,7 +50,7 @@ DisplayListMenuID::
 	ld [wTopMenuItemY], a
 	ld a, 5
 	ld [wTopMenuItemX], a
-	ld a, PAD_A | PAD_B | PAD_SELECT
+	ld a, PAD_A | PAD_B | PAD_SELECT | PAD_START
 	ld [wMenuWatchedKeys], a
 	ld c, 10
 	call DelayFrames
@@ -80,12 +80,19 @@ DisplayListMenuIDLoop::
 	jr .buttonAPressed
 .notOldManBattle
 	call LoadGBPal
-	call HandleMenuInput
+	farcall HandleItemMoveInfoInput
+	ld a, [wMoveInfoNumber]
 	push af
 	call PlaceMenuCursor
 	pop af
 	bit B_PAD_A, a
+	jr nz, .buttonAPressed
+	bit B_PAD_START, a
 	jp z, .checkOtherKeys
+	bit B_PAD_B, a
+	jp nz, .checkOtherKeys
+	farcall InspectListedMove
+	jp DisplayListMenuIDLoop
 .buttonAPressed
 	ld a, [wCurrentMenuItem]
 	call PlaceUnfilledArrowMenuCursor
@@ -230,7 +237,32 @@ DisplayChooseQuantityMenu::
 	jr nz, .incrementQuantity
 	bit B_PAD_DOWN, a
 	jr nz, .decrementQuantity
+	bit B_PAD_LEFT, a
+	jr nz, .subtractTen
+	bit B_PAD_RIGHT, a
+	jr nz, .addTen
 	jr .waitForKeyPressLoop
+.subtractTen
+	ld a, [wItemQuantity]
+	sub 10
+	jr c, .clampToOne
+	jr nz, .storeQuantity
+.clampToOne
+	ld a, 1
+	jr .storeQuantity
+.addTen
+	ld a, [wMaxItemQuantity]
+	ld b, a
+	ld a, [wItemQuantity]
+	add 10
+	jr c, .clampToMax
+	cp b
+	jr c, .storeQuantity
+.clampToMax
+	ld a, b
+.storeQuantity
+	ld [wItemQuantity], a
+	jr .handleNewQuantity
 .incrementQuantity
 	ld a, [wMaxItemQuantity]
 	inc a

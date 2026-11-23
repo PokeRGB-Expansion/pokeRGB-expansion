@@ -626,8 +626,16 @@ TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 TradeCenter_DisplayStats:
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
+	ld a, [wMonDataLocation]
+	push af
+	ASSERT PLAYER_PARTY_DATA == 0 && ENEMY_PARTY_DATA == 1
+	ld a, [wWhichTradeMonSelectionMenu]
+	ld [wMonDataLocation], a
 	predef StatusScreen
-	predef StatusScreen2
+	pop af
+	ld [wMonDataLocation], a
+	ld a, [wWhichPokemon]
+	ld [wCurrentMenuItem], a
 	call GBPalNormal
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists

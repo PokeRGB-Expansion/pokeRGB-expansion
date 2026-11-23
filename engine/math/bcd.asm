@@ -190,6 +190,14 @@ AddBCD::
 	ret
 
 
+AddHiddenCoins::
+; Add the pickup amount to the Coin Case and return carry if any coins spill.
+	ld de, wPlayerCoins + 1
+	ld hl, hCoins + 1
+	ld c, 2
+	jp AddBCD
+
+
 SubBCDPredef::
 	call GetPredefRegisters
 

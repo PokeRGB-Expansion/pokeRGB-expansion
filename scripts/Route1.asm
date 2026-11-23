@@ -9,13 +9,20 @@ Route1_TextPointers:
 
 Route1Youngster1Text:
 	text_asm
+IF DEF(_POKERGB_CORE)
+	CheckEvent EVENT_GOT_POTION_SAMPLE
+ELSE
 	CheckAndSetEvent EVENT_GOT_POTION_SAMPLE
+ENDC
 	jr nz, .got_item
 	ld hl, .MartSampleText
 	call PrintText
 	lb bc, POTION, 1
 	call GiveItem
 	jr nc, .bag_full
+IF DEF(_POKERGB_CORE)
+	SetEvent EVENT_GOT_POTION_SAMPLE
+ENDC
 	ld hl, .GotPotionText
 	jr .done
 .bag_full

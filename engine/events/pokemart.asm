@@ -1,6 +1,6 @@
 DisplayPokemartDialogue_::
 	ld a, [wListScrollOffset]
-	ld [wSavedListScrollOffset], a
+	push af
 	call UpdateSprites
 	xor a
 	ld [wBoughtOrSoldItemInMart], a
@@ -36,6 +36,7 @@ DisplayPokemartDialogue_::
 	dec a ; quitting?
 	jp z, .done
 .sellMenu
+	call ResetItemListPosition
 
 ; the same variables are set again below, so this code has no effect
 	xor a
@@ -62,11 +63,12 @@ DisplayPokemartDialogue_::
 	ld [wListPointer + 1], a
 	xor a
 	ld [wPrintItemPrices], a
-	ld [wCurrentMenuItem], a
 	ld a, ITEMLISTMENU
 	ld [wListMenuID], a
+	call RestoreItemListPosition
 	call DisplayListMenuID
 	jp c, .returnToMainPokemartMenu ; if the player closed the menu
+	call SaveItemListPosition
 ; if the player is trying to sell a specific item, confirm the sale
 	call IsKeyItem
 	ld a, [wIsKeyItem]
@@ -113,13 +115,14 @@ DisplayPokemartDialogue_::
 .unsellableItem
 	ld hl, PokemartUnsellableItemText
 	call PrintText
-	jp .returnToMainPokemartMenu
+	jp .sellMenuLoop
 .bagEmpty
 	ld hl, PokemartItemBagEmptyText
 	call PrintText
 	call SaveScreenTilesToBuffer1
 	jp .returnToMainPokemartMenu
 .buyMenu
+	call ResetItemListPosition
 
 ; the same variables are set again below, so this code has no effect
 	ld a, 1
@@ -141,14 +144,15 @@ DisplayPokemartDialogue_::
 	ld [wListPointer], a
 	ld a, h
 	ld [wListPointer + 1], a
-	xor a
-	ld [wCurrentMenuItem], a
-	inc a
+	ld a, 1
 	ld [wPrintItemPrices], a
-	inc a ; a = 2 (PRICEDITEMLISTMENU)
+	ld a, PRICEDITEMLISTMENU
 	ld [wListMenuID], a
+	call RestoreItemListPosition
 	call DisplayListMenuID
-	jr c, .returnToMainPokemartMenu ; if the player closed the menu
+	jp c, .returnToMainPokemartMenu ; if the player closed the menu
+	call SaveItemListPosition
+	call ShowCarriedShopItemCount
 	ld a, 99
 	ld [wMaxItemQuantity], a
 	xor a
@@ -212,20 +216,71 @@ DisplayPokemartDialogue_::
 .notEnoughMoney
 	ld hl, PokemartNotEnoughMoneyText
 	call PrintText
-	jr .returnToMainPokemartMenu
+	jp .buyMenuLoop
 .bagFull
 	ld hl, PokemartItemBagFullText
 	call PrintText
-	jr .returnToMainPokemartMenu
+	jp .buyMenuLoop
 .done
 	ld hl, PokemartThankYouText
 	call PrintText
 	ld a, 1
 	ld [wUpdateSpritesEnabled], a
 	call UpdateSprites
-	ld a, [wSavedListScrollOffset]
+	pop af
 	ld [wListScrollOffset], a
 	ret
+
+ShowCarriedShopItemCount:
+; Replace the greeting in the lower text box during the quantity prompt.
+	hlcoord 1, 14
+	lb bc, 3, 18
+	call ClearScreenArea
+	hlcoord 1, 14
+	ld de, CarriedShopItemText
+	call PlaceString
+	call CountCarriedShopItemUnits
+; PrintNumber reads big-endian bytes. Put the high byte first on the stack.
+	ld a, d
+	ld d, e
+	ld e, a
+	push de
+	ld hl, sp + 0
+	ld d, h
+	ld e, l
+	hlcoord 8, 14
+	lb bc, 2, 4
+	call PrintNumber
+	pop de
+	ret
+
+CountCarriedShopItemUnits:
+; Returns the sum of every matching bag stack in de.
+	ld a, [wCurItem]
+	ld c, a
+	ld hl, wNumBagItems
+	ld a, [hli]
+	ld b, a
+	ld de, 0
+	and a
+	ret z
+.next
+	ld a, [hli]
+	cp c
+	jr nz, .skipQuantity
+	ld a, [hl]
+	add e
+	ld e, a
+	jr nc, .skipQuantity
+	inc d
+.skipQuantity
+	inc hl
+	dec b
+	jr nz, .next
+	ret
+
+CarriedShopItemText:
+	db "In bag @"
 
 PokemartBuyingGreetingText:
 	text_far _PokemartBuyingGreetingText

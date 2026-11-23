@@ -1,20 +1,12 @@
 UsedCut:
 	xor a
 	ld [wActionResultOrTookBattleTurn], a ; initialise to failure value
+	call GetCutTreeTile
+	jr c, .canCut
 	ld a, [wCurMapTileset]
-	and a ; OVERWORLD
-	jr z, .overworld
-	cp GYM
+	cp OVERWORLD
 	jr nz, .nothingToCut
 	ld a, [wTileInFrontOfPlayer]
-	cp $50 ; gym cut tree
-	jr nz, .nothingToCut
-	jr .canCut
-.overworld
-	dec a
-	ld a, [wTileInFrontOfPlayer]
-	cp $3d ; cut tree
-	jr z, .canCut
 	cp $52 ; grass
 	jr z, .canCut
 .nothingToCut
@@ -66,6 +58,27 @@ UsedCut:
 	ldh [hWY], a
 	call UpdateSprites
 	jp RedrawMapView
+
+; Carry indicates a cuttable tree. A is the tree tile on success.
+GetCutTreeTile::
+	ld a, [wCurMapTileset]
+	cp OVERWORLD
+	jr z, .overworld
+	cp GYM
+	jr nz, .noTree
+	ld a, [wTileInFrontOfPlayer]
+	cp $50
+	jr .matched
+.overworld
+	ld a, [wTileInFrontOfPlayer]
+	cp $3d
+.matched
+	jr nz, .noTree
+	scf
+	ret
+.noTree
+	and a
+	ret
 
 UsedCutText:
 	text_far _UsedCutText

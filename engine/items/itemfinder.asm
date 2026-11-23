@@ -23,30 +23,25 @@ HiddenItemNear:
 	ld e, [hl]
 	inc hl
 	jr nz, .loop ; if the item has already been obtained
-; check if the item is within 4-5 tiles (depending on the direction of item)
+; Measure distance before comparing so coordinate endpoints stay valid.
 	ld a, [wYCoord]
-	call Sub5ClampTo0
-	cp d
-	jr nc, .loop
-	ld a, [wYCoord]
-	add 4
-	cp d
-	jr c, .loop
-	ld a, [wXCoord]
-	call Sub5ClampTo0
-	cp e
+	sub d
+	jr nc, .compareVertical
+	cpl
+	inc a
+.compareVertical
+	cp 5
 	jr nc, .loop
 	ld a, [wXCoord]
-	add 5
-	cp e
-	jr c, .loop
+	sub e
+	jr nc, .west
+	cpl
+	inc a
+	cp 6 ; east has a five-tile range
+	jr .compareHorizontal
+.west
+	cp 5
+.compareHorizontal
+	jr nc, .loop
 	scf
-	ret
-
-Sub5ClampTo0:
-; subtract 5 but clamp to 0
-	sub 5
-	cp $f0
-	ret c
-	xor a
 	ret

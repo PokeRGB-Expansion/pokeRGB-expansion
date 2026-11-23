@@ -26,7 +26,11 @@ Moves:
 	move RAZOR_WIND,   CHARGE_EFFECT,               80, NORMAL,        75, 10
 	move SWORDS_DANCE, ATTACK_UP2_EFFECT,            0, NORMAL,       100, 30
 	move CUT,          NO_ADDITIONAL_EFFECT,        50, NORMAL,        95, 30
+IF DEF(_POKERGB_CORE)
+	move GUST,         NO_ADDITIONAL_EFFECT,        40, FLYING,       100, 35
+ELSE
 	move GUST,         NO_ADDITIONAL_EFFECT,        40, NORMAL,       100, 35
+ENDC
 	move WING_ATTACK,  NO_ADDITIONAL_EFFECT,        35, FLYING,       100, 35
 	move WHIRLWIND,    SWITCH_AND_TELEPORT_EFFECT,   0, NORMAL,        85, 20
 	move FLY,          FLY_EFFECT,                  70, FLYING,        95, 15

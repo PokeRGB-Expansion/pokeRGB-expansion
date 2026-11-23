@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "checked_date": "2026-11-22",
+  "purpose": "Research reference pins; no donor game code is imported into this specification.",
+  "repositories": [
+    {
+      "key": "pokered",
+      "repository": "https://github.com/pret/pokered",
+      "git_url": "https://github.com/pret/pokered.git",
+      "research_branch": "master",
+      "commit": "af519899719f0754965776faac0e836a3b906e6d",
+      "commit_date": "2026-10-06T13:44:05-04:00",
+      "checked_date": "2026-10-20",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Additional bounded rewards, purchases, item feedback, routine menus, progression and display-source audit on 2026-10-15. Remote master matched the existing pin; no ROM build or runtime test. On 2026-10-20, re-read item-PC transfers, shared item removal, shop loops, tossing, and list index handling at this retained pin. This was not an update to the upstream reference or a game execution. On 2026-10-20, additionally checked capacity constants, bag/PC allocation, the reserved main-data span, destination capacity selection, and byte-copy save/load boundaries for optional item capacity. On 2026-10-23, checked the original contiguous bag and separate 78+56-byte reserve, then assembled and linked RAM-only allocation variants with RGBDS 1.0.4. The 60/64-slot separate-reserve variants preserve other WRAM labels; 65 fails its explicit bound. No full ROM, runtime, save import, or combined-feature verification. On 2026-10-23, checked the new-game bag initialization order and FillMemory against the selected reserve; no source revision change or game execution. On 2026-10-24, traced move SELECT redraw state, capture/gift and deposit insertion, and all six Mansion trainer headers/object classes with the shared sight routine. Retained revision; no game execution or original-intent proof. On 2026-10-25, checked the bounded E113 zero-range trainer and Mansion intent comparison at this retained revision. No runtime or original-intent proof. On 2026-10-25, decoded the Route 21 map/blockset and visually checked all four Fisher positions against the adjacent water, recording binary fingerprints in E114. No game execution. On 2026-10-25, checked E115 Forest grass recognition and Yellow comparison; decoded the identical Viridian Forest map and blockset, recorded fingerprints, and inspected the source grass graphics. No game execution or original development record. On 2026-11-22, checked the Acid Armor animation and the original English ROMs in SameBoy."
+    },
+    {
+      "key": "solus",
+      "repository": "https://github.com/Dechrissen/poke-solus-rgb",
+      "git_url": "https://github.com/Dechrissen/poke-solus-rgb.git",
+      "research_branch": "master",
+      "commit": "95e157191e920162a24908cc95c358e73d294689",
+      "commit_date": "2026-04-13T22:38:25-05:00",
+      "checked_date": "2026-10-14",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Badge mapping, field order where needed, and corresponding gym/badge-house text. Remote branch head rechecked against this pin on 2026-10-14; no donor ROM build or runtime test. On 2026-11-22, checked the donor Acid Armor animation path and move data where relevant."
+    },
+    {
+      "key": "shin-lite",
+      "repository": "https://github.com/jojobear13/shinpokered",
+      "git_url": "https://github.com/jojobear13/shinpokered.git",
+      "research_branch": "lite",
+      "commit": "b35c2a536a1605841c8fb662aad18b0dbfd2a900",
+      "commit_date": "2026-03-17T21:51:58-05:00",
+      "checked_date": "2026-10-14",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Badge mapping, field order where needed, and corresponding gym/badge-house text. Remote branch head rechecked against this pin on 2026-10-14; no donor ROM build or runtime test. On 2026-11-22, checked the donor Acid Armor animation path and move data where relevant."
+    },
+    {
+      "key": "pure",
+      "repository": "https://github.com/Vortyne/pureRGB",
+      "git_url": "https://github.com/Vortyne/pureRGB.git",
+      "research_branch": "master",
+      "commit": "231abdfcf52e2d1c0ef44f96d497b9b1b1369049",
+      "commit_date": "2026-10-06T03:30:03-04:00",
+      "checked_date": "2026-10-15",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Badge mapping, field order where needed, and corresponding gym/badge-house text. Remote branch head rechecked against this pin on 2026-10-14; no donor ROM build or runtime test. FEATURES.md used as a source of audit leads on 2026-10-15; remote master still matched the existing pin. No blanket feature adoption or donor patch verification. On 2026-11-22, checked the donor Acid Armor animation path and move data where relevant."
+    },
+    {
+      "key": "solidred",
+      "repository": "https://github.com/tustin2121/solidred",
+      "git_url": "https://github.com/tustin2121/solidred.git",
+      "research_branch": "master",
+      "commit": "18a901695e6d79aafca8e4b793ce70be1fa22853",
+      "commit_date": "2020-02-19T17:24:46-05:00",
+      "checked_date": "2026-10-14",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Badge mapping, field order where needed, and corresponding gym/badge-house text. Remote branch head rechecked against this pin on 2026-10-14; no donor ROM build or runtime test. On 2026-11-22, checked the donor Acid Armor animation path and move data where relevant."
+    },
+    {
+      "key": "expansion",
+      "repository": "https://github.com/rh-hideout/pokeemerald-expansion",
+      "git_url": "https://github.com/rh-hideout/pokeemerald-expansion.git",
+      "research_branch": "master",
+      "commit": "7b4344c7ee867c98c8fb9d6026791df4f8eaecf7",
+      "commit_date": "2026-10-11T12:59:09+01:00",
+      "checked_date": "2026-10-11",
+      "notice_files": [
+        "tools/bin2c/LICENSE",
+        "tools/gbafix/COPYING",
+        "tools/gbagfx/LICENSE",
+        "tools/mid2agb/LICENSE",
+        "tools/preproc/LICENSE",
+        "tools/ramscrgen/LICENSE",
+        "tools/rsfont/LICENSE",
+        "tools/scaninc/LICENSE",
+        "tools/wav2agb/LICENSE"
+      ],
+      "root_notice_files": []
+    },
+    {
+      "key": "pandocs",
+      "repository": "https://github.com/gbdev/pandocs",
+      "git_url": "https://github.com/gbdev/pandocs.git",
+      "research_branch": "master",
+      "commit": "0191af06ac49661587dcde3d57a241a626b8df75",
+      "commit_date": "2026-10-03T00:54:21+02:00",
+      "checked_date": "2026-10-11",
+      "notice_files": [
+        "LICENSE"
+      ],
+      "root_notice_files": [
+        "LICENSE"
+      ]
+    },
+    {
+      "key": "heart-soul",
+      "repository": "https://github.com/PokemonHnS-Development/pokehns-expansion",
+      "git_url": "https://github.com/PokemonHnS-Development/pokehns-expansion.git",
+      "research_branch": "master",
+      "commit": "167aa6d537b109bb229c231ddce4616974c4da71",
+      "commit_date": "2026-09-16T18:48:14-04:00",
+      "checked_date": "2026-10-11",
+      "notice_files": [
+        "tools/bin2c/LICENSE",
+        "tools/gbafix/COPYING",
+        "tools/gbagfx/LICENSE",
+        "tools/mid2agb/LICENSE",
+        "tools/preproc/LICENSE",
+        "tools/ramscrgen/LICENSE",
+        "tools/rsfont/LICENSE",
+        "tools/scaninc/LICENSE",
+        "tools/wav2agb/LICENSE"
+      ],
+      "root_notice_files": []
+    },
+    {
+      "key": "pokered-wiki",
+      "repository": "https://github.com/pret/pokered.wiki",
+      "git_url": "https://github.com/pret/pokered.wiki.git",
+      "research_branch": "master",
+      "commit": "727fc7788550c4b279501c17ee177681f7366077",
+      "commit_date": "2026-10-09T06:08:28+01:00",
+      "checked_date": "2026-10-20",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Increase-Bag-Space.md at the retained revision: 50-slot bag relocation tutorial, 128-byte reserve, and stated save/editor incompatibility. 60/63 slot figures are separately derived from the verified representation. No donor patch imported or game build performed."
+    },
+    {
+      "key": "stadium",
+      "repository": "https://github.com/pret/pokestadium",
+      "git_url": "https://github.com/pret/pokestadium.git",
+      "research_branch": "master",
+      "commit": "6995f32445e344c03f9b0c774eabcd157559f867",
+      "commit_date": "2026-10-03T12:08:48-04:00",
+      "checked_date": "2026-10-12",
+      "checked_scope": "README and selected Stadium 1 text notes; no executable mechanics audit.",
+      "notice_files": [
+        "lib/ultralib/tools/asm_differ/LICENSE",
+        "tools/asm-differ/LICENSE",
+        "tools/asm-processor/LICENSE"
+      ],
+      "root_notice_files": []
+    },
+    {
+      "key": "shin-master",
+      "repository": "https://github.com/jojobear13/shinpokered",
+      "git_url": "https://github.com/jojobear13/shinpokered.git",
+      "research_branch": "master",
+      "commit": "a7a9b1361e55aaa5afed6b5d14b5e7bd44002179",
+      "commit_date": "2026-03-17T21:52:08-05:00",
+      "checked_date": "2026-10-12",
+      "checked_scope": "Hyper Beam clause handler, caller, NPC, and documentation; separate from the Lite reference.",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "On 2026-11-22, checked the donor Acid Armor animation path and move data where relevant."
+    },
+    {
+      "key": "pokeyellow",
+      "repository": "https://github.com/pret/pokeyellow",
+      "git_url": "https://github.com/pret/pokeyellow.git",
+      "research_branch": "master",
+      "commit": "e89ead154b9968aa50eed9328ff2b38b6c194382",
+      "commit_date": "2026-09-02T11:23:57-04:00",
+      "checked_date": "2026-10-15",
+      "checked_scope": "English reference identity, Eevee/Jolteon data, and evolution move retention; no Yellow build target is proposed.",
+      "notice_files": [],
+      "root_notice_files": [],
+      "additional_checked_scope": "Additional pinned SafariZoneGate_2.asm admission-path comparison on 2026-10-15; no Yellow release target or mechanics adoption. On 2026-10-25, checked the bounded E113 zero-range trainer and Mansion intent comparison at this retained revision. No runtime or original-intent proof. On 2026-10-25, checked E115 Forest grass recognition and Yellow comparison; decoded the identical Viridian Forest map and blockset, recorded fingerprints, and inspected the source grass graphics. No game execution or original development record. On 2026-11-22, checked the Acid Armor animation and the original English ROMs in SameBoy."
+    },
+    {
+      "key": "expansion-config",
+      "repository": "https://github.com/rh-hideout/pokeemerald-expansion",
+      "git_url": "https://github.com/rh-hideout/pokeemerald-expansion.git",
+      "research_branch": "master",
+      "commit": "8fb02c6f2b81271e795d3f6aca61733fec739016",
+      "commit_date": "2026-10-12T21:23:21+02:00",
+      "checked_date": "2026-10-12",
+      "checked_scope": "Current generation/family/form controls, selected species and encounter data, rule/data defaults, graphics switches, configuration policy, random-number routines, basic AI flag documentation/definition, and README multiplayer boundaries; no configured build or runtime equivalence claim."
+    },
+    {
+      "key": "emerald-vanilla",
+      "repository": "https://github.com/pret/pokeemerald",
+      "git_url": "https://github.com/pret/pokeemerald.git",
+      "research_branch": "master",
+      "commit": "731ad5bfd6e6f265508d0efcca0ba42f9dcf5881",
+      "commit_date": "2026-10-01T20:02:13+01:00",
+      "checked_date": "2026-10-12",
+      "checked_scope": "Original Emerald README output identity and random-number routines; no ROM build, runtime equivalence, or full source audit."
+    },
+    {
+      "key": "firered-reference",
+      "repository": "https://github.com/pret/pokefirered",
+      "git_url": "https://github.com/pret/pokefirered.git",
+      "research_branch": "master",
+      "commit": "037335f4c725d7c9aecdac87066f2002b4bd7e14",
+      "commit_date": "2026-09-26T15:54:25-05:00",
+      "checked_date": "2026-10-15",
+      "checked_scope": "English reference identity, Surge/Koga badge award flags, and Speed/Defense boost calculations. Historical comparison only; no ROM build, emulator test, or original-development intent proof.",
+      "notice_files": [
+        "tools/bin2c/LICENSE",
+        "tools/gbafix/COPYING",
+        "tools/gbagfx/LICENSE",
+        "tools/mid2agb/LICENSE",
+        "tools/preproc/LICENSE",
+        "tools/ramscrgen/LICENSE",
+        "tools/rsfont/LICENSE",
+        "tools/scaninc/LICENSE",
+        "tools/wav2agb/LICENSE"
+      ],
+      "root_notice_files": [],
+      "additional_checked_scope": "Pinned rooftop exchange and vending transactions, TM Case/shop information, elevator current-floor guards, quantity controls, contextual Snorlax event, and selected coin/Oak/intro comparisons. Remote master matched the pin. Source comparisons are not proof of original-development intent or runtime correctness. On 2026-10-25, checked the bounded E113 zero-range trainer and Mansion intent comparison at this retained revision. No runtime or original-intent proof. On 2026-11-22, checked the Acid Armor animation and its picture cleanup."
+    },
+    {
+      "key": "expansion-info",
+      "repository": "https://github.com/rh-hideout/pokeemerald-expansion",
+      "git_url": "https://github.com/rh-hideout/pokeemerald-expansion.git",
+      "research_branch": "master",
+      "commit": "73b3fbeb574327cd9420c89e56bef5aa3c08fead",
+      "commit_date": "2026-10-14T00:03:00+02:00",
+      "checked_date": "2026-10-15",
+      "checked_scope": "Battle move-description control and rendering; configurable type indicators for all battlers. Separate current reference; older configuration pins are retained. No GBA build or runtime test."
+    },
+    {
+      "key": "pokegold-reference",
+      "repository": "https://github.com/pret/pokegold",
+      "git_url": "https://github.com/pret/pokegold.git",
+      "research_branch": "master",
+      "commit": "ef0201d8daf47e8b3ea1518eacf890f37d4cd5e8",
+      "commit_date": "2026-10-06T13:47:13-04:00",
+      "checked_date": "2026-10-15",
+      "checked_scope": "TM/HM browsing names and descriptions, and quantity controls. Historical comparison only; no Gold/Silver release target, code import, or game build.",
+      "additional_checked_scope": "On 2026-10-25, checked the bounded E113 zero-range trainer and Mansion intent comparison at this retained revision. No runtime or original-intent proof. On 2026-11-22, checked the Acid Armor animation and its picture cleanup."
+    },
+    {
+      "key": "pokegreen-jp",
+      "repository": "https://github.com/Narishma-gb/pokegreen",
+      "git_url": "https://github.com/Narishma-gb/pokegreen.git",
+      "research_branch": "master",
+      "commit": "953f41b34108621b2bf13c3b1e53abfc9c3e5aec",
+      "commit_date": "2026-08-16T14:52:41+02:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Japanese Red and Green historical reference for the Acid Armor animation, move name, and Vaporeon text."
+    },
+    {
+      "key": "pokeblue-jp",
+      "repository": "https://github.com/Narishma-gb/pokeblue",
+      "git_url": "https://github.com/Narishma-gb/pokeblue.git",
+      "research_branch": "master",
+      "commit": "69cd1814203dd24533c46af383d7cff5591aea90",
+      "commit_date": "2026-08-16T09:48:09+02:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Japanese Blue historical reference for the Acid Armor animation."
+    },
+    {
+      "key": "solus-1.5",
+      "repository": "https://github.com/Dechrissen/poke-solus-rgb",
+      "git_url": "https://github.com/Dechrissen/poke-solus-rgb.git",
+      "research_branch": "tag 1.5",
+      "commit": "a82621b152044134536811247a9a3a01b0231bcb",
+      "commit_date": "2025-07-02T20:48:47-04:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Released Solus 1.5 animation comparison."
+    },
+    {
+      "key": "pure-v2.7.8",
+      "repository": "https://github.com/Vortyne/pureRGB",
+      "git_url": "https://github.com/Vortyne/pureRGB.git",
+      "research_branch": "tag v2.7.8",
+      "commit": "c45336e2874d45e48d571ee92a5ce587cca05d65",
+      "commit_date": "2026-11-16T05:29:20-05:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "PureRGB v2.7.8 Acid Armor rendering and move data comparison."
+    },
+    {
+      "key": "yellow-legacy-1.0.10",
+      "repository": "https://github.com/cRz-Shadows/Pokemon_Yellow_Legacy",
+      "git_url": "https://github.com/cRz-Shadows/Pokemon_Yellow_Legacy.git",
+      "research_branch": "tag V1.0.10",
+      "commit": "3a5358e8c9d3d0889f38cdb39a208120fea37a31",
+      "commit_date": "2024-06-27T21:08:27+01:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Yellow Legacy 1.0.10 animation comparison."
+    },
+    {
+      "key": "yellow-kaizo-notes",
+      "repository": "https://github.com/CreamElDudJafar/Yellow-Kaizo",
+      "git_url": "https://github.com/CreamElDudJafar/Yellow-Kaizo.git",
+      "research_branch": "main",
+      "commit": "b4a84d770e0fecff8687f2a9c5cd4d0d273b3275",
+      "commit_date": "2026-11-01T01:03:10-05:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Project README claim about Acid Armor visibility. This reference publishes patches and notes."
+    },
+    {
+      "key": "pokered-implementation",
+      "repository": "https://github.com/pret/pokered",
+      "git_url": "https://github.com/pret/pokered.git",
+      "research_branch": "master",
+      "commit": "ba9c0568f64ae602fadda577a08c66639f93082a",
+      "commit_date": "2026-11-14T11:50:57-05:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Pre-build catalog, gifts, battle and engine review at the implementation baseline."
+    },
+    {
+      "key": "red-blue-dx",
+      "repository": "https://github.com/DunhamGitHub/pokereddx",
+      "git_url": "https://github.com/DunhamGitHub/pokereddx.git",
+      "research_branch": "master",
+      "commit": "24d35ad318df6bc1573dd4fc8801ea9293d3099e",
+      "commit_date": "2023-10-12T10:30:29+02:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Developer feature list for comparing repairs with ruleset changes."
+    },
+    {
+      "key": "pokered-wiki-tutorials",
+      "repository": "https://github.com/pret/pokered/wiki",
+      "git_url": "https://github.com/pret/pokered.wiki.git",
+      "research_branch": "master",
+      "commit": "e11cd15f002f1387a52c086bd7c36038a5b0ca14",
+      "commit_date": "2026-11-02T10:09:38-05:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "The tutorial index and the linked subject pages."
+    },
+    {
+      "key": "expand-dex-reference",
+      "repository": "https://github.com/Rangi42/pokered",
+      "git_url": "https://github.com/Rangi42/pokered.git",
+      "research_branch": "expand-dex",
+      "commit": "b507db6f4fe6f98ff295d72a57f91fef6b87ac8f",
+      "commit_date": "2026-11-21T19:04:49-05:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Compiled Red/Blue record sizes and link length at the wide-ID reference."
+    },
+    {
+      "key": "pokeyellow-jp-reference",
+      "repository": "https://github.com/Narishma-gb/pokeyellow-jp",
+      "git_url": "https://github.com/Narishma-gb/pokeyellow-jp.git",
+      "research_branch": "main",
+      "commit": "f282e72ae26232790fdb780aa5a5db7ec8ebf572",
+      "commit_date": "2026-01-18T23:16:59+01:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Japanese Yellow gym hint and chart."
+    },
+    {
+      "key": "star-beasts-asteroid-2.05",
+      "repository": "https://github.com/StarBeasts/Star-Beasts",
+      "git_url": "https://github.com/StarBeasts/Star-Beasts.git",
+      "research_branch": "v2.05",
+      "commit": "26c697c39823b1764d2d4f1ff70a115dd9eb49b3",
+      "commit_date": "2024-09-03T11:01:10-04:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Original Star Beasts chart and move types."
+    },
+    {
+      "key": "star-beasts-comet-3.06",
+      "repository": "https://github.com/StarBeasts/Star-Beasts-Comet",
+      "git_url": "https://github.com/StarBeasts/Star-Beasts-Comet.git",
+      "research_branch": "3.06",
+      "commit": "7fa2f616979ab73525c9389e63215d67aa39758e",
+      "commit_date": "2026-09-25T14:53:54-04:00",
+      "checked_date": "2026-11-22",
+      "checked_scope": "Comet chart, custom roster and move types."
+    },
+    {
+      "key": "emerald-rogue-vanilla-2.1",
+      "repository": "https://github.com/Pokabbie/pokeemerald-rogue",
+      "git_url": "https://github.com/Pokabbie/pokeemerald-rogue.git",
+      "research_branch": "vanilla-v2.1",
+      "commit": "c33212ebcda821d78aa8d9b69a5e06c6995c212b",
+      "commit_date": "2026-05-17T19:06:44+01:00",
+      "checked_date": "2026-11-23",
+      "checked_scope": "Edition build selection, shared adventure source, roster and battle data."
+    },
+    {
+      "key": "emerald-rogue-ex-2.1",
+      "repository": "https://github.com/Pokabbie/pokeemerald-rogue",
+      "git_url": "https://github.com/Pokabbie/pokeemerald-rogue.git",
+      "research_branch": "EX-v2.1",
+      "commit": "559792325f500d480b892799218ee015962f93a2",
+      "commit_date": "2026-05-17T19:09:45+01:00",
+      "checked_date": "2026-11-23",
+      "checked_scope": "Edition build selection, shared adventure source, roster and battle data."
+    }
+  ],
+  "implementation_base": {
+    "repository": "https://github.com/pret/pokered",
+    "branch_at_review": "master",
+    "commit": "ba9c0568f64ae602fadda577a08c66639f93082a",
+    "commit_date": "2026-11-14",
+    "checked_date": "2026-11-22",
+    "rgbds_version": "1.0.4",
+    "upstream_compare": "all five hashes matched"
+  }
+}

@@ -1357,7 +1357,9 @@ wTempTilesetNumTiles:: db
 ; so that it can be restored when the player is done with the pokemart NPC
 wSavedListScrollOffset:: db
 
-	ds 2
+; List position for this play session. These bytes are outside saved data.
+wPokedexSavedRow:: db
+wPokedexSavedScrollOffset:: db
 
 ; base coordinates of frame block
 wBaseCoordX:: db
@@ -1546,7 +1548,9 @@ wMonHeaderEnd::
 ; saved at the start of a battle and then written back at the end of the battle
 wSavedTileAnimations:: db
 
-	ds 2
+; Selection for an item-list action. The active list owns these two bytes.
+wActionListPreviousRow:: db
+wActionListPreviousScroll:: db
 
 wDamage:: dw
 
@@ -2041,7 +2045,10 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+; These two bytes use padding within the existing main save data.
+wRegisteredItemTag:: db
+wRegisteredItem:: db
+	ds 54
 
 wObtainedHiddenItemsFlags:: flag_array MAX_HIDDEN_ITEMS
 
@@ -2247,6 +2254,19 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+
+SECTION "Move INFO state", WRAM0
+wMoveInfoMove:: db
+wMoveInfoPP:: db
+wMoveInfoBrowse:: db
+wMoveInfoSlot:: db
+wMoveInfoIncoming:: db
+wMoveInfoPage:: db
+wMoveInfoData:: ds MOVE_LENGTH
+wMoveInfoName:: ds MOVE_NAME_LENGTH
+wMoveInfoNumber:: db
+wMoveInfoQuestion:: db
+wMoveInfoHint:: db
 
 SECTION "Stack", WRAM0
 

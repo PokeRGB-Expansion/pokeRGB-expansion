@@ -117,6 +117,11 @@ UpdateNPCSprite:
 	ld hl, wMapSpriteData
 	add l
 	ld l, a
+IF DEF(_POKERGB_CORE)
+	jr nc, .readMovement
+	inc h
+.readMovement
+ENDC
 	ld a, [hl]        ; read movement byte 2
 	ld [wCurSpriteMovement2], a
 	ld h, HIGH(wSpriteStateData1)

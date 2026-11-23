@@ -1341,11 +1341,9 @@ AdjustOAMBlockYPos2:
 	ld a, [hl]
 	add b
 	cp 112
-	jr c, .skipSettingPreviousEntrysAttribute
-	dec hl
-	ld a, 160 ; bug, sets previous OAM entry's attribute
-	ld [hli], a
-.skipSettingPreviousEntrysAttribute
+	jr c, .writeY
+	ld a, SCREEN_HEIGHT_PX + OAM_Y_OFS
+.writeY
 	ld [hl], a
 	add hl, de
 	dec c
@@ -1775,11 +1773,8 @@ AnimationSlideMonDownAndHide:
 	dec c
 	jr nz, .loop
 	call AnimationHideMonPic
-	ld hl, wTempPic
-	ld bc, PIC_SIZE tiles
-	xor a
-	call FillMemory
-	jp CopyTempPicToMonPic
+	call Delay3
+	jp AnimationShowMonPic
 
 _AnimationSlideMonOff:
 ; Slides the mon's sprite off the screen horizontally by e tiles and waits
@@ -1835,10 +1830,8 @@ _AnimationSlideMonOff:
 .PlayerNextTile
 	ld a, [hl]
 	add 7
-; This is a bug. The lower right corner tile of the mon back pic is blanked
-; while the mon is sliding off the screen. It should compare with the max tile
-; plus one instead.
-	cp $61
+; Tile $61 is still part of the back picture.
+	cp $62
 	ret c
 	ld a, ' '
 	ret

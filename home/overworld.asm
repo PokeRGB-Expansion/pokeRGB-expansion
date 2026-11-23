@@ -80,8 +80,14 @@ OverworldLoopLessDelay::
 	jp .displayDialogue
 .startButtonNotPressed
 	bit B_PAD_A, a
+	jr nz, .interact
+	bit B_PAD_SELECT, a
 	jp z, .checkIfDownButtonIsPressed
-; if A is pressed
+	farcall CanUseRegisteredBicycle
+	jp nc, .checkIfDownButtonIsPressed
+	ld a, TEXT_REGISTERED_ITEM
+	jr .shortcut
+.interact
 	ld a, [wStatusFlags5]
 	bit BIT_UNKNOWN_5_2, a
 	jp nz, .noDirectionButtonsPressed
@@ -94,7 +100,12 @@ OverworldLoopLessDelay::
 	call IsSpriteOrSignInFrontOfPlayer
 	ldh a, [hTextID]
 	and a
-	jp z, OverworldLoop
+	jr nz, .displayDialogue
+	farcall FindTerrainShortcut
+	jp nc, OverworldLoop
+	ld a, TEXT_FIELD_SHORTCUT
+.shortcut
+	ldh [hTextID], a
 .displayDialogue
 	predef GetTileAndCoordsInFrontOfPlayer
 	call UpdateSprites
@@ -1302,40 +1313,34 @@ CheckForTilePairCollisions::
 	ld a, [wTileInFrontOfPlayer]
 	ld c, a
 .tilePairCollisionLoop
-	ld a, [wCurMapTileset]
-	ld b, a
 	ld a, [hli]
 	cp $ff
 	jr z, .noMatch
+	ld b, a
+	ld a, [wCurMapTileset]
 	cp b
-	jr z, .tilesetMatches
-	inc hl
-.retry
-	inc hl
-	jr .tilePairCollisionLoop
-.tilesetMatches
+	jr nz, .skipPair
 	ld a, [wTilePlayerStandingOn]
 	ld b, a
+	ld a, [hli]
+	cp b
+	jr z, .matchFacingTile
+	cp c
+	jr nz, .skipLastTile
 	ld a, [hl]
 	cp b
-	jr z, .currentTileMatchesFirstInPair
-	inc hl
-	ld a, [hl]
-	cp b
-	jr z, .currentTileMatchesSecondInPair
-	jr .retry
-.currentTileMatchesFirstInPair
-	inc hl
+	jr z, .foundMatch
+	jr .skipLastTile
+.matchFacingTile
 	ld a, [hl]
 	cp c
 	jr z, .foundMatch
-	jr .tilePairCollisionLoop
-.currentTileMatchesSecondInPair
-	dec hl
-	ld a, [hli]
-	cp c
+.skipLastTile
 	inc hl
-	jr nz, .tilePairCollisionLoop
+	jr .tilePairCollisionLoop
+.skipPair
+	inc hl
+	jr .skipLastTile
 .foundMatch
 	scf
 	ret

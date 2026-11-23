@@ -317,6 +317,7 @@ PlayerSpinInPlace:
 	jr PlayerSpinInPlace
 
 PlayerSpinWhileMovingUpOrDown:
+	ld hl, wFacingDirectionList
 	call SpinPlayerSprite
 	ld a, [wPlayerSpinWhileMovingUpOrDownAnimDeltaY]
 	ld c, a

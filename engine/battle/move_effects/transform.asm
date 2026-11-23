@@ -1,6 +1,18 @@
 TransformEffect_:
+IF DEF(_POKERGB_CORE)
+	ld hl, wEnemyMonSpecies
+	ld de, wBattleMonSpecies
+	ldh a, [hWhoseTurn]
+	and a
+	jr nz, .enemyTurn
+	ld [wPlayerMoveListIndex], a
+	ld a, [wEnemyBattleStatus1]
+	jr .hitTest
+.enemyTurn
+ENDC
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies
+IF !DEF(_POKERGB_CORE)
 	ld bc, wEnemyBattleStatus3
 	; bug: on enemy's turn, a is overloaded with hWhoseTurn,
 	; before the check for INVULNERABLE
@@ -14,14 +26,21 @@ TransformEffect_:
 	ld bc, wPlayerBattleStatus3
 	ld [wPlayerMoveListIndex], a
 	; bug: this should be target's BattleStatus1 (i.e. wEnemyBattleStatus1)
+ENDC
 	ld a, [wPlayerBattleStatus1]
 .hitTest
+IF DEF(_POKERGB_CORE)
+	bit INVULNERABLE, a
+ELSE
 	bit INVULNERABLE, a ; is mon invulnerable to typical attacks? (fly/dig)
 	                    ; this check doesn't work due to above bugs
+ENDC
 	jp nz, .failed
 	push hl
 	push de
+IF !DEF(_POKERGB_CORE)
 	push bc
+ENDC
 	ld hl, wPlayerBattleStatus2
 	ldh a, [hWhoseTurn]
 	and a
@@ -47,10 +66,12 @@ TransformEffect_:
 	ld b, BANK(ReshowSubstituteAnim)
 	pop af
 	call nz, Bankswitch
+IF !DEF(_POKERGB_CORE)
 	pop bc
 	ld a, [bc]
 	set TRANSFORMED, a ; mon is now transformed
 	ld [bc], a
+ENDC
 	pop de
 	pop hl
 	push hl
@@ -71,14 +92,30 @@ TransformEffect_:
 	call CopyData
 	ldh a, [hWhoseTurn]
 	and a
+IF DEF(_POKERGB_CORE)
+	ld bc, wPlayerBattleStatus3
+	jr z, .markTransformed
+	ld bc, wEnemyBattleStatus3
+	ld a, [bc]
+	bit TRANSFORMED, a
+	jr nz, .next
+; Save the enemy's original DVs on its first successful Transform.
+ELSE
 	jr z, .next
 ; save enemy mon DVs at wTransformedEnemyMonOriginalDVs
+ENDC
 	ld a, [de]
 	ld [wTransformedEnemyMonOriginalDVs], a
 	inc de
 	ld a, [de]
 	ld [wTransformedEnemyMonOriginalDVs + 1], a
 	dec de
+IF DEF(_POKERGB_CORE)
+.markTransformed
+	ld a, [bc]
+	set TRANSFORMED, a
+	ld [bc], a
+ENDC
 .next
 ; DVs
 	ld a, [hli]

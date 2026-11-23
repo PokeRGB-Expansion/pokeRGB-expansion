@@ -1020,11 +1020,23 @@ OaksLabOak1Text:
 	call PrintText
 	jr .done
 .give_poke_balls
+IF DEF(_POKERGB_CORE)
+	CheckEvent EVENT_GOT_POKEBALLS_FROM_OAK
+ELSE
 	CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+ENDC
 	jr nz, .come_see_me_sometimes
 	lb bc, POKE_BALL, 5
 	call GiveItem
+IF DEF(_POKERGB_CORE)
+	ld hl, .NoRoomForPokeballsText
+	jr nc, .print_gift_result
+	SetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+ENDC
 	ld hl, .GivePokeballsText
+IF DEF(_POKERGB_CORE)
+.print_gift_result
+ENDC
 	call PrintText
 	jr .done
 .come_see_me_sometimes
@@ -1059,6 +1071,12 @@ OaksLabOak1Text:
 	text_far _OaksLabOak1ReceivedPokeballsText
 	sound_get_key_item
 	text_far _OaksLabGivePokeballsExplanationText
+IF DEF(_POKERGB_CORE)
+	text_end
+
+.NoRoomForPokeballsText:
+	text_far _HiddenItemBagFullText
+ENDC
 	text_end
 
 .ComeSeeMeSometimesText:

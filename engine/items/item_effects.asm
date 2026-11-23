@@ -468,17 +468,27 @@ ItemUseBall:
 
 	push hl
 
+IF DEF(_POKERGB_CORE)
+; The original species remains in wEnemyMonSpecies2 after Transform.
+ELSE
 ; Bug: If the Pokémon is transformed, the Pokémon is assumed to be a Ditto.
 ; This is a bug because a wild Pokémon could have used Transform via
 ; Mirror Move even though the only wild Pokémon that knows Transform is Ditto.
+ENDC
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
+IF DEF(_POKERGB_CORE)
+	jr nz, .skip6
+ELSE
 	jr z, .notTransformed
 	ld a, DITTO
 	ld [wEnemyMonSpecies2], a
 	jr .skip6
+ENDC
 
+IF !DEF(_POKERGB_CORE)
 .notTransformed
+ENDC
 ; If the Pokémon is not transformed, set the transformed bit and copy the
 ; DVs to wTransformedEnemyMonOriginalDVs so that LoadEnemyMonData won't generate
 ; new DVs.
@@ -558,6 +568,16 @@ ItemUseBall:
 .sendToBox
 	call ClearSprites
 	call SendNewMonToBox
+IF DEF(_POKERGB_CORE)
+	call CopyBoxArrivalNickname
+	ld a, [wBoxCount]
+	cp MONS_PER_BOX
+	jr nz, .notLastBoxSlot
+	call FormatBoxReceiptNumber
+	ld hl, LastBoxSlotCatchText
+	jr .printTransferredToPCText
+.notLastBoxSlot
+ENDC
 	ld hl, ItemUseBallText07
 	CheckEvent EVENT_MET_BILL
 	jr nz, .printTransferredToPCText
@@ -628,6 +648,60 @@ ItemUseBallText06:
 	sound_dex_page_added
 	text_promptbutton
 	text_end
+IF DEF(_POKERGB_CORE)
+
+PrepareBoxTransferReceipt::
+	call CopyBoxArrivalNickname
+	; fallthrough
+
+FormatBoxReceiptNumber:
+	ld hl, wStringBuffer
+	ld a, [wCurrentBoxNum]
+	and BOX_NUM_MASK
+	cp 9
+	jr c, .singleDigit
+	sub 9
+	ld [hl], '1'
+	inc hl
+	add '0'
+	jr .done
+.singleDigit
+	add '1'
+.done
+	ld [hli], a
+	ld [hl], '@'
+	ret
+
+CopyBoxArrivalNickname:
+; Both callers have just appended the new Pokémon.
+	ld a, [wBoxCount]
+	dec a
+	ld hl, wBoxMonNicks
+	ld bc, NAME_LENGTH
+	call AddNTimes
+	ld de, wNameBuffer
+	jp CopyData
+
+MACRO last_box_slot_receipt
+	text_ram wNameBuffer
+	text " stored."
+	line "BOX @"
+	text_ram wStringBuffer
+	text " is full."
+ENDM
+
+LastBoxSlotCatchText:
+	last_box_slot_receipt
+	prompt
+	text_end
+
+LastBoxSlotGiftText::
+	last_box_slot_receipt
+	done
+	text_end
+
+PURGE last_box_slot_receipt
+ENDC
 
 ItemUseTownMap:
 	ld a, [wIsInBattle]
@@ -639,6 +713,9 @@ ItemUseBicycle:
 	ld a, [wIsInBattle]
 	and a
 	jp nz, ItemUseNotTime
+	ld a, [wStatusFlags6]
+	bit BIT_ALWAYS_ON_BIKE, a
+	jr nz, .cannotDismount
 	ld a, [wWalkBikeSurfState]
 	ld [wWalkBikeSurfStateCopy], a
 	cp 2 ; is the player surfing?
@@ -664,6 +741,13 @@ ItemUseBicycle:
 	call PlayDefaultMusic ; play bike riding music
 .printText
 	jp PrintText
+.cannotDismount
+	ld hl, CannotGetOffHereText
+	jp ItemUseFailed
+
+CannotGetOffHereText:
+	text_far _CannotGetOffHereText
+	text_end
 
 ; indirectly used by SURF in StartMenu_Pokemon.surf
 ItemUseSurfboard:
@@ -672,10 +756,7 @@ ItemUseSurfboard:
 	cp 2 ; is the player already surfing?
 	jr z, .tryToStopSurfing
 ; try to Surf
-	call IsNextTileShoreOrWater
-	jp c, SurfingAttemptFailed
-	ld hl, TilePairCollisionsWater
-	call CheckForTilePairCollisions
+	call CheckSurfBoardingCollision
 	jp c, SurfingAttemptFailed
 ; surfing
 	call .makePlayerMoveForward
@@ -712,7 +793,7 @@ ItemUseSurfboard:
 	jr nz, .passableTileLoop
 .cannotStopSurfing
 	ld hl, SurfingNoPlaceToGetOffText
-	jp PrintText
+	jp ItemUseFailed
 .stopSurfing
 	call .makePlayerMoveForward
 	ld hl, wStatusFlags5
@@ -1706,24 +1787,20 @@ ItemUsePokeFlute:
 .inBattle
 	xor a
 	ld [wWereAnyMonsAsleep], a
-	ld b, ~SLP_MASK
+	ld a, [wPartyCount]
 	ld hl, wPartyMon1Status
 	call WakeUpEntireParty
 	ld a, [wIsInBattle]
-	dec a ; is it a trainer battle?
+	dec a ; skip the enemy party in a wild battle
 	jr z, .skipWakingUpEnemyParty
-; if it's a trainer battle
+	ld a, [wEnemyPartyCount]
 	ld hl, wEnemyMon1Status
 	call WakeUpEntireParty
 .skipWakingUpEnemyParty
 	ld hl, wBattleMonStatus
-	ld a, [hl]
-	and b ; remove Sleep status
-	ld [hl], a
+	call ClearFluteSleep
 	ld hl, wEnemyMonStatus
-	ld a, [hl]
-	and b ; remove Sleep status
-	ld [hl], a
+	call ClearFluteSleep
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	ld a, [wWereAnyMonsAsleep]
 	and a ; were any pokemon asleep before playing the flute?
@@ -1745,30 +1822,29 @@ ItemUsePokeFlute:
 	ld hl, FluteWokeUpText
 	jp PrintText
 
-; wakes up all party pokemon
-; INPUT:
-; hl must point to status of first pokemon in party (player's or enemy's)
-; b must equal ~SLP
-; [wWereAnyMonsAsleep] should be initialized to 0
-; OUTPUT:
-; [wWereAnyMonsAsleep]: set to 1 if any pokemon were asleep
+; a = party size, hl = first member's status
 WakeUpEntireParty:
+	and a
+	ret z
+	ld c, a
 	ld de, PARTYMON_STRUCT_LENGTH
-	ld c, PARTY_LENGTH
 .loop
-	ld a, [hl]
-	push af
-	and SLP_MASK
-	jr z, .notAsleep
-	ld a, 1
-	ld [wWereAnyMonsAsleep], a ; indicate that a pokemon had to be woken up
-.notAsleep
-	pop af
-	and b ; remove Sleep status
-	ld [hl], a
+	call ClearFluteSleep
 	add hl, de
 	dec c
 	jr nz, .loop
+	ret
+
+; Clear sleep and remember whether this use woke anyone. Leave other status bits alone.
+ClearFluteSleep:
+	ld a, [hl]
+	and SLP_MASK
+	ret z
+	ld a, [hl]
+	and ~SLP_MASK
+	ld [hl], a
+	ld a, 1
+	ld [wWereAnyMonsAsleep], a
 	ret
 
 Route12SnorlaxFluteCoords:
@@ -2041,8 +2117,12 @@ ItemUsePPRestore:
 	call .restorePP
 	jr nz, .afterRestoringPP
 	jp .noEffect
+IF DEF(_POKERGB_CORE)
+; Unsets zero if PP was restored, sets zero otherwise.
+ELSE
 ; unsets zero flag if PP was restored, sets zero flag if not
 ; however, this is bugged for Max Ethers and Max Elixirs (see below)
+ENDC
 .restorePP
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
@@ -2077,10 +2157,14 @@ ItemUsePPRestore:
 	ret
 .fullyRestorePP
 	ld a, [hl] ; move PP
+IF DEF(_POKERGB_CORE)
+	and PP_MASK
+ELSE
 ; Bug: This code doesn't mask out the upper two bits, which are used to count
 ; how many PP Ups have been used on the move.
 ; So, Max Ethers and Max Elixirs will not be detected as having no effect on
 ; a move with full PP if the move has had any PP Ups used on it.
+ENDC
 	cp b ; does current PP equal max PP?
 	ret z
 	jr .storeNewAmount
@@ -2176,11 +2260,15 @@ ItemUseTMHM:
 	call PrintText
 	ld hl, TeachMachineMoveText
 	call PrintText
+	ld a, 1
+	ld [wMoveInfoQuestion], a
 	hlcoord 14, 7
 	lb bc, 8, 15
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; yes/no menu
+	xor a
+	ld [wMoveInfoQuestion], a
 	ld a, [wCurrentMenuItem]
 	and a
 	jr z, .useMachine
@@ -2645,15 +2733,32 @@ IsKeyItem_::
 
 INCLUDE "data/items/key_items.asm"
 
+IF DEF(_POKERGB_CORE)
+; Append the new mon in the selected box. Both callers require a free slot.
+ELSE
 ; store the new mon in the first slot, shifting all existing box data down
+ENDC
 SendNewMonToBox:
+IF DEF(_POKERGB_CORE)
+	ld hl, wBoxCount
+	ld c, [hl]
+	inc [hl]
+	ld b, 0
+	ld hl, wBoxSpecies
+	add hl, bc
+ELSE
 	ld de, wBoxCount
 	ld a, [de]
 	inc a
 	ld [de], a
 
+ENDC
 	ld a, [wCurPartySpecies]
 	ld [wCurSpecies], a
+IF DEF(_POKERGB_CORE)
+	ld [hli], a
+	ld [hl], -1
+ELSE
 	ld c, a
 .shiftSpeciesLoop
 	inc de
@@ -2664,10 +2769,14 @@ SendNewMonToBox:
 	ld [de], a
 	cp -1
 	jr nz, .shiftSpeciesLoop
+ENDC
 
 	call GetMonHeader
 	ld hl, wBoxMonOT
 	ld bc, NAME_LENGTH
+IF DEF(_POKERGB_CORE)
+	call .selectNewSlot
+ELSE
 	ld a, [wBoxCount]
 	dec a
 	jr z, .skipOTshift ; if the box was empty, there is nothing to shift
@@ -2677,8 +2786,12 @@ SendNewMonToBox:
 	push hl
 	ld bc, NAME_LENGTH
 	add hl, bc
+ENDC
 	ld d, h
 	ld e, l
+IF DEF(_POKERGB_CORE)
+	ld hl, wPlayerName
+ELSE
 	pop hl
 	ld a, [wBoxCount]
 	dec a
@@ -2687,7 +2800,9 @@ SendNewMonToBox:
 	push bc
 	push hl
 	ld bc, NAME_LENGTH
+ENDC
 	call CopyData
+IF !DEF(_POKERGB_CORE)
 	pop hl
 	ld d, h
 	ld e, l
@@ -2706,9 +2821,13 @@ SendNewMonToBox:
 	ld a, [wBoxCount]
 	dec a
 	jr z, .skipNickShift
+ENDC
 
 	ld hl, wBoxMonNicks
 	ld bc, NAME_LENGTH
+IF DEF(_POKERGB_CORE)
+	call .selectNewSlot
+ELSE
 	dec a
 	call AddNTimes
 	push hl
@@ -2736,23 +2855,34 @@ SendNewMonToBox:
 
 .skipNickShift
 	ld hl, wBoxMon1Nick
+ENDC
 	ld a, NAME_MON_SCREEN
 	ld [wNamingScreenType], a
 	predef AskName
 
+IF DEF(_POKERGB_CORE)
+	ld a, [wEnemyMonLevel]
+	ld [wEnemyMonBoxLevel], a
+ELSE
 	ld a, [wBoxCount]
 	dec a
 	jr z, .skipMonDataShift
 
+ENDC
 	ld hl, wBoxMons
 	ld bc, BOXMON_STRUCT_LENGTH
+IF DEF(_POKERGB_CORE)
+	call .selectNewSlot
+ELSE
 	dec a
 	call AddNTimes
 	push hl
 	ld bc, BOXMON_STRUCT_LENGTH
 	add hl, bc
+ENDC
 	ld d, h
 	ld e, l
+IF !DEF(_POKERGB_CORE)
 	pop hl
 	ld a, [wBoxCount]
 	dec a
@@ -2774,8 +2904,11 @@ SendNewMonToBox:
 .skipMonDataShift
 	ld a, [wEnemyMonLevel]
 	ld [wEnemyMonBoxLevel], a
+ENDC
 	ld hl, wEnemyMon
+IF !DEF(_POKERGB_CORE)
 	ld de, wBoxMon1
+ENDC
 	ld bc, wEnemyMonDVs - wEnemyMon
 	call CopyData
 	ld hl, wPlayerID
@@ -2822,6 +2955,19 @@ SendNewMonToBox:
 	dec b
 	jr nz, .movePPLoop
 	ret
+IF DEF(_POKERGB_CORE)
+
+.selectNewSlot
+	ld a, [wBoxCount]
+	dec a
+	jp AddNTimes
+ENDC
+
+CheckSurfBoardingCollision::
+	call IsNextTileShoreOrWater
+	ret c
+	ld hl, TilePairCollisionsWater
+	jp CheckForTilePairCollisions
 
 ; checks if the tile in front of the player is a shore or water tile
 ; used for surfing and fishing

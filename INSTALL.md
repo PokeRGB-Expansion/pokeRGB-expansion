@@ -145,11 +145,13 @@ git clone https://github.com/pret/pokered
 cd pokered
 ```
 
-To build **pokered.gbc** and **pokeblue.gbc**:
+To build the Core reference colors:
 
 ```bash
 make
 ```
+
+The Red, Blue, and Green outputs are in `build/core/`. Use `make PRESET=minimal` for the Minimal builds in `build/minimal/`. Add `red`, `blue`, or `green` to build one color.
 
 ### Build with a local rgbds version
 

@@ -83,7 +83,11 @@ _SentToBoxText::
 	text "There's no more"
 	line "room for #MON!"
 	cont "@"
+IF DEF(_POKERGB_CORE)
+	text_ram wNameBuffer
+ELSE
 	text_ram wBoxMonNicks
+ENDC
 	text " was"
 	cont "sent to #MON"
 	cont "BOX @"

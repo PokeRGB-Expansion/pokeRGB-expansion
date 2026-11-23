@@ -18,6 +18,9 @@ _GivePokemon::
 	callfar LoadEnemyMonData
 	call SetPokedexOwnedFlag
 	callfar SendNewMonToBox
+IF DEF(_POKERGB_CORE)
+	callfar PrepareBoxTransferReceipt
+ELSE
 	ld hl, wStringBuffer
 	ld a, [wCurrentBoxNum]
 	and BOX_NUM_MASK
@@ -33,7 +36,15 @@ _GivePokemon::
 .next
 	ld [hli], a
 	ld [hl], '@'
+ENDC
 	ld hl, SentToBoxText
+IF DEF(_POKERGB_CORE)
+	ld a, [wBoxCount]
+	cp MONS_PER_BOX
+	jr nz, .printBoxReceipt
+	ld hl, LastBoxSlotGiftReceipt
+.printBoxReceipt
+ENDC
 	call PrintText
 	scf
 	ret
@@ -77,6 +88,12 @@ SentToBoxText:
 	text_far _SentToBoxText
 	text_end
 
+IF DEF(_POKERGB_CORE)
+LastBoxSlotGiftReceipt:
+	text_far LastBoxSlotGiftText
+	text_end
+
+ENDC
 BoxIsFullText:
 	text_far _BoxIsFullText
 	text_end

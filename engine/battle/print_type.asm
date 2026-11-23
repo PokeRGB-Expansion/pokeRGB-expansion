@@ -50,3 +50,10 @@ PrintType_:
 	jp PlaceString
 
 INCLUDE "data/types/names.asm"
+
+DrawMoveInfoType::
+	ld a, [wMoveInfoData + MOVE_TYPE]
+	cp NUM_TYPES
+	ret nc
+	hlcoord 1, 13
+	jp PrintType

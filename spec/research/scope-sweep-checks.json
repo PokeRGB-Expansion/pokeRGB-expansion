@@ -1,0 +1,2954 @@
+{
+  "source_revision": "ba9c0568f64ae602fadda577a08c66639f93082a",
+  "emulator": "SameBoy 1.0.5, DMG-B",
+  "assembler": "RGBDS 1.0.4",
+  "notes": "Individual routines, UI paths and complete turns are identified separately in the linked review documents. The Focus threshold and byte-comparison matrices are separate controlled routines. No integrated public Core build was tested.",
+  "catalog_audit": {
+    "source_commit": "ba9c0568f64ae602fadda577a08c66639f93082a",
+    "emulator": "SameBoy 1.0.5 DMG-B",
+    "assembler": "RGBDS 1.0.4",
+    "direct_routine_fixtures": [
+      {
+        "build": "red_retail",
+        "sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "signs": [
+          [
+            16,
+            5,
+            16,
+            0,
+            9,
+            true
+          ],
+          [
+            16,
+            4,
+            17,
+            12,
+            9,
+            true
+          ],
+          [
+            16,
+            6,
+            17,
+            8,
+            9,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            4,
+            0,
+            false
+          ],
+          [
+            17,
+            5,
+            0,
+            12,
+            0,
+            false
+          ]
+        ],
+        "itemfinder": [
+          [
+            1,
+            18,
+            true
+          ],
+          [
+            1,
+            14,
+            true
+          ],
+          [
+            1,
+            13,
+            false
+          ],
+          [
+            5,
+            18,
+            true
+          ]
+        ],
+        "itemfinder_custom": [
+          [
+            0,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            true,
+            false
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            false,
+            true
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            true,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            false,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            true,
+            false
+          ]
+        ],
+        "collisions": [
+          [
+            "Land",
+            17,
+            32,
+            5,
+            true
+          ],
+          [
+            "Land",
+            17,
+            32,
+            6,
+            false
+          ],
+          [
+            "Land",
+            3,
+            48,
+            46,
+            true
+          ],
+          [
+            "Land",
+            3,
+            48,
+            45,
+            false
+          ],
+          [
+            "Water",
+            17,
+            20,
+            5,
+            true
+          ],
+          [
+            "Water",
+            17,
+            20,
+            6,
+            false
+          ],
+          [
+            "Water",
+            3,
+            46,
+            72,
+            true
+          ],
+          [
+            "Water",
+            3,
+            46,
+            73,
+            false
+          ]
+        ],
+        "tower": [
+          [
+            15,
+            5,
+            true
+          ],
+          [
+            14,
+            6,
+            true
+          ],
+          [
+            2,
+            6,
+            true
+          ],
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            18,
+            9,
+            false
+          ],
+          [
+            3,
+            9,
+            false
+          ]
+        ]
+      },
+      {
+        "build": "red_test",
+        "sha1": "0517ee32b4f3e54b60950aeca409575eed41f0ff",
+        "signs": [
+          [
+            16,
+            5,
+            16,
+            0,
+            9,
+            true
+          ],
+          [
+            16,
+            4,
+            17,
+            12,
+            9,
+            true
+          ],
+          [
+            16,
+            6,
+            17,
+            8,
+            9,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            4,
+            17,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            12,
+            0,
+            false
+          ]
+        ],
+        "itemfinder": [
+          [
+            1,
+            18,
+            true
+          ],
+          [
+            1,
+            14,
+            true
+          ],
+          [
+            1,
+            13,
+            false
+          ],
+          [
+            5,
+            18,
+            true
+          ]
+        ],
+        "itemfinder_custom": [
+          [
+            0,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            0,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            false,
+            true
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            false,
+            true
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            true,
+            false
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            false,
+            true
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            true,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            false,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            true,
+            false
+          ]
+        ],
+        "collisions": [
+          [
+            "Land",
+            17,
+            32,
+            5,
+            true
+          ],
+          [
+            "Land",
+            17,
+            32,
+            6,
+            false
+          ],
+          [
+            "Land",
+            3,
+            48,
+            46,
+            true
+          ],
+          [
+            "Land",
+            3,
+            48,
+            45,
+            false
+          ],
+          [
+            "Water",
+            17,
+            20,
+            5,
+            true
+          ],
+          [
+            "Water",
+            17,
+            20,
+            6,
+            false
+          ],
+          [
+            "Water",
+            3,
+            46,
+            72,
+            true
+          ],
+          [
+            "Water",
+            3,
+            46,
+            73,
+            false
+          ]
+        ],
+        "tower": [
+          [
+            15,
+            5,
+            true
+          ],
+          [
+            14,
+            6,
+            true
+          ],
+          [
+            2,
+            6,
+            false
+          ],
+          [
+            0,
+            0,
+            false
+          ],
+          [
+            18,
+            9,
+            false
+          ],
+          [
+            3,
+            9,
+            false
+          ]
+        ]
+      },
+      {
+        "build": "blue_retail",
+        "sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "signs": [
+          [
+            16,
+            5,
+            16,
+            0,
+            9,
+            true
+          ],
+          [
+            16,
+            4,
+            17,
+            12,
+            9,
+            true
+          ],
+          [
+            16,
+            6,
+            17,
+            8,
+            9,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            4,
+            0,
+            false
+          ],
+          [
+            17,
+            5,
+            0,
+            12,
+            0,
+            false
+          ]
+        ],
+        "itemfinder": [
+          [
+            1,
+            18,
+            true
+          ],
+          [
+            1,
+            14,
+            true
+          ],
+          [
+            1,
+            13,
+            false
+          ],
+          [
+            5,
+            18,
+            true
+          ]
+        ],
+        "itemfinder_custom": [
+          [
+            0,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            true,
+            false
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            false,
+            true
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            true,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            false,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            true,
+            false
+          ]
+        ],
+        "collisions": [
+          [
+            "Land",
+            17,
+            32,
+            5,
+            true
+          ],
+          [
+            "Land",
+            17,
+            32,
+            6,
+            false
+          ],
+          [
+            "Land",
+            3,
+            48,
+            46,
+            true
+          ],
+          [
+            "Land",
+            3,
+            48,
+            45,
+            false
+          ],
+          [
+            "Water",
+            17,
+            20,
+            5,
+            true
+          ],
+          [
+            "Water",
+            17,
+            20,
+            6,
+            false
+          ],
+          [
+            "Water",
+            3,
+            46,
+            72,
+            true
+          ],
+          [
+            "Water",
+            3,
+            46,
+            73,
+            false
+          ]
+        ],
+        "tower": [
+          [
+            15,
+            5,
+            true
+          ],
+          [
+            14,
+            6,
+            true
+          ],
+          [
+            2,
+            6,
+            true
+          ],
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            18,
+            9,
+            false
+          ],
+          [
+            3,
+            9,
+            false
+          ]
+        ]
+      },
+      {
+        "build": "blue_test",
+        "sha1": "4206d3674242ba8569157ca98086697ce7eff447",
+        "signs": [
+          [
+            16,
+            5,
+            16,
+            0,
+            9,
+            true
+          ],
+          [
+            16,
+            4,
+            17,
+            12,
+            9,
+            true
+          ],
+          [
+            16,
+            6,
+            17,
+            8,
+            9,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            4,
+            17,
+            true
+          ],
+          [
+            17,
+            5,
+            0,
+            12,
+            0,
+            false
+          ]
+        ],
+        "itemfinder": [
+          [
+            1,
+            18,
+            true
+          ],
+          [
+            1,
+            14,
+            true
+          ],
+          [
+            1,
+            13,
+            false
+          ],
+          [
+            5,
+            18,
+            true
+          ]
+        ],
+        "itemfinder_custom": [
+          [
+            0,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            0,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            false,
+            true
+          ],
+          [
+            0,
+            10,
+            4,
+            10,
+            true,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            false,
+            false
+          ],
+          [
+            0,
+            10,
+            5,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            false,
+            true
+          ],
+          [
+            10,
+            0,
+            10,
+            4,
+            true,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            false,
+            false
+          ],
+          [
+            10,
+            0,
+            10,
+            5,
+            true,
+            false
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            false,
+            true
+          ],
+          [
+            5,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            false,
+            false
+          ],
+          [
+            6,
+            10,
+            0,
+            10,
+            true,
+            false
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            false,
+            true
+          ],
+          [
+            10,
+            4,
+            10,
+            0,
+            true,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            false,
+            false
+          ],
+          [
+            10,
+            5,
+            10,
+            0,
+            true,
+            false
+          ]
+        ],
+        "collisions": [
+          [
+            "Land",
+            17,
+            32,
+            5,
+            true
+          ],
+          [
+            "Land",
+            17,
+            32,
+            6,
+            false
+          ],
+          [
+            "Land",
+            3,
+            48,
+            46,
+            true
+          ],
+          [
+            "Land",
+            3,
+            48,
+            45,
+            false
+          ],
+          [
+            "Water",
+            17,
+            20,
+            5,
+            true
+          ],
+          [
+            "Water",
+            17,
+            20,
+            6,
+            false
+          ],
+          [
+            "Water",
+            3,
+            46,
+            72,
+            true
+          ],
+          [
+            "Water",
+            3,
+            46,
+            73,
+            false
+          ]
+        ],
+        "tower": [
+          [
+            15,
+            5,
+            true
+          ],
+          [
+            14,
+            6,
+            true
+          ],
+          [
+            2,
+            6,
+            false
+          ],
+          [
+            0,
+            0,
+            false
+          ],
+          [
+            18,
+            9,
+            false
+          ],
+          [
+            3,
+            9,
+            false
+          ]
+        ]
+      }
+    ],
+    "direct_fields": {
+      "signs": [
+        "route",
+        "x",
+        "y",
+        "facing",
+        "hTextID",
+        "found_sign"
+      ],
+      "itemfinder": [
+        "player_x",
+        "player_y",
+        "found"
+      ],
+      "itemfinder_custom": [
+        "item_x",
+        "item_y",
+        "player_x",
+        "player_y",
+        "previously_claimed",
+        "found"
+      ],
+      "collisions": [
+        "table",
+        "tileset",
+        "standing_tile",
+        "facing_tile",
+        "blocked"
+      ],
+      "tower": [
+        "x",
+        "y",
+        "matched"
+      ]
+    },
+    "new_game_fixtures": [
+      {
+        "build": "red_retail",
+        "old_flag": false,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "red_retail",
+        "old_flag": true,
+        "new_flag": true,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "red_test",
+        "old_flag": false,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "red_test",
+        "old_flag": true,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "blue_retail",
+        "old_flag": false,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "blue_retail",
+        "old_flag": true,
+        "new_flag": true,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "blue_test",
+        "old_flag": false,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      },
+      {
+        "build": "blue_test",
+        "old_flag": true,
+        "new_flag": false,
+        "travel_mode": 0,
+        "new_map": 38,
+        "battery_intact": true
+      }
+    ],
+    "tile_copy_fixtures": [
+      {
+        "build": "red_retail",
+        "sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "effect": "slots",
+        "asset_bytes": 384,
+        "extra_bytes_copied_at_each_destination": 64,
+        "destinations": 2,
+        "tail_canary_intact": false
+      },
+      {
+        "build": "red_retail",
+        "sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "effect": "healing",
+        "asset_bytes": 32,
+        "extra_bytes_copied_at_each_destination": 16,
+        "destinations": 1,
+        "tail_canary_intact": false
+      },
+      {
+        "build": "red_gfx",
+        "sha1": "ae9dbc865e6bb821cfeb5f51f584a3d933ec92d3",
+        "effect": "slots",
+        "asset_bytes": 384,
+        "extra_bytes_copied_at_each_destination": 0,
+        "destinations": 2,
+        "tail_canary_intact": true
+      },
+      {
+        "build": "red_gfx",
+        "sha1": "ae9dbc865e6bb821cfeb5f51f584a3d933ec92d3",
+        "effect": "healing",
+        "asset_bytes": 32,
+        "extra_bytes_copied_at_each_destination": 0,
+        "destinations": 1,
+        "tail_canary_intact": true
+      },
+      {
+        "build": "blue_retail",
+        "sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "effect": "slots",
+        "asset_bytes": 384,
+        "extra_bytes_copied_at_each_destination": 64,
+        "destinations": 2,
+        "tail_canary_intact": false
+      },
+      {
+        "build": "blue_retail",
+        "sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "effect": "healing",
+        "asset_bytes": 32,
+        "extra_bytes_copied_at_each_destination": 16,
+        "destinations": 1,
+        "tail_canary_intact": false
+      },
+      {
+        "build": "blue_gfx",
+        "sha1": "fbe2ff19f4e32f4eaadbeac50be1691d303274e3",
+        "effect": "slots",
+        "asset_bytes": 384,
+        "extra_bytes_copied_at_each_destination": 0,
+        "destinations": 2,
+        "tail_canary_intact": true
+      },
+      {
+        "build": "blue_gfx",
+        "sha1": "fbe2ff19f4e32f4eaadbeac50be1691d303274e3",
+        "effect": "healing",
+        "asset_bytes": 32,
+        "extra_bytes_copied_at_each_destination": 0,
+        "destinations": 1,
+        "tail_canary_intact": true
+      }
+    ],
+    "binary_models": {
+      "itemfinder": {
+        "maps_with_hidden_items_source": "hidden-item coordinate table plus map sizes from constants/map_constants.asm",
+        "entries_per_color": 54,
+        "position_record_comparisons_per_color": 64160,
+        "mismatches": 0
+      },
+      "pair_collision": {
+        "inputs_per_table_per_color": 1572864,
+        "maps_tilesets": 24,
+        "ordered_tile_pairs_per_tileset": 65536,
+        "tables": 2,
+        "colors": 2,
+        "mismatches": 0,
+        "largest_bytes_beyond_terminator": {
+          "land": 299,
+          "water": 236
+        }
+      }
+    }
+  },
+  "stock_and_prototype_results": {
+    "access": [
+      {
+        "game": "red",
+        "test": "entry",
+        "battle_scene_off": false,
+        "lead_level": 30,
+        "wild_level": 32,
+        "transition": "BattleTransition_DoubleCircle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "red",
+        "test": "entry",
+        "battle_scene_off": false,
+        "lead_level": 30,
+        "wild_level": 33,
+        "transition": "BattleTransition_Circle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "red",
+        "test": "move_branch",
+        "battle_scene_off": false,
+        "move_path": "ShareMoveAnimations",
+        "common_followup": "PlayApplyingAttackAnimation"
+      },
+      {
+        "game": "red",
+        "test": "entry",
+        "battle_scene_off": true,
+        "lead_level": 30,
+        "wild_level": 32,
+        "transition": "BattleTransition_DoubleCircle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "red",
+        "test": "entry",
+        "battle_scene_off": true,
+        "lead_level": 30,
+        "wild_level": 33,
+        "transition": "BattleTransition_Circle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "red",
+        "test": "move_branch",
+        "battle_scene_off": true,
+        "move_path": "MoveAnimation.animationsDisabled",
+        "common_followup": "PlayApplyingAttackAnimation"
+      },
+      {
+        "game": "red",
+        "test": "sound_wait",
+        "alarm_bit": true,
+        "channel5_busy": false,
+        "result": "return"
+      },
+      {
+        "game": "red",
+        "test": "sound_wait",
+        "alarm_bit": true,
+        "channel5_busy": true,
+        "result": "return"
+      },
+      {
+        "game": "red",
+        "test": "sound_wait",
+        "alarm_bit": false,
+        "channel5_busy": false,
+        "result": "return"
+      },
+      {
+        "game": "red",
+        "test": "sound_wait",
+        "alarm_bit": false,
+        "channel5_busy": true,
+        "result": "still_waiting"
+      },
+      {
+        "game": "blue",
+        "test": "entry",
+        "battle_scene_off": false,
+        "lead_level": 30,
+        "wild_level": 32,
+        "transition": "BattleTransition_DoubleCircle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "blue",
+        "test": "entry",
+        "battle_scene_off": false,
+        "lead_level": 30,
+        "wild_level": 33,
+        "transition": "BattleTransition_Circle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "blue",
+        "test": "move_branch",
+        "battle_scene_off": false,
+        "move_path": "ShareMoveAnimations",
+        "common_followup": "PlayApplyingAttackAnimation"
+      },
+      {
+        "game": "blue",
+        "test": "entry",
+        "battle_scene_off": true,
+        "lead_level": 30,
+        "wild_level": 32,
+        "transition": "BattleTransition_DoubleCircle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "blue",
+        "test": "entry",
+        "battle_scene_off": true,
+        "lead_level": 30,
+        "wild_level": 33,
+        "transition": "BattleTransition_Circle",
+        "flash_count_argument": 3
+      },
+      {
+        "game": "blue",
+        "test": "move_branch",
+        "battle_scene_off": true,
+        "move_path": "MoveAnimation.animationsDisabled",
+        "common_followup": "PlayApplyingAttackAnimation"
+      },
+      {
+        "game": "blue",
+        "test": "sound_wait",
+        "alarm_bit": true,
+        "channel5_busy": false,
+        "result": "return"
+      },
+      {
+        "game": "blue",
+        "test": "sound_wait",
+        "alarm_bit": true,
+        "channel5_busy": true,
+        "result": "return"
+      },
+      {
+        "game": "blue",
+        "test": "sound_wait",
+        "alarm_bit": false,
+        "channel5_busy": false,
+        "result": "return"
+      },
+      {
+        "game": "blue",
+        "test": "sound_wait",
+        "alarm_bit": false,
+        "channel5_busy": true,
+        "result": "still_waiting"
+      }
+    ],
+    "shift": [
+      {
+        "version": "red",
+        "prototype": false,
+        "reserve_hp": 0,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": false,
+        "reserve_hp": 0,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": false,
+        "reserve_hp": 1,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": false,
+        "reserve_hp": 1,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": true,
+        "reserve_hp": 0,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": true,
+        "reserve_hp": 0,
+        "style": "SHIFT",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": true,
+        "reserve_hp": 1,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "red",
+        "prototype": true,
+        "reserve_hp": 1,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": false,
+        "reserve_hp": 0,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": false,
+        "reserve_hp": 0,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": false,
+        "reserve_hp": 1,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": false,
+        "reserve_hp": 1,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": true,
+        "reserve_hp": 0,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": true,
+        "reserve_hp": 0,
+        "style": "SHIFT",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": true,
+        "reserve_hp": 1,
+        "style": "SET",
+        "prompt": false,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      },
+      {
+        "version": "blue",
+        "prototype": true,
+        "reserve_hp": 1,
+        "style": "SHIFT",
+        "prompt": true,
+        "hp": [
+          28,
+          30
+        ],
+        "enemy_position": 1,
+        "enemy_visible_species": 108,
+        "active_party_index": 0,
+        "participant_mask": 1,
+        "player_first_slot_pp": 19,
+        "game_mode": 2
+      }
+    ],
+    "coins": [
+      {
+        "color": "red",
+        "coins_before": 0,
+        "money_before": 1000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 50,
+        "money_after": 0,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9949,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9950,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9989,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9990,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9990,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9999,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9949,
+        "money_before": 999,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9949,
+        "money_after": 999,
+        "message": "CantAffordTheCoins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": false,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "DontHaveCoinCase"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": false,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "PleaseComePlaySometime"
+      },
+      {
+        "color": "blue",
+        "coins_before": 0,
+        "money_before": 1000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 50,
+        "money_after": 0,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9949,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9950,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9989,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9990,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9990,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9999,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9949,
+        "money_before": 999,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9949,
+        "money_after": 999,
+        "message": "CantAffordTheCoins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": false,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "DontHaveCoinCase"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": false,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "PleaseComePlaySometime"
+      }
+    ],
+    "coins-edited": [
+      {
+        "color": "red",
+        "coins_before": 0,
+        "money_before": 1000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 50,
+        "money_after": 0,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9949,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9950,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9950,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9989,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9989,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9990,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9990,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9999,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "red",
+        "coins_before": 9949,
+        "money_before": 999,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9949,
+        "money_after": 999,
+        "message": "CantAffordTheCoins"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": false,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "DontHaveCoinCase"
+      },
+      {
+        "color": "red",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": false,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "PleaseComePlaySometime"
+      },
+      {
+        "color": "blue",
+        "coins_before": 0,
+        "money_before": 1000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 50,
+        "money_after": 0,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9949,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 1000,
+        "message": "ThanksHereAre50Coins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9950,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9950,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9989,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9989,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9990,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9990,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9999,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9999,
+        "money_after": 2000,
+        "message": "CoinCaseIsFull"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9949,
+        "money_before": 999,
+        "coin_case": true,
+        "accept": true,
+        "coins_after": 9949,
+        "money_after": 999,
+        "message": "CantAffordTheCoins"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": false,
+        "accept": true,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "DontHaveCoinCase"
+      },
+      {
+        "color": "blue",
+        "coins_before": 9970,
+        "money_before": 2000,
+        "coin_case": true,
+        "accept": false,
+        "coins_after": 9970,
+        "money_after": 2000,
+        "message": "PleaseComePlaySometime"
+      }
+    ],
+    "tm-prompt": [
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM32",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM33",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM02",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM07",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM37",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM01",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM05",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM09",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "mart",
+        "machine": "TM17",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "red",
+        "window": "prize",
+        "machine": "TM23",
+        "text": "SoYouWantPrizeText"
+      },
+      {
+        "color": "red",
+        "window": "prize",
+        "machine": "TM15",
+        "text": "SoYouWantPrizeText"
+      },
+      {
+        "color": "red",
+        "window": "prize",
+        "machine": "TM50",
+        "text": "SoYouWantPrizeText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM32",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM33",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM02",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM07",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM37",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM01",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM05",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM09",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "mart",
+        "machine": "TM17",
+        "text": "PokemartTellBuyPriceText"
+      },
+      {
+        "color": "blue",
+        "window": "prize",
+        "machine": "TM23",
+        "text": "SoYouWantPrizeText"
+      },
+      {
+        "color": "blue",
+        "window": "prize",
+        "machine": "TM15",
+        "text": "SoYouWantPrizeText"
+      },
+      {
+        "color": "blue",
+        "window": "prize",
+        "machine": "TM50",
+        "text": "SoYouWantPrizeText"
+      }
+    ],
+    "daycare": [
+      {
+        "color": "red",
+        "case": "no_level",
+        "from_level": 30,
+        "to_level": 30,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_after": [
+          69,
+          12,
+          8,
+          11
+        ]
+      },
+      {
+        "color": "red",
+        "case": "full",
+        "from_level": 30,
+        "to_level": 31,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          93,
+          50,
+          60,
+          105
+        ],
+        "pp_after": [
+          12,
+          8,
+          11,
+          20
+        ]
+      },
+      {
+        "color": "red",
+        "case": "empty_slot",
+        "from_level": 30,
+        "to_level": 31,
+        "moves_before": [
+          91,
+          93,
+          50,
+          0
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          0
+        ],
+        "moves_after": [
+          91,
+          93,
+          50,
+          105
+        ],
+        "pp_after": [
+          69,
+          12,
+          8,
+          20
+        ]
+      },
+      {
+        "color": "red",
+        "case": "two_new",
+        "from_level": 30,
+        "to_level": 38,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          50,
+          60,
+          105,
+          94
+        ],
+        "pp_after": [
+          8,
+          11,
+          20,
+          10
+        ]
+      },
+      {
+        "color": "blue",
+        "case": "no_level",
+        "from_level": 30,
+        "to_level": 30,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_after": [
+          69,
+          12,
+          8,
+          11
+        ]
+      },
+      {
+        "color": "blue",
+        "case": "full",
+        "from_level": 30,
+        "to_level": 31,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          93,
+          50,
+          60,
+          105
+        ],
+        "pp_after": [
+          12,
+          8,
+          11,
+          20
+        ]
+      },
+      {
+        "color": "blue",
+        "case": "empty_slot",
+        "from_level": 30,
+        "to_level": 31,
+        "moves_before": [
+          91,
+          93,
+          50,
+          0
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          0
+        ],
+        "moves_after": [
+          91,
+          93,
+          50,
+          105
+        ],
+        "pp_after": [
+          69,
+          12,
+          8,
+          20
+        ]
+      },
+      {
+        "color": "blue",
+        "case": "two_new",
+        "from_level": 30,
+        "to_level": 38,
+        "moves_before": [
+          91,
+          93,
+          50,
+          60
+        ],
+        "pp_before": [
+          69,
+          12,
+          8,
+          11
+        ],
+        "moves_after": [
+          50,
+          60,
+          105,
+          94
+        ],
+        "pp_after": [
+          8,
+          11,
+          20,
+          10
+        ]
+      }
+    ],
+    "deposit": [
+      {
+        "color": "red",
+        "deposit_location": "pc",
+        "remaining_hp": 0,
+        "remaining_party_count": 1,
+        "box_count": 1,
+        "day_care_occupied": 0
+      },
+      {
+        "color": "red",
+        "deposit_location": "pc",
+        "remaining_hp": 1,
+        "remaining_party_count": 1,
+        "box_count": 1,
+        "day_care_occupied": 0
+      },
+      {
+        "color": "blue",
+        "deposit_location": "pc",
+        "remaining_hp": 0,
+        "remaining_party_count": 1,
+        "box_count": 1,
+        "day_care_occupied": 0
+      },
+      {
+        "color": "blue",
+        "deposit_location": "pc",
+        "remaining_hp": 1,
+        "remaining_party_count": 1,
+        "box_count": 1,
+        "day_care_occupied": 0
+      }
+    ],
+    "deposit-daycare": [
+      {
+        "color": "red",
+        "deposit_location": "daycare",
+        "remaining_hp": 0,
+        "remaining_party_count": 1,
+        "box_count": 0,
+        "day_care_occupied": 1
+      },
+      {
+        "color": "red",
+        "deposit_location": "daycare",
+        "remaining_hp": 1,
+        "remaining_party_count": 1,
+        "box_count": 0,
+        "day_care_occupied": 1
+      },
+      {
+        "color": "blue",
+        "deposit_location": "daycare",
+        "remaining_hp": 0,
+        "remaining_party_count": 1,
+        "box_count": 0,
+        "day_care_occupied": 1
+      },
+      {
+        "color": "blue",
+        "deposit_location": "daycare",
+        "remaining_hp": 1,
+        "remaining_party_count": 1,
+        "box_count": 0,
+        "day_care_occupied": 1
+      }
+    ],
+    "hidden-coins": [
+      {
+        "color": "red",
+        "start": 9988,
+        "credited": 10,
+        "coins_after": 9998,
+        "dropped_message": false,
+        "pickup_claimed": true
+      },
+      {
+        "color": "red",
+        "start": 9989,
+        "credited": 10,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      },
+      {
+        "color": "red",
+        "start": 9990,
+        "credited": 9,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      },
+      {
+        "color": "red",
+        "start": 9999,
+        "credited": 0,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      },
+      {
+        "color": "blue",
+        "start": 9988,
+        "credited": 10,
+        "coins_after": 9998,
+        "dropped_message": false,
+        "pickup_claimed": true
+      },
+      {
+        "color": "blue",
+        "start": 9989,
+        "credited": 10,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      },
+      {
+        "color": "blue",
+        "start": 9990,
+        "credited": 9,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      },
+      {
+        "color": "blue",
+        "start": 9999,
+        "credited": 0,
+        "coins_after": 9999,
+        "dropped_message": true,
+        "pickup_claimed": true
+      }
+    ],
+    "dex-cursor": [
+      {
+        "color": "red",
+        "start": {
+          "row": 0,
+          "offset": 0
+        },
+        "selected": {
+          "row": 1,
+          "offset": 7
+        },
+        "caller_after_exit": {
+          "row": 0,
+          "offset": 5
+        },
+        "reopened": {
+          "row": 0,
+          "offset": 0
+        }
+      },
+      {
+        "color": "blue",
+        "start": {
+          "row": 0,
+          "offset": 0
+        },
+        "selected": {
+          "row": 1,
+          "offset": 7
+        },
+        "caller_after_exit": {
+          "row": 0,
+          "offset": 5
+        },
+        "reopened": {
+          "row": 0,
+          "offset": 0
+        }
+      }
+    ],
+    "focus-check": [
+      {
+        "color": "red",
+        "build": "stock",
+        "rom_sha1": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
+        "threshold_fixtures": 2048,
+        "result_digest": "275d92254f6534efe6e62d8db7286333e7850d9c707d5a019a818dba24564669"
+      },
+      {
+        "color": "red",
+        "build": "core_prototype",
+        "rom_sha1": "fcc2440ebcef22e32580ccb2c73706ae39b7a8e4",
+        "threshold_fixtures": 2048,
+        "result_digest": "330271b81cf9f3b69b5da5cee6890747bda9066620155d95d62501fe849aa5f4"
+      },
+      {
+        "color": "blue",
+        "build": "stock",
+        "rom_sha1": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
+        "threshold_fixtures": 2048,
+        "result_digest": "275d92254f6534efe6e62d8db7286333e7850d9c707d5a019a818dba24564669"
+      },
+      {
+        "color": "blue",
+        "build": "core_prototype",
+        "rom_sha1": "6c4db4cf48dae71633cd46b38550edd1a61f34a6",
+        "threshold_fixtures": 2048,
+        "result_digest": "330271b81cf9f3b69b5da5cee6890747bda9066620155d95d62501fe849aa5f4"
+      }
+    ],
+    "focus-rolls": [
+      {
+        "color": "red",
+        "build": "stock",
+        "comparison_inputs": 65536,
+        "observed_flag_digest": "68bcc2dda5ce1ff5f05bb0371f4c1185a088a692b60c6c0348a0ad34a8b172b9"
+      },
+      {
+        "color": "red",
+        "build": "core_prototype",
+        "comparison_inputs": 65536,
+        "observed_flag_digest": "68bcc2dda5ce1ff5f05bb0371f4c1185a088a692b60c6c0348a0ad34a8b172b9"
+      },
+      {
+        "color": "blue",
+        "build": "stock",
+        "comparison_inputs": 65536,
+        "observed_flag_digest": "68bcc2dda5ce1ff5f05bb0371f4c1185a088a692b60c6c0348a0ad34a8b172b9"
+      },
+      {
+        "color": "blue",
+        "build": "core_prototype",
+        "comparison_inputs": 65536,
+        "observed_flag_digest": "68bcc2dda5ce1ff5f05bb0371f4c1185a088a692b60c6c0348a0ad34a8b172b9"
+      }
+    ]
+  },
+  "emerald_rogue_public_github_releases": [
+    {
+      "tag": "vanilla-v2.1",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/vanilla-v2.1",
+      "published_at": "2026-05-17T19:15:09Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v2.1",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v2.1",
+      "published_at": "2026-05-17T19:15:39Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "vanilla-v2.0",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/vanilla-v2.0",
+      "published_at": "2024-07-02T20:19:12Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v2.0",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v2.0",
+      "published_at": "2024-07-02T20:19:38Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "vanilla-v1.3",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/vanilla-v1.3",
+      "published_at": "2022-12-12T20:17:01Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v1.3",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v1.3",
+      "published_at": "2022-12-12T20:17:19Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "vanilla-v1.2",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/vanilla-v1.2",
+      "published_at": "2022-10-02T19:13:13Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v1.2",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v1.2",
+      "published_at": "2022-10-02T19:13:45Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "vanilla-v1.1",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/vanilla-v1.1",
+      "published_at": "2022-09-11T11:07:44Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v1.1",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v1.1",
+      "published_at": "2022-09-11T11:08:20Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "v1.0",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/v1.0",
+      "published_at": "2022-08-23T16:52:58Z",
+      "uploaded_asset_count": 0
+    },
+    {
+      "tag": "EX-v1.0",
+      "release_url": "https://github.com/Pokabbie/pokeemerald-rogue/releases/tag/EX-v1.0",
+      "published_at": "2022-08-23T16:53:45Z",
+      "uploaded_asset_count": 0
+    }
+  ]
+}

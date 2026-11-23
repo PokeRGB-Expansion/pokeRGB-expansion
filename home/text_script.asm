@@ -27,6 +27,8 @@ DisplayTextID::
 	dict TEXT_MON_FAINTED,      DisplayPokemonFaintedText
 	dict TEXT_BLACKED_OUT,      DisplayPlayerBlackedOutText
 	dict TEXT_REPEL_WORE_OFF,   DisplayRepelWoreOffText
+	dict TEXT_FIELD_SHORTCUT,   DisplayFieldShortcutText
+	dict TEXT_REGISTERED_ITEM,  DisplayFieldShortcutText
 
 	ld a, [wNumSprites]
 	ld e, a
@@ -205,6 +207,10 @@ DisplayPlayerBlackedOutText::
 PlayerBlackedOutText::
 	text_far _PlayerBlackedOutText
 	text_end
+
+DisplayFieldShortcutText::
+	farcall OfferOverworldShortcut
+	jp HoldTextDisplayOpen
 
 DisplayRepelWoreOffText::
 	ld hl, RepelWoreOffText

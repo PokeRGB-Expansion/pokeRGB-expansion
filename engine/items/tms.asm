@@ -34,3 +34,17 @@ TMToMove:
 	ret
 
 INCLUDE "data/moves/tmhm_moves.asm"
+
+ReadMoveInfoMachine::
+	ld a, [wMoveInfoMove]
+	sub TM01
+	jr nc, .tm
+	add NUM_TM_HM
+.tm
+	ld e, a
+	ld d, 0
+	ld hl, TechnicalMachines
+	add hl, de
+	ld a, [hl]
+	ld [wMoveInfoMove], a
+	ret
