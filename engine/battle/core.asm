@@ -1471,15 +1471,14 @@ EnemySendOutFirstMon:
 	ld a, [wFirstMonsNotOutYet]
 	dec a
 	jr z, .next4
-	ld a, [wPartyCount]
-	dec a
-	jr z, .next4
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .next4
 	ld a, [wOptions]
 	bit BIT_BATTLE_SHIFT, a
 	jr nz, .next4
+	call HasLivingReserve
+	jr z, .next4
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	hlcoord 0, 7
@@ -1554,6 +1553,32 @@ TrainerAboutToUseText:
 TrainerSentOutText:
 	text_far _TrainerSentOutText
 	text_end
+
+HasLivingReserve:
+; Set Z when no party member other than the active battler has HP.
+	ld a, [wPartyCount]
+	and a
+	ret z
+	ld b, a
+	ld a, [wPlayerMonNumber]
+	ld c, a ; slots before reaching the active battler
+	ld hl, wPartyMon1HP
+	ld de, PARTYMON_STRUCT_LENGTH
+.loop
+	ld a, c
+	and a
+	jr z, .next
+	ld a, [hli]
+	or [hl]
+	dec hl
+	ret nz
+.next
+	add hl, de
+	dec c
+	dec b
+	jr nz, .loop
+	xor a
+	ret
 
 ; tests if the player has any pokemon that are not fainted
 ; sets d = 0 if all fainted, d != 0 if some mons are still alive
