@@ -18,13 +18,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out PokéRGB Expansion
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Check out RGBDS 1.0.4
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: gbdev/rgbds
-          ref: v1.0.4
+          ref: f7b8207322aa9e3714ef0d98d01989f320103026 # v1.0.4
           path: .rgbds
 
       - name: Install RGBDS dependencies on Linux
@@ -50,10 +50,10 @@ jobs:
 
       - name: Check out SameBoy 1.0.5
         if: runner.os == 'Linux'
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: LIJI32/SameBoy
-          ref: v1.0.5
+          ref: ea667ad79aa28409f034b1fd6da7304e1844750d # v1.0.5
           path: .sameboy
 
       - name: Build the SameBoy test core
@@ -81,6 +81,8 @@ jobs:
         run: |
           sameboy=.sameboy/build/lib/libsameboy.so
           boot=.sameboy/build/bin/BootROMs/dmg_boot.bin
+          python3 tests/adventure_checkpoints.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+          python3 tests/battle_turn_state.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
           python3 tests/critical_hits.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
           python3 tests/interrupted_save_smoke.py "build/$PRESET"/poke*.gbc --library "$sameboy" --boot "$boot"
           if [ "$PRESET" = minimal ]; then
@@ -88,6 +90,8 @@ jobs:
           else
             python3 tests/move_swap_smoke.py "build/$PRESET"/poke*.gbc --sameboy "$sameboy" --boot "$boot"
             python3 tests/safari_session.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+            python3 tests/route_cut_tree.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+            python3 tests/npc_return.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
           fi
 
       - name: Check a custom move in the game menus
