@@ -26,6 +26,8 @@ def session(game):
 
 
 def seed_session(game, *, balls=21, steps=350):
+    # These paths exercise the gate and poison timing. Skip wild encounters.
+    game.put("wStatusFlags4", (game.get("wStatusFlags4") | 0x10,))
     address = game.addresses["wEventFlags"][1] + EVENT_BYTE
     game.write(address, (game.get("wEventFlags", EVENT_BYTE) | ACTIVE,))
     game.put("wNumSafariBalls", (balls,))
