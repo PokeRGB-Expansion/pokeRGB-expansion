@@ -10,7 +10,7 @@ REFERENCE_SHA1 = {
     "red": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
     "blue": "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2",
 }
-BAG = bytes((2, 0x14, 3, 0x45, 1, 0xff))
+BAG = bytes((3, 0x14, 3, 0x45, 1, 0x4b, 1, 0xff))
 BOX = bytes((1, 0x24, 0xff))
 PLAYER_ID = bytes((0x21, 0x87))
 MAIN_SAVE_OFFSET = 8192
