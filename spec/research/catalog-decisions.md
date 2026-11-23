@@ -1,6 +1,6 @@
 # Decisions on the 94 archived bug reports
 
-The archived pret catalog lists proposed changes from contributors. Each row below gives the project's current placement, the reason and the test required for that particular scope. The numbered source link opens the relevant stock code at the implementation revision. The [catalog index](bug-catalog.csv) gives the original report and its exact lines in the archived revision. A code citation identifies the path reviewed. Conditional reports still need the stock reproduction specified in their row.
+The archived pret catalog lists proposed changes from contributors. Each row below gives the project's current placement, the reason and the test required for that particular scope. The numbered source link opens the relevant stock code at the implementation revision. The [catalog index](bug-catalog.csv) gives the original report and its exact lines in the archived revision. The delivery column records when the accepted part reaches the source tree. Each required check still applies. A code citation identifies the path reviewed. Conditional reports still need the stock reproduction specified in their row.
 
 The complete accepted Core scope is the public release target. The placements below describe what belongs in each build.
 
