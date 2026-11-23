@@ -9,7 +9,7 @@ from cartridge_smoke import Game, seed_party
 
 
 DOWN, UP, A, B = 3, 2, 4, 5
-ETHER, MAX_ETHER, PP_UP = 0x50, 0x51, 0x4F
+ETHER, MAX_ETHER, MAX_ELIXER, PP_UP = 0x50, 0x51, 0x53, 0x4F
 BASE_MOVES = bytes((0x21, 0x39, 0x2D, 0x81))  # Tackle, Surf, Growl, Swift
 BASE_PP = bytes((0, 64 + 7, 128 + 54, 192 + 19))
 ROWS = ((0, 35), (7, 18), (54, 54), (19, 32))
@@ -33,19 +33,24 @@ def seed_items(game, item):
         game.put(f"wPartyMon{slot}PP", BASE_PP)
 
 
-def open_party_items(game, target):
+def choose_party_member(game, target):
     game.wait(lambda: text_on_screen(game, "160 160") and game.get("wMaxMenuItem") == 1)
     game.tick(12)
     if game.get("wCurrentMenuItem") != target:
         game.press(DOWN if target else UP)
     assert game.get("wCurrentMenuItem") == target
     game.press(A)
-    game.wait(lambda: readout(game) == ROWS[0], accept=True)
+
+
+def open_party_items(game, target, expected=ROWS[0]):
+    choose_party_member(game, target)
+    game.wait(lambda: readout(game) == expected, accept=True)
     assert game.get("wWhichPokemon") == target
     game.tick(12)
 
 
-def open_field_item(game, name, target):
+def open_item_actions(game, name):
+    game.put("wBagSavedMenuItem", (0,))
     game.invoke("StartMenu_Item")
     game.wait(lambda: name in game.visible_text())
     game.tick(12)
@@ -53,6 +58,10 @@ def open_field_item(game, name, target):
     game.wait(lambda: text_on_screen(game, "USE", "TOSS"))
     game.tick(12)
     game.press(A)
+
+
+def open_field_item(game, name, target):
+    open_item_actions(game, name)
     open_party_items(game, target)
 
 
@@ -151,6 +160,37 @@ def check_transformed_target(library, boot, rom):
         assert game.get("wMoveMissed") == 0
 
 
+
+def check_max_restore(library, boot, rom):
+    core = rom.parent.name == "core"
+    for item, name in ((MAX_ETHER, "MAX ETHER"), (MAX_ELIXER, "MAX ELIXER")):
+        for upgrades in range(4):
+            for already_full in (False, True):
+                with Game(library, boot, rom) as game:
+                    game.new_game()
+                    seed_party(game)
+                    seed_items(game, item)
+                    maximum = 35 + upgrades * 7
+                    current = maximum if already_full else maximum - 1
+                    game.put("wPartyMon2Moves", (0x21, 0, 0, 0))
+                    game.put("wPartyMon2PP", (upgrades * 64 + current, 0, 0, 0))
+                    open_item_actions(game, name)
+                    if item == MAX_ETHER:
+                        open_party_items(game, 1, (current, maximum))
+                        game.press(A)
+                    else:
+                        choose_party_member(game, 1)
+
+                    unchanged = already_full and (core or upgrades == 0)
+                    message = "effect" if unchanged else "PP was restored"
+                    game.wait(lambda: message in game.visible_text(), accept=True)
+                    game.tick(12)
+                    game.press(A)
+                    game.wait(lambda: "CANCEL" in game.visible_text(), accept=True)
+                    assert game.get("wNumBagItems") == int(unchanged), (item, upgrades, already_full)
+                    assert game.get("wPartyMon2PP") == upgrades * 64 + maximum
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
@@ -159,7 +199,7 @@ def main():
     args = parser.parse_args()
     for color in ("red", "blue", "green"):
         rom = args.directory / f"poke{color}.gbc"
-        for check in (check_field_ether, check_pp_up, check_transformed_target):
+        for check in (check_field_ether, check_pp_up, check_transformed_target, check_max_restore):
             check(args.sameboy, args.boot, rom)
         print(f"{color.title()}: party PP readouts passed", flush=True)
 
