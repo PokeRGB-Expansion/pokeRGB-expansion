@@ -55,7 +55,8 @@ def main():
     run_script("tests/interrupted_save_smoke.py", *roms, "--library", sameboy, "--boot", boot)
 
     if core:
-        for test in ("safari_session", "route_cut_tree", "npc_return", "ledge_landing", "pokedex_area"):
+        for test in ("safari_session", "route_cut_tree", "npc_return", "ledge_landing",
+                     "pokedex_area", "vermilion_gym_switches"):
             run_script(f"tests/{test}.py", directory, *emulator)
 
         pairs = product(roms, repeat=2) if args.all_link_pairs else ((roms[0], roms[2]),)
