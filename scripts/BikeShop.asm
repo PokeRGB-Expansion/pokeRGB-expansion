@@ -49,6 +49,8 @@ BikeShopClerkText:
 	ld a, $1
 	ld [wTopMenuItemX], a
 	ld hl, wStatusFlags5
+	ld a, [hl]
+	push af
 	set BIT_NO_TEXT_DELAY, [hl]
 	hlcoord 0, 0
 	ld b, 4
@@ -64,10 +66,16 @@ BikeShopClerkText:
 	ld hl, BikeShopClerkDoYouLikeItText
 	call PrintText
 	call HandleMenuInput
-	bit B_PAD_B, a
-	jr nz, .cancel
+	ld b, a
+	pop af
 	ld hl, wStatusFlags5
 	res BIT_NO_TEXT_DELAY, [hl]
+	bit BIT_NO_TEXT_DELAY, a
+	jr z, .textSpeedRestored
+	set BIT_NO_TEXT_DELAY, [hl]
+.textSpeedRestored
+	bit B_PAD_B, b
+	jr nz, .cancel
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .cancel
