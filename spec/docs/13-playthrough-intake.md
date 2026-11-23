@@ -180,7 +180,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Acceptance:** check nicknames that hide the species, duplicate nicknames, first/last entries, scrolled lists, repeated A input at prompt entry, B/No, and explicit Yes. Refusal changes no records or counts; confirmation releases exactly the identified Pokémon once. Check text width and ordinary shop/healing prompt defaults. A release must not use a stale index left by STATS navigation.
 
-**Delivery:** The release prompt identifies the selected Pokémon and starts on No.
+**Delivery:** The release prompt shows the Pokémon’s nickname and species and starts on No. [Cartridge checks](../../tests/menu_returns.py)
 
 <a id="pn-008"></a>
 
@@ -208,7 +208,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Acceptance:** check one, two, and six party members, first/middle/last selections, and action menus with and without field moves. Both cancellation methods must retain the selected Pokémon and leave party records unchanged. Check repeated cancellation, choosing a different Pokémon afterwards, normal actions, and the normal party-list exit. Preserve battle, forced-replacement, item-targeting, trade, and PC flows.
 
-**Delivery:** The party action menu returns to the party list when the player selects CANCEL.
+**Delivery:** CANCEL returns to the same row in the party list. [Cartridge checks](../../tests/menu_returns.py)
 
 <a id="pn-010"></a>
 
@@ -312,7 +312,7 @@ Both presets include static INFO for a move currently offered, known or selected
 
 **Evidence:** the pinned Red/Blue item-PC loops already return to the correct lists. The shared inventory-removal routine resets both current and saved row/scroll values when the last unit of a stack is removed. It skips that reset when units remain. Withdrawals, sales, and tossing also use the routine. Shop buy/sell loops separately reset the visible cursor row, even when returning from quantity cancellation or a declined price. A destination-only review missed these separate state changes. [E106](../research/evidence.md#e106)
 
-**Classification/status:** accepted Core usability requirement. This removes repeated navigation while retaining inventory management, quantities, prices, capacity, item consumption, and confirmations. The Bag, shop, and item PC preserve the item position as the list changes.
+**Classification/status:** accepted Core usability requirement. This removes repeated navigation while retaining inventory management, quantities, prices, capacity, item consumption, and confirmations. The Bag, shop, and item PC preserve the item position as the list changes. [Item PC checks](../../tests/menu_returns.py)
 
 **Proposed design:** each list owner retains its own list identity, selected entry, visible row, and scroll offset across child menus and data changes. Restore a valid position after applying the known mutation. Two stacks of the same item are separate entries; an item ID alone is insufficient. Do not simply remove every reset from the shared inventory routine: scripted rewards, battles, and other callers may depend on its current behavior. Review those callers before changing the helper. Cursor state can remain temporary; no new saved field or cross-session position promise is required.
 
@@ -380,7 +380,7 @@ The original cursor also writes move history that enemy Counter reads. Keep the 
 
 **Evidence:** the original three Burglar ranges are zero; the Scientists' ranges are three, two, and three. All four floors use the normal sight routine. [E112](../research/evidence.md#e112) Yellow retains the zero values, while FireRed/LeafGreen gives all three Burglars range one. [E113](../research/evidence.md#e113) The Route 21 Fishers face adjacent water, which limits that analogy. [E114](../research/evidence.md#e114)
 
-**Classification/status:** accepted scoped Core correction under D39. Treat the passive behavior as a likely oversight for this project. The original developer intent and the reason for the remake change remain unproven. This supersedes the earlier preserve-in-Core disposition for these three Burglars; it does not change the general uncertain-change policy. The Core map data sets the three sight ranges.
+**Classification/status:** accepted scoped Core correction under D39. Treat the passive behavior as a likely oversight for this project. The original developer intent and the reason for the remake change remain unproven. This supersedes the earlier preserve-in-Core disposition for these three Burglars; it does not change the general uncertain-change policy. The Core map data sets the three sight ranges. [Cartridge checks](../../tests/mansion_sight.py)
 
 **Proposed implementation:** set each of these three view ranges to one, following the remake's minimal positive range, and use the existing engagement path. Keep trainer classes, parties, levels, rewards, dialogue, movement patterns, map layout, switches, doors, and defeat flags unchanged. Do not enable sight battles for all zero-range trainers or replace the trainer engine.
 
@@ -394,7 +394,7 @@ The original cursor also writes move history that enemy Counter reads. Keep the 
 
 **Evidence:** Red/Blue checks the lower-right graphic tile for grass encounters. The Forest's star-pattern squares have ordinary grass at lower-left and decorative `0x34` at lower-right. The sprite code treats them as grass; the encounter gate rejects them. Yellow reads lower-left, with identical Forest map and blockset bytes and the same grass ID. The decoded map has 114 affected squares. [E115](../research/evidence.md#e115)
 
-**Disposition:** source-confirmed mismatch; accepted scoped Core correction under D40. Treat the encounter effect as a likely oversight. Original intent is strongly inferred from the internal mismatch and Yellow comparison, without an original developer statement. Core treats the star grass as an eligible encounter tile in the forest.
+**Disposition:** source-confirmed mismatch; accepted scoped Core correction under D40. Treat the encounter effect as a likely oversight. Original intent is strongly inferred from the internal mismatch and Yellow comparison, without an original developer statement. Core treats the star grass as an eligible encounter tile in the forest. [Cartridge checks](../../tests/forest_encounters.py)
 
 **Required behavior:** affected grass can produce encounters under the existing rate, tables, species, levels, slot weights, and Repel rules. Preserve graphics, map layout, and ordinary non-grass paths. Review a narrow Forest recognition change against the broader Yellow corner change before choosing code; do not silently combine the separate Cinnabar-shore case.
 

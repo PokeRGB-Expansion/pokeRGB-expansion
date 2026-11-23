@@ -20,6 +20,7 @@ def main():
     parser.add_argument("--sameboy", type=Path, required=True)
     parser.add_argument("--boot", type=Path, required=True, help="SameBoy DMG boot file.")
     parser.add_argument("--sgb-boot", type=Path, required=True, help="SameBoy Super Game Boy boot file.")
+    parser.add_argument("--cgb-boot", type=Path, help="SameBoy Color boot file. Defaults to cgb_boot.bin beside the DMG file.")
     parser.add_argument("--rgbds", type=Path, help="Directory with the RGBDS 1.0.4 tools.")
     parser.add_argument("--all-link-pairs", action="store_true", help="Check all nine Core color pairs.")
     args = parser.parse_args()
@@ -34,6 +35,7 @@ def main():
     sameboy = args.sameboy.resolve()
     boot = args.boot.resolve()
     sgb_boot = args.sgb_boot.resolve()
+    cgb_boot = args.cgb_boot.resolve() if args.cgb_boot else boot.with_name("cgb_boot.bin")
     emulator = ("--sameboy", sameboy, "--boot", boot)
     preset_flag = () if core else ("--minimal",)
 
@@ -43,9 +45,12 @@ def main():
         "bike_shop_sign", "npc_entry_position", "item_safety", "storage_counts", "shop_carry_count",
         "sprite_storage", "map_signs", "presentation_events", "adventure_checkpoints",
         "field_shortcuts", "pc_browsing", "shift_prompt", "celadon_roof_transactions",
+        "forest_encounters", "mansion_sight", "menu_returns",
     ):
         run_script(f"tests/{test}.py", directory, *emulator)
 
+    run_script("tests/cgb_compatibility.py", directory, "--sameboy", sameboy, "--boot", cgb_boot)
+    run_script("tests/level_up_moves.py", directory, *emulator, *preset_flag)
     run_script("tests/title_smoke.py", directory, "--sameboy", sameboy, "--boot", sgb_boot)
     run_script("tests/battle_slide_timing.py", directory, *emulator, "--sgb-boot", sgb_boot)
     run_script("tests/protected_mechanics.py", directory, *emulator, "--linked")
