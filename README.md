@@ -27,6 +27,14 @@ python3 tests/cartridge_smoke.py build/core --sameboy /path/to/library --boot /p
 
 The smoke tests reach New Game in each color, test confirmed and cancelled box changes against a disposable save, and exercise Bag Move INFO and STATS navigation.
 
+The move authoring test builds a temporary sample hack from the current commit. It changes a TM and verifies that the new move name, stats, and effect appear in the Bag, shop, item PC, prize counter, STATS, FIGHT, and level-up prompt.
+
+```sh
+python3 tests/move_info_authoring.py --sameboy /path/to/library --boot /path/to/dmg_boot.bin
+```
+
+Pass `--rgbds /path/to/rgbds` if the tools are outside your path.
+
 ## Credits
 
 This unofficial project builds on [pret/pokered](https://github.com/pret/pokered). See its [tutorials](https://github.com/pret/pokered/wiki/Tutorials), [symbols](https://github.com/pret/pokered/tree/symbols), and [tools](https://github.com/pret/gb-asm-tools). Pokémon and the original games are the work of their respective creators and rights holders. [Research and source credits](spec/docs/08-provenance.md)
