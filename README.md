@@ -17,6 +17,10 @@ Each command builds all three colors. To build just one, pass `red`, `blue`, or 
 
 The reference baseline is pret/pokered at `ba9c0568f64ae602fadda577a08c66639f93082a`. To check five existing upstream outputs against the original hashes, run `make compare BASELINE_DIR=/path/to/upstream/outputs`. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a)
 
+## Make your first edit
+
+In [Route 1's encounter table](data/wild/maps/Route1.asm), change the first `db  3, PIDGEY` to `db  3, CATERPIE`. Build Red Core with `make -j4 red`, open `build/core/pokered.gbc` in your emulator, and walk through the grass on Route 1. Caterpie now appears at level 3 in one of the original encounter slots.
+
 ## Tests
 
 GitHub Actions builds each color and preset on Linux and macOS. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
