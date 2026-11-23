@@ -51,6 +51,7 @@ def main():
 
     run_script("tests/cgb_compatibility.py", directory, "--sameboy", sameboy, "--boot", cgb_boot)
     run_script("tests/level_up_moves.py", directory, *emulator, *preset_flag)
+    run_script("tests/exp_all.py", directory, *emulator, *preset_flag)
     run_script("tests/title_smoke.py", directory, "--sameboy", sameboy, "--boot", sgb_boot)
     run_script("tests/battle_slide_timing.py", directory, *emulator, "--sgb-boot", sgb_boot)
     run_script("tests/protected_mechanics.py", directory, *emulator, "--linked")
