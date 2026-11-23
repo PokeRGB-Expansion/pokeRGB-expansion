@@ -92,7 +92,15 @@ jobs:
             python3 tests/safari_session.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
             python3 tests/route_cut_tree.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
             python3 tests/npc_return.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
+            python3 tests/ledge_landing.py "build/$PRESET" --sameboy "$sameboy" --boot "$boot"
           fi
+
+      - name: Test a live Cable Club connection
+        if: runner.os == 'Linux' && matrix.preset == 'core'
+        run: |
+          for room in trade battle; do
+            python3 tests/link_cable_smoke.py build/core/pokered.gbc build/core/pokegreen.gbc               --room "$room" --sameboy .sameboy/build/lib/libsameboy.so               --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
+          done
 
       - name: Check a custom move in the game menus
         if: runner.os == 'Linux' && matrix.preset == 'core'
