@@ -1,6 +1,6 @@
 # What changes when you play?
 
-This guide describes the planned game builds. Public Core includes every accepted Core change and all shared fixes. The examples below explain how the presets differ. The [full scope and release checks](09-roadmap.md#what-counts-toward-core) link the detailed records.
+This guide describes the reference builds. Core includes the accepted Core changes and shared fixes. The examples below explain how the presets differ. The [full scope and release checks](09-roadmap.md#what-counts-toward-core) link the detailed records.
 
 ## Battle examples
 
