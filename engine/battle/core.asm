@@ -4728,6 +4728,7 @@ CriticalHitTest:
 .handleEnemy
 	ld [wCurSpecies], a
 	call GetMonHeader
+.readSpeed
 	ld a, [wMonHBaseSpeed]
 	ld b, a
 	srl b                        ; (effective (base speed/2))
