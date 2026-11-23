@@ -176,6 +176,15 @@ ENDR
 wShadowOAMBackupEnd::
 
 NEXTU
+; The AREA screen collects locations before storing its final OAM backup.
+wPokedexAreaMaps:: flag_array NUM_MAPS
+wPokedexAreaMarkers:: flag_array $100
+wPokedexAreaSpritesPerRow:: ds 16
+wPokedexAreaBackgroundUsed:: db
+wPokedexAreaWorkEnd::
+	ASSERT wPokedexAreaWorkEnd - wPokedexAreaMaps <= wShadowOAMBackupEnd - wShadowOAMBackup
+
+NEXTU
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
 wSerialPartyMonsPatchList:: ds 200
 

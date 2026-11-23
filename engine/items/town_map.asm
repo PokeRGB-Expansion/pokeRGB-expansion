@@ -372,6 +372,10 @@ DrawPlayerOrBirdSprite:
 
 DisplayWildLocations:
 	farcall FindWildLocationsOfMon
+IF DEF(_POKERGB_CORE)
+	call ClearSprites
+	call DrawPokedexAreaMarkers
+ELSE
 	call ZeroOutDuplicatesInList
 	ld hl, wShadowOAM
 	ld de, wTownMapCoords
@@ -395,6 +399,7 @@ DisplayWildLocations:
 .nextEntry
 	inc de
 	jr .loop
+ENDC
 .exitLoop
 	ld a, l
 	and a ; were any OAM entries written?
@@ -417,6 +422,124 @@ DisplayWildLocations:
 	ld de, wShadowOAMBackup
 	ld bc, OAM_COUNT * 4
 	jp CopyData
+
+IF DEF(_POKERGB_CORE)
+DEF POKEDEX_AREA_BACKGROUND_TILE EQU $70
+ASSERT WorldMapTileGraphicsEnd - WorldMapTileGraphics <= (POKEDEX_AREA_BACKGROUND_TILE - $60) * TILE_SIZE
+
+DrawPokedexAreaMarkers:
+	ld hl, wShadowOAM
+	ld c, 1 ; preserve the original display's map 0 exclusion
+.map
+	ld a, c
+	cp NUM_MAPS
+	jr nc, .done
+	push bc
+	push hl
+	ld hl, wPokedexAreaMaps
+	ld b, FLAG_TEST
+	predef FlagActionPredef
+	ld a, c
+	pop hl
+	pop bc
+	and a
+	jr z, .next
+	push bc
+	push hl
+	ld a, c
+	ld de, wTownMapCoords
+	call LoadTownMapEntry
+	ld a, [de]
+	cp $19 ; Cerulean Cave's coordinates
+	jr z, .skip
+	ld hl, wPokedexAreaMarkers
+	ld c, a
+	ld b, FLAG_TEST
+	predef FlagActionPredef
+	ld a, c
+	and a
+	jr nz, .skip
+	ld a, [wTownMapCoords]
+	ld c, a
+	ld hl, wPokedexAreaMarkers
+	ld b, FLAG_SET
+	predef FlagActionPredef
+	pop hl
+	ASSERT HIGH(wShadowOAM) == HIGH(wShadowOAMSprite36)
+	ld a, l
+	cp LOW(wShadowOAMSprite36) ; keep the last four slots for the player
+	ld a, [wTownMapCoords]
+	jr z, .background
+	call ReservePokedexAreaSpriteRow
+	ld a, [wTownMapCoords]
+	jr nc, .background
+	call TownMapCoordsToOAMCoords
+	ld a, $4 ; nest icon tile
+	ld [hli], a
+	xor a
+	ld [hli], a
+.finishedMarker
+	pop bc
+.next
+	inc c
+	jr .map
+.skip
+	pop hl
+	jr .finishedMarker
+.background
+	push hl
+	call DrawPokedexAreaBackgroundMarker
+	pop hl
+	jr .finishedMarker
+.done
+	ld a, [wPokedexAreaBackgroundUsed]
+	and a
+	ret z
+	push hl
+	ld hl, vChars2 tile POKEDEX_AREA_BACKGROUND_TILE
+	ld de, MonNestIcon
+	lb bc, BANK(MonNestIcon), 1
+	call CopyVideoDataDouble
+	pop hl
+	ret
+
+ReservePokedexAreaSpriteRow:
+; Allow eight nest sprites per scanline, leaving two for the player icon.
+	push hl
+	swap a
+	and $f
+	ld e, a
+	ld d, 0
+	ld hl, wPokedexAreaSpritesPerRow
+	add hl, de
+	ld a, [hl]
+	cp 8
+	jr nc, .full
+	inc [hl]
+.full
+	pop hl
+	ret
+
+DrawPokedexAreaBackgroundMarker:
+; An author can include more locations than the displayed sprite slots.
+; Use a background tile for each remaining marker, at the same map position.
+	ld c, a
+	and $f
+	add 2
+	ld d, 0
+	ld e, a
+	hlcoord 0, 1
+	add hl, de
+	ld a, c
+	swap a
+	and $f
+	ld bc, SCREEN_WIDTH
+	call AddNTimes
+	ld [hl], POKEDEX_AREA_BACKGROUND_TILE
+	ld a, 1
+	ld [wPokedexAreaBackgroundUsed], a
+	ret
+ENDC
 
 AreaUnknownText:
 	db " AREA UNKNOWN@"
@@ -533,6 +656,7 @@ WriteSymmetricMonPartySpriteOAM:
 	jr nz, .loop
 	ret
 
+IF !DEF(_POKERGB_CORE)
 ZeroOutDuplicatesInList:
 ; replace duplicate bytes in the list of wild pokemon locations with 0
 	ld de, wBuffer
@@ -555,6 +679,7 @@ ZeroOutDuplicatesInList:
 .skipZeroing
 	inc hl
 	jr .zeroDuplicatesLoop
+ENDC
 
 LoadTownMapEntry:
 ; in: a = map number

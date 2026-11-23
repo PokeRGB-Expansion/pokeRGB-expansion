@@ -3093,8 +3093,66 @@ ItemUseReloadOverworldData:
 	call LoadCurrentMapView
 	jp UpdateSprites
 
-; creates a list at wBuffer of maps where the mon in [wPokedexNum] can be found.
-; this is used by the pokedex to display locations the mon can be found on the map.
+IF DEF(_POKERGB_CORE)
+; Mark each map that has the species in wPokedexNum in its land or water data.
+FindWildLocationsOfMon:
+	ld hl, wPokedexAreaMaps
+	ld bc, wPokedexAreaWorkEnd - wPokedexAreaMaps
+	xor a
+	call FillMemory
+	ld hl, WildDataPointers
+	ld c, 0
+.map
+	ld a, c
+	cp NUM_MAPS
+	ret nc
+	inc hl
+	ld a, [hld]
+	inc a
+	ret z
+	push hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [hli]
+	and a
+	jr z, .water
+	call AreaHabitatContainsSpecies
+	jr z, .found
+.water
+	ld a, [hli]
+	and a
+	jr z, .next
+	call AreaHabitatContainsSpecies
+	jr nz, .next
+.found
+	push bc
+	ld hl, wPokedexAreaMaps
+	ld b, FLAG_SET
+	call FlagAction
+	pop bc
+.next
+	pop hl
+	inc hl
+	inc hl
+	inc c
+	jr .map
+
+AreaHabitatContainsSpecies:
+; Return Z if the species appears. On a miss, HL advances to the next rate.
+	ld b, NUM_WILDMONS
+	ld a, [wPokedexNum]
+.slot
+	inc hl ; skip level
+	cp [hl]
+	ret z
+	inc hl
+	dec b
+	jr nz, .slot
+	inc b ; return NZ
+	ret
+ELSE
+; Create a list at wBuffer of maps where the mon in wPokedexNum can be found.
 FindWildLocationsOfMon:
 	ld hl, WildDataPointers
 	ld de, wBuffer
@@ -3141,3 +3199,4 @@ CheckMapForMon:
 	jr nz, .loop
 	dec hl
 	ret
+ENDC
