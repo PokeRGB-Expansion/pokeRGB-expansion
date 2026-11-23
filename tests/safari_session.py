@@ -37,7 +37,7 @@ def load_map(game, map_id, width, x, y):
     game.put("wCurMap", (map_id,))
     game.put("wYCoord", (y, x, y % 2, x % 2))
     map_start = game.addresses["wOverworldMap"][1]
-    view_start = map_start + (width + 6) * (y // 2) + x // 2
+    view_start = map_start + (width + 6) * (y // 2 + 1) + x // 2 + 1
     game.put("wCurrentTileBlockMapViewPointer", view_start.to_bytes(2, "little"))
     game.put("wLastMap", (FUCHSIA,))
     game.invoke("EnterMap")
