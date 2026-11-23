@@ -15,11 +15,17 @@ HazeEffect_:
 ; cure non-volatile status, but only for the target
 	ld hl, wEnemyMonStatus
 	ld de, wEnemySelectedMove
+IF DEF(_POKERGB_CORE)
+	ld bc, wEnemyBattleStatus1
+ENDC
 	ldh a, [hWhoseTurn]
 	and a
 	jr z, .cureStatuses
 	ld hl, wBattleMonStatus
 	dec de ; wPlayerSelectedMove
+IF DEF(_POKERGB_CORE)
+	ld bc, wPlayerBattleStatus1
+ENDC
 
 .cureStatuses
 	ld a, [hl]
@@ -27,8 +33,18 @@ HazeEffect_:
 	and (1 << FRZ) | SLP_MASK
 	jr z, .cureVolatileStatuses
 ; prevent the Pokemon from executing a move if it was asleep or frozen
-	ld a, $ff
+	ld a, CANNOT_MOVE
 	ld [de], a
+IF DEF(_POKERGB_CORE)
+	; End the target's interrupted move before the next turn reads its flags.
+	ld h, b
+	ld l, c
+	ld a, [hl]
+	and ~((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE) | (1 << INVULNERABLE))
+	ld [hli], a
+	res NEEDS_TO_RECHARGE, [hl]
+	res USING_RAGE, [hl]
+ENDC
 
 .cureVolatileStatuses
 	xor a

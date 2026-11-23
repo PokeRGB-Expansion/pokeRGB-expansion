@@ -570,6 +570,7 @@ AIPrintItemUseAndUpdateHPBar:
 	xor a
 	ld [wHPBarType], a
 	predef UpdateHPBar2
+	farcall DrawEnemyHUDAndHPBar
 	jp DecrementAICount
 
 AISwitchIfEnoughMons:
@@ -640,6 +641,7 @@ AIBattleWithdrawText:
 AIUseFullHeal:
 	call AIPlayRestoringSFX
 	call AICureStatus
+	farcall DrawEnemyHUDAndHPBar
 	ld a, FULL_HEAL
 	jp AIPrintItemUse
 
