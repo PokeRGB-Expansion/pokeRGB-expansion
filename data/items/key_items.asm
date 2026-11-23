@@ -74,11 +74,7 @@ KeyItemFlags:
 	dbit TRUE  ; SILPH_SCOPE
 	dbit TRUE  ; POKE_FLUTE
 	dbit TRUE  ; LIFT_KEY
-IF DEF(_POKERGB_CORE)
 	dbit TRUE  ; EXP_ALL
-ELSE
-	dbit FALSE ; EXP_ALL
-ENDC
 	dbit TRUE  ; OLD_ROD
 	dbit TRUE  ; GOOD_ROD
 	dbit TRUE  ; SUPER_ROD

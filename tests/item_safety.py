@@ -16,15 +16,12 @@ def shows(game, *words, accept=False):
     game.wait(lambda: all(word in game.visible_text() for word in words), accept=accept)
 
 
-def check_disposal(game, core, inventory, refusal):
-    if core:
-        shows(game, refusal)
-        assert game.get_bytes(inventory, 4) == ONE_EXP_ALL
-    else:
-        game.wait(lambda: game.get(inventory) == 0, accept=True)
+def check_disposal(game, inventory, refusal):
+    shows(game, refusal)
+    assert game.get_bytes(inventory, 4) == ONE_EXP_ALL
 
 
-def check_bag_toss(game, core):
+def check_bag_toss(game):
     game.put("wNumBagItems", ONE_EXP_ALL)
     game.invoke("StartMenu_Item")
     shows(game, "EXP", "ALL")
@@ -34,19 +31,19 @@ def check_bag_toss(game, core):
     game.tick(8)
     game.press(DOWN)
     game.press(A)
-    check_disposal(game, core, "wNumBagItems", "tant to toss")
+    check_disposal(game, "wNumBagItems", "tant to toss")
 
 
-def check_pc_toss(game, core):
+def check_pc_toss(game):
     game.put("wNumBoxItems", ONE_EXP_ALL)
     game.invoke("PlayerPCToss")
     shows(game, "EXP", "ALL", accept=True)
     game.tick(12)
     game.press(A)
-    check_disposal(game, core, "wNumBoxItems", "tant to toss")
+    check_disposal(game, "wNumBoxItems", "tant to toss")
 
 
-def check_pc_storage(game, _core):
+def check_pc_storage(game):
     game.put("wNumBagItems", ONE_EXP_ALL)
     game.put("wNumBoxItems", (0, 0xff))
     game.invoke("PlayerPCDeposit")
@@ -66,7 +63,7 @@ def check_pc_storage(game, _core):
               and game.get("wNumBoxItems") == 0, accept=True)
 
 
-def check_shop_sale(game, core):
+def check_shop_sale(game):
     game.put("wNumBagItems", ONE_EXP_ALL)
     money = game.get_bytes("wPlayerMoney", 3)
     game.invoke("DisplayPokemartDialogue_")
@@ -77,7 +74,7 @@ def check_shop_sale(game, core):
     shows(game, "EXP", "ALL", accept=True)
     game.tick(12)
     game.press(A)
-    check_disposal(game, core, "wNumBagItems", "price on that")
+    check_disposal(game, "wNumBagItems", "price on that")
     assert game.get_bytes("wPlayerMoney", 3) == money
 
 
@@ -116,7 +113,7 @@ def check_hidden_coins(game, core):
         assert game.get_bytes("wPlayerCoins", 2) == bytes(after)
 
 
-def check_red_game_corner(game, _core):
+def check_red_game_corner(game):
     seed_party(game)
     game.put("wNumBagItems", (1, COIN_CASE, 1, 0xff))
     # 9,950 is the result of 199 ordinary purchases of 50 coins.
@@ -174,7 +171,7 @@ def main():
         for check in checks:
             with Game(args.sameboy, args.boot, rom) as game:
                 game.new_game()
-                check(game, core)
+                check(game)
             print(f"{args.directory.name} {color}: {check.__name__.removeprefix('check_')} passed",
                   flush=True)
         with Game(args.sameboy, args.boot, rom) as game:
