@@ -131,6 +131,7 @@ MACRO add_hm
 ; - HM_\1: the item id, starting at $C4
 ; - \1_TMNUM: the learnable TM/HM flag, starting at 51
 ; - HM##_MOVE: alias for the move id, equal to the value of \1
+	assert_move_id \1
 	const HM_\1
 	DEF HM_VALUE = __tmhm_value__ - NUM_TMS
 	DEF HM{02d:HM_VALUE}_MOVE EQU \1
@@ -152,6 +153,7 @@ MACRO add_tm
 ; - TM_\1: the item id, starting at $C9
 ; - \1_TMNUM: the learnable TM/HM flag, starting at 1
 ; - TM##_MOVE: alias for the move id, equal to the value of \1
+	assert_move_id \1
 	const TM_\1
 	DEF TM{02d:__tmhm_value__}_MOVE EQU \1
 	add_tmnum \1

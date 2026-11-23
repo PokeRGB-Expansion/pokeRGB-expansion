@@ -5,11 +5,11 @@ TechnicalMachines:
 	table_width 1
 
 FOR n, 1, NUM_TMS + 1
-	db TM{02d:n}_MOVE
+	move_id TM{02d:n}_MOVE
 ENDR
 	assert_table_length NUM_TMS
 
 FOR n, 1, NUM_HMS + 1
-	db HM{02d:n}_MOVE
+	move_id HM{02d:n}_MOVE
 ENDR
 	assert_table_length NUM_TM_HM

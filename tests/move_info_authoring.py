@@ -148,10 +148,27 @@ def prize(game):
 def customize_move(source):
     table = source / "data/moves/tmhm_moves.asm"
     original = table.read_text()
-    machine_entry = "\tdb TM{02d:n}_MOVE"
+    machine_entry = "\tmove_id TM{02d:n}_MOVE"
     assert original.count(machine_entry) == 1
     table.write_text(original.replace(
-        machine_entry, f"IF n == 23\n\tdb SWIFT\nELSE\n{machine_entry}\nENDC"
+        machine_entry,
+        "IF n == 1\n\tmove_id POUND\n"
+        "ELIF n == 2\n\tmove_id STRUGGLE\n"
+        f"ELIF n == 23\n\tmove_id SWIFT\nELSE\n{machine_entry}\nENDC",
+    ))
+
+    # Build with the first and last move IDs in all three authoring sources.
+    bulbasaur = source / "data/pokemon/base_stats/bulbasaur.asm"
+    original = bulbasaur.read_text()
+    bulbasaur.write_text(original.replace(
+        "starting_moves TACKLE, GROWL, NO_MOVE, NO_MOVE",
+        "starting_moves POUND, STRUGGLE, NO_MOVE, NO_MOVE", 1,
+    ))
+    learnsets = source / "data/pokemon/evos_moves.asm"
+    original = learnsets.read_text()
+    learnsets.write_text(original.replace(
+        "learnset_move 30, STOMP\n\tlearnset_move 35, TAIL_WHIP",
+        "learnset_move 30, POUND\n\tlearnset_move 35, STRUGGLE", 1,
     ))
 
     names = source / "data/moves/names.asm"
@@ -164,6 +181,28 @@ def customize_move(source):
     modified, replacements = re.subn(r"^\tmove SWIFT,.*$", row, moves.read_text(), flags=re.M)
     assert replacements == 1
     moves.write_text(modified)
+
+
+def check_invalid_move_ids(source, command):
+    checks = (
+        ("data/moves/tmhm_moves.asm", "move_id POUND", "move_id NO_MOVE"),
+        ("data/pokemon/base_stats/bulbasaur.asm", "starting_moves POUND,",
+         "starting_moves NUM_ATTACKS + 1,"),
+        ("data/pokemon/evos_moves.asm", "learnset_move 30, POUND", "learnset_move 30, NO_MOVE"),
+    )
+    for filename, valid, invalid in checks:
+        path = source / filename
+        original = path.read_text()
+        assert valid in original, filename
+        try:
+            path.write_text(original.replace(valid, invalid, 1))
+            build = subprocess.run(command, cwd=source, capture_output=True, text=True)
+            output = build.stdout + build.stderr
+            if not build.returncode or "Invalid move ID" not in output or filename not in output:
+                raise AssertionError(f"Expected a move ID error in {filename}.\n{output}")
+        finally:
+            path.write_text(original)
+        print(f"{filename}: rejected an invalid move ID", flush=True)
 
 
 def main():
@@ -192,6 +231,7 @@ def main():
                 game.new_game()
                 check(game)
                 print(f"{check.__name__}: custom Move INFO passed", flush=True)
+        check_invalid_move_ids(source, command)
 
 
 if __name__ == "__main__":

@@ -13,6 +13,33 @@ MACRO? bcd3
 	dn ((\1) / 10) % 10, (\1) % 10
 ENDM
 
+MACRO? assert_move_id
+	ASSERT FATAL, (\1) > NO_MOVE && (\1) <= NUM_ATTACKS, \
+		"Invalid move ID \1. Choose a move ID from 1 to {d:NUM_ATTACKS}."
+ENDM
+
+MACRO? move_id
+	assert_move_id \1
+	db \1
+ENDM
+
+MACRO? starting_moves
+	ASSERT FATAL, _NARG == NUM_MOVES, \
+		"Starting moves require {d:NUM_MOVES} slots. Use NO_MOVE for empty slots."
+	REPT _NARG
+		IF (\1) != NO_MOVE
+			assert_move_id \1
+		ENDC
+		db \1
+		SHIFT
+	ENDR
+ENDM
+
+MACRO? learnset_move
+	db \1
+	move_id \2
+ENDM
+
 ; used in data/pokemon/base_stats/*.asm
 MACRO? tmhm
 	; initialize bytes to 0
