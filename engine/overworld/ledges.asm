@@ -39,6 +39,12 @@ HandleLedges::
 	ldh a, [hJoyHeld]
 	and e
 	ret z
+IF DEF(_POKERGB_CORE)
+	push de
+	call CheckLedgeLanding
+	pop de
+	ret c
+ENDC
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld hl, wMovementFlags
@@ -53,6 +59,70 @@ HandleLedges::
 	ld a, SFX_LEDGE
 	call PlaySound
 	ret
+
+IF DEF(_POKERGB_CORE)
+CheckLedgeLanding:
+; Compare map positions so an NPC walking toward the landing counts as
+; occupying it before the sprite finishes moving.
+	ld a, [wYCoord]
+	add 4
+	ld b, a
+	ld a, [wXCoord]
+	add 4
+	ld c, a
+	ld a, e
+	cp PAD_DOWN
+	jr nz, .horizontal
+	inc b
+	inc b
+	jr .findSprite
+.horizontal
+	ld a, c
+	sub 2
+	bit B_PAD_LEFT, e
+	jr nz, .setX
+	add 4
+.setX
+	ld c, a
+.findSprite
+	ld a, [wNumSprites]
+	and a
+	jr z, .reserve
+	ld d, a
+	ld hl, wSprite01StateData2MapY
+.nextSprite
+	ld a, [hli]
+	cp b
+	jr nz, .advance
+	ld a, [hl]
+	cp c
+	jr nz, .advance
+	push hl
+	dec h
+	ld a, l
+	and $f0
+	add SPRITESTATEDATA1_IMAGEINDEX
+	ld l, a
+	ld a, [hl]
+	pop hl
+	inc a
+	jr z, .advance ; ignore hidden sprites
+	scf
+	ret
+.advance
+	ld a, l
+	add SPRITESTATEDATA2_LENGTH - 1
+	ld l, a
+	dec d
+	jr nz, .nextSprite
+.reserve
+	ld a, b
+	ld [wLedgeLandingY], a
+	ld a, c
+	ld [wLedgeLandingX], a
+	and a
+	ret
+ENDC
 
 INCLUDE "data/tilesets/ledge_tiles.asm"
 

@@ -1035,7 +1035,9 @@ wSpriteIndex:: db
 ; movement byte 2 of current sprite
 wCurSpriteMovement2:: db
 
-	ds 2
+; The ledge jump's destination in sprite map coordinates (+4).
+wLedgeLandingY:: db
+wLedgeLandingX:: db
 
 ; sprite offset of sprite being controlled by NPC movement script
 wNPCMovementScriptSpriteOffset:: db

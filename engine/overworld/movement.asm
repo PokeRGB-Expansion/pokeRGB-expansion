@@ -597,6 +597,30 @@ CanWalkOntoTile:
 	and a
 	ret
 .notScripted
+IF DEF(_POKERGB_CORE)
+	; A wandering NPC cannot take the landing while the player is in the air.
+	ld a, [wMovementFlags]
+	bit BIT_LEDGE_OR_FISHING, a
+	jr z, .checkTileset
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_MOVEMENT_STATE, a
+	jr z, .checkTileset
+	dec l
+	dec l ; from movement byte 1 to map Y
+	ld a, [hli]
+	add d
+	push hl
+	ld hl, wLedgeLandingY
+	cp [hl]
+	pop hl
+	jr nz, .checkTileset
+	ld a, [hl]
+	add e
+	ld hl, wLedgeLandingX
+	cp [hl]
+	jp z, .impassable
+.checkTileset
+ENDC
 	ld a, [wTilesetCollisionPtr]
 	ld l, a
 	ld a, [wTilesetCollisionPtr+1]
