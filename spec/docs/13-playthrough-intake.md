@@ -55,7 +55,7 @@ The follow-up playthrough report identifies selling EXP. ALL for zero. Its liste
 
 **Configuration:** provide a developer option if straightforward. Protection is enabled in the default core and does not depend on adding a toggle.
 
-**Status:** The Bag, item PC and shop use the key-item safeguards. [Cartridge checks](../../tests/item_safety.py)
+**Status:** Core uses the key-item safeguards in the Bag, item PC and shop. Minimal preserves the original disposal rules. [Cartridge checks](../../tests/item_safety.py)
 
 <a id="pn-002"></a>
 
