@@ -33,9 +33,21 @@ FoundHiddenItemText::
 	ld c, a
 	ld b, FLAG_SET
 	predef FlagActionPredef
-	ld a, SFX_GET_ITEM_2
-	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
+	; Pause any pending music fade until the pickup sound finishes.
+	ld a, [wAudioFadeOutControl]
+	push af
+	ldh a, [rAUDVOL]
+	push af
+	xor a
+	ld [wAudioFadeOutControl], a
+	ld a, SFX_GET_ITEM_2
+	call PlaySound
+	call WaitForSoundToFinish
+	pop af
+	ldh [rAUDVOL], a
+	pop af
+	ld [wAudioFadeOutControl], a
 	jp TextScriptEnd
 .bagFull
 	call WaitForTextScrollButtonPress ; wait for button press

@@ -43,6 +43,14 @@ DisplayMonFrontSpriteInBox:
 	ldh [hStartTileID], a
 	hlcoord 10, 11
 	predef AnimateSendingOutMon
+	ld a, [wCurPartySpecies]
+	cp ARTICUNO
+	jr nz, .wait
+	; Play the binocular cry when the image is on screen.
+	call WaitForSoundToFinish
+	ld a, ARTICUNO
+	call PlayCry
+.wait
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
 	call Delay3
