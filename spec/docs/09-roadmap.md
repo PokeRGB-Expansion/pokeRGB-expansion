@@ -34,7 +34,7 @@ For each accepted item, record its implementation revision, test result and any 
 
 ## Minimal, Extended and downstream editions
 
-Ship Minimal when its shared fixes pass the Minimal equivalence checks. It retains stock battle and resource rules, including the active-box limit. A developer can enable individual options on either base. Extended inherits Core and keeps unified Special as its starting point. Whole-generation rosters, extra types or a move-based damage category can be selected independently when their supporting code exists.
+Ship Minimal when its shared fixes pass the Minimal equivalence checks. It keeps stock battle rules and resource limits, including the active-box limit, and shares the approved safeguards such as EXP. ALL protection. A developer can enable individual options on either base. Extended inherits Core and keeps unified Special as its starting point. Whole-generation rosters, extra types or a move-based damage category can be selected independently when their supporting code exists.
 
 Provide a path for a downstream project to publish two editions of the same adventure. Share maps and scripts, name the two configurations, validate their content and produce separate, unambiguous patches. The hypothetical Yellow Rogue example is a test of the foundation’s authoring model. [Emerald Rogue prior art and build example](../research/emerald-rogue-builds.md)
 

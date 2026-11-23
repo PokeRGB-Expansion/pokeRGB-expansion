@@ -4,7 +4,7 @@ Keep new reports and accepted requirements here. Source confirmation, default in
 
 | Note | Date | Requirement | Default disposition | Delivery |
 |---|---|---|---|---|
-| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | Accepted item-safety safeguard | Implemented |
+| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | One-time reward safeguard in Minimal and Core | Implemented |
 | [PN-002](#pn-002) | 2026-10-14 | Register a key item to SELECT, including the Bicycle | Accepted usability feature | Implemented |
 | [PN-003](#pn-003) | 2026-10-14 | Browse the current box with a full party | Accepted usability feature | Implemented |
 | [PN-004](#pn-004) | 2026-10-14 | Contextual HM prompts from A at a suitable target | Accepted interface feature | Implemented |
@@ -34,28 +34,28 @@ Keep new reports and accepted requirements here. Source confirmation, default in
 
 ## PN-001 — Protect EXP. ALL from tossing and selling
 
-**Requirement:** refuse tossing EXP. ALL from the bag and player PC and selling it in shops. Toss attempts use the existing important-item refusal. Selecting it for sale shows the existing “I can't put a price on that.” message, as for the Bicycle, without a quantity/price offer or transaction. Preserve the item and money. PC deposit and withdrawal remain available. Keep the acquisition requirement and existing experience behavior.
+**Requirement:** both Minimal and Core refuse tossing EXP. ALL from the Bag and item PC and selling it in shops. Toss attempts use the existing important-item refusal. The shop says “I can't put a price on that.” The refusal preserves the item and money. Oak's aide still gives the one-time reward, and the item PC still allows deposit and withdrawal. RGB-017 defines each preset’s experience awards.
 
 **Evidence:** reported during a Red playthrough; source-confirmed at the pinned English Red/Blue reference. `EXP_ALL` has a false key-item flag. The shared toss routine protects HMs and key items, so EXP. ALL passes those guards. Oak's aide sets a reward event after giving it; subsequent conversations do not offer another copy when that event is set. The PC toss menu uses the same protected routine. [E68](../research/evidence.md#e68)
 
 The follow-up playthrough report identifies selling EXP. ALL for zero. Its listed price is zero and its key-item flag is false. The shop checks key-item and HM status before offering a sale; confirmed sales then add the proceeds and remove the item. The Bicycle is flagged as a key item and takes the existing refusal path. A zero price alone does not give EXP. ALL that protection. These paths and the refusal text are source-checked, not an executable reproduction. [E74](../research/evidence.md#e74)
 
-**Classification:** accepted default loss-prevention safeguard. Losing it does not block main-game progression. This record does not claim that the original flag was accidental.
+**Classification:** shared safeguard for a reward Oak's aide gives once. The original designer’s intent is uncertain.
 
-**Proposed implementation:** change EXP. ALL's existing key-item flag from false to true. This uses the existing key-item guard for the required shop refusal as well as toss protection, and skips quantity prompts in PC transfers. Do not substitute a price increase or a blanket ban on selling all zero-price items. Check those paths; storage must still work. No item ID, save layout, battle calculation, or replacement-reward change is needed for this proposal.
+**Implementation:** set EXP. ALL's key-item flag in both presets. This uses the existing toss and sale guards and transfers one copy at a time at the item PC.
 
 **Regression requirements:**
 
 - Bag and PC toss attempts refuse the action and leave inventory contents unchanged.
 - PC deposit, withdrawal, full-storage rejection, and save/reload retain the item correctly.
 - The aide still gives one copy under the existing requirement, with the original full-bag retry behavior.
-- Carrying the item applies the existing experience behavior; storing it removes that effect. Core also corrects RGB-017, the independently verified double division of the second award. [EXP. ALL results](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
+- EXP. ALL affects awards while it is in the Bag. Test that depositing it in the item PC stops that effect. Core calculates the two awards independently under RGB-017. Minimal keeps the original awards. [EXP. ALL results](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
 - Selecting EXP. ALL for sale gives exactly the existing important-item refusal, without offering a zero-price sale. Bag entries, quantities, and money remain unchanged, including on repeated attempts and after save/reload.
 - Ordinary sales still remove the chosen quantity and pay the expected amount. Ordinary discardable items still work. Existing key items and HMs remain protected.
 
-**Configuration:** provide a developer option if straightforward. Protection is enabled in the default core and does not depend on adding a toggle.
+**Configuration:** Minimal and Core enable the safeguard by default. Provide an author option when it is straightforward to maintain.
 
-**Status:** Core uses the key-item safeguards in the Bag, item PC and shop. Minimal preserves the original disposal rules. [Cartridge checks](../../tests/item_safety.py)
+**Cartridge checks:** test the Bag, item PC and shop in both presets. [Item safety tests](../../tests/item_safety.py)
 
 <a id="pn-002"></a>
 

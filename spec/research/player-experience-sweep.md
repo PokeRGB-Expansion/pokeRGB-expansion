@@ -9,7 +9,8 @@ The review checked all 25 playthrough notes, all 66 existing usability entries, 
 | Playthrough notes | Decision |
 |---|---|
 | PN-002–009, 011–014, 019 and 025 | Both presets. This includes a registered Bicycle, permitted field HMs, PC browsing and STATS returns, release confirmation, shop refusals, quantity steps, accurate Flute and trade text, Oak’s spelling, and the Acid Armor redraw. These retain the player’s legal choices and costs. Check each caller, including battle and trade. |
-| PN-001, 010, 015 and 021–024 | Core changes the EXP. ALL disposal rule, vending and rooftop transactions, move cursor or arrival order, Mansion trainer sight, and grass encounters. Minimal keeps the original gameplay or record order. The battle SELECT case can affect Counter even without a completed swap. Retaining its cursor in Core also requires a battle-history check. |
+| PN-001 | Minimal and Core protect the one-time EXP. ALL reward against tossing and selling. RGB-017 governs the separate XP and stat experience awards. |
+| PN-010, 015 and 021–024 | Core changes vending and rooftop transactions, move cursor or arrival order, Mansion trainer sight, and grass encounters. Minimal keeps the original gameplay or record order. The battle SELECT case can affect Counter even without a completed swap. Retaining its cursor in Core also requires a battle-history check. |
 | PN-016 | Both presets show machine names and INFO, including before payment or withdrawal. |
 | PN-017 | Both show the bag, item PC, active box and highlighted box counts. |
 | PN-018 and 020 | Player move INFO is in both presets. Live battler types and larger bag capacity are independent author options. |

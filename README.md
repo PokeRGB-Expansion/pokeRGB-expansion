@@ -2,7 +2,7 @@
 
 PokéRGB Expansion is a developer foundation for English Generation I Pokémon ROM hacks. It builds Red, Blue, and a cosmetic Green from one source tree. Green uses Blue's gameplay with a Bulbasaur title and its own Super Game Boy colors.
 
-Core is the default preset. Minimal keeps the original battle and resource rules while sharing selected interface and safety fixes. [Downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases) · [Project specification](spec/README.md) · [Core release checks](spec/docs/09-roadmap.md)
+Core is the default preset. Minimal keeps the original battle rules and inventory limits while sharing selected interface and safety fixes. [Downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases) · [Project specification](spec/README.md) · [Core release checks](spec/docs/09-roadmap.md)
 
 ## Build
 

@@ -26,6 +26,10 @@ Minimal includes the feedback correction and retains stock critical-hit, badge a
 
 An author can opt into automatic placement or a relearner on any compatible base. The build then has its own rules. [Minimal’s decision criteria](../research/minimal-action-review.md) · [Field eligibility](../research/field-shortcut-contract.md) · [Storage evidence](../research/storage-policy-and-code.md)
 
+## Protecting EXP. ALL
+
+Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and still let you deposit or withdraw it at the item PC. While you carry it, Core calculates the participants’ share and the party’s share separately under RGB-017. Minimal uses the original awards. [Item protection](13-playthrough-intake.md#pn-001) · [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
+
 ## Inspect a move
 
 Highlight a machine in the bag, item PC, shop or prize list. The row identifies both number and move, for example **TM24 Thunderbolt**. Press **START — INFO** to see type, power, listed accuracy, PP and effect. Press **B** to return to the same row. You can also inspect moves from STATS or FIGHT. When a Pokémon with four moves is offered a new one, you can read the new move and compare the old ones before choosing what to forget. Both presets include these controls. [Move INFO and examples](15-battle-information.md)

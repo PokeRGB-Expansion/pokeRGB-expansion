@@ -1,5 +1,5 @@
 case_id,area,case,evidence_status,disposition,reference,remaining_check,preset_review
-UC-01,Items,Important-item loss,existing-requirement,Protect EXP. ALL; retain other important-item behavior,PN-001; E68,Toss/sale refusal and save round trip,Core
+UC-01,Items,Important-item loss,existing-requirement,Protect the one-time EXP. ALL reward and retain item PC storage,PN-001; E68,Toss/sale refusal and save round trip,Minimal and Core
 UC-02,Rewards,Visible ground pickup with full bag,source-confirmed,Preserve existing failure check before hiding object,E100,Actual full-bag and existing-stack fixtures,Keep
 UC-03,Rewards,Hidden item with full bag,source-confirmed,Preserve completion flag until successful delivery,E100,Retry after making room and save/reload,Keep
 UC-04,Rewards,Direct scripted item and Pokemon gifts,source-order-reviewed,Six affected calls. See the transaction-order review for all 47 source paths and each protected workflow.,gift-call-sites.csv; E90; E100; E101,Whole-transaction fixtures for each affected script,Core

@@ -1,5 +1,9 @@
 # Specification changelog
 
+## Unreleased
+
+- Protect the one-time EXP. ALL reward from tossing and selling in Minimal and Core. Core calculates the two experience shares independently under RGB-017. Minimal keeps the original awards.
+
 ## 0.1.48 — 2026-11-23
 
 - Adopt static move INFO in Minimal and Core for machines, known moves and new moves before replacement. Include pre-purchase inspection and keep live opponent types optional.

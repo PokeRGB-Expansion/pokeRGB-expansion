@@ -43,7 +43,7 @@ The fixture used two healthy, untraded recipients, a level-21 wild opponent, bas
 | Both | No | 210 / 210 | 60 / 60 | Same |
 | Both | Yes | 156 / 156 | 45 / 45 | 210 / 210 XP and 60 / 60 HP stat experience |
 
-Keep each half's original integer rounding and bonus order. Check one through six eligible recipients, fainted party members, all participants fainted, a trainer battle, traded Pokémon, the level cap and all five stat-experience values. The fixture establishes the double division. It does not determine a new rule for the separate fainted-recipient reports. Toss/sale protection remains its own requirement. [Recorded awards](foundation-checks.json) · [Shin Lite's three distinct EXP. ALL claims](https://github.com/jojobear13/shinpokered/blob/b35c2a536a1605841c8fb662aad18b0dbfd2a900/README.md#L330-L339)
+Keep each half's original integer rounding and bonus order. Check one through six eligible recipients, fainted party members, all participants fainted, a trainer battle, traded Pokémon, the level cap and all five stat-experience values. The fixture establishes the double division. It does not determine a new rule for the separate fainted-recipient reports. Both presets protect the one-time reward against tossing and selling under [PN-001](../docs/13-playthrough-intake.md#pn-001). [Recorded awards](foundation-checks.json) · [Shin Lite's three distinct EXP. ALL claims](https://github.com/jojobear13/shinpokered/blob/b35c2a536a1605841c8fb662aad18b0dbfd2a900/README.md#L330-L339)
 
 ### A Substitute should block the explicitly checked draining moves
 

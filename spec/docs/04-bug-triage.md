@@ -25,7 +25,7 @@ These records are examples from the complete Core inventory. The [roadmap](09-ro
 
 | ID | Requirement | Evidence / delivery | Required regression |
 |---|---|---|---|
-| RGB-029 | Prevent tossing EXP. ALL from the bag or player PC and selling it in shops; reuse the important-item refusal messages. Retain storage, acquisition, and experience behavior. | The game uses its key-item safeguards. [Cartridge checks](../../tests/item_safety.py) [E68](../research/evidence.md#e68), [PN-001](13-playthrough-intake.md#pn-001) | Bag/PC toss refusal and shop sale refusal, item and money unchanged on refusal, PC deposit/withdraw and save round trip, ordinary item sales/discard still work, existing key-item behavior retained. |
+| RGB-029 | Minimal and Core refuse to toss EXP. ALL from the Bag or item PC and to sell it in shops. Use the existing important-item messages. Keep acquisition and storage. RGB-017 governs the XP and stat experience awards. | The game uses its key-item safeguards. [Cartridge checks](../../tests/item_safety.py) [E68](../research/evidence.md#e68), [PN-001](13-playthrough-intake.md#pn-001) | Bag/PC toss refusal and shop sale refusal, item and money unchanged on refusal, PC deposit/withdraw and save round trip, ordinary item sales/discard still work, existing key-item behavior retained. |
 
 This is a loss-prevention safeguard, not a progression softlock or the separate experience-allocation report RGB-017. Include the inventory and sale checks in Core acceptance.
 

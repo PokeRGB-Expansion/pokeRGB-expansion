@@ -28,7 +28,9 @@ Presets are versioned sets of defaults in one tree. A developer can override an 
 | Focus Energy and Dire Hit | Use the cartridge's reversed effect | Correct the pumped critical-hit chance | Inherit Core unless a developer selects different critical-hit rules |
 | Blaine at full HP | His successful item roll can still spend a turn and a potion use | Skip that use and allow his normal action | Inherit the guard. A selected trainer AI can supply another policy. |
 | Thunder and Soul badges, Mansion Burglar sight, Forest star grass | Original badge mapping, sight ranges, and encounter eligibility | Apply the accepted corrections | Inherit Core |
-| EXP. ALL toss/sale, vending prices, rooftop TM payment | Original inventory and transaction outcomes | Apply the accepted safeguards and corrections | Inherit Core |
+| EXP. ALL toss/sale | Protect the one-time reward through the existing key-item safeguards | Same | Inherit Core |
+| EXP. ALL experience | Original XP and stat experience awards | Calculate the two shares independently under RGB-017 | Inherit Core |
+| Vending prices and rooftop TM payment | Original transactions | Apply the accepted corrections | Inherit Core |
 | Hyper Beam on KO, trapping, fixed damage, and badge stacking | Original rules | Original rules | Inherit Core unless explicitly overridden |
 | Improved trainer AI, added types and later Pokémon | Original systems | Original systems | Developer selects each supported capability |
 | Double and triple battles | Singles | Singles | Possible future designs. Feasibility and delivery are open. |
@@ -41,7 +43,7 @@ For a new proposal, record what a player can do, what the opponent can do, and t
 
 Core follows the [decisions](01-decisions.md) and [mechanics contract](05-mechanics-contract.md). It keeps defining Gen 1 behavior, corrects accepted defects, and includes explicitly accepted safety and interface improvements that preserve meaningful constraints and choices.
 
-EXP. ALL toss/sale protection, SELECT item registration, box browsing with a full party, and contextual HM use are accepted Core features. They are deliberate improvements, not proof that every original behavior they replace was accidental. Provide developer controls when straightforward; a separate switch is not required for each accepted correction or safeguard.
+Minimal and Core share EXP. ALL toss and sale protection, SELECT item registration, box browsing with a full party, and contextual HM use. They are deliberate improvements, not proof that every original behavior they replace was accidental. Provide developer controls when straightforward; a separate switch is not required for each accepted correction or safeguard.
 
 Core is a useful starting point for a small hack. Its game must remain buildable and tested as the extension library grows.
 
@@ -72,7 +74,7 @@ Patch size, coding difficulty, and whether a later game has the feature do not d
 | Focus Energy correction and other approved defect repairs | Core | Included | Apply the bug policy and protect unrelated mechanics; verify the Q01 threshold and both actor paths in the integrated build |
 | Unambiguous typo corrections | Minimal and Core | Included | Preserve meaning and voice; check line layout and shared uses; Oak's rating is [PN-005](13-playthrough-intake.md#pn-005) |
 | Thunder/Soul stat mapping | Core | Included | Thunder→Speed and Soul→Defense; original descriptions, bonus amount, rounding, cap, other badges, link exclusion, and stacking retained; [D25](01-decisions.md) |
-| EXP. ALL toss/sale protection | Core | Included | Refuse tossing and selling with the existing important-item messages; preserve acquisition and storage. The separate RGB-017 correction covers experience allocation; [PN-001](13-playthrough-intake.md#pn-001) |
+| EXP. ALL toss and sale protection | Minimal and Core | Included | Protect the one-time reward with the existing important-item messages. Keep acquisition and item PC storage. RGB-017 specifies the Core award correction. [PN-001](13-playthrough-intake.md#pn-001) |
 | SELECT item registration | Minimal and Core | Included | The Bicycle is the first planned shortcut. Review other items individually. Preserve possession and map restrictions; [PN-002](13-playthrough-intake.md#pn-002) |
 | Box browsing and return context | Minimal and Core | Included | Browse and view STATS with a full party; return to the list after STATS/action cancellation; preserve cursor/scroll; reject only an actual withdrawal when the party is full; [PN-003](13-playthrough-intake.md#pn-003) |
 | STATS navigation | Minimal and Core | Included | Up/down changes Pokémon, left/right changes page, B restores browsing context; support later developer pages; [PN-006](13-playthrough-intake.md#pn-006) |

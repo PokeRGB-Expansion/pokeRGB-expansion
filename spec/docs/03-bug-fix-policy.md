@@ -16,7 +16,7 @@ Badge stacking is retained under this rule. A future optional correction must be
 
 ## Evidence and implementation are separate
 
-Accepted safety and usability safeguards can prevent a valid original action without claiming that the original implementation was accidental. EXP. ALL protection against tossing and selling is an accepted default safeguard. Record such changes in [playthrough findings](13-playthrough-intake.md), with their source evidence and implementation status. They do not authorize unrelated combat or resource changes.
+Accepted safety and usability safeguards can prevent a valid original action without claiming that the original implementation was accidental. Minimal and Core protect the one-time EXP. ALL reward against tossing and selling. Record such changes in [playthrough findings](13-playthrough-intake.md), with their source evidence and implementation status. They do not authorize unrelated combat or resource changes.
 
 Provide a developer option when it is straightforward to maintain. Keep the accepted safeguard enabled by default. Configuration is not a release gate for the safeguard and does not require a new player setting.
 
