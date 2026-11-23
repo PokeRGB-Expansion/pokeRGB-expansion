@@ -39,6 +39,20 @@ class Cartridge:
         assert start // 0x4000 == end // 0x4000, symbol
         return self.data[start:end + 1]
 
+    def wild_encounters(self):
+        bank, _ = self.symbols["WildDataPointers"]
+        pointers = self.between("WildDataPointers", "NothingWildMons")
+        assert int.from_bytes(pointers[-2:], "little") == 0xffff
+        encounters = []
+        for offset in range(0, len(pointers) - 2, 2):
+            address = int.from_bytes(pointers[offset:offset + 2], "little")
+            assert 0x4000 <= address < 0x8000
+            start = bank * 0x4000 + address - 0x4000
+            water = start + 1 + (20 if self.data[start] else 0)
+            end = water + 1 + (20 if self.data[water] else 0)
+            encounters.append(self.data[start:end])
+        return encounters
+
     def title(self):
         return self.data[0x134:0x144].rstrip(b"\0").decode("ascii")
 
@@ -69,6 +83,11 @@ def main():
     assert blue.between("TrainerDataPointers", "EvosMovesPointerTable") == green.between(
         "TrainerDataPointers", "EvosMovesPointerTable"
     ), "Trainer parties"
+    assert blue.wild_encounters() == green.wild_encounters(), "Wild encounters"
+    assert red.wild_encounters() != blue.wild_encounters(), "Version-specific wild encounters"
+    assert blue.between("TradeMons", "InGameTrade_DoTrade") == green.between(
+        "TradeMons", "InGameTrade_DoTrade"
+    ), "In-game trades"
     assert red.table("PrizeMenuMon2Cost", 7) != blue.table("PrizeMenuMon2Cost", 7), "Version-specific prizes"
     print("Verified Red, Blue, and Green headers, version-specific prizes, and selected Blue/Green gameplay tables.")
 
