@@ -54,6 +54,7 @@ def main():
     run_script("tests/title_smoke.py", directory, "--sameboy", sameboy, "--boot", sgb_boot)
     run_script("tests/battle_slide_timing.py", directory, *emulator, "--sgb-boot", sgb_boot)
     run_script("tests/protected_mechanics.py", directory, *emulator, "--linked")
+    run_script("tests/bide_struggle.py", directory, *emulator, "--linked")
     run_script("tests/copied_trap_switch.py", roms[0], *emulator)
     run_script("tests/move_swap_smoke.py", *roms, *emulator, *preset_flag)
     run_script("tests/adventure_event_states.py", directory, *emulator, *preset_flag)
