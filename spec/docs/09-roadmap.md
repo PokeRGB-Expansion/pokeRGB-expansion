@@ -39,3 +39,7 @@ Ship Minimal when its shared fixes pass the Minimal equivalence checks. It keeps
 Provide a path for a downstream project to publish two editions of the same adventure. Share maps and scripts, name the two configurations, validate their content and produce separate, unambiguous patches. The hypothetical Yellow Rogue example is a test of the foundation’s authoring model. [Emerald Rogue prior art and build example](../research/emerald-rogue-builds.md)
 
 Before large rosters ship, prove high species IDs through encounters, battle, evolution, storage, saves and any advertised link format. Measure cartridge space and performance for actual content. Develop optional storage, battle information, encounter generation or modern mechanics with their own acceptance tests. Features such as doubles or triples remain feasibility work. [Species design](../research/species-id-architecture.md) · [Feature inventory](14-features-and-extensions.md)
+
+### Extended authoring milestones
+
+Use a small two-edition Kanto adventure to test the foundation as a hack author would. Start with maps, events, trainers, learnsets and encounters. Then test switching independent features, authoring forms and crossing the first species-ID limit. Keep the two editions buildable as the engine changes. Each milestone has a playable acceptance check and a source for the design choice. [Author tasks and acceptance checks](../research/hack-engine-precedents.md#what-to-prove-in-extended)
