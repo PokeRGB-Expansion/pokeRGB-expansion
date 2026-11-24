@@ -55,6 +55,15 @@ def check_math(game):
                 assert result == filled(curve, level, xp), (curve, level, xp, result)
                 assert game.get_bytes("hDividend", len(scratch)) == scratch
 
+    # A partial or unsupported species record must not index past GrowthRateTable.
+    for invalid in (len(GROWTH), 26, 0xff):
+        game.put("wMonHGrowthRate", (invalid,))
+        game.put("wBattleExpPixels", (17,))
+        game.invoke("CacheBattleExpPixels")
+        game.cpu.de = 45 << 8
+        game.return_to_stub()
+        assert game.get("wBattleExpPixels") == 0
+
 
 def check_authored_curve(game):
     # Edit the test emulator's copy of the first growth record to 10 * level³.

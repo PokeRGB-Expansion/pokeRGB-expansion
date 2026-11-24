@@ -15,6 +15,9 @@ CacheBattleExpPixels:
 	ret z
 	cp MAX_LEVEL
 	ret nc ; empty track at the level cap
+	ld a, [wMonHGrowthRate]
+	cp NUM_GROWTH_RATES
+	ret nc ; no threshold record for this growth rate
 
 	; The growth and multiplication routines share scratch with battle code.
 	ld hl, hDividend

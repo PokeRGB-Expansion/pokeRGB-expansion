@@ -70,6 +70,7 @@ def setup_battle(game, condition, hp, *, bench=False, badges=ALL_STAT_BADGES):
     game.put("wBagSavedMenuItem", (0,))
     game.put("wBattleAndStartSavedMenuItem", (0,))
     game.put("wActionResultOrTookBattleTurn", (0,))
+    game.put("wBattleMonSpecies2", (game.get("wPartyMon1Species"),))
     run(game, "LoadBattleMonFromParty")
     return target
 
