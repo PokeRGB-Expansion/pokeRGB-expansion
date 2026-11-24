@@ -28,7 +28,7 @@ Use a simple `CREDITS.md` plus a structured import ledger when code imports begi
 
 ## Release form
 
-The release package uses BPS patches. Apply Red to the original English Red cartridge image. Apply Blue and Green to the original English Blue cartridge image. The package's `patches.json` records the exact input SHA-1 and output SHA-256 for each color, plus each patch's SHA-256.
+The release package uses BPS patches. Apply Red to the original English Red cartridge image. Apply Blue and Green to the original English Blue cartridge image. Core uses the original `pokergb-<color>.bps` names and `patches.json`. Minimal uses `pokergb-minimal-<color>.bps` and `patches-minimal.json`. Each manifest records the exact input SHA-1 and output SHA-256 for each color, plus each patch's SHA-256.
 
 Build all three colors from the same checkout and preset before you package a release. Use the Floating IPS v198 command-line tool. If you build the tool from its tagged source, use `make TARGET=cli COMMIT_COUNT=198 CFLAGS=-O2`. [Floating IPS v198](https://github.com/Alcaro/Flips/tree/v198)
 

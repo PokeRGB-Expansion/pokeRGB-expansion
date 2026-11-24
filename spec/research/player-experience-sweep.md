@@ -15,7 +15,7 @@ The review checked all 25 playthrough notes, all 66 existing usability entries, 
 | PN-017 | Both show the bag, item PC, active box and highlighted box counts. |
 | PN-018 and 020 | Player move INFO is in both presets. Live battler types and larger bag capacity are independent author options. |
 
-D43’s two battle STATS redraws and move-learning sound fit Minimal and Core. The empty SHIFT prompt qualifies for both as well. A caught marker remains optional: introducing a battle overlay takes a separate visibility decision for encounters whose identity is concealed. Keep manual Flute use at Snorlax, the normal medicine return, the existing successful Pokémon transfer destinations and the four-move limit. Choices that affect move access, box routing, EXP or payment retain their individual rules.
+D43’s two battle STATS redraws and move-learning sound fit Minimal and Core. The empty SHIFT prompt qualifies for both as well. The [battle display rules](battle-hud-displays.md) resolve visibility for the caught marker, including concealed encounters. Keep manual Flute use at Snorlax, the normal medicine return, the existing successful Pokémon transfer destinations and the four-move limit. Choices that affect move access, box routing, EXP or payment retain their individual rules.
 
 ## Counted items and named machines
 

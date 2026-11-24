@@ -7,7 +7,12 @@ $(error Select one PRESET)
 endif
 
 .DEFAULT_GOAL := all
+BATTLE_CAUGHT_MARKER ?= 1
+BATTLE_EXP_BAR ?= 1
 output := build/$(PRESET)
+ifneq ($(BATTLE_CAUGHT_MARKER)-$(BATTLE_EXP_BAR),1-1)
+output := build/hud-$(BATTLE_CAUGHT_MARKER)-$(BATTLE_EXP_BAR)/$(PRESET)
+endif
 red_rom        := $(output)/pokered.gbc
 blue_rom       := $(output)/pokeblue.gbc
 green_rom      := $(output)/pokegreen.gbc
@@ -89,6 +94,16 @@ tools:
 RGBASMFLAGS += -Q8 -P includes.asm -E
 ifeq ($(PRESET),core)
 RGBASMFLAGS += -D _POKERGB_CORE
+endif
+ifeq ($(BATTLE_CAUGHT_MARKER),1)
+RGBASMFLAGS += -D _BATTLE_CAUGHT_MARKER
+else ifneq ($(BATTLE_CAUGHT_MARKER),0)
+$(error Set BATTLE_CAUGHT_MARKER to 0 or 1)
+endif
+ifeq ($(BATTLE_EXP_BAR),1)
+RGBASMFLAGS += -D _BATTLE_EXP_BAR
+else ifneq ($(BATTLE_EXP_BAR),0)
+$(error Set BATTLE_EXP_BAR to 0 or 1)
 endif
 
 $(output)/rgbdscheck.o: rgbdscheck.asm

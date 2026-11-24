@@ -142,6 +142,20 @@ GainExperience:
 	ld [hld], a
 	dec hl
 .next2
+IF DEF(_BATTLE_EXP_BAR)
+	ld a, [wPlayerMonNumber]
+	ld b, a
+	ld a, [wWhichPokemon]
+	cp b
+	jr nz, .meterReady
+	push hl
+	ld bc, MON_LEVEL - MON_EXP
+	add hl, bc
+	ld d, [hl] ; show this level's progress while the award text is visible
+	farcall RefreshAwardedBattleExp
+	pop hl
+.meterReady
+ENDC
 	push hl
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
@@ -232,6 +246,13 @@ ENDC
 	ld bc, 1 + NUM_STATS * 2 ; size of stats
 	call CopyData
 	pop hl
+IF DEF(_BATTLE_EXP_BAR)
+	push hl
+	ld a, [wBattleMonLevel]
+	ld d, a
+	farcall CacheBattleExpPixels ; redraw below uses the new level and its progress
+	pop hl
+ENDC
 	ld a, [wPlayerBattleStatus3]
 	bit TRANSFORMED, a
 	jr nz, .recalcStatChanges

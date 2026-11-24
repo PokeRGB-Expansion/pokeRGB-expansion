@@ -15,6 +15,12 @@ This guide describes the reference builds. Core includes the accepted Core chang
 
 Minimal includes the feedback correction and retains stock critical-hit, badge and trainer-item outcomes. [Battle evidence and acceptance tests](04-bug-triage.md#battle-calculation-and-trainer-repairs)
 
+## Battle displays
+
+In Minimal and Core, a small Poké Ball beside an identified wild opponent means your Pokédex already records that species as owned. Trading for a species counts, and releasing your last copy keeps the mark. It also works on ordinary Safari encounters. A hidden Tower ghost and the Old Man’s demonstration show no ball.
+
+Below your Pokémon’s HP, the EXP bar shows how far it has progressed from its current level to the next. Switching Pokémon changes the bar. A knockout updates it during the existing EXP message. At maximum level the track is empty. [Display rules and author settings](../research/battle-hud-displays.md)
+
 ## Field moves, storage and team building
 
 | When you… | Minimal and Core | Other developer choices |

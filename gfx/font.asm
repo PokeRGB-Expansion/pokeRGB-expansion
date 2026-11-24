@@ -1,5 +1,12 @@
 PokemonLogoGraphics: INCBIN "gfx/title/pokemon_logo.2bpp"
-FontGraphics:: INCBIN "gfx/font/font.1bpp"
+FontGraphics::
+IF DEF(_BATTLE_EXP_BAR)
+	INCBIN "gfx/font/font.1bpp", 0, (EXP_LABEL_TILE - $80) * TILE_1BPP_SIZE
+	INCLUDE "gfx/battle/exp_bar.asm"
+	INCBIN "gfx/font/font.1bpp", @ - FontGraphics
+ELSE
+	INCBIN "gfx/font/font.1bpp"
+ENDC
 FontGraphicsEnd::
 
 ABTiles: INCBIN "gfx/font/AB.2bpp"

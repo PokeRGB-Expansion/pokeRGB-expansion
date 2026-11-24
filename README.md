@@ -15,6 +15,8 @@ make -j4 PRESET=minimal
 
 Each command builds all three colors. To build just one, pass `red`, `blue`, or `green` to Make. The cartridge and matching map and symbol files go under `build/core/` or `build/minimal/`. If RGBDS is outside your path, set `RGBDS` to its tool directory with a trailing slash.
 
+Both presets show a Pokédex ball for a previously owned, identified wild species and a progress bar for the active Pokémon’s EXP. Authors can disable either display. For example, `make red BATTLE_CAUGHT_MARKER=0` keeps the EXP bar. Use `BATTLE_EXP_BAR=0` to hide the bar. Each switch accepts 0 or 1 and defaults to 1. Custom builds go in `build/hud-<marker>-<bar>/<preset>/`, so switching options keeps each configuration’s files separate. [Battle display rules](spec/research/battle-hud-displays.md)
+
 The reference baseline is pret/pokered at `ba9c0568f64ae602fadda577a08c66639f93082a`. To check five existing upstream outputs against the original hashes, run `make compare BASELINE_DIR=/path/to/upstream/outputs`. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a)
 
 ## Make your first hack

@@ -42,6 +42,7 @@ def main():
     sgb_boot = args.sgb_boot.resolve()
     cgb_boot = args.cgb_boot.resolve() if args.cgb_boot else boot.with_name("cgb_boot.bin")
     emulator = ("--sameboy", sameboy, "--boot", boot)
+    rgbds = ("--rgbds", args.rgbds.resolve()) if args.rgbds else ()
     preset_flag = () if core else ("--minimal",)
 
     checks = []
@@ -81,12 +82,14 @@ def main():
             for room in ("trade", "battle"):
                 add_check("tests/link_cable_smoke.py", left, right, *emulator, "--room", room)
 
-        rgbds = ("--rgbds", args.rgbds.resolve()) if args.rgbds else ()
         for test in ("move_info_authoring", "trainer_loss_authoring", "name_list_authoring"):
             add_check(f"tests/{test}.py", *emulator, *rgbds)
 
     add_check("tools/check_reference_colors.py", directory)
     add_check("spec/tools/validate_spec.py")
+    add_check("tests/battle_caught_marker.py", directory, *emulator, "--sgb-boot", sgb_boot)
+    add_check("tests/battle_exp_meter.py", directory, *emulator)
+    add_check("tests/battle_hud_options.py", directory.name, *emulator, *rgbds)
 
     for script, arguments in checks[index - 1::count]:
         print(f"Running {script}", flush=True)

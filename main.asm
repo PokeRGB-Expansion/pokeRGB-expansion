@@ -280,6 +280,9 @@ SECTION "Battle Engine 10", ROMX
 
 INCLUDE "engine/battle/common_text.asm"
 INCLUDE "engine/pokemon/experience.asm"
+IF DEF(_BATTLE_EXP_BAR)
+INCLUDE "engine/battle/exp_meter.asm"
+ENDC
 INCLUDE "engine/events/oaks_aide.asm"
 
 

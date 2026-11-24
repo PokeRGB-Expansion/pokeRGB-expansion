@@ -54,7 +54,7 @@ D61 and D62 settle machine names, move INFO, storage counts and the other review
 
 Static INFO is included in Minimal and Core. The live type overlay is a separate author feature. [Controls and visibility](15-battle-information.md)
 
-The caught marker and battle EXP bar were cataloged as optional author features. A [battle display study](../research/battle-hud-displays.md) recommends enabling their read-only forms in Minimal and Core, with Extended inheriting both. Their default settings remain open pending a preset decision.
+Minimal and Core enable the caught marker and battle EXP bar. Authors can turn off either one. [Display and visibility rules](../research/battle-hud-displays.md)
 
 The encoded 40-coin payout and safe gift ordering belong in Core. Oak’s text layout and the intro cry qualify for Minimal and Core. Extra move-replacement prompts stay optional. Admission keeps its original requirements. The [case decisions](../research/catalog-decisions.md) specify the remaining display checks. The [remake comparison](../research/remake-usability-comparison.md) records checked clues and missing evidence. A later game's choice is neither a default-inclusion rule nor proof of the first team's intent.
 

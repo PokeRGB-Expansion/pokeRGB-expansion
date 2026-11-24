@@ -9,7 +9,11 @@ from tempfile import TemporaryDirectory
 
 
 FLIPS_VERSION = "Floating IPS v198"
-MANIFEST = "patches.json"
+# Keep the public Core file names used since v0.1.0.
+PACKAGES = {
+    "core": ("pokergb-", "patches.json"),
+    "minimal": ("pokergb-minimal-", "patches-minimal.json"),
+}
 # English cartridge hashes from the pinned pret/pokered roms.sha1.
 BASE_SHA1 = {
     "red": "ea9bcae617fdf159b045185467ae58b2e4a48b9a",
@@ -50,11 +54,12 @@ def read_targets(build):
     return targets
 
 
-def compare_patches(flips, bases, targets, folder):
+def compare_patches(flips, bases, targets, folder, preset):
+    prefix, _ = PACKAGES[preset]
     manifest = {"format": "BPS", "patcher": FLIPS_VERSION, "targets": []}
     with TemporaryDirectory(prefix="pokergb-verify-") as scratch:
         for color, base_color in TARGET_BASES.items():
-            patch = folder / f"pokergb-{color}.bps"
+            patch = folder / f"{prefix}{color}.bps"
             data = patch.read_bytes()
             if not data.startswith(b"BPS1"):
                 raise ValueError(f"{patch} is not a BPS file.")
@@ -74,7 +79,8 @@ def compare_patches(flips, bases, targets, folder):
     return manifest
 
 
-def create_patches(flips, bases, targets, output):
+def create_patches(flips, bases, targets, output, preset):
+    prefix, manifest_name = PACKAGES[preset]
     if output.exists() or output.is_symlink():
         raise ValueError(f"{output} already exists. Choose a new output directory.")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -82,18 +88,19 @@ def create_patches(flips, bases, targets, output):
         stage = Path(scratch) / "patches"
         stage.mkdir()
         for color, base_color in TARGET_BASES.items():
-            patch = stage / f"pokergb-{color}.bps"
+            patch = stage / f"{prefix}{color}.bps"
             run_flips(flips, "--create", "--bps-delta", bases[base_color], targets[color][0], patch)
-        manifest = compare_patches(flips, bases, targets, stage)
+        manifest = compare_patches(flips, bases, targets, stage, preset)
         contents = json.dumps(manifest, indent=2) + "\n"
-        (stage / MANIFEST).write_bytes(contents.encode("utf-8"))
+        (stage / manifest_name).write_bytes(contents.encode("utf-8"))
         stage.rename(output)
 
 
-def verify_patches(flips, bases, targets, output):
-    manifest = json.loads((output / MANIFEST).read_text(encoding="utf-8"))
-    if manifest != compare_patches(flips, bases, targets, output):
-        raise ValueError(f"{output / MANIFEST} does not match the verified patch and build hashes.")
+def verify_patches(flips, bases, targets, output, preset):
+    _, manifest_name = PACKAGES[preset]
+    manifest = json.loads((output / manifest_name).read_text(encoding="utf-8"))
+    if manifest != compare_patches(flips, bases, targets, output, preset):
+        raise ValueError(f"{output / manifest_name} does not match the verified patch and build hashes.")
 
 
 def main():
@@ -103,17 +110,21 @@ def main():
     parser.add_argument("--base-blue", type=Path, required=True)
     parser.add_argument("--build-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--preset", choices=PACKAGES, help="Preset to package. Inferred from the build directory when named core or minimal.")
     parser.add_argument("--flips", default="flips", help="Path to Floating IPS v198.")
     args = parser.parse_args()
+    preset = args.preset or (args.build_dir.name if args.build_dir.name in PACKAGES else "core")
+    if args.build_dir.name in PACKAGES and preset != args.build_dir.name:
+        parser.error("The preset must match the build directory.")
     bases = {"red": args.base_red, "blue": args.base_blue}
     try:
         check_bases(bases)
         targets = read_targets(args.build_dir)
         check_flips(args.flips)
         if args.action == "create":
-            create_patches(args.flips, bases, targets, args.output)
+            create_patches(args.flips, bases, targets, args.output, preset)
         else:
-            verify_patches(args.flips, bases, targets, args.output)
+            verify_patches(args.flips, bases, targets, args.output, preset)
     except subprocess.CalledProcessError as error:
         details = error.stderr.strip() or error.stdout.strip()
         parser.exit(1, f"Floating IPS failed. {details}\n")

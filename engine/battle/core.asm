@@ -16,6 +16,9 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	call ClearScreenArea
 	call DisableLCD
 	call LoadFontTilePatterns
+IF DEF(_BATTLE_CAUGHT_MARKER)
+	call LoadBattleCaughtMarker
+ENDC
 	call LoadHudAndHpBarAndStatusTilePatterns
 	ld hl, vBGMap0
 	ld bc, TILEMAP_AREA
@@ -1775,6 +1778,11 @@ LoadBattleMonFromParty:
 	ld a, [wBattleMonSpecies2]
 	ld [wCurSpecies], a
 	call GetMonHeader
+IF DEF(_BATTLE_EXP_BAR)
+	ld a, [wBattleMonLevel]
+	ld d, a
+	farcall CacheBattleExpPixels
+ENDC
 	ld hl, wPartyMonNicks
 	ld a, [wPlayerMonNumber]
 	call SkipFixedLengthTextEntries
@@ -1976,6 +1984,9 @@ DrawPlayerHUDAndHPBar:
 	ld [wCurPartySpecies], a
 	hlcoord 10, 9
 	predef DrawHP
+IF DEF(_BATTLE_EXP_BAR)
+	farcall DrawBattleExpMeter
+ENDC
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld hl, wPlayerHPBarColor
@@ -2010,6 +2021,9 @@ DrawEnemyHUDAndHPBar:
 	lb bc, 4, 12
 	call ClearScreenArea
 	callfar PlaceEnemyHUDTiles
+IF DEF(_BATTLE_CAUGHT_MARKER)
+	call DrawBattleCaughtMarker
+ENDC
 	ld de, wEnemyMonNick
 	hlcoord 1, 0
 	call CenterMonName
@@ -3610,6 +3624,83 @@ IsGhostBattle:
 	ld a, 1
 	and a
 	ret
+
+IF DEF(_BATTLE_CAUGHT_MARKER)
+LoadBattleCaughtMarker:
+; The LCD is already off. Copy the native Pokédex ball into a spare font tile.
+	ld hl, PokeballTileGraphics
+	ld de, vFont tile (BATTLE_CAUGHT_TILE - $80)
+	ld bc, TILE_SIZE
+	ld a, BANK(PokeballTileGraphics)
+	call FarCopyData2
+	ld a, [wOnSGB]
+	and a
+	ret z
+; The SGB colors shade 2 by the enemy's HP. Use fixed shades 0, 1 and 3
+; for paper, the ball's upper half and its outline, respectively.
+	ld hl, vFont tile (BATTLE_CAUGHT_TILE - $80)
+	ld c, 8
+.row
+	ld a, [hli]
+	ld b, [hl]
+	and b
+	ld [hld], a ; high plane: original shade 3
+	ld [hl], b  ; low plane: original shades 2 and 3
+	inc hl
+	inc hl
+	dec c
+	jr nz, .row
+	ret
+
+DrawBattleCaughtMarker:
+; The enemy panel has already been cleared. Show the Dex's owned mark only
+; for a known wild species, including Safari encounters.
+	ld a, [wIsInBattle]
+	cp WILD_BATTLE
+	ret nz
+	ld a, [wLinkState]
+	and a
+	ret nz
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_OLD_MAN
+	ret z
+	CheckEvent EVENT_GOT_POKEDEX
+	ret z
+; The restless soul remains a scripted encounter after the Scope reveals it.
+	ld a, [wCurOpponent]
+	cp RESTLESS_SOUL
+	ret z
+	call IsGhostBattle
+	ret z
+; The encounter species is stable even when Transform changes the battler.
+	ld a, [wEnemyMonSpecies2]
+	dec a
+	cp NUM_POKEMON_INDEXES
+	ret nc
+	inc a
+	ld hl, wPokedexNum
+	ld b, [hl]
+	ld [hl], a
+	push bc
+	predef IndexToPokedex
+	ld hl, wPokedexNum
+	ld a, [hl]
+	pop bc
+	ld [hl], b
+	dec a
+	cp NUM_POKEMON
+	ret nc
+	ld c, a
+	ld b, FLAG_TEST
+	ld hl, wPokedexOwned
+	predef FlagActionPredef
+	ld a, c
+	and a
+	ret z
+	ld a, BATTLE_CAUGHT_TILE
+	ldcoord_a 1, 1
+	ret
+ENDC
 
 ; checks for various status conditions affecting the player mon
 ; stores whether the mon cannot use a move this turn in Z flag

@@ -1244,7 +1244,12 @@ NEXTU
 wLearnMoveMonName:: ds NAME_LENGTH
 ENDU
 
+IF DEF(_BATTLE_EXP_BAR)
+wBattleExpPixels:: db ; cached on send-out and when the active party member earns EXP
+	ds 1
+ELSE
 	ds 2
+ENDC
 
 ; money received after battle = base money × level of last enemy mon
 wTrainerBaseMoney:: dw ; BCD

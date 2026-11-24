@@ -103,7 +103,7 @@ Patch size, coding difficulty, and whether a later game has the feature do not d
 | Larger item capacity | Extension | Disabled | 64-slot bag target; keep PC capacity independent and Core at 20 bag/50 PC slots; verify allocation and saves; [PN-020](13-playthrough-intake.md#pn-020) |
 | Battle type indicators | Extension | Disabled | Both active Pokémon; separate from move reference; [design](15-battle-information.md) |
 | Static move INFO | Minimal and Core | Included | Inspect the selected player move on demand. Developer type indicators remain independent. [Controls](15-battle-information.md) |
-| Caught marker and battle EXP bar | Two author options under review | Neither ships in v0.1.2 | Proposed defaults, native-screen layout and acceptance checks for each display. [Battle display study](../research/battle-hud-displays.md) |
+| Caught marker and battle EXP bar | Minimal and Core | Both on | Author switches are independent. The marker uses the Pokédex owned record and the meter reads the active party slot. [Display and visibility rules](../research/battle-hud-displays.md) |
 | Later Pokémon, types, and mechanics | Extensions | Disabled | Long-term capability, with separate supported choices and explicit dependencies |
 | Alternative trainer AI | Extended feature | Disabled in Core | Develop and test improved move and item decisions. Core includes only individually accepted changes such as Blaine's guard. |
 | Replacement random-number generator | Extension | Disabled | Keep it independent of trainer AI and test the original generator when disabled |

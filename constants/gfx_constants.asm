@@ -18,6 +18,15 @@ DEF HP_BAR_GREEN  EQU 0
 DEF HP_BAR_YELLOW EQU 1
 DEF HP_BAR_RED    EQU 2
 
+; Blank slots in the shared English font, loaded before battle and menu text.
+DEF EXP_LABEL_TILE EQU $c0
+DEF EXP_TRACK_TILE EQU EXP_LABEL_TILE + 2 ; empty, then 1 through 8 filled pixels
+DEF EXP_TRACK_WIDTH EQU 6 * TILE_WIDTH
+DEF BATTLE_CAUGHT_TILE EQU $cb ; spare font slot for the battle's 2bpp Pokédex ball
+IF DEF(_BATTLE_EXP_BAR) && DEF(_BATTLE_CAUGHT_MARKER)
+	ASSERT BATTLE_CAUGHT_TILE < EXP_LABEL_TILE || BATTLE_CAUGHT_TILE > EXP_TRACK_TILE + TILE_WIDTH
+ENDC
+
 ; hAutoBGTransferEnabled
 DEF TRANSFERTOP    EQU 0
 DEF TRANSFERMIDDLE EQU 1
