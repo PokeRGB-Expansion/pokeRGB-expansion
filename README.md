@@ -17,9 +17,15 @@ Each command builds all three colors. To build just one, pass `red`, `blue`, or 
 
 The reference baseline is pret/pokered at `ba9c0568f64ae602fadda577a08c66639f93082a`. To check five existing upstream outputs against the original hashes, run `make compare BASELINE_DIR=/path/to/upstream/outputs`. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a)
 
-## Make your first edit
+## Make your first hack
 
-In [Route 1's encounter table](data/wild/maps/Route1.asm), change the first `db  3, PIDGEY` to `db  3, CATERPIE`. Build Red Core with `make -j4 red`, open `build/core/pokered.gbc` in your emulator, and walk through the grass on Route 1. Caterpie now appears at level 3 in one of the original encounter slots.
+Try these three edits together in Red Core.
+
+1. In the [Route 1 grass table](data/wild/maps/Route1.asm), change the first `db  3, PIDGEY` to `db  3, CATERPIE`. Each row gives the level and species. The first row accounts for 51 of 256 encounters. The [slot weights](data/wild/probabilities.asm) apply across routes.
+2. In the [trainer parties](data/trainers/parties.asm), find `Rival1Data`. Replace its first row, `db 5, SQUIRTLE, 0`, with `db $FF, 3, METAPOD, 5, SQUIRTLE, 0`. The [Oak’s Lab script](scripts/OaksLab.asm) selects this team when **you choose Charmander**. The leading `$FF` gives each Pokémon its own level. The final zero ends the team.
+3. In the [Route 1 clerk’s script](scripts/Route1.asm), change `lb bc, POTION, 1` to `lb bc, ANTIDOTE, 1`. Keep the event flag that tracks whether you took the sample. [GiveItem](home/give.asm) supplies the item name for the [receipt](text/Route1.asm), so the clerk’s message follows the edit.
+
+Run `make -j4 red` and open `build/core/pokered.gbc` in an emulator. Start a new game, choose Charmander, and walk toward the lab exit to fight the new team. On Route 1, meet a level-3 Caterpie in the grass and accept the Antidote. Save and choose **Continue**. The clerk should give his follow-up dialogue and your Bag should still hold one Antidote.
 
 ## Tests
 

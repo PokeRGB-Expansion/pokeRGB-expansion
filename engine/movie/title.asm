@@ -59,15 +59,11 @@ DisplayTitleScreen:
 	ld bc, $10 tiles
 	ld a, BANK(PokemonLogoGraphics)
 	call FarCopyData2          ; second chunk
-IF DEF(_GREEN_VISUALS)
-	call LoadGreenVersionFont
-ELSE
 	ld hl, Version_GFX
 	ld de, vChars2 tile $60 + (10 tiles - (Version_GFXEnd - Version_GFX) * 2) / 2
 	ld bc, Version_GFXEnd - Version_GFX
 	ld a, BANK(Version_GFX)
 	call FarCopyDataDouble
-ENDC
 	call ClearBothBGMaps
 
 ; place tiles for pokemon logo (except for the last row)
@@ -369,7 +365,12 @@ ClearBothBGMaps:
 LoadTitleMonSprite:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
+IF DEF(_GREEN_VISUALS)
+; Keep the seven-tile sprite inside its Super Game Boy color region.
+	hlcoord 3, 10
+ELSE
 	hlcoord 5, 10
+ENDC
 	call GetMonHeader
 	jp LoadFrontSpriteByMonIndex
 
@@ -400,10 +401,10 @@ CopyrightTextString:
 
 INCLUDE "data/pokemon/title_mons.asm"
 
-; prints version text (red, blue)
+; Print the version name under the logo.
 PrintGameVersionOnTitleScreen:
 IF DEF(_GREEN_VISUALS)
-	hlcoord 3, 8
+	hlcoord 6, 8
 ELSE
 	hlcoord 7, 8
 ENDC
@@ -413,43 +414,11 @@ ENDC
 ; these point to special tiles specifically loaded for that purpose and are not usual text
 VersionOnTitleScreenText:
 IF DEF(_GREEN_VISUALS)
-	db $60,$61,$62,$62,$63," ",$64,$62,$61,$65,$66,$67,$63,"@" ; GREEN VERSION
+	db $60,$61,$62,$63,$64,$65,$66,$67,$68,"@" ; "Green Version"
 ELIF DEF(_RED)
 	db $60,$61,$7F,$65,$66,$67,$68,$69,"@" ; "Red Version"
 ELIF DEF(_BLUE)
 	db $61,$62,$63,$64,$65,$66,$67,$68,"@" ; "Blue Version"
-ENDC
-
-IF DEF(_GREEN_VISUALS)
-LoadGreenVersionFont:
-; The title logo uses the normal font's video memory.
-; Copy the version letters to the same tile range used by the other titles.
-	ld hl, .glyphs
-	ld de, vChars2 tile $60
-	ld b, (.glyphsEnd - .glyphs) / 2
-.loop
-	push bc
-	ld a, [hli]
-	ld c, a
-	ld a, [hli]
-	push hl
-	ld h, a
-	ld l, c
-	ld bc, TILE_1BPP_SIZE
-	ld a, BANK(FontGraphics)
-	call FarCopyDataDouble
-	pop hl
-	pop bc
-	dec b
-	jr nz, .loop
-	ret
-
-.glyphs
-	FOR glyph, 0, STRLEN("GRENVSIO")
-		; The order matches title tile numbers $60 through $67.
-		dw FontGraphics + (CHARVAL(STRCHAR("GRENVSIO", glyph)) - $80) * TILE_1BPP_SIZE
-	ENDR
-.glyphsEnd
 ENDC
 
 DebugNewGamePlayerName:
