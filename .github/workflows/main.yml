@@ -13,8 +13,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
         preset: [core, minimal]
+        include:
+          - os: macos-latest
+            preset: core
+          - os: macos-latest
+            preset: minimal
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out PokéRGB Expansion
@@ -65,6 +71,7 @@ jobs:
         if: runner.os == 'Linux'
         run: >-
           python3 tests/run.py build/${{ matrix.preset }}
+          --shard ${{ matrix.shard }} 8
           --rgbds .rgbds
           --sameboy .sameboy/build/lib/libsameboy.so
           --boot .sameboy/build/bin/BootROMs/dmg_boot.bin

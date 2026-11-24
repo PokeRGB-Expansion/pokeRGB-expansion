@@ -29,7 +29,7 @@ Run `make -j4 red` and open `build/core/pokered.gbc` in an emulator. Start a new
 
 ## Tests
 
-GitHub Actions builds each color and preset on Linux and macOS. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
+GitHub Actions builds each color and preset on Linux and macOS. Linux runs the emulator checks in eight parallel groups per preset. The local command runs all groups by default. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
 
 ```sh
 python3 tests/run.py build/core --sameboy /path/to/library \

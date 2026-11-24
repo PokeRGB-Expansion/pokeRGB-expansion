@@ -48,8 +48,8 @@ Green uses a `POKEMON GREEN` cartridge header and an English “Green Version”
 | Green change | Source |
 |---|---|
 | Cartridge name and checksum | Green target in [Makefile](../../Makefile) |
-| Title text and Bulbasaur | [Title code](../../engine/movie/title.asm) and the [Green subtitle artwork](../../gfx/title/green_version.png), drawn in the English Red/Blue title style |
-| Green subtitle and Pokémon colors, with Blue’s trainer and copyright colors | [Palettes](../../data/sgb/sgb_palettes.asm) and [title palette command](../../data/sgb/sgb_packets.asm) |
+| Title text and Bulbasaur | [Title code](../../engine/movie/title.asm) and the [original lettering in English Red](../../gfx/title/red_version.png), using [Japanese Green’s tile order](https://github.com/Narishma-gb/pokegreen/blob/953f41b34108621b2bf13c3b1e53abfc9c3e5aec/engine/movie/title.asm#L347-L354) |
+| Green subtitle, with Blue’s shared palette for the Pokémon, trainer, and copyright | [Palettes](../../data/sgb/sgb_palettes.asm) and [title palette command](../../data/sgb/sgb_packets.asm) |
 | Super Game Boy border | [Border selection and colors](../../data/sgb/sgb_border.asm). The tiles and tilemap are the original Green border assets already tracked by pret/pokered. [Upstream import](https://github.com/pret/pokered/commit/2ebbb0d95eead4f40ec0bb7e9edd19526c2b2f3a) |
 
 The [title test](../../tests/title_smoke.py) checks the first Pokémon, English title tiles, and rendered palette in Super Game Boy mode. Green keeps Blue's gameplay, including the names, encounters, and scripts used after the title. Compare Blue and Green at the first gameplay decision with controlled random inputs. Real-time timer samples can vary across title sequences.

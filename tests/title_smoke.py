@@ -15,7 +15,7 @@ RGBCallback = C.CFUNCTYPE(C.c_uint32, C.c_void_p, C.c_uint8, C.c_uint8, C.c_uint
 TITLES = {
     "red": (0xb0, 7, "60 61 7f 65 66 67 68 69", 0xad0021, 0xf7b58c),
     "blue": (0xb1, 7, "61 62 63 64 65 66 67 68", 0x739cef, 0xf7b58c),
-    "green": (0x99, 6, "60 61 62 63 64 65 66 67 68", 0x42a552, 0x4aa55a),
+    "green": (0x99, 6, "62 63 64 7f 65 66 67 68 69", 0x42a552, 0xf7b58c),
 }
 
 
@@ -64,29 +64,29 @@ def check_title(game, color):
     assert version_color in pixels_in(pixels, 48, 104, 160, 16)
     assert species_color in pixels_in(pixels, 48, 120, 160, 64)
     if color == "green":
-        assert species_color in pixels_in(pixels, 48, 120, 80, 56)
-        # The trainer and copyright keep the original portrait palette.
-        for region in ((128, 120, 80, 56), (48, 176, 160, 8)):
+        # Bulbasaur sits beside the trainer in the same four-color palette.
+        portrait_palette = {0xffefff, 0xf7b58c, 0x84739c, 0x181010}
+        for region in ((88, 120, 42, 56), (136, 120, 40, 56), (48, 176, 160, 8)):
             colors = pixels_in(pixels, *region)
-            assert 0xf7b58c in colors and species_color not in colors
-        # The word Green uses five pixel rows, like the original Blue lettering.
+            assert {0xf7b58c, 0x181010} <= colors <= portrait_palette, (region, colors)
+        # Check the Green lettering from the original Red/Green title tiles.
         green_word = [
-            ".####....................",
-            "##....####..###..###.###.",
-            "##.##.##...##.#.##.#.##.#",
-            "##..#.##...###..###..##.#",
-            ".####.##....###..###.##.#",
+            ".####...................",
+            "##....####.###..###.###.",
+            "##.##.##..##.#.##.#.##.#",
+            "##.##.##..###..###..##.#",
+            ".####.##...###..###.##.#",
         ]
         for y, row in enumerate(green_word, 107):
             actual = "".join("#" if pixels[y * SGB_WIDTH + x] == version_color else "."
-                             for x in range(100, 100 + len(row)))
+                             for x in range(96, 120))
             assert actual == row, (actual, row)
         # The GREEN label is in a different tilemap than the Blue label.
         assert pixels_in(pixels, 100, 24, 55, 9) == {0x296b42, 0x94d67b}
 
     # Blue and Green share the exact Version artwork and vertical alignment.
     if color in ("blue", "green"):
-        left = 48 + column * 8 + (24 if color == "blue" else 34)
+        left = 48 + column * 8 + (24 if color == "blue" else 32)
         return tuple(pixels[y * SGB_WIDTH + x] == version_color
                      for y in range(104, 112) for x in range(left, left + 36))
 

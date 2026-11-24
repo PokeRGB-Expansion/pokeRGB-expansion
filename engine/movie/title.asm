@@ -365,12 +365,7 @@ ClearBothBGMaps:
 LoadTitleMonSprite:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
-IF DEF(_GREEN_VISUALS)
-; Keep the seven-tile sprite inside its Super Game Boy color region.
-	hlcoord 3, 10
-ELSE
 	hlcoord 5, 10
-ENDC
 	call GetMonHeader
 	jp LoadFrontSpriteByMonIndex
 
@@ -414,7 +409,7 @@ ENDC
 ; these point to special tiles specifically loaded for that purpose and are not usual text
 VersionOnTitleScreenText:
 IF DEF(_GREEN_VISUALS)
-	db $60,$61,$62,$63,$64,$65,$66,$67,$68,"@" ; "Green Version"
+	db $62,$63,$64,$7F,$65,$66,$67,$68,$69,"@" ; "Green Version"
 ELIF DEF(_RED)
 	db $60,$61,$7F,$65,$66,$67,$68,$69,"@" ; "Red Version"
 ELIF DEF(_BLUE)
