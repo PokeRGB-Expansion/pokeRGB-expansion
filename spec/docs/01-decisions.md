@@ -11,7 +11,7 @@ The consequence column explains how a requirement applies. Suggested names, tool
 | D01 | Keep **PokéRGB Expansion** as the preferred working name. | The name communicates broad capability and ambition. Describe the configurable Gen 1 base clearly; a final naming decision remains open. |
 | D02 | Base the game on `pret/pokered`. | Preserve a pristine upstream reference. Review individual fixes from other projects instead of importing a finished hack's ruleset. |
 | D03 | Maintain one English Red/Blue engine. | Red/Blue behavior differences belong in explicit data or small version conditions. No separate battle-engine forks. |
-| D04 | Green is a cosmetic Blue variant. | Every gameplay table and rule is Blue's. No third set of encounters and no Japanese engine. |
+| D04 | Green is a cosmetic Blue variant. | Green shares Blue’s gameplay and uses the v0.1.2 title layout in Minimal and Core. [Gameplay base](06-build-variants.md#build-identity) · [Title decision](06-build-variants.md#green-presentation-scope) |
 | D05 | Keep defining Gen 1 behavior. | Protect Hyper Beam's KO exception, fixed-damage immunity bypass, the core critical-hit calculation, trapping, unified Special, sleep/freeze, and the original accuracy system. |
 | D06 | Fix demonstrable defects. | Focus Energy/Dire Hit, misleading effectiveness output, factual text errors, and unambiguous spelling or typing errors qualify. Other candidates follow the same evidence policy. |
 | D07 | Keep ordinary and high-critical-hit probabilities unchanged when Focus Energy is absent. | A patch that changes those rates is unsuitable even if its Focus Energy multiplier appears correct. |

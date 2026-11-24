@@ -12,6 +12,10 @@ Select game color separately from product preset and release/debug mode. Within 
 
 Red and Blue remain distinct games where upstream defines a gameplay difference. Green introduces no new encounters, trades, prize costs, learnsets, mechanics, or progression. There is no Japanese target and no requirement to reconstruct Japanese Green.
 
+English Blue is Green’s gameplay base because it preserves Japanese Green’s encounter distribution. In the original cartridges, all 248 map entries for grass and water encounters match between Japanese Green and English Blue, including all 57 with encounters. On Route 7, both have Bellsprout, Meowth, and Vulpix where English Red has Oddish, Mankey, and Growlithe. Using Blue gives Green a historical counterpart and keeps two gameplay versions to maintain. [Japanese Route 7](https://github.com/Narishma-gb/pokegreen/blob/953f41b34108621b2bf13c3b1e53abfc9c3e5aec/data/wild/maps/Route7.asm) · [English Route 7](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/data/wild/maps/Route7.asm)
+
+The public Green patch takes an original English Blue ROM and includes the title artwork. Players need only Blue. [Release patch inputs](../../tools/release_patches.py) · [Title art selection](../../gfx/version.asm)
+
 Solus and PureRGB have cosmetic RGB variants because they consolidate availability. That is a useful presentation model, not a reason to merge this foundation's Red/Blue distributions. [E33–E34](../research/evidence.md#e33)
 
 ## Build implementation
@@ -44,6 +48,10 @@ Preserve Red/Blue's actual data wherever it differs. Do not create differences w
 ## Green presentation scope
 
 Green uses a `POKEMON GREEN` cartridge header and an English “Green Version” title. Bulbasaur appears first, using its English-game sprite. Red starts with Charmander, and Blue starts with Squirtle.
+
+Minimal and Core use the v0.1.2 title layout. English Red uses Japanese Blue’s trainer graphic and position, yet preserves Japanese Red’s subtitle pixel for pixel, including its eight-pixel word gap. English Red also contains the complete 80-byte Japanese Red/Green lettering graphic. English Blue carries its own 64-byte graphic. [English title layout](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/movie/title.asm#L399-L411) · [Original Japanese artwork](https://github.com/Narishma-gb/pokegreen/blob/953f41b34108621b2bf13c3b1e53abfc9c3e5aec/gfx/title/rg_version.png)
+
+Green follows that localization precedent. Its visible letters occupy x=48–71 for “Green” and x=80–115 for “Version,” counting from zero. This preserves Japanese Green’s eight-pixel gap and aligns the V across all three English titles. Moving “Green” two pixels right would reproduce Blue’s six-pixel gap. For Minimal especially, the original Green placement is the stronger reference.
 
 | Green change | Source |
 |---|---|
