@@ -1990,10 +1990,13 @@ CoinCaseNumCoinsText:
 	text_far _CoinCaseNumCoinsText
 	text_end
 
+INCLUDE "data/wild/old_rod.asm"
+
 ItemUseOldRod:
 	call FishingInit
 	jp c, ItemUseNotTime
-	lb bc, 5, MAGIKARP
+.catch
+	lb bc, OLD_ROD_LEVEL, OLD_ROD_SPECIES
 	ld a, $1 ; set bite
 	jr RodResponse
 

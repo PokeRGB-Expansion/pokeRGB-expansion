@@ -12,9 +12,17 @@ The stock trio keeps Oak’s original fire, water and plant descriptions. Other 
 
 The rival’s [three lab teams](../../data/trainers/parties.asm) start with `STARTER2`, `STARTER3` and `STARTER1`, respectively. The rival always takes the next ball, going back to the first after the third. Later rival teams have explicit species and levels. Edit those rosters if you want the rival to keep, evolve or replace the custom starter later in the story. Check the [Champion’s signature moves](../../engine/battle/read_trainer_party.asm), too. A `trainer_moves` entry for that member overrides its signature moves.
 
+If you change a released hack’s starter trio, test later rival battles with older saves because each save keeps the species chosen in the lab.
+
 ## Give a trainer one custom moveset
 
 Follow the [Route 3 Youngster example](tutorial-library.md#give-one-trainer-pokémon-a-custom-moveset). Rattata gets two moves. Ekans keeps the moves it would ordinarily know. The other Youngsters keep their own teams.
+
+## Fix a build error in game data
+
+Encounter slots need a species with a Pokédex entry. The build checks grass, Surf and all three fishing rods, and identifies the bad table or slot. Change the [Old Rod catch](../../data/wild/old_rod.asm) by setting its level and species there.
+
+Move and supply INFO descriptions can use up to three lines of 18 tiles each. If a line is too long, shorten it or move words onto the next line. The error names the description and row. The build measures the text after the game encodes it.
 
 ## Check your edited game
 

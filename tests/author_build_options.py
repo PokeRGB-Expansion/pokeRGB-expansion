@@ -52,12 +52,18 @@ def check(source, args):
     with Game(args.sameboy.resolve(), args.boot.resolve(), rom) as game:
         route_14_advice(game, enabled)
     if args.preset == "core":
-        # Both errors would produce a working-looking ROM without build-time checks.
+        # Each invalid edit would otherwise produce a working-looking ROM.
         before = rom.read_bytes()
         # Some versions of Make compare timestamps to the nearest second.
-        command += ["-W", "data/wild/maps/Route1.asm", "-W", "data/moves/info_effects.asm"]
+        for filename in ("data/wild/maps/Route1.asm", "data/wild/old_rod.asm",
+                         "data/wild/good_rod.asm", "data/moves/info_effects.asm"):
+            command.extend(("-W", filename))
         expect_build_error(source, command, "data/wild/maps/Route1.asm", "3, PIDGEY", "3, NO_MON",
                            "Route1WildMons grass, slot 1: species $00", rom)
+        expect_build_error(source, command, "data/wild/old_rod.asm", "EQU MAGIKARP", "EQU NO_MON",
+                           "Old Rod (data/wild/old_rod.asm): species $00", rom)
+        expect_build_error(source, command, "data/wild/good_rod.asm", "10, POLIWAG", "10, NO_MON",
+                           "Good Rod (data/wild/good_rod.asm), slot 2: species $00", rom)
         expect_build_error(source, command, "data/moves/info_effects.asm", "Deals damage.@",
                            "Deals damage three times.@", "row 1: INFO has 25 tiles", rom)
         subprocess.run(command, cwd=source, check=True, stdout=subprocess.DEVNULL)

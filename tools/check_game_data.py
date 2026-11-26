@@ -45,6 +45,14 @@ def check_encounters(rom, labels, dex):
             if rate:
                 entry = check_group(entry, slots, f"{group} {habitat}")
 
+    # The Old Rod loads BC directly. The immediate stores the species (C) first.
+    opcode, species, _ = rom.table("ItemUseOldRod.catch", 3)
+    if opcode != 0x01:  # ld bc, immediate
+        raise ValueError("ItemUseOldRod.catch: expected a level and species loaded into BC.")
+    check_species(dex, species, "Old Rod (data/wild/old_rod.asm)")
+    good_rod = rom.between("GoodRodMons", "GoodRodMons.end")
+    check_group(rom.offset("GoodRodMons"), len(good_rod) // 2, "Good Rod (data/wild/good_rod.asm)")
+
     pos = rom.offset("SuperRodData")
     checked.clear()
     while rom.data[pos] != 0xff:
