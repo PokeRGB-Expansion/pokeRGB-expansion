@@ -1,5 +1,11 @@
 # Specification changelog
 
+## Game release 0.4.0
+
+- Inspect a TM’s type, power, accuracy, PP, effect and its compatibility with each party member before buying it or spending Game Corner coins. Bill’s PC can preview the contents of a highlighted box before saving or changing boxes. [Player guide](docs/16-game-changes.md)
+- Authors can give one trainer Pokémon its own moveset in either preset. [Trainer example](research/tutorial-library.md#give-one-trainer-pokémon-a-custom-moveset)
+- Core’s Route 15 aide explains how sharing benefits conscious teammates that sat out. [EXP. ALL](research/exp-pacing-and-move-services.md#exp-all-in-the-bag)
+
 ## Documentation after v0.3.0
 
 The [player guide](docs/16-game-changes.md) explains preset differences and the [README](../README.md#play-a-release) shows which patch to use. The [feature review](research/v030-core-candidates.md) records proposals for the next round.

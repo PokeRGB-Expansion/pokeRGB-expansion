@@ -106,6 +106,8 @@ MoveInfoSpecificDescriptions:
 	dw MoveInfoSpecific_TOXIC
 	db COUNTER, NO_ADDITIONAL_EFFECT
 	dw MoveInfoSpecific_COUNTER
+	db STRUGGLE, RECOIL_EFFECT
+	dw MoveInfoSpecific_STRUGGLE
 	db 0
 
 MoveInfoDescriptions:
@@ -250,9 +252,9 @@ MoveInfoEffect_PARALYZE_SIDE_EFFECT2:
 MoveInfoEffect_FLINCH_SIDE_EFFECT2:
 	db "May make the foe@", "flinch.@", 0
 MoveInfoEffect_OHKO_EFFECT:
-	db "On a hit, the foe@", "faints. Speed also@", "affects the check.@", 0
+	db "Knocks out the foe@", "on a hit. Fails if@", "the foe is faster.@", 0
 MoveInfoEffect_CHARGE_EFFECT:
-	db "Charges for a@", "turn,@", "then hits.@", 0
+	db "Charges on turn 1.@", "Attacks on turn 2.@", 0
 MoveInfoEffect_SUPER_FANG_EFFECT:
 	db "Takes half the@", "foe's remaining@", "HP.@", 0
 MoveInfoEffect_SPECIAL_DAMAGE_EFFECT:
@@ -274,7 +276,7 @@ MoveInfoEffect_FOCUS_ENERGY_EFFECT:
 	db "Lowers the user's@", "critical hit rate.@", 0
 	ENDC
 MoveInfoEffect_RECOIL_EFFECT:
-	db "User also takes@", "recoil damage.@", 0
+	db "User loses 1/4 of@", "the damage dealt,@", "at least 1 HP.@", 0
 MoveInfoEffect_CONFUSION_EFFECT:
 	db "Confuses the foe.@", 0
 MoveInfoEffect_HEAL_EFFECT:
@@ -284,7 +286,7 @@ MoveInfoEffect_TRANSFORM_EFFECT:
 MoveInfoEffect_LIGHT_SCREEN_EFFECT:
 	db "Raises effective@", "Special defense.@", 0
 MoveInfoEffect_REFLECT_EFFECT:
-	db "Raises effective@", "physical Defense.@", 0
+	db "Doubles physical@", "Defense. Critical@", "hits ignore it.@", 0
 MoveInfoEffect_POISON_EFFECT:
 	db "Poisons the foe.@", 0
 MoveInfoEffect_PARALYZE_EFFECT:
@@ -294,9 +296,9 @@ MoveInfoEffect_CONFUSION_SIDE_EFFECT:
 MoveInfoEffect_TWINEEDLE_EFFECT:
 	db "Hits twice.@", "May poison.@", 0
 MoveInfoEffect_SUBSTITUTE_EFFECT:
-	db "Uses HP to make@", "a decoy.@", 0
+	db "Uses 1/4 of max HP@", "to make a decoy@", "that takes hits.@", 0
 MoveInfoEffect_HYPER_BEAM_EFFECT:
-	db "Recharge is@", "skipped@", "after a KO.@", 0
+	db "Rest a turn after@", "a hit. Skip on KO@", "or a broken decoy.@", 0
 MoveInfoEffect_RAGE_EFFECT:
 	db "Locks in the move.@", "Hits raise Attack.@", 0
 MoveInfoEffect_MIMIC_EFFECT:
@@ -381,6 +383,9 @@ MoveInfoSpecific_TOXIC:
 	db "Inflicts poison@", "that gets worse.@", 0
 MoveInfoSpecific_COUNTER:
 	db "Returns double@", "Normal or Fighting@", "physical damage.@", 0
+
+MoveInfoSpecific_STRUGGLE:
+	db "User loses half of@", "the damage dealt,@", "at least 1 HP.@", 0
 
 MoveInfoHighCritical:
 	db "High chance of a@", "critical hit.@", 0

@@ -2347,6 +2347,7 @@ ItemUseTMHM:
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wCurItem]
+	ld [wSelectedMachine], a ; the party menu reuses wCurItem for the species
 	push af
 .chooseMon
 	ld hl, wStringBuffer
@@ -2373,24 +2374,21 @@ ItemUseTMHM:
 	call RunDefaultPaletteCommand
 	jp LoadScreenTilesFromBuffer1 ; restore saved screen
 .checkIfAbleToLearnMove
-	predef CanLearnTM ; check if the pokemon can learn the move
-	push bc
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
-	pop bc
-	ld a, c
-	and a ; can the pokemon learn the move?
-	jr nz, .checkIfAlreadyLearnedMove
-; if the pokemon can't learn the move
+	callfar CheckIfMoveIsKnown
+	jr c, .chooseMon
+	farcall CanLearnSelectedMachine
+	ld a, e
+	and a
+	jr nz, .teach
 	ld a, SFX_DENIED
 	call PlaySoundWaitForCurrent
 	ld hl, MonCannotLearnMachineMoveText
 	call PrintText
 	jr .chooseMon
-.checkIfAlreadyLearnedMove
-	callfar CheckIfMoveIsKnown ; check if the pokemon already knows the move
-	jr c, .chooseMon
+.teach
 	predef LearnMove ; teach move
 	pop af
 	ld [wCurItem], a

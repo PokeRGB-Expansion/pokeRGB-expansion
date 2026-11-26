@@ -1,3 +1,7 @@
+; For a custom moveset, replace the team's db row with trainer_party and
+; put trainer_moves immediately below it. See spec/research/tutorial-library.md.
+INCLUDE "macros/trainer_parties.asm"
+
 TrainerDataPointers:
 	table_width 2
 	dw YoungsterData

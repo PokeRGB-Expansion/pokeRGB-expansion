@@ -82,13 +82,17 @@ RedrawPartyMenu_::
 	jr .printLevel
 .teachMoveMenu
 	push hl
-	predef CanLearnTM ; check if the pokemon can learn the move
-	pop hl
-	ld de, .ableToLearnMoveText
-	ld a, c
+	farcall SelectedMonKnowsMove
+	ld de, .knowsMoveText
+	jr c, .moveStatus
+	farcall CanLearnSelectedMachine
+	ld a, e
 	and a
-	jr nz, .placeMoveLearnabilityString
+	ld de, .ableToLearnMoveText
+	jr nz, .moveStatus
 	ld de, .notAbleToLearnMoveText
+.moveStatus
+	pop hl
 .placeMoveLearnabilityString
 	ld bc, SCREEN_WIDTH + 9 ; 1 row down and 9 columns right
 	push hl
@@ -107,6 +111,8 @@ RedrawPartyMenu_::
 	pop bc
 	inc c
 	jp .loop
+.knowsMoveText
+	db "KNOWS@"
 .ableToLearnMoveText
 	db "ABLE@"
 .notAbleToLearnMoveText

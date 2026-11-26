@@ -46,6 +46,9 @@ ReadTrainer:
 ; - if [wLoneAttackNo] != 0, one pokemon on the team has a special move
 ; else the first byte is the level of every pokemon on the team
 .IterateTrainer
+IF _NUM_TRAINER_MOVESETS
+	push hl ; identify this exact team after its regular and signature moves
+ENDC
 	ld a, [hli]
 	cp $FF ; is the trainer special?
 	jr z, .SpecialTrainer ; if so, check for special moves
@@ -142,6 +145,10 @@ ReadTrainer:
 	ld a, b
 	ld [wEnemyMon6Moves + 2], a
 .FinishUp
+IF _NUM_TRAINER_MOVESETS
+	pop de
+	farcall ApplyTrainerMovesets
+ENDC
 ; clear wAmountMoneyWon addresses
 	xor a
 	ld de, wAmountMoneyWon
@@ -164,3 +171,55 @@ ReadTrainer:
 	dec b
 	jr nz, .LastLoop ; repeat wCurEnemyLevel times
 	ret
+
+IF _NUM_TRAINER_MOVESETS
+PUSHS
+SECTION FRAGMENT "Trainer movesets", ROMX
+	dw 0 ; end of moveset rows
+
+; DE = address of the team in TrainerDataPointers' bank.
+ApplyTrainerMovesets:
+	ld hl, TrainerMovesets
+.next
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	and a ; every team is in switchable ROM, with a nonzero high byte
+	ret z
+	cp d
+	jr nz, .skip
+	ld a, c
+	cp e
+	jr nz, .skip
+	push hl
+	push de
+	call .setMoves
+	pop de
+	pop hl
+.skip
+	ld bc, 1 + NUM_MOVES
+	add hl, bc
+	jr .next
+
+.setMoves
+	ld a, [hli] ; zero-based party slot checked by trainer_moves
+	push hl
+	ld hl, wEnemyMon1Moves
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
+	ld d, h
+	ld e, l
+	pop hl
+	push de
+	ld bc, NUM_MOVES
+	call CopyData
+	pop hl ; start of the new moves
+	push hl
+	ld bc, MON_PP - MON_MOVES - 1
+	add hl, bc
+	ld d, h
+	ld e, l ; LoadMovePPs increments DE before writing each slot
+	pop hl
+	predef_jump LoadMovePPs
+POPS
+ENDC

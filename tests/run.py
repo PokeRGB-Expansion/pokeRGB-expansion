@@ -91,8 +91,10 @@ def main():
     add_check("tests/battle_exp_meter.py", directory, *emulator)
     add_check("tests/battle_hud_options.py", directory.name, *emulator, *rgbds)
     for test in ("field_sweep", "hp_and_level_one", "core_services", "field_menu_features",
-                 "supply_and_move_info", "battle_pace"):
+                 "supply_and_move_info", "battle_pace", "tm_party_info", "purchasable_tms", "box_preview"):
         add_check(f"tests/{test}.py", directory, *emulator)
+
+    add_check("tests/trainer_movesets.py", directory, *emulator, *rgbds)
 
     for script, arguments in checks[index - 1::count]:
         print(f"Running {script}", flush=True)

@@ -20,16 +20,15 @@ _OlderFileWillBeErasedText::
 	done
 
 _WhenYouChangeBoxText::
-	text "When you change a"
-	line "#MON BOX, data"
-	cont "will be saved."
-
-	para "Is that okay?"
+	text "Save and change to"
+	line "BOX @"
+	text_decimal wBoxPreviewNumber, 1, 2
+	text "?"
 	done
 
 _ChooseABoxText::
-	text "Choose a"
-	line "<PKMN> BOX.@"
+	text "A: Change box"
+	line "START: View box@"
 	text_end
 
 _EvolvedText::

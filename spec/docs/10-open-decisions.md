@@ -2,7 +2,7 @@
 
 Core and Minimal have working Red, Blue and Green builds. Use the [player guide](16-game-changes.md) for current behavior and the [release checks](09-roadmap.md#public-release-checks) for the evidence required to publish it.
 
-The [v0.3.0 follow-up](../research/v030-core-candidates.md) proposes three additions for consideration: inspecting TM compatibility before purchase, previewing other boxes at a PC, and authoring custom trainer moves.
+D67 settles the [three v0.3.0 follow-up features](../research/v030-core-candidates.md) for Minimal and Core. The table below covers separate future work.
 
 ## Decisions for future features
 

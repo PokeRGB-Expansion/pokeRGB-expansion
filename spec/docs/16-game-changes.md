@@ -33,7 +33,7 @@ Core also adds **BATTLE PACE** to OPTION. NORMAL is the default. QUICK shortens 
 | Face a cuttable tree, a usable shore or a pushable boulder | Press A and confirm Cut, Surf or Strength if a party member can use it here. Fly and Flash keep their existing menu commands. |
 | Register a Bicycle or a fishing rod from the Bag | Press SELECT in the field to use the registered item. All three rods work. The shortcut follows the same fishing and riding rules as USE. There is one registration slot. |
 | Reorder a party of two or more in the field | Press SELECT on one Pokémon, move to the other and press A or SELECT to swap them. B cancels. The explicit SWITCH command also works. |
-| Fill both your six-member party and your current box | Change boxes at a PC before catching another Pokémon. The box chooser shows how many spaces are occupied. |
+| Fill both your six-member party and your current box | Change boxes at a PC before catching another Pokémon. The chooser shows occupancy. Highlight a box and press START to view its Pokémon. Page with the D-pad and press B to return. Press A on a box and confirm to save and make it the new destination. |
 | Leave the first box change without choosing a box | Your previous save keeps its party and its stored Pokémon. Retail Red/Blue can mark its inactive boxes empty. |
 | Want to forget a move, including an HM | In Core, visit the Move Deleter in the Fuchsia house between the Pokémon Center and Bill’s family. He asks which Pokémon and move, confirms the choice and refuses to remove the last move. Minimal keeps the original HM commitment. |
 
@@ -54,7 +54,7 @@ Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and sti
 
 ## Inspect a move
 
-Highlight a TM or HM in the Bag, item PC, shop or prize list to see its move name. Press START for its type, power, accuracy and PP. Press SELECT for its effect, or B to return. The same controls work on your moves in STATS and FIGHT. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
+Highlight a TM or HM in the Bag, item PC, shop or prize list to see its move name. Press START for its type, power, accuracy and PP. Press SELECT for its effect, then again to check the party before buying or redeeming the machine. Each nickname shows ABLE, UNABLE or KNOWS. B returns to the highlighted item. You can also inspect your moves in STATS and FIGHT. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
 
 START also shows what an ordinary supply does before you buy, use or withdraw it. For example, a Potion tells you how much HP it restores in the game you are playing. [Move and supply INFO](15-battle-information.md)
 

@@ -405,11 +405,11 @@ CalcIndividualBoxCheckSums:
 	ret
 
 GetBoxSRAMLocation:
-; in: a = box num
-; out: b = box SRAM bank, hl = pointer to start of box
-	ld hl, BoxSRAMPointerTable
+; Return the selected box address in HL and SRAM bank in B.
 	ld a, [wCurrentBoxNum]
 	and BOX_NUM_MASK
+GetBoxSRAMLocationByIndex:
+	ld hl, BoxSRAMPointerTable
 	cp NUM_BOXES / 2
 	ld b, 2
 	jr c, .next
@@ -434,12 +434,11 @@ BoxSRAMPointerTable:
 	dw sBox6 ; sBox12
 
 ChangeBox::
-	ld hl, WhenYouChangeBoxText
-	call PrintText
-	call YesNoChoice
-	ld a, [wCurrentMenuItem]
-	and a
-	ret nz ; return if No was chosen
+	ld a, [wCurrentBoxNum]
+	and BOX_NUM_MASK
+	inc a
+	ld [wBoxPreviewNumber], a
+.showPicker
 	call DisplayChangeBoxMenu
 	call UpdateSprites
 	ld hl, hUILayoutFlags
@@ -447,15 +446,28 @@ ChangeBox::
 .chooseBox
 	call DrawHighlightedBoxCount
 	call HandleMenuInput
-	bit B_PAD_B, a
-	jr nz, .finishChoice
-	bit B_PAD_A, a
+	ld b, a
+	ld a, [wCurrentMenuItem]
+	inc a
+	ld [wBoxPreviewNumber], a
+	ld a, b
+	and PAD_A | PAD_B | PAD_START
 	jr z, .chooseBox
-.finishChoice
 	ld hl, hUILayoutFlags
 	res BIT_DOUBLE_SPACED_MENU, [hl]
 	bit B_PAD_B, a
 	ret nz
+	bit B_PAD_START, a
+	jr z, .askToChange
+	call PreviewBox
+	jr .showPicker
+.askToChange
+	ld hl, WhenYouChangeBoxText
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .showPicker
 
 ; Only the confirmed path writes any save data.
 	call BeginSaveTransaction
@@ -467,7 +479,8 @@ ChangeBox::
 	ld d, h
 	ld hl, wBoxDataStart
 	call CopyBoxToOrFromSRAM ; copy old box from WRAM to SRAM
-	ld a, [wCurrentMenuItem]
+	ld a, [wBoxPreviewNumber]
+	dec a
 	set BIT_HAS_CHANGED_BOXES, a
 	ld [wCurrentBoxNum], a
 	call GetBoxSRAMLocation
@@ -525,7 +538,8 @@ CopyBoxToOrFromSRAM:
 DisplayChangeBoxMenu:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	ld a, PAD_A | PAD_B | PAD_UP | PAD_DOWN
+	call ClearScreen
+	ld a, PAD_A | PAD_B | PAD_START | PAD_UP | PAD_DOWN
 	ld [wMenuWatchedKeys], a
 	ld a, 11
 	ld [wMaxMenuItem], a
@@ -535,8 +549,8 @@ DisplayChangeBoxMenu:
 	ld [wTopMenuItemX], a
 	xor a
 	ld [wMenuWatchMovingOutOfBounds], a
-	ld a, [wCurrentBoxNum]
-	and BOX_NUM_MASK
+	ld a, [wBoxPreviewNumber]
+	dec a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	hlcoord 0, 0
@@ -626,6 +640,8 @@ DrawHighlightedBoxCount:
 	db "OCCUPIED@"
 .capacity
 	db MONS_PER_BOX
+
+INCLUDE "engine/menus/box_preview.asm"
 
 ChooseABoxText:
 	text_far _ChooseABoxText

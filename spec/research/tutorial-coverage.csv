@@ -16,7 +16,7 @@ Growth curves,Author,Validate level thresholds and arithmetic for a custom curve
 Town Map edits,Author,Edit names and positions from shared map data.,https://github.com/pret/pokered/wiki/Edit-the-Town-Map,Edit-the-Town-Map.md,54
 Encounter table edits,Author,Use an ordinary encounter edit as the first contributor exercise.,https://github.com/pret/pokered/wiki/Edit-the-wild-encounters,Edit-the-wild-encounters.md,55
 Dark map settings,Author,Declare which maps use darkness and Flash.,https://github.com/pret/pokered/wiki/Maps-that-require-Flash,Maps-that-require-Flash.md,56
-Trainer move overrides,Author,Support a per-party-member override while preserving default move generation.,https://github.com/pret/pokered/wiki/Edit-the-trainer-movesets,Edit-the-trainer-movesets.md,57
+Trainer move overrides,Author,Use trainer_moves after a trainer_party row for the selected member. Other members keep their generated or signature moves.,https://github.com/pret/pokered/wiki/Edit-the-trainer-movesets,Edit-the-trainer-movesets.md,57
 SGB map palettes,Author,Document SGB presentation and the monochrome fallback.,"https://github.com/pret/pokered/wiki/Editing-Town-and-Sprite-Palettes,-Including-Adding-New-Palettes-(for-SGB-Users-Only)","Editing-Town-and-Sprite-Palettes,-Including-Adding-New-Palettes-(for-SGB-Users-Only).md",58
 Wake-and-attack turns,Option,Keep the original lost wake turn in Minimal and Core.,https://github.com/pret/pokered/wiki/Attack-after-waking-up-from-sleep,Attack-after-waking-up-from-sleep.md,61
 Residual damage rate,Option,"Changing poison, burn and Leech Seed fractions changes battle length.","https://github.com/pret/pokered/wiki/Poison,-burn-and-leech-seed-do-an-8th-of-max-HP","Poison,-burn-and-leech-seed-do-an-8th-of-max-HP.md",62

@@ -659,6 +659,9 @@ wFallingObjectsMovementData:: ds 20
 NEXTU
 ; array of the number of mons in each box
 wBoxMonCounts:: ds NUM_BOXES
+wBoxPreviewNumber:: db ; one-based number highlighted in CHANGE BOX
+wBoxPreviewFirstSlot:: db
+wBoxPreviewCount:: db
 
 NEXTU
 wPriceTemp:: ds 3 ; BCD
@@ -2307,7 +2310,9 @@ SECTION "Move INFO state", WRAM0
 wMoveInfoMove:: db
 wMoveInfoPP:: db
 wMoveInfoBrowse:: db
+wSelectedMachine:: ; selected machine while inspecting or choosing a pupil
 wMoveInfoSlot:: db
+wMachineInfoAble:: ; one learnability bit per party member while inspecting a machine
 wMoveInfoIncoming:: db
 wMoveInfoPage:: db
 wMoveInfoData:: ds MOVE_LENGTH

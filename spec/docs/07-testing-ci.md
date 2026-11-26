@@ -2,6 +2,12 @@
 
 The [test runner](../../tests/run.py) lists the checks that run on the current source. The [build instructions](../../README.md#tests) show how to run them. The rest of this document describes the cases to check when changing a feature or making a release.
 
+## TM shopping, box previews and custom trainers
+
+- At the Celadon Mart and Game Corner, check move details and party eligibility before spending. Check all nine department store TMs and all three at the coin counter. Cover a full Bag, an already-known move, and two machines that teach the same move with different learnsets. [Stock TM counters](../../tests/purchasable_tms.py) · [TM party checks](../../tests/tm_party_info.py)
+- View nicknames and species in all twelve boxes. Include unsaved catches in the active box and an older adventure on the same cartridge. Detect writes to cartridge RAM while viewing or cancelling. [Box preview checks](../../tests/box_preview.py)
+- Build a sample hack with explicit trainer moves. Test the edited Route 3 battle, an unchanged trainer of the same class, signature moves and invalid source entries. [Trainer authoring checks](../../tests/trainer_movesets.py)
+
 ## Field, menu and battle checks added after v0.2.0
 
 | Area | What the game checks |
@@ -98,7 +104,7 @@ Link tests require two simulated or real endpoints. A single client reporting th
 
 Save tests verify data after reopening the game, changing boxes and transferring Pokémon. Run fault injection before calling a save scheme power-loss safe. A check in a save routine is not proof that partially written data can be recovered.
 
-**v0.2.0 to v0.3.0.** For each color and preset, a save made in the public v0.2.0 build loaded in the matching v0.3.0 build. The player ID, party, Bag and stored Pokémon survived a Bag edit, save and reload. Imported Core saves started with EXP. ALL on and battle pace Normal. The new Fuchsia interior exists only in v0.3.0 Core. Continue a save made inside that house in a Core build that includes it. These checks cover upgrades within the same color and preset. [Save import checks](../../tests/reference_save_import.py) · [Fuchsia visit](../../tests/core_services.py)
+**v0.2.0 to v0.3.0.** For each color and preset, a save made in the public v0.2.0 build loaded in the matching v0.3.0 build. The player ID, party, Bag and stored Pokémon survived a Bag edit, save and reload. Imported Core saves started with EXP. ALL on and battle pace Normal. The Fuchsia Move Deleter’s house first appeared in v0.3.0 Core. Continue a save made inside that house in a Core build that includes it. These checks cover upgrades within the same color and preset. [Save import checks](../../tests/reference_save_import.py) · [Fuchsia visit](../../tests/core_services.py)
 
 Use these criteria for each compatibility claim. The next table records the configurations covered by the reference tests.
 

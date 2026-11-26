@@ -14,6 +14,19 @@ The [paired-edition example](emerald-rogue-builds.md) shows how two public versi
 | Authoring and debugging | Provide easy-to-edit tables, checked references, small examples and diagnostics. Use the normal game entry points in tests. | A custom trainer party with one explicit move override. Keep the trainer’s decision rules and other generated moves. |
 | Story, difficulty and assets | Supply examples or data choices. The hack author owns the content. | A rival speech, rematch team, gym music or a different roster. The community library need not define a global switch for every NPC. |
 
+## Give one trainer Pokémon a custom moveset
+
+In [trainer parties](../../data/trainers/parties.asm), find the first team under `YoungsterData` on Route 3. Replace its `db 11, RATTATA, EKANS, 0` row with:
+
+```rgbasm
+	trainer_party 11, RATTATA, EKANS
+	trainer_moves 1, QUICK_ATTACK, TAIL_WHIP
+```
+
+Party slots start at 1. This Youngster’s Rattata now knows Quick Attack and Tail Whip with their normal starting PP. Ekans keeps its usual moves. Other Youngsters keep their original teams. One to four moves form the full moveset. Omit unused slots. To customize a second Pokémon, add another `trainer_moves` line immediately below the first.
+
+Use `trainer_party $ff, 8, RATTATA, 10, EKANS` for a team with different levels. The macro writes the closing zero for you. Existing `db` rows remain valid. If you customize a Gym Leader or Champion, your moves replace that member’s signature moves too. Both presets support these rows and use their usual trainer AI. [Sample battle and validation checks](../../tests/trainer_movesets.py)
+
 **Configuration order.** Select a color, then a preset for its default rules, then the project's named feature choices and data overrides. If a pack supplies Yellow’s eight TM/HM differences and the author changes one species afterward, the explicit species edit wins. Reject competing packs that set the same field at the same priority unless the author resolves the conflict. Show the resolved settings, content list and relevant format versions in the build output. Keep different configurations’ intermediate files separate. A save or multiplayer compatibility claim depends on the actual format, content IDs and rules selected. A preset name alone cannot establish it.
 
 **Supported combinations.** Test the reference presets and each supported option on and off. Add focused combination tests where options share state, data or controls. An untested custom combination should be identifiable. An Extended reference build should ship only with an explicit, versioned list of selections. Its first example can demonstrate type information and the move-reference panel on a 151-species game with one Special stat. A second example should enable a wide species roster while retaining single battles and the original type chart. Both examples are planned. The choice of which example to advertise first can wait for working features. [Feature contract](../docs/14-features-and-extensions.md) · [Capacity design](species-id-architecture.md)

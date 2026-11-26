@@ -222,14 +222,15 @@ def check_box_changes(library, boot, rom):
             game.put("wPlayerID", (0x56, 0x78))
             game.put("wOptions", (1,))
             game.invoke("ChangeBox")
-            game.wait(lambda: all(word in game.visible_text() for word in ("YES", "NO")), accept=True)
-            game.tick(14)
-            game.press(4)
             game.wait(lambda: game.get("wMaxMenuItem") == 11 and "BOX" in game.visible_text())
             assert game.get_bytes("wBoxMonCounts", 12) == bytes(12)
             game.wait(lambda: "OCCUPIED" in game.visible_text() and "0 20" in game.visible_text())
             if confirm:
                 game.press(3)
+                game.tick(12)
+                game.press(4)
+                game.wait(lambda: all(word in game.visible_text() for word in ("YES", "NO")), accept=True)
+                game.tick(14)
                 game.press(4)
                 game.tick(170)
                 assert game.get("wCurrentBoxNum") == 0x81

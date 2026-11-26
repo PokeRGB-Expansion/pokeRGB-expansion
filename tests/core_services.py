@@ -157,6 +157,27 @@ def use_from_bag(game, message):
     assert game.get_bytes("wNumBagItems", 4) == EXP_BAG
 
 
+def check_aide(game, core):
+    game.new_game()
+    game.put("wOptions", (0xC1,))
+    game.put("wPokedexOwned", bytes([0xFF] * 6 + [3]))  # 50 owned species
+    game.put("wNumBagItems", (0, 0xFF))
+    game.enter_map(0xB9, 4, 4, 3)  # Directly south of the Route 15 aide.
+    press(game, UP)
+    for _ in range(2):  # Receive the reward, then ask again.
+        press(game, A)
+        game.wait(lambda: game.get("wNumBagItems") == 1, accept=True)
+        if core:
+            game.wait(lambda: "with your party" in game.visible_text(), accept=True)
+            game.wait(lambda: "fainted" in game.visible_text(), accept=True)
+            game.wait(lambda: "turn it on or off" in game.visible_text(), accept=True)
+        else:
+            game.wait(lambda: "reduce the amount" in game.visible_text(), accept=True)
+            game.wait(lambda: "store it via PC" in game.visible_text(), accept=True)
+        assert game.get_bytes("wNumBagItems", len(EXP_BAG)) == EXP_BAG
+        press(game, B, 50)
+
+
 def check_switch(game, core):
     game.new_game()
     seed_party(game)
@@ -227,7 +248,7 @@ def main():
     args = parser.parse_args()
     for color in ("red", "blue", "green"):
         rom = args.directory / f"poke{color}.gbc"
-        for test in (check_house, check_switch, check_battle_use):
+        for test in (check_house, check_aide, check_switch, check_battle_use):
             with Game(args.sameboy, args.boot, rom) as game:
                 saved = test(game, args.directory.name == "core")
             if test is check_house and saved is not None:

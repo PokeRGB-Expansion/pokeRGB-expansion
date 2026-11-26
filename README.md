@@ -8,13 +8,15 @@ Choose **Core** for bug fixes and conveniences such as the Fuchsia Move Deleter.
 
 1. Download the BPS patch for your preset and color. For example, Green uses `pokergb-green.bps` for Core or `pokergb-minimal-green.bps` for Minimal. [Release downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases/latest)
 2. Open a BPS patcher. Select a clean English **Red** ROM for a Red patch, or a clean English **Blue** ROM for a Blue or Green patch. Select the downloaded patch and choose **Apply patch**. [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/)
-3. Open the resulting game file in your Game Boy emulator. When upgrading from v0.2.0 to v0.3.0, use your previous color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
+3. Open the resulting game file in your Game Boy emulator. When upgrading, choose the same color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
 
-## New in v0.3.0
+## New in v0.4.0
 
-In both presets, choose REGISTER on a fishing rod in the Bag, then press SELECT at the water to cast. In the party list, SELECT lets you reorder your team outside battle. In the Pokédex, SELECT lists the species you have seen in alphabetical order. TOSS shows the quantity before you confirm. INFO describes ordinary supplies, move priority and high critical-hit rates. Both presets also fix the dark Rock Tunnel OPTION screen, nearly full HP bars and two unresponsive Town Map inputs.
+- At a Mart or the Game Corner TM counter, highlight a TM and press **START** for INFO. Read the move’s type, power, accuracy and PP. Press **SELECT** for its effect, then again to see which teammates can learn it or already know it. **B** returns to the same item before you spend anything.
+- At Bill’s PC, choose **CHANGE BOX**, highlight a box and press **START** to view its Pokémon. **B** returns to the chooser. Selecting a box with **A** asks you to confirm before the game saves and changes your active box.
+- An author can give a specific Pokémon on a trainer’s team its own moves. [Trainer authoring guide](spec/research/tutorial-library.md#give-one-trainer-pokémon-a-custom-moveset)
 
-Core adds a Move Deleter in Fuchsia and a field USE action for EXP. ALL. For shorter battle pauses, open **OPTION → BATTLE PACE → QUICK**. Normal is the default. Minimal keeps the original HM and training rules. [Player guide](spec/docs/16-game-changes.md)
+Both presets include these features. In Core, the Route 15 aide also explains which teammates can receive EXP.ALL’s shared experience. [Player guide](spec/docs/16-game-changes.md) · [Release history](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases)
 
 ## Build
 

@@ -2,6 +2,7 @@
 DEF INFO_BROWSE_STATS EQU 1
 DEF INFO_BROWSE_LEARN EQU 2
 DEF INFO_BROWSE_SUPPLY EQU 3
+DEF INFO_BROWSE_MACHINE EQU 4
 DEF INFO_UNKNOWN_PP EQU $ff
 DEF INFO_PANEL_FIRST_ROW EQU 11
 DEF INFO_PANEL_ROWS EQU SCREEN_HEIGHT - INFO_PANEL_FIRST_ROW
@@ -85,6 +86,8 @@ InspectReplacementMove:
 	cp NUM_MOVES
 	ret nc
 	push af
+	xor a
+	ld [wMoveInfoIncoming], a
 	ld a, INFO_BROWSE_LEARN
 	ld [wMoveInfoBrowse], a
 	pop af
@@ -159,17 +162,8 @@ DrawMoveInfoCursorHint::
 	jp PlaceString
 
 ReadPrizeInfoName:
-	ld a, [wWhichPrizeWindow]
-	cp 2
-	ret nz
-	ld a, [wCurrentMenuItem]
-	cp 3
+	call FindPrizeMachine
 	ret nc
-	ld e, a
-	ld d, 0
-	ld hl, wPrize1
-	add hl, de
-	ld a, [hl]
 	ld [wMoveInfoMove], a
 	farcall ReadMoveInfoMachine
 	ld a, [wMoveInfoMove]
@@ -185,18 +179,29 @@ ReadPrizeInfoName:
 	ld de, MoveInfoStartText
 	jp PlaceString
 
-InspectPrizeMove:
+FindPrizeMachine:
 	ld a, [wWhichPrizeWindow]
 	cp 2
-	ret nz
+	jr nz, .absent
 	ld a, [wCurrentMenuItem]
 	cp 3
-	ret nc
+	jr nc, .absent
 	ld e, a
 	ld d, 0
 	ld hl, wPrize1
 	add hl, de
 	ld a, [hl]
+	cp HM01
+	jr c, .absent
+	cp TM01 + NUM_TMS ; carry if the prize is a valid machine
+	ret
+.absent
+	and a
+	ret
+
+InspectPrizeMove:
+	call FindPrizeMachine
+	ret nc
 	jr InspectMachineMove
 
 InspectListedMove::
@@ -209,13 +214,15 @@ InspectListedMove::
 	ld [wMoveInfoBrowse], a
 	jp OpenInfoPanel
 InspectMachineMove:
+	ld [wSelectedMachine], a
 	ld [wMoveInfoMove], a
 	farcall ReadMoveInfoMachine
+	call CacheMachinePartyEligibility
+	ld a, INFO_BROWSE_MACHINE
+	ld [wMoveInfoBrowse], a
 	ld a, [wMoveInfoMove]
 	ld b, a
 	ld c, INFO_UNKNOWN_PP
-	xor a
-	ld [wMoveInfoBrowse], a
 	jp ShowMoveInfo
 
 DrawMachineListHint:
@@ -288,7 +295,6 @@ ShowMoveInfo:
 	ld [wMoveInfoPP], a
 	xor a
 	ld [wMoveInfoPage], a
-	ld [wMoveInfoIncoming], a
 OpenInfoPanel:
 ; Save only the tile rows used by the panel. Leave both caller buffers alone.
 	ldh a, [hAutoBGTransferEnabled]
@@ -376,9 +382,23 @@ OpenInfoPanel:
 	ld [wMoveInfoPP], a
 	jp .redraw
 .changePage
+	ld b, 2 ; stats and effect
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	jr nz, .advance
+	inc b ; party members 1 through 3
+	ld a, [wPartyCount]
+	cp 4
+	jr c, .advance
+	inc b ; party members 4 through 6
+.advance
 	ld hl, wMoveInfoPage
 	ld a, [hl]
-	xor 1
+	inc a
+	cp b
+	jr c, .storePage
+	xor a
+.storePage
 	ld [hl], a
 	jp .redraw
 .close
@@ -439,6 +459,8 @@ DrawMoveInfo:
 	call PlaceString
 .choosePage
 	ld a, [wMoveInfoPage]
+	cp 2
+	jr nc, .party
 	and a
 	jr nz, .effect
 	farcall DrawMoveInfoType
@@ -453,6 +475,14 @@ DrawMoveInfo:
 	call DrawMoveInfoEffect
 	hlcoord 1, 16
 	ld de, MoveInfoStatsText
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	jr nz, .show
+	ld de, MoveInfoPartyText
+	jr .show
+.party
+	call DrawMachineInfoParty
+	hlcoord 1, 16
 	jr .show
 .supply
 	farcall ReadSupplyInfoName
@@ -513,22 +543,26 @@ DrawMoveInfoPower:
 	ld de, MoveInfoPowerText
 	call PlaceString
 	hlcoord 5, 14
+	ld a, [wMoveInfoMove]
+	cp COUNTER ; its normal damage rule doubles the previous hit
+	jr nz, .byEffect
+	ld a, [wMoveInfoData + MOVE_EFFECT]
+	and a
+	jr z, .dash
+.byEffect
 	ld a, [wMoveInfoData + MOVE_EFFECT]
 	cp SPECIAL_DAMAGE_EFFECT
-	jr z, .variable
+	jr z, .dash
 	cp SUPER_FANG_EFFECT
-	jr z, .variable
+	jr z, .dash
 	cp OHKO_EFFECT
-	jr z, .variable
+	jr z, .dash
 	ld a, [wMoveInfoData + MOVE_POWER]
 	and a
 	jr z, .dash
 	ld de, wMoveInfoData + MOVE_POWER
 	lb bc, 1, 3
 	jp PrintNumber
-.variable
-	ld de, MoveInfoVariableText
-	jp PlaceString
 .dash
 	ld [hl], '-'
 	ret
@@ -631,13 +665,13 @@ MoveInfoKnownText:    db "KNOWN@"
 MoveInfoNewText:      db "NEW@"
 MoveInfoPowerText:    db "POW@"
 MoveInfoAccuracyText: db "ACC@"
-MoveInfoVariableText: db "VAR@"
 MoveInfoNoCheckText:  db "NONE@"
 MoveInfoAccuracyScale: db "/100@"
 MoveInfoPPText:       db "PP@"
 MoveInfoBasePPText:   db "BASE@"
 MoveInfoEffectText:   db "SELECT EFFECT  B@"
 MoveInfoStatsText:    db "SELECT STATS   B@"
+MoveInfoPartyText:    db "SELECT PARTY   B@"
 
 DrawMoveInfoTraitLabel:
 	farcall ReadMoveInfoTraits
@@ -657,6 +691,8 @@ DrawMoveInfoTraitLabel:
 .high db "HIGH CRIT@"
 .priority db "PRIORITY@"
 .both db "PRIO/CRIT@"
+
+INCLUDE "engine/pokemon/machine_party_info.asm"
 
 INCLUDE "data/moves/info_effects.asm"
 INCLUDE "data/items/supply_info.asm"

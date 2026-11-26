@@ -4,7 +4,7 @@ In Minimal and Core, INFO describes the move in the game you are playing. A hack
 
 ## What the player does
 
-**Press START wherever you see the INFO hint.** SELECT switches between the move’s numbers and its effect. B returns to the same menu. Inspecting a row never requires confirmation of a purchase, withdrawal, move use or replacement.
+**Press START wherever you see the INFO hint.** SELECT shows the effect after the move’s numbers. For a machine in an item list or at the prize counter, another SELECT shows who in your party can learn it. B returns directly to the same menu from any page. Inspecting a row never requires confirmation of a purchase, withdrawal, move use or replacement.
 
 | Where | What INFO opens | Where B returns |
 |---|---|---|
@@ -16,13 +16,25 @@ In Minimal and Core, INFO describes the move in the game you are playing. A hack
 
 A free move slot still fills automatically at level-up. There is no decision to interrupt. The player can inspect the learned move in STATS. An already-known move or a level with no offer produces no new prompt. Inspecting a known HM is allowed even where forgetting it is forbidden. The unattended Day Care retains its original learning rules. [Stock level-up checks](../research/move-info-stock-checks.json) [Level-up eligibility](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/evos_moves.asm#L323-L375) · [Open slot, replacement, cancellation and HM checks](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/learn_move.asm#L11-L181)
 
+![Three Game Boy screens at the Celadon Mart show TM17 Submission's stats, recoil effect and party compatibility.](../research/tm17-shop-info.png)
+
+TM17 costs 3,000 at the Celadon Department Store. In this test party, the three results appear together. Machop can learn it, Pidgey cannot, and Clefairy already knows it.
+
 ## What INFO shows
 
 The stats page shows name, type, base power, listed accuracy and base PP (uses per move). The effect page describes what the move does. For regular damage in the reference games, the move’s type determines whether Attack or Special is used. A fixed-damage move should explain its own rule. For a known move, also show current/max PP from the selected slot, including PP Ups. A TM or incoming move has base PP and no personal PP balance. For example, **TM24 Thunderbolt** in English Red/Blue is Electric, has 95 power, 100% listed accuracy and 15 base PP, and can paralyze the target. Retain the machine number so older guides still work. Keep the chosen row’s name, price or quantity legible on the original 160×144 screen. Long names may use a separate selected-row line. [TM mapping](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/constants/item_constants.asm#L160-L185) · [Move data](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/data/moves/moves.asm#L89-L104)
 
-Use meaningful values when the normal power or accuracy formula does not apply. Dragon Rage deals a fixed 40 damage when it connects. Printing the internal power byte as “1 power” would mislead the player. Use a dash for a status move’s power and explain the effect in words. Listed accuracy describes the move’s data, even when the Gen 1 hit calculation can miss at the nominal maximum. Describe special hit rules where relevant. Show Gust’s type and Focus Energy’s effect as they work in the selected preset. A custom move or rule needs matching text. [Fixed-damage rules](05-mechanics-contract.md) · [Core and Minimal differences](14-features-and-extensions.md#product-presets)
+Use meaningful values when the normal power or accuracy formula does not apply. Dragon Rage deals a fixed 40 damage when it connects. Printing the internal power byte as “1 power” would mislead the player. A dash means the move has no conventional base power. Read EFFECT for fixed damage, one-hit knockouts, Counter, or a status move. Listed accuracy describes the move’s data, even when the Gen 1 hit calculation can miss at the nominal maximum. Describe special hit rules where relevant. Show Gust’s type and Focus Energy’s effect as they work in the selected preset. A custom move or rule needs matching text. [Fixed-damage rules](05-mechanics-contract.md) · [Core and Minimal differences](14-features-and-extensions.md#product-presets)
 
 On the move’s stats page, HIGH CRIT identifies a move with an elevated critical-hit rate. PRIORITY identifies a move that goes before ordinary attacks. PRIO/CRIT marks both properties. A tie between two Quick Attacks still uses the game’s normal ordering rules. SELECT opens the effect page. For a high-critical poison move, the stats page shows HIGH CRIT and the effect page still describes poisoning. Editing the high-critical list updates the label automatically. Priority in v0.3.0 is tied to Quick Attack in both the turn-order code and the INFO reader. Authors adding priority to another move must update both places. [Turn order and trait lookup](../../engine/battle/core.asm) · [Reader and labels](../../engine/pokemon/move_info.asm) · [Author and battle checks](../../tests/supply_and_move_info.py)
+
+## Before buying a TM
+
+Highlight a machine at the Mart or the Game Corner prize counter and press START. The first page shows the move name, type, power, listed accuracy and base PP. SELECT opens the effect, including special rules such as Dragon Rage dealing 40 damage. Press SELECT again for your party. The same pages work when highlighting a machine in the Bag or item PC.
+
+Each row shows a nickname and its result. **ABLE** means this Pokémon can learn the selected machine. **UNABLE** means it cannot. **KNOWS** means it already has the move, even if this species normally cannot learn the machine. With four to six party members, SELECT MORE shows the remaining names. B closes INFO without buying or teaching the move. A full Bag still permits inspection.
+
+Authors can assign two machines the same move and give a species different compatibility for each machine. Preview and teaching both check the selected machine’s own species flag. [Eligibility lookup](../../engine/items/tms.asm) · [Mart, prize and teaching checks](../../tests/tm_party_info.py)
 
 ## Supply INFO
 

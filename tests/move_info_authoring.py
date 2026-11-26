@@ -22,12 +22,12 @@ def shows(game, *words, accept=False):
     game.wait(lambda: all(word in game.visible_text() for word in words), accept=accept)
 
 
-def show_panel(game, expected_pp="PP 24"):
+def show_panel(game, expected_pp="PP 24", *, machine=False):
     shows(game, MOVE_NAME, "WATER", "POW  73", "ACC 91", expected_pp, WAIT_HINT)
     game.press(6)
-    shows(game, "SELECT STATS", "May paralyze")
+    shows(game, "SELECT PARTY" if machine else "SELECT STATS", "May paralyze")
     game.press(5)
-    game.wait(lambda: "SELECT STATS" not in game.visible_text())
+    game.wait(lambda: "May paralyze" not in game.visible_text())
     game.tick(15)
 
 
@@ -37,7 +37,7 @@ def bag(game):
     game.invoke("StartMenu_Item")
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     game.press(7)
-    show_panel(game)
+    show_panel(game, machine=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wNumBagItems", len(contents)) == contents
 
@@ -51,7 +51,7 @@ def shop(game):
     money = game.get_bytes("wPlayerMoney", 3)
     bag = game.get_bytes("wNumBagItems", 6)
     game.press(7)
-    show_panel(game)
+    show_panel(game, machine=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wPlayerMoney", 3) == money
     assert game.get_bytes("wNumBagItems", 6) == bag
@@ -64,7 +64,7 @@ def pc(game):
     stored = game.get_bytes("wNumBoxItems", 4)
     bag = game.get_bytes("wNumBagItems", 6)
     game.press(7)
-    show_panel(game)
+    show_panel(game, machine=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wNumBoxItems", 4) == stored
     assert game.get_bytes("wNumBagItems", 6) == bag
@@ -139,7 +139,7 @@ def prize(game):
     coins = game.get_bytes("wPlayerCoins", 2)
     bag = game.get_bytes("wNumBagItems", 6)
     game.press(7)
-    show_panel(game)
+    show_panel(game, machine=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wPlayerCoins", 2) == coins
     assert game.get_bytes("wNumBagItems", 6) == bag

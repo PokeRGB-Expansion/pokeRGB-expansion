@@ -1,23 +1,33 @@
 ; checks if the mon in [wWhichPokemon] already knows the move in [wMoveNum]
 CheckIfMoveIsKnown:
+	call SelectedMonKnowsMove
+	ret nc
+	ld hl, AlreadyKnowsText
+	call PrintText
+	scf
+	ret
+
+SelectedMonKnowsMove::
 	ld a, [wWhichPokemon]
+	ld e, a
+	ld a, [wMoveNum]
+	ld d, a
+; D = move, E = party slot. Return carry if the move is present.
+PartySlotKnowsMove::
+	ld a, e
 	ld hl, wPartyMon1Moves
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
-	ld a, [wMoveNum]
-	ld b, a
-	ld c, NUM_MOVES
+	ld b, NUM_MOVES
 .loop
 	ld a, [hli]
-	cp b
-	jr z, .alreadyKnown ; found a match
-	dec c
+	cp d
+	jr z, .found
+	dec b
 	jr nz, .loop
 	and a
 	ret
-.alreadyKnown
-	ld hl, AlreadyKnowsText
-	call PrintText
+.found
 	scf
 	ret
 
