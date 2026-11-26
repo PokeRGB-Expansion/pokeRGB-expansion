@@ -54,7 +54,7 @@ Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and sti
 
 ## Inspect a move
 
-Highlight a TM or HM and press START for its move’s type, power, listed accuracy and PP. SELECT switches to the effect and back. At a Mart or the Game Corner, press Up/Down to compare offers on the same page. A shows your whole party and who can learn the move. B returns to the last machine you inspected, ready to buy if you choose. In STATS or FIGHT, Up/Down compares your moves without closing INFO. B from FIGHT’s INFO leaves the last inspected move highlighted for your next choice. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
+Highlight a TM or HM and press START for its move’s type, power, listed accuracy and PP. SELECT switches to the effect and back. At a Mart or the Game Corner, press Up/Down to compare offers on the same page. A shows your whole party and who can learn the move. B returns to the last machine you inspected, ready to buy if you choose. In STATS or FIGHT, Up/Down compares your moves without closing INFO. B from FIGHT’s INFO leaves the last inspected move highlighted for your next choice. When a Pokémon with four moves can learn another, press START before answering or while choosing what to forget. Up/Down browses its four old moves. Left/Right compares your candidate with the new move on the same page.
 
 START also shows what an ordinary supply does before you buy, use or withdraw it. For example, a Potion tells you how much HP it restores in the game you are playing. [Move and supply INFO](15-battle-information.md)
 

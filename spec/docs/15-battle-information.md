@@ -12,7 +12,7 @@ In Minimal and Core, INFO describes the move in the game you are playing. A hack
 | A machine for sale or offered as a prize | The offer shows the machine number and price. The highlighted machine’s move name appears below. START opens its details. | The last offer inspected, with its price and currency visible. |
 | A Pokémon’s STATS moves page | START opens its first occupied move. Up/down within INFO browses that Pokémon’s known moves in slot order. Outside INFO, the STATS controls continue to change Pokémon and pages. Available for your party and current box outside a link session. | The same Pokémon and STATS page. |
 | FIGHT | START opens the highlighted battle move. Up/Down compares active moves, including copied moves, in single-player and link battles. | The last inspected move is highlighted. A at the move list chooses it. |
-| A level-up or machine-teaching decision | At the learn/replace question, START shows the incoming move. At the forget list, START shows the highlighted old move. Inside INFO, left/right switches between the highlighted old move and the incoming move. Label each as known or new. | The same unanswered question or highlighted forget slot, before any write. |
+| A full moveset at level-up or after choosing a TM recipient | At the first question, START opens the new move. At the forget list, START opens the highlighted old move. Compare any of the four old moves with the new one. | The original unanswered Yes/No choice, or the last old move inspected in the forget list. |
 
 A free move slot still fills automatically at level-up. There is no decision to interrupt. The player can inspect the learned move in STATS. An already-known move or a level with no offer produces no new prompt. Inspecting a known HM is allowed even where forgetting it is forbidden. The unattended Day Care retains its original learning rules. [Stock level-up checks](../research/move-info-stock-checks.json) [Level-up eligibility](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/evos_moves.asm#L323-L375) · [Open slot, replacement, cancellation and HM checks](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/learn_move.asm#L11-L181)
 
@@ -31,6 +31,20 @@ Press START on a move, then SELECT to read its effect. Press Down to read the ne
 ![Quick Attack and Acid Armor on the same effect page during a battle.](../research/fight-move-comparison.png)
 
 B returns to the last inspected row with its type and PP, or its disabled notice. If you marked a move for swapping, the mark stays on its original slot. A and SELECT inside INFO never attack or swap moves. In a link battle the other player can choose a command and wait while you read. [Battle controls and Counter checks](../../tests/fight_info_browsing.py) · [Two-console tests](../../tests/link_cable_smoke.py)
+
+## Compare a new move
+
+When a Pokémon already knows four moves, its four old moves and the proposed move appear together in INFO. Press START at the initial question to inspect the new move before answering. You can also open INFO on any move in the forget list.
+
+- **Up/Down** browses the old moves in slot order. From the new move, either direction first shows the old move you were comparing, or the first old move if you just opened the initial question.
+- **Left/Right** switches between that old move and the new one. **SELECT** switches between stats and effect. Changing moves keeps your current page.
+- **B** returns to the same unanswered Yes/No choice or to the last old move you inspected in the forget list. A fresh A in that list follows the usual forgetting rules. Inspecting changes no move or PP.
+
+![Zubat comparing Supersonic with the incoming Confuse Ray at level 21.](../research/learning-move-comparison.png)
+
+At level 21, Zubat can compare Supersonic’s 55 listed accuracy with Confuse Ray’s 100. The filled arrow shows which move the card describes. The outline marks the other half of the comparison.
+
+Before you choose a recipient for a TM, INFO shows only the machine’s move. Once a recipient with four moves is selected, the comparison uses that Pokémon’s actual slots and PP. [Learning checks](../../tests/learn_info_browsing.py)
 
 ## Before buying a TM
 

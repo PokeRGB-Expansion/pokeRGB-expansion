@@ -77,6 +77,14 @@ SelectInfoMoveSlot:
 	ret
 
 InspectIncomingMove:
+	ld a, [wMoveInfoQuestion]
+	cp INFO_QUESTION_FORGET
+	jr nz, .beforeChoosingPokemon
+	xor a
+	ld [wMoveInfoSlot], a
+	inc a ; start on the new move
+	jp ShowLearningMoveInfo
+.beforeChoosingPokemon
 	xor a
 	ld [wMoveInfoBrowse], a
 	ld a, [wMoveNum]
@@ -88,15 +96,9 @@ InspectReplacementMove:
 	ld a, [wCurrentMenuItem]
 	cp NUM_MOVES
 	ret nc
-	push af
-	xor a
-	ld [wMoveInfoIncoming], a
-	ld a, INFO_BROWSE_LEARN
-	ld [wMoveInfoBrowse], a
-	pop af
 	ld [wMoveInfoSlot], a
-	call SelectReplacementInfoMove
-	jp ShowMoveInfo
+	xor a ; start on the highlighted known move
+	jp ShowLearningMoveInfo
 
 SelectReplacementInfoMove:
 	ld hl, wPartyMon1Moves
@@ -401,23 +403,7 @@ OpenInfoPanel:
 	jr .slotKeys
 .checkStats
 	cp INFO_BROWSE_STATS
-	jr z, .slotKeys
-	cp INFO_BROWSE_LEARN
-	jr nz, .wait
-	ld a, b
-	and PAD_LEFT | PAD_RIGHT
-	jr z, .wait
-	ld a, [wMoveInfoIncoming]
-	xor 1
-	ld [wMoveInfoIncoming], a
-	jr z, .knownMove
-	ld a, [wMoveNum]
-	ld b, a
-	ld c, INFO_UNKNOWN_PP
-	jr .refreshMove
-.knownMove
-	call SelectReplacementInfoMove
-	jr .refreshMove
+	jp nz, .wait
 .slotKeys
 	ld a, b
 	and PAD_UP | PAD_DOWN
@@ -518,6 +504,8 @@ ReadInfoButtons::
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_FIGHT
 	jr z, .repeat
+	cp INFO_BROWSE_LEARN
+	jr z, .repeat
 	cp INFO_BROWSE_MART
 	jp c, Joypad
 .repeat
@@ -536,6 +524,8 @@ GetInfoPanelRows:
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_FIGHT
 	jr z, .large
+	cp INFO_BROWSE_LEARN
+	jr z, .large
 	cp INFO_BROWSE_MACHINE
 	hlcoord 0, INFO_PANEL_FIRST_ROW
 	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
@@ -550,6 +540,8 @@ WaitForInfoKeysReleased:
 	call Joypad
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_FIGHT
+	jr z, .allKeys
+	cp INFO_BROWSE_LEARN
 	jr z, .allKeys
 	cp INFO_BROWSE_MART
 	jr nc, .allKeys
@@ -581,20 +573,20 @@ DrawMoveInfo:
 	farcall ReadMoveInfoName
 	call ReadMoveInfoData
 	hlcoord 1, 12
-	ld de, wMoveInfoName
-	call PlaceString
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_LEARN
-	jr nz, .choosePage
-	hlcoord 14, 12
-	ld de, MoveInfoKnownText
+	jr nz, .moveName
+	ld de, .oldLabel
 	ld a, [wMoveInfoIncoming]
 	and a
-	jr z, .compareHeading
-	ld de, MoveInfoNewText
-.compareHeading
+	jr z, .sideLabel
+	ld de, .newLabel
+.sideLabel
 	call PlaceString
-.choosePage
+	hlcoord 6, 12
+.moveName
+	ld de, wMoveInfoName
+	call PlaceString
 	ld a, [wMoveInfoPage]
 	and a
 	jr nz, .effect
@@ -612,6 +604,8 @@ DrawMoveInfo:
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_FIGHT
 	jr z, .browseControls
+	cp INFO_BROWSE_LEARN
+	jr z, .browseControls
 	cp INFO_BROWSE_MACHINE
 	hlcoord 1, 16
 	jp c, .show
@@ -627,6 +621,18 @@ DrawMoveInfo:
 	ld a, ' '
 	call FillMemory
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_LEARN
+	jr nz, .notLearning
+	ld de, .compareNew
+	ld a, [wMoveInfoIncoming]
+	and a
+	jr z, .learnHint
+	ld de, .compareOld
+.learnHint
+	hlcoord 1, 15
+	call PlaceString
+	jr .shortPageHint
+.notLearning
 	cp INFO_BROWSE_FIGHT
 	jr nz, .machineControls
 	call DrawFightBrowseHint
@@ -676,6 +682,10 @@ DrawMoveInfo:
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
 
+.oldLabel     db "OLD: @"
+.newLabel     db "NEW: @"
+.compareNew   db "UP/DN:MOVE L/R:NEW@"
+.compareOld   db "UP/DN:MOVE L/R:OLD@"
 .bagControls  db "A:PARTY     B:BACK@"
 .oneOfferControls db "A:PARTY@"
 .shopControls db "UP/DOWN:TM A:PARTY@"
@@ -712,12 +722,12 @@ DrawFightBrowseHint:
 	call PlaceString
 .position
 	ld a, [wMoveInfoSlot]
-	add "1"
+	add '1'
 	ldcoord_a 16, 15
-	ld a, "/"
+	ld a, '/'
 	ldcoord_a 17, 15
 	ld a, [wNumMovesMinusOne]
-	add "1"
+	add '1'
 	ldcoord_a 18, 15
 	ret
 .directions db "UP/DOWN:MOVE@"
@@ -883,8 +893,6 @@ FOR raw, 256
 ENDR
 
 MoveInfoStartText:    db "START INFO@"
-MoveInfoKnownText:    db "KNOWN@"
-MoveInfoNewText:      db "NEW@"
 MoveInfoPowerText:    db "POW@"
 MoveInfoAccuracyText: db "ACC@"
 MoveInfoNoCheckText:  db "NONE@"
@@ -913,6 +921,7 @@ DrawMoveInfoTraitLabel:
 .priority db "PRIORITY@"
 .both db "PRIO/CRIT@"
 
+INCLUDE "engine/pokemon/learn_move_info.asm"
 INCLUDE "engine/pokemon/machine_party_info.asm"
 
 INCLUDE "data/moves/info_effects.asm"

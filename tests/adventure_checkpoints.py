@@ -470,8 +470,9 @@ def main():
     parser.add_argument("directory", type=Path)
     parser.add_argument("--sameboy", type=Path, required=True)
     parser.add_argument("--boot", type=Path, required=True)
+    parser.add_argument("--color", choices=("red", "blue", "green"))
     args = parser.parse_args()
-    for color in ("red", "blue", "green"):
+    for color in (args.color,) if args.color else ("red", "blue", "green"):
         rom = args.directory / f"poke{color}.gbc"
         for check in (check_starter, check_gym, check_tower, check_silph, check_safari,
                       check_evolution, check_fossil_lab, check_captain, check_league_badges,

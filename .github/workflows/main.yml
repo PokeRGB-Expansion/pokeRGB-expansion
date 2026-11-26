@@ -65,13 +65,13 @@ jobs:
 
       - name: Build the SameBoy test core
         if: runner.os == 'Linux'
-        run: make -C .sameboy -j4 lib bootroms RGBDS="$GITHUB_WORKSPACE/.rgbds/"
+        run: make -C .sameboy -j4 build/lib/libsameboy.so bootroms CONF=release RGBDS="$GITHUB_WORKSPACE/.rgbds/"
 
       - name: Test the built game
         if: runner.os == 'Linux'
         run: >-
           python3 tests/run.py build/${{ matrix.preset }}
-          --shard ${{ matrix.shard }} 8
+          --shard ${{ matrix.shard }} 8 --jobs 4
           --rgbds .rgbds
           --sameboy .sameboy/build/lib/libsameboy.so
           --boot .sameboy/build/bin/BootROMs/dmg_boot.bin

@@ -6,6 +6,10 @@ The [test runner](../../tests/run.py) lists the checks that run on the current s
 
 The [FIGHT menu tests](../../tests/fight_info_browsing.py) exercise PP, disabled moves, Transform, move swaps, cancellation and a confirmed turn. The [display checks](../../tests/fight_info_display.py) compare battlefield pixels on Game Boy and Super Game Boy. The [cable tests](../../tests/link_cable_smoke.py) check both players can inspect while their opponent waits and that the confirmed move matches on both consoles.
 
+## Comparing moves during learning
+
+Exercise both the initial learning question and the forget list with four occupied slots. Check a level-up in battle and a TM used on another party member. Cover page retention, PP Ups, zero PP, an HM refusal, cancellation and a confirmed replacement. [Learning menu tests](../../tests/learn_info_browsing.py)
+
 ## TM shopping, box previews and custom trainers
 
 - At the Celadon Mart and Game Corner, check move details and party eligibility before spending. Check all nine department store TMs and all three at the coin counter. Cover a full Bag, an already-known move, and two machines that teach the same move with different learnsets. [Counter navigation](../../tests/tm_browsing.py) · [Input and display checks](../../tests/tm_inspection_controls.py) · [Stock TM counters](../../tests/purchasable_tms.py) · [TM party checks](../../tests/tm_party_info.py)
@@ -145,7 +149,7 @@ The [GitHub workflow](../../.github/workflows/main.yml) runs on pushes to `maste
 
 | Where | What runs |
 |---|---|
-| Linux CI | Eight groups per preset run the emulator and source checks. Core also tests a Red/Green cable trade and battle, and sample hacks with changed move data, trainer dialogue and name tables. |
+| Linux CI | Eight groups per preset run the emulator and source checks. The runner spreads long tests across groups using measured costs. Up to four independent scripts run at once in each group. SameBoy uses its optimized release build. Core also tests a Red/Green cable trade and battle, and sample hacks with changed move data, trainer dialogue and name tables. |
 | macOS CI | Each preset has one job that builds the three colors, checks reference color data and validates the spec. |
 | Release verification | Check the five pristine upstream hashes, rebuild from clean inputs, reapply all six public patches and test imports from the named older games. For all nine ordered Core cable pairs, pass `--all-link-pairs` to the runner. For Minimal, run [the cable test](../../tests/link_cable_smoke.py) directly on the selected pair and room. |
 | Future features | Extend tests for new content, build options and hardware claims as those features become available. |

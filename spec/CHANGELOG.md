@@ -1,5 +1,10 @@
 # Specification changelog
 
+## Game release 0.4.3
+
+- Compare a proposed move with any of the four old moves from the first learn question or the forget list. Browsing keeps the current stats or effect page. [Learning controls](docs/15-battle-information.md#compare-a-new-move)
+- Linux CI now builds the optimized SameBoy core and schedules independent tests in parallel on the existing runners. [CI and release checks](docs/07-testing-ci.md#ci-and-release-jobs)
+
 ## Game release 0.4.2
 
 - Compare the active Pokémon’s moves in FIGHT with Up/Down. The stats or effect page stays open. B returns to the last inspected row, and a separate A press chooses the attack. [Battle example](docs/15-battle-information.md#compare-moves-in-fight)

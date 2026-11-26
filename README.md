@@ -10,9 +10,11 @@ Choose **Core** for bug fixes and conveniences such as the Fuchsia Move Deleter.
 2. Open a BPS patcher. Select a clean English **Red** ROM for a Red patch, or a clean English **Blue** ROM for a Blue or Green patch. Select the downloaded patch and choose **Apply patch**. [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/)
 3. Open the resulting game file in your Game Boy emulator. When upgrading, choose the same color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
 
-## Compare moves in battle
+## Compare moves
 
 In **FIGHT**, highlight a move and press **START**. **Up/Down** compares the active Pokémon’s moves on the current page. **SELECT** switches between stats and effect. **B** returns to FIGHT with the last move you inspected highlighted. Press **A** there to choose it. [In-game example](spec/docs/15-battle-information.md#compare-moves-in-fight)
+
+When a Pokémon already knows four moves, press **START** at the learning question or the forget list. **Up/Down** browses the four old moves. **Left/Right** compares the highlighted old move with the new one. **SELECT** changes the page you are comparing. **B** returns to the question or the forget list. [Learning controls](spec/docs/15-battle-information.md#compare-a-new-move)
 
 ## TM shopping
 
@@ -47,7 +49,7 @@ Run `make -j4 red` and open `build/core/pokered.gbc` in an emulator. Start a new
 
 ## Tests
 
-GitHub Actions builds each color and preset on Linux and macOS. Linux runs the emulator checks in eight parallel groups per preset. The local command runs all groups by default. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
+GitHub Actions builds each color and preset on Linux and macOS. Linux runs the emulator checks in eight groups per preset, with up to four independent scripts at once per group. The local command runs the full suite sequentially by default. Pass `--jobs 4` to run independent checks in parallel. To run the cartridge checks locally, build the game and provide the SameBoy 1.0.5 core library and its boot files.
 
 ```sh
 python3 tests/run.py build/core --sameboy /path/to/library \

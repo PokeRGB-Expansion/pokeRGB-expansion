@@ -2328,7 +2328,7 @@ ItemUseTMHM:
 	call PrintText
 	ld hl, TeachMachineMoveText
 	call PrintText
-	ld a, 1
+	ld a, INFO_QUESTION_TEACH
 	ld [wMoveInfoQuestion], a
 	hlcoord 14, 7
 	lb bc, 8, 15

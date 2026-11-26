@@ -108,3 +108,8 @@ DEF FIRST_PARTY_MENU_TEXT_ID EQU const_value
 	const INFO_BROWSE_MACHINE
 	const INFO_BROWSE_MART
 	const INFO_BROWSE_PRIZE
+
+; Questions that accept START for move details.
+	const_def 1
+	const INFO_QUESTION_TEACH   ; the machine is open, before a pupil is chosen
+	const INFO_QUESTION_FORGET  ; the learner already has four moves

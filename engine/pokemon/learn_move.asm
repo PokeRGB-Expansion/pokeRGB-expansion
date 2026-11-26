@@ -99,7 +99,7 @@ TryingToLearn:
 	push hl
 	ld hl, TryingToLearnText
 	call PrintText
-	ld a, 1
+	ld a, INFO_QUESTION_FORGET
 	ld [wMoveInfoQuestion], a
 	hlcoord 14, 7
 	lb bc, 8, 15
