@@ -98,6 +98,8 @@ Link tests require two simulated or real endpoints. A single client reporting th
 
 Save tests verify data after reopening the game, changing boxes and transferring Pokémon. Run fault injection before calling a save scheme power-loss safe. A check in a save routine is not proof that partially written data can be recovered.
 
+**v0.2.0 to v0.3.0.** For each color and preset, a save made in the public v0.2.0 build loaded in the matching v0.3.0 build. The player ID, party, Bag and stored Pokémon survived a Bag edit, save and reload. Imported Core saves started with EXP. ALL on and battle pace Normal. The new Fuchsia interior exists only in v0.3.0 Core. Continue a save made inside that house in a Core build that includes it. These checks cover upgrades within the same color and preset. [Save import checks](../../tests/reference_save_import.py) · [Fuchsia visit](../../tests/core_services.py)
+
 Use these criteria for each compatibility claim. The next table records the configurations covered by the reference tests.
 
 | Interaction | Scope | Evidence needed |

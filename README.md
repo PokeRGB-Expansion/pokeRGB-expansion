@@ -6,9 +6,9 @@ Core is the default preset. Minimal keeps the original battle rules and inventor
 
 ## New in v0.3.0
 
-Both presets show the TOSS quantity before confirmation, describe ordinary supplies and move traits in INFO, support SELECT to reorder the overworld party or register a fishing rod, and provide a seen-only alphabetical Pokédex view. They also correct the Rock Tunnel OPTIONS palette, nearly full HP bars and Town Map browsing.
+In both presets, choose REGISTER on a fishing rod in the Bag, then press SELECT at the water to cast. In the party list, SELECT lets you reorder your team outside battle. In the Pokédex, SELECT lists the species you have seen in alphabetical order. TOSS shows the quantity before you confirm. INFO describes ordinary supplies, move priority and high critical-hit rates. Both presets also fix the dark Rock Tunnel OPTION screen, nearly full HP bars and two unresponsive Town Map inputs.
 
-Core adds a Move Deleter in Fuchsia, a field USE action for EXP. ALL, and optional Quick battle pacing. Set **BATTLE PACE** in OPTIONS. Normal is the default. Minimal retains the original HM and training rules. [Player guide](spec/docs/16-game-changes.md)
+Core adds a Move Deleter in Fuchsia and a field USE action for EXP. ALL. For shorter battle pauses, open **OPTION → BATTLE PACE → QUICK**. Normal is the default. Minimal keeps the original HM and training rules. [Player guide](spec/docs/16-game-changes.md)
 
 ## Build
 

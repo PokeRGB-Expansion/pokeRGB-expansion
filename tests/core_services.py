@@ -124,12 +124,13 @@ def check_house(game, core):
 def continue_inside_house(library, boot, rom, battery):
     with booted_game(library, boot, rom, battery) as game:
         press(game, START)
-        game.wait(lambda: "CONTINUE" in game.visible_text())
+        advance_text_until(game, lambda: "CONTINUE" in game.visible_text())
+        game.tick(30)
         press(game, A)
         game.wait(lambda: "BADGES" in game.visible_text())
-        press(game, A)
-        game.wait(lambda: game.get("wCurMap") == DELETER_HOUSE and game.get("wCurMapWidth") == 4)
-        game.tick(100)
+        advance_text_until(game, lambda: "BADGES" not in game.visible_text())
+        game.tick(150)
+        assert game.get("wCurMap") == DELETER_HOUSE and game.get("wCurMapWidth") == 4
         assert game.get_bytes("wPartyMon2Moves", 4) == MOVES[:2] + bytes(2)
         assert game.get_bytes("wPartyMon2PP", 4) == PP[:2] + bytes(2)
         for key in (LEFT, LEFT, LEFT, DOWN):
