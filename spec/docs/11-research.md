@@ -1,6 +1,6 @@
 # Research findings and technical corrections
 
-The [v0.2.0 feature sweep](../research/v020-feature-sweep.md) compares candidate changes with the released games and records their player effects, proposed presets and reproduction results.
+The [v0.2.0 feature sweep](../research/v020-feature-sweep.md) compares candidate changes with the released games and records their player effects, preset decisions and reproduction results. The [follow-up](../research/exp-pacing-and-move-services.md) covers level-one acquisition, EXP. ALL, music-preserving speed options and move services.
 
 Two checks protect the original experience. Buying coins from zero must still pay for Red’s most expensive prize. The Route 5 attendant keeps his existing lines, and the Day Care keeps the move order also found in the Kanto remake. [Game Corner redemption](../research/game-corner-redemption.md) · [Day Care comparison](../research/day-care-history.md)
 
