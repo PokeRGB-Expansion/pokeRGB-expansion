@@ -16,13 +16,7 @@ ShowLearningMoveInfo:
 	push af
 	res B_LCDC_OBJS, a
 	ldh [rLCDC], a
-	call OpenLearningScreenRAM
-	hlcoord 0, 0
-	ld de, sMoveInfoScreen
-	ld bc, SCREEN_AREA
-	call CopyData
-	xor a
-	ld [rRAMG], a
+	call SaveMoveInfoScreen
 	call DrawLearningMoveList
 .showMove
 	ld a, [wMoveInfoIncoming]
@@ -98,13 +92,7 @@ ShowLearningMoveInfo:
 .close
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	call OpenLearningScreenRAM
-	ld hl, sMoveInfoScreen
-	decoord 0, 0
-	ld bc, SCREEN_AREA
-	call CopyData
-	xor a
-	ld [rRAMG], a
+	call RestoreMoveInfoScreen
 	ld a, [wMoveInfoQuestion]
 	and a
 	jr nz, .restore ; preserve YES/NO, including NO if it was highlighted
@@ -122,11 +110,23 @@ ShowLearningMoveInfo:
 	ldh [hAutoBGTransferEnabled], a
 	ret
 
-OpenLearningScreenRAM:
+SaveMoveInfoScreen:
+	hlcoord 0, 0
+	ld de, sMoveInfoScreen
+	jr CopyMoveInfoScreen
+
+RestoreMoveInfoScreen:
+	ld hl, sMoveInfoScreen
+	decoord 0, 0
+CopyMoveInfoScreen:
 	ld a, RAMG_SRAM_ENABLE
 	ld [rRAMG], a
 	ld a, BANK(sMoveInfoScreen)
 	ld [rRAMB], a
+	ld bc, SCREEN_AREA
+	call CopyData
+	xor a
+	ld [rRAMG], a
 	ret
 
 DrawLearningMoveList:

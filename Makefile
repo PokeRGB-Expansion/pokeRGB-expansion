@@ -9,9 +9,14 @@ endif
 .DEFAULT_GOAL := all
 BATTLE_CAUGHT_MARKER ?= 1
 BATTLE_EXP_BAR ?= 1
+default_deleter := $(if $(filter core,$(PRESET)),1,0)
+MOVE_DELETER ?= $(default_deleter)
 output := build/$(PRESET)
 ifneq ($(BATTLE_CAUGHT_MARKER)-$(BATTLE_EXP_BAR),1-1)
 output := build/hud-$(BATTLE_CAUGHT_MARKER)-$(BATTLE_EXP_BAR)/$(PRESET)
+endif
+ifneq ($(MOVE_DELETER),$(default_deleter))
+output := $(dir $(output))deleter-$(MOVE_DELETER)/$(PRESET)
 endif
 red_rom        := $(output)/pokered.gbc
 blue_rom       := $(output)/pokeblue.gbc
@@ -40,6 +45,7 @@ SHA1 := sha1sum
 endif
 
 RGBDS ?=
+PYTHON ?= python3
 RGBASM  ?= $(RGBDS)rgbasm
 RGBFIX  ?= $(RGBDS)rgbfix
 RGBGFX  ?= $(RGBDS)rgbgfx
@@ -59,6 +65,7 @@ red_vc_obj     := $(addprefix $(output)/red_vc/,$(rom_obj))
 blue_vc_obj    := $(addprefix $(output)/blue_vc/,$(rom_obj))
 
 .SUFFIXES:
+.DELETE_ON_ERROR:
 .PRECIOUS:
 .SECONDARY:
 .PHONY: all red blue green blue_debug red_vc blue_vc clean tidy compare tools
@@ -94,6 +101,11 @@ tools:
 RGBASMFLAGS += -Q8 -P includes.asm -E
 ifeq ($(PRESET),core)
 RGBASMFLAGS += -D _POKERGB_CORE
+endif
+ifeq ($(MOVE_DELETER),1)
+RGBASMFLAGS += -D _MOVE_DELETER
+else ifneq ($(MOVE_DELETER),0)
+$(error Set MOVE_DELETER to 0 or 1)
 endif
 ifeq ($(BATTLE_CAUGHT_MARKER),1)
 RGBASMFLAGS += -D _BATTLE_CAUGHT_MARKER
@@ -142,9 +154,10 @@ RGBLINKFLAGS += -d
 RGBFIXFLAGS += -jsv -n 0 -k 01 -l 0x33 -m MBC3+RAM+BATTERY -r 03
 
 define CARTRIDGE
-$1: $2 layout.link
+$1: $2 layout.link tools/check_game_data.py tools/check_reference_colors.py
 	$$(RGBLINK) $$(RGBLINKFLAGS) -p $3 -l layout.link -m $$(@:.gbc=.map) -n $$(@:.gbc=.sym) -o $$@ $$(filter %.o,$$^)
 	$$(RGBFIX) $$(RGBFIXFLAGS) -p $3 -t "$4" $$@
+	$$(PYTHON) -B tools/check_game_data.py $$@
 endef
 $(eval $(call CARTRIDGE,$(red_rom),$(red_obj),0x00,POKEMON RED))
 $(eval $(call CARTRIDGE,$(blue_rom),$(blue_obj),0x00,POKEMON BLUE))

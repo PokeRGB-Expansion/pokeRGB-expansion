@@ -286,9 +286,10 @@ def check_stats_info(library, boot, rom):
         game.wait(lambda: game.get("wLoadedMonSpecies") == 0x1b and "SPLASH" in game.visible_text())
         game.tick(90)
         game.press(7)
-        game.wait(lambda: "SELECT EFFECT" in game.visible_text())
+        game.wait(lambda: "SEL EFFECT" in game.visible_text() and "B BACK" in game.visible_text())
+        game.tick(6)  # Wait for the full panel to reach the display.
         game.press(5)
-        game.wait(lambda: "SELECT EFFECT" not in game.visible_text())
+        game.wait(lambda: "SEL EFFECT" not in game.visible_text())
         game.tick(15)
         game.press(5)
         game.return_to_stub()

@@ -224,6 +224,10 @@ DrawTMPreview:
 	ld de, .back
 	jr nc, .footer
 	ld de, .browse
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
+	jr nz, .footer
+	ld de, .browseStones
 .footer
 	hlcoord 1, 16
 	call PlaceString
@@ -238,11 +242,30 @@ DrawTMPreview:
 
 .empty db "No party #MON.@"
 .back db "B:BACK@"
+.browseStones db "UP/DN:STONE B:BACK@"
 .browse db "UP/DOWN:TM  B:BACK@"
 
 ; The counter is hidden while browsing the party. Identify the exact machine
 ; even when two machines teach the same move and have different prices.
 DrawPreviewMachineOffer:
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
+	jr nz, .machine
+	hlcoord 1, 13
+	ld de, wMoveInfoName
+	call PlaceString
+	ld a, [wCurItem]
+	push af
+	ld a, [wMoveInfoMove]
+	ld [wCurItem], a
+	call GetItemPrice
+	hlcoord 1, 14
+	ld c, MONEY_SIGN | LEADING_ZEROES | LEFT_ALIGN | 3
+	call PrintBCDNumber
+	pop af
+	ld [wCurItem], a
+	ret
+.machine
 	decoord 1, 13
 	ld a, [wSelectedMachine]
 	call WriteMachineName

@@ -19,6 +19,7 @@ DrawStorageListCapacity::
 	hlcoord 5, 3
 	jr DrawItemPCCapacity
 .bag
+	call DrawBagItemStates
 	hlcoord 5, 3
 	ld de, BagCapacityText
 	ld b, BAG_ITEM_CAPACITY
@@ -77,3 +78,88 @@ DrawOccupiedSlots:
 BagCapacityText:    db "BAG @"
 ItemPCCapacityText: db "ITEM PC @"
 BoxCapacityText:    db "BOX @"
+
+; The second line of a key item is free in the Bag. Keep sell prices clear.
+DrawBagItemStates:
+	ld a, [wPrintItemPrices]
+	and a
+	ret nz
+	farcall GetRegisteredFieldItem
+	jr nc, .noRegistration
+	ld a, [wRegisteredItem]
+	jr .start
+.noRegistration
+	xor a
+.start
+	ld b, a ; registered item, or zero
+	ld a, [wListScrollOffset]
+	add a
+	ld hl, wBagItems
+	add l
+	ld l, a
+	jr nc, .firstRow
+	inc h
+.firstRow
+	decoord 6, 5
+	ld c, 4
+.row
+	ld a, [hli]
+	cp $ff
+	ret z
+	inc hl ; skip quantity
+	push hl
+	push de
+	push bc
+	ld h, d
+	ld l, e
+	cp b
+	ld de, .selectText
+	jr z, .label
+IF DEF(_POKERGB_CORE)
+	cp EXP_ALL
+	jr nz, .next
+	ld a, [wExpAllDisabled]
+	and a
+	ld de, .onText
+	jr z, .label
+	ld de, .offText
+ELSE
+	jr .next
+ENDC
+.label
+	call PlaceString
+.next
+	pop bc
+	pop hl
+	ld de, 2 * SCREEN_WIDTH
+	add hl, de
+	ld d, h
+	ld e, l
+	pop hl
+	dec c
+	jr nz, .row
+	ret
+.selectText db "SELECT@"
+IF DEF(_POKERGB_CORE)
+.onText db "ON@"
+.offText db "OFF@"
+
+DrawExpAllActions::
+	hlcoord 8, 10
+	lb bc, 4, 10
+	call TextBoxBorder
+	ld a, [wExpAllDisabled]
+	and a
+	ld de, .turnOff
+	jr z, .draw
+	ld de, .turnOn
+.draw
+	hlcoord 10, 11
+	jp PlaceString
+.turnOff
+	db "TURN OFF"
+	next "TOSS@"
+.turnOn
+	db "TURN ON"
+	next "TOSS@"
+ENDC

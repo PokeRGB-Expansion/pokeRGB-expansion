@@ -51,6 +51,7 @@ TrainerDataPointers:
 	dw ChannelerData
 	dw AgathaData
 	dw LanceData
+TrainerDataPointersEnd:
 	assert_table_length NUM_TRAINERS
 
 ; if first byte != $FF, then
@@ -489,9 +490,10 @@ BlackbeltData:
 	db 43, MACHOKE, MACHOP, MACHOKE, 0
 
 Rival1Data:
-	db 5, SQUIRTLE, 0
-	db 5, BULBASAUR, 0
-	db 5, CHARMANDER, 0
+; Oak’s Lab: the rival takes the next ball in the trio.
+	db 5, STARTER2, 0
+	db 5, STARTER3, 0
+	db 5, STARTER1, 0
 ; Route 22
 	db $FF, 9, PIDGEY, 8, SQUIRTLE, 0
 	db $FF, 9, PIDGEY, 8, BULBASAUR, 0
@@ -746,3 +748,4 @@ AgathaData:
 
 LanceData:
 	db $FF, 58, GYARADOS, 56, DRAGONAIR, 56, DRAGONAIR, 60, AERODACTYL, 62, DRAGONITE, 0
+TrainerDataEnd:

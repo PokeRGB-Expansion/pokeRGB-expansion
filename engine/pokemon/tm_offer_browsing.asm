@@ -11,17 +11,40 @@ BrowsePartyOffer::
 	ld c, e
 	call StepMachineOffer
 	ret nc
-	call LoadInspectedMachine
+	call LoadInspectedOffer
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
+	jr z, .done
 	call CacheMachinePartyEligibility
 	farcall ReadMoveInfoName
+.done
 	scf
 	ret
+
+LoadInspectedOffer:
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_VENDING
+	jr nz, .storeOffer
+	farcall LoadVendingMachineItem
+	ldh a, [hVendingMachineItem]
+	ld [wMoveInfoMove], a
+	ret
+.storeOffer
+	cp INFO_BROWSE_STONE_MART
+	jp nz, LoadInspectedMachine
+	ld a, [wSelectedMachine]
+	ld [wMoveInfoMove], a
+	farjp ReadSupplyInfoName
 
 RedrawMachineVendor::
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_MART
 	ret c
-	call z, PrintListMenuEntries
+	cp INFO_BROWSE_VENDING
+	jr z, .cursor
+	cp INFO_BROWSE_PRIZE
+	call nz, PrintListMenuEntries
+.cursor
 	jp PlaceMenuCursor
 
 ; The vendor may sell just one machine among ordinary supplies. Only show
@@ -41,6 +64,16 @@ HasOtherMachineOffer::
 
 ; C = +1 or -1. Return carry only when the selection changes.
 StepMachineOffer:
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_VENDING
+	jr nz, .vendor
+	ld a, [wCurrentMenuItem]
+	add c
+	cp 3 ; three drinks, then CANCEL
+	jr c, .setRow
+	and a
+	ret
+.vendor
 	call FindAdjacentMachineOffer
 	ret nc
 	ld [wSelectedMachine], a
@@ -108,10 +141,30 @@ FindAdjacentMachineOffer:
 .previous
 	dec hl
 .checkItem
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
 	ld a, [hl]
+	jr nz, .machine
+	call IsStoneOffer
+	jr nc, .scan
+	ret
+.machine
 	cp HM01
 	jr c, .scan
 	cp TM01 + NUM_TMS
 	jr nc, .scan
 	scf
+	ret
+
+; Keep the scan's item, row, direction and list pointer across the bank call.
+IsStoneOffer:
+	push hl
+	push bc
+	push de
+	ld e, a
+	farcall ItemUsesEvolutionStoneEffect
+	ld a, e
+	pop de
+	pop bc
+	pop hl
 	ret

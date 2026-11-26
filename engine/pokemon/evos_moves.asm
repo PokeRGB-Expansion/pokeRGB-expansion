@@ -512,6 +512,54 @@ WriteMonMoves_ShiftMoveData:
 	jr nz, .loop
 	ret
 
+; E = party slot, D = stone. Return carry if this stone can evolve the
+; Pokémon at its present level. Both the Bag and shop use the same check.
+CanPartyMonEvolveWithStone::
+	ld hl, wPartyMon1Species
+	ld bc, PARTYMON_STRUCT_LENGTH
+	ld a, e
+	call AddNTimes
+	ld a, [hl]
+	ld bc, MON_LEVEL - MON_SPECIES
+	add hl, bc
+	ld e, [hl] ; keep the level while looking up the species
+	and a
+	ret z
+	dec a
+	ld b, 0
+	add a
+	rl b
+	ld c, a
+	ld hl, EvosMovesPointerTable
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.next
+	ld a, [hli]
+	and a
+	ret z
+	cp EVOLVE_TRADE
+	jr z, .skipPair
+	cp EVOLVE_ITEM
+	jr z, .item
+	; The forced evolution loop stops at a level-based entry.
+	and a
+	ret
+.item
+	ld a, [hli]
+	cp d
+	jr nz, .skipPair
+	ld a, e
+	cp [hl] ; minimum level
+	jr c, .skipPair
+	scf
+	ret
+.skipPair
+	inc hl
+	inc hl
+	jr .next
+
 Evolution_FlagAction:
 	predef_jump FlagActionPredef
 

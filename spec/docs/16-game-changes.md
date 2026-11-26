@@ -31,11 +31,11 @@ Core also adds **BATTLE PACE** to OPTION. NORMAL is the default. QUICK shortens 
 | When you… | What happens |
 |---|---|
 | Face a cuttable tree, a usable shore or a pushable boulder | Press A and confirm Cut, Surf or Strength if a party member can use it here. Fly and Flash keep their existing menu commands. |
-| Register a Bicycle or a fishing rod from the Bag | Press SELECT in the field to use the registered item. All three rods work. The shortcut follows the same fishing and riding rules as USE. There is one registration slot. |
+| Register a Bicycle or a fishing rod from the Bag | Press SELECT in the field to use the registered item. All three rods work. The shortcut follows the same fishing and riding rules as USE. The Bag marks the registered item with SELECT. Registering a different item moves the mark. |
 | Reorder a party of two or more in the field | Press SELECT on one Pokémon, move to the other and press A or SELECT to swap them. B cancels. The explicit SWITCH command also works. |
 | Fill both your six-member party and your current box | Change boxes at a PC before catching another Pokémon. The chooser shows occupancy. Highlight a box and press START to view its Pokémon. Page with the D-pad and press B to return. Press A on a box and confirm to save and make it the new destination. |
 | Leave the first box change without choosing a box | Your previous save keeps its party and its stored Pokémon. Retail Red/Blue can mark its inactive boxes empty. |
-| Want to forget a move, including an HM | In Core, visit the Move Deleter in the Fuchsia house between the Pokémon Center and Bill’s family. He asks which Pokémon and move, confirms the choice and refuses to remove the last move. Minimal keeps the original HM commitment. |
+| Want to forget a move, including an HM | In Core, visit the Move Deleter in the Fuchsia house between the Pokémon Center and Bill’s family. Choose a Pokémon, then highlight a move. START shows its details and lets you compare the other moves. B returns to the highlighted move. The final question names the move and starts on NO. He refuses to remove the last move. Minimal keeps the original HM commitment. |
 
 Passing up Recover at level 31 still matters for Alakazam in both presets. A party-menu Move Reminder, direct moves between boxes and automatic placement of catches are planned extensions. [Field eligibility](../research/field-shortcut-contract.md) · [Storage design](../research/storage-policy-and-code.md) · [Move services](../research/exp-pacing-and-move-services.md)
 
@@ -50,11 +50,15 @@ Passing up Recover at level 31 still matters for Alakazam in both presets. A par
 
 ## Protecting EXP. ALL
 
-Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and still let you deposit or withdraw it at the item PC. Core starts with sharing on. Choose USE on EXP. ALL in the field to switch it off or back on. While it is on and in the Bag, Pokémon that fought can earn both a battle share and a party share. Other party members can earn the party share. Fainted Pokémon earn neither. Minimal starts sharing when you carry the item and stops when you deposit it. It keeps the original award calculation. [Item protection](13-playthrough-intake.md#pn-001) · [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
+Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and still let you deposit or withdraw it at the item PC. Core starts with sharing on. The Bag shows ON or OFF beneath EXP. ALL. Choose TURN OFF or TURN ON to change sharing between battles. While it is on and in the Bag, Pokémon that fought can earn both a battle share and a party share. Other party members can earn the party share. Fainted Pokémon earn neither. Minimal starts sharing when you carry the item and stops when you deposit it. It keeps the original award calculation. [Item protection](13-playthrough-intake.md#pn-001) · [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
 
 ## Inspect a move
 
 Highlight a TM or HM and press START for its move’s type, power, listed accuracy and PP. SELECT switches to the effect and back. At a Mart or the Game Corner, press Up/Down to compare offers on the same page. A shows your whole party and who can learn the move. B returns to the last machine you inspected, ready to buy if you choose. In STATS or FIGHT, Up/Down compares your moves without closing INFO. B from FIGHT’s INFO leaves the last inspected move highlighted for your next choice. When a Pokémon with four moves can learn another, press START before answering or while choosing what to forget. Up/Down browses its four old moves. Left/Right compares your candidate with the new move on the same page.
+
+At the Celadon stone counter, press START on a stone and A to check your party. ABLE means that Pokémon can use the stone. Browse another stone with Up/Down or press B to return to the counter. At the rooftop vending machine, START shows the drink's healing amount. Up/Down compares drinks and B returns to the highlighted price. Press A at the machine to buy.
+
+![Fire Stone compatibility for a six-member party and Lemonade’s healing amount before purchase.](../research/celadon-item-previews.png)
 
 START also shows what an ordinary supply does before you buy, use or withdraw it. For example, a Potion tells you how much HP it restores in the game you are playing. [Move and supply INFO](15-battle-information.md)
 

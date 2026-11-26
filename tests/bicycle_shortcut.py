@@ -27,6 +27,7 @@ def choose_registration(game, action):
     game.press(A)
     game.wait(lambda: action not in game.visible_text() and "BICYCLE" in game.visible_text())
     game.tick(12)
+    assert (game.visible_text().splitlines()[5].strip() == "SELECT") == (action == "REGISTER")
     game.press(B)
     game.wait(lambda: "OPTION" in game.visible_text())
     game.tick(12)

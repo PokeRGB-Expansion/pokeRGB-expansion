@@ -101,7 +101,7 @@ def stats(game):
     shows(game, MOVE_NAME, "START INFO")
     game.tick(90)
     game.press(7)
-    show_panel(game, "18 24")
+    show_panel(game, "18 24", short_footer=True)
     shows(game, MOVE_NAME, "START INFO")
     assert game.get_bytes("wPartyMon1Moves", 4) == bytes((MOVE_ID, 0, 0, 0))
     assert game.get_bytes("wPartyMon1PP", 4) == bytes((18, 0, 0, 0))

@@ -7,7 +7,7 @@ VendingMachineMenu::
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
-	ld a, PAD_A | PAD_B
+	ld a, PAD_A | PAD_B | PAD_START
 	ld [wMenuWatchedKeys], a
 	ld a, 3
 	ld [wMaxMenuItem], a
@@ -22,17 +22,23 @@ VendingMachineMenu::
 	ld c, 12
 	call TextBoxBorder
 	call UpdateSprites
-	hlcoord 2, 5
-	ld de, DrinkText
-	call PlaceString
-	hlcoord 9, 6
-	ld de, DrinkPriceText
-	call PlaceString
+	call DrawVendingOffers
 	ld hl, wStatusFlags5
 	res BIT_NO_TEXT_DELAY, [hl]
-	call HandleMenuInput
+.input
+	farcall HandleVendingInfoInput
+	ld a, [wMoveInfoNumber]
 	bit B_PAD_B, a
 	jr nz, .notThirsty
+	bit B_PAD_START, a
+	jr z, .choose
+	ld a, [wCurrentMenuItem]
+	cp 3
+	jr nc, .input
+	call LoadVendingMachineItem
+	farcall InspectVendingDrink
+	jr .input
+.choose
 	ld a, [wCurrentMenuItem]
 	cp 3 ; chose Cancel?
 	jr z, .notThirsty
@@ -95,17 +101,44 @@ VendingMachineText1:
 	text_far _VendingMachineText1
 	text_end
 
-DrinkText:
-	db   "FRESH WATER"
-	next "SODA POP"
-	next "LEMONADE"
-	next "CANCEL@"
-
-DrinkPriceText:
-	db   "¥200"
-	next "¥300"
-	next "¥350"
-	next "@"
+DrawVendingOffers:
+	ld hl, VendingPrices
+	decoord 2, 5
+	ld c, (VendingPrices.end - VendingPrices) / 4
+.row
+	ld a, [hli]
+	ld [wMoveInfoMove], a
+	push bc
+	push hl ; price
+	push de ; name position
+	farcall ReadSupplyInfoName
+	pop hl
+	push hl
+	ld de, wMoveInfoName
+	call PlaceString
+	pop hl
+	ld bc, SCREEN_WIDTH + 4
+	add hl, bc ; right-align the price at column 12
+	pop de
+	push hl
+	ld c, MONEY_SIGN | LEADING_ZEROES | 3
+	call PrintBCDNumber
+	pop hl
+	ld bc, SCREEN_WIDTH - 4
+	add hl, bc ; the next name
+	pop bc
+	dec c
+	jr z, .cancel
+	; PrintBCDNumber advanced DE to the next offer.
+	push de
+	ld d, h
+	ld e, l
+	pop hl
+	jr .row
+.cancel
+	ld de, .cancelText
+	jp PlaceString
+.cancelText db "CANCEL@"
 
 VendingMachineText4:
 	text_far _VendingMachineText4

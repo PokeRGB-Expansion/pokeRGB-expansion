@@ -249,7 +249,7 @@ MapHeaderBanks::
 	db BANK(LoreleisRoom_h)
 	db BANK(BrunosRoom_h)
 	db BANK(AgathasRoom_h)
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 	db BANK(FuchsiaMoveDeletersHouse_h)
 ENDC
 	assert_table_length NUM_MAPS

@@ -15,6 +15,29 @@ UseItem_::
 	ld l, a
 	jp hl
 
+; E = item ID. The shop offers a party preview for items that use a stone.
+ItemUsesEvolutionStoneEffect::
+	ld a, e
+	dec a
+	cp NUM_ITEMS
+	jr nc, .no
+	add a
+	ld c, a
+	ld b, 0
+	ld hl, ItemUsePtrTable
+	add hl, bc
+	ld a, [hli]
+	cp LOW(ItemUseEvoStone)
+	jr nz, .no
+	ld a, [hl]
+	cp HIGH(ItemUseEvoStone)
+	jr nz, .no
+	scf
+	ret
+.no
+	and a
+	ret
+
 ItemUsePtrTable:
 ; entries correspond to item ids
 	dw ItemUseBall       ; MASTER_BALL

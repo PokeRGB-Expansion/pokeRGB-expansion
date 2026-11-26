@@ -90,6 +90,10 @@ PrintInfoDescription:
 	ret
 
 MoveInfoSpecificDescriptions:
+	db ROAR, SWITCH_AND_TELEPORT_EFFECT
+	dw MoveInfoSpecific_ROAR
+	db TELEPORT, SWITCH_AND_TELEPORT_EFFECT
+	dw MoveInfoSpecific_TELEPORT
 	db DRAGON_RAGE, SPECIAL_DAMAGE_EFFECT
 	dw MoveInfoSpecific_DRAGON_RAGE
 	db SONICBOOM, SPECIAL_DAMAGE_EFFECT
@@ -200,6 +204,7 @@ MoveInfoDescriptions:
 	dw MoveInfoEffect_SPLASH_EFFECT
 	dw MoveInfoEffect_DISABLE_EFFECT
 	assert_table_length NUM_MOVE_EFFECTS + 1
+.end
 
 MoveInfoUnknownEffect:
 	db "No effect notes.@", 0
@@ -234,7 +239,7 @@ MoveInfoEffect_BIDE_EFFECT:
 MoveInfoEffect_THRASH_PETAL_DANCE_EFFECT:
 	db "Repeats the@", "attack, then@", "confuses user.@", 0
 MoveInfoEffect_SWITCH_AND_TELEPORT_EFFECT:
-	db "User flees from a@", "wild battle.@", 0
+	db "Blows away a wild@", "foe.@", 0
 MoveInfoEffect_TWO_TO_FIVE_ATTACKS_EFFECT:
 	db "Hits 2 to 5 times.@", 0
 MoveInfoEffect_FLINCH_SIDE_EFFECT1:
@@ -367,6 +372,10 @@ MoveInfoEffect_EVASION_UP2_EFFECT:
 	db "Raises Evasion@", "by 2 stages.@", 0
 MoveInfoEffect_EVASION_DOWN2_EFFECT:
 	db "Lowers foe's@", "Evasion 2 stages.@", 0
+MoveInfoSpecific_ROAR:
+	db "Scares away a@", "wild foe.@", 0
+MoveInfoSpecific_TELEPORT:
+	db "User flees from a@", "wild battle.@", 0
 MoveInfoSpecific_DRAGON_RAGE:
 	db "Deals 40 damage@", "when it hits.@", 0
 MoveInfoSpecific_SONICBOOM:

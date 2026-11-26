@@ -44,6 +44,8 @@ For a new proposal, record what a player can do, what the opponent can do, and t
 
 Core follows the [decisions](01-decisions.md) and [mechanics contract](05-mechanics-contract.md). It keeps defining Gen 1 behavior, corrects accepted defects, and includes explicitly accepted safety and interface improvements that preserve meaningful constraints and choices.
 
+The Move Deleter has a separate build setting. It defaults to on in Core and off in Minimal. Changing it also changes the Fuchsia door, the interior and the Route 14 advice. [Build settings](../../README.md#build)
+
 Authors can start a small hack with Core and change only the content they need. For an accepted safeguard or interface change, add a separate author switch when there is a clear use and it can be maintained independently.
 
 ## Extensions

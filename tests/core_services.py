@@ -60,10 +60,31 @@ def check_house(game, core):
 
     def select_move(slot, move, *, member=0, nickname="LEAFCUTTER"):
         choose_mon(member)
-        wait_text(game, "CUT", "TACKLE")
-        game.tick(24)
-        for _ in range(slot):
+        wait_text(game, "Forget which move", "START INFO", "B BACK")
+        mon = f"wPartyMon{member + 1}"
+        moves = game.get_bytes(mon + "Moves", 4)
+        pp = game.get_bytes(mon + "PP", 4)
+        count = len(moves.rstrip(b"\0"))
+        assert game.core.GB_safe_read_memory(game.gb, 0xFF40) & 2 == 0
+        assert game.visible_text().splitlines()[11].strip() == "Forget which move"
+        # Inspect a neighbor, then return with the actual intended row selected.
+        neighbor = (slot + 1) % count
+        for _ in range(neighbor):
             press(game, DOWN)
+        press(game, START)
+        game.wait(lambda: game.get("wMoveInfoMove") == moves[neighbor] and "B BACK" in game.visible_text())
+        press(game, 6)  # SELECT keeps the effect page open while browsing.
+        for _ in range(abs(slot - neighbor)):
+            press(game, DOWN if slot > neighbor else UP)
+        assert game.visible_text().splitlines()[11].strip() == move
+        assert "SEL STATS" in game.visible_text()
+        press(game, A)
+        assert "SEL STATS" in game.visible_text()
+        press(game, B)
+        assert game.get("wTileMap", (2 + slot * 2) * 20 + 1) == 0xED
+        assert "Forget which move" in game.visible_text()
+        assert game.get_bytes(mon + "Moves", 4) == moves
+        assert game.get_bytes(mon + "PP", 4) == pp
         press(game, A)
         wait_text(game, "YES", "NO", nickname, move)
         assert game.get("wCurrentMenuItem") == 1  # NO is highlighted.
@@ -98,6 +119,12 @@ def check_house(game, core):
         assert game.get_bytes("wPartyMon2PP", 4) == remaining_pp
         assert game.get_bytes("wPartyMon1Moves", 4) == MOVES[1:] + b"\0"
         close_dialogue()
+
+    # A two-move list still browses and cancels without exposing an empty slot.
+    select_move(1, "TACKLE", member=1, nickname="TEAMMATE")
+    press(game, A)  # NO
+    close_dialogue()
+    assert game.get_bytes("wPartyMon2Moves", 4) == MOVES[:2] + bytes(2)
 
     # Last-move refusal leaves its PP intact.
     game.put("wPartyMon1Moves", (0x21, 0, 0, 0))
@@ -139,15 +166,27 @@ def continue_inside_house(library, boot, rom, battery):
         assert (game.get("wCurMap"), game.get("wXCoord"), game.get("wYCoord")) == (FUCHSIA, 15, 28)
 
 
-def use_from_bag(game, message):
+def use_from_bag(game, message, *, field_switch=False):
     press(game, START)
     game.wait(lambda: "OPTION" in game.visible_text())
     if game.get("wCurrentMenuItem") == 0:
         press(game, DOWN)
     press(game, A)
     game.wait(lambda: "CANCEL" in game.visible_text() and "EXP ALL" in game.visible_text())
+    action = "USE"
+    if field_switch:
+        disabled = game.get("wExpAllDisabled")
+        current = "OFF" if disabled else "ON"
+        action = "TURN ON" if disabled else "TURN OFF"
+        assert game.visible_text().splitlines()[5].strip() == current
     press(game, A)
-    game.wait(lambda: "USE" in game.visible_text())
+    game.wait(lambda: action in game.visible_text() and "TOSS" in game.visible_text())
+    if field_switch:
+        press(game, B)
+        game.wait(lambda: "TOSS" not in game.visible_text())
+        assert game.get("wExpAllDisabled") == disabled
+        press(game, A)
+        game.wait(lambda: action in game.visible_text())
     press(game, A)
     wait_text(game, message)
     press(game, B)
@@ -185,11 +224,11 @@ def check_switch(game, core):
     game.put("wNumBagItems", EXP_BAG)
     if core:
         assert game.get("wExpAllDisabled") == 0
-        use_from_bag(game, "is OFF")
+        use_from_bag(game, "is OFF", field_switch=True)
         assert game.get("wExpAllDisabled") == 1
-        use_from_bag(game, "is ON")
+        use_from_bag(game, "is ON", field_switch=True)
         assert game.get("wExpAllDisabled") == 0
-        use_from_bag(game, "is OFF")
+        use_from_bag(game, "is OFF", field_switch=True)
         game.invoke("SaveGameData")
         game.return_to_stub()
         game.put("wExpAllDisabled", (0,))

@@ -16,7 +16,7 @@ Give hack authors a dependable Red/Blue engine for both small edits and new adve
 | **Core** | Fixes documented bugs and adds selected conveniences. It fixes Focus Energy, keeps original critical-hit and trapping rules, and offers a Fuchsia Move Deleter, field EXP. ALL switch and optional Quick battle pace. |
 | **Extended** | Planned developer features include larger rosters, additional types, and a Move Reminder in the party menu that remembers moves each Pokémon has learned. There is no Extended build target. |
 
-Both released presets keep the twenty-slot Bag and manual box selection. An author can independently select the two [battle displays](research/battle-hud-displays.md). Automatic box overflow, direct box-to-box moves and wide species IDs remain future options. [Feature catalog](docs/14-features-and-extensions.md)
+Both released presets keep the twenty-slot Bag and manual box selection. An author can independently select the two [battle displays](research/battle-hud-displays.md) and the [Fuchsia Move Deleter](../README.md#build). Automatic box overflow, direct box-to-box moves and wide species IDs remain future options. [Feature catalog](docs/14-features-and-extensions.md)
 
 ### Developer features
 

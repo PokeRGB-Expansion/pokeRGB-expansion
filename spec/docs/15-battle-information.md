@@ -24,6 +24,14 @@ Use meaningful values when the normal power or accuracy formula does not apply. 
 
 On the move’s stats page, HIGH CRIT identifies a move with an elevated critical-hit rate. PRIORITY identifies a move that goes before ordinary attacks. PRIO/CRIT marks both properties. A tie between two Quick Attacks still uses the game’s normal ordering rules. SELECT opens the effect page. For a high-critical poison move, the stats page shows HIGH CRIT and the effect page still describes poisoning. Editing the high-critical list updates the label automatically. Priority in v0.3.0 is tied to Quick Attack in both the turn-order code and the INFO reader. Authors adding priority to another move must update both places. [Turn order and trait lookup](../../engine/battle/core.asm) · [Reader and labels](../../engine/pokemon/move_info.asm) · [Author and battle checks](../../tests/supply_and_move_info.py)
 
+## Inspect known moves
+
+Party and current-box STATS show the Pokémon’s known moves together. The cursor and slot number identify the move described below. Up/Down browses its moves and SELECT switches between stats and effect. B restores the original STATS page. Where a Move Deleter is enabled, the same controls work from his move list. Reading uses no PP. B returns to the inspected slot, and deleting it requires a separate choice and confirmation. [Game menu checks](../../tests/known_move_info.py)
+
+![Reading Surf at the Move Deleter, returning to its slot and opening the confirmation with No selected.](../research/move-deleter-comparison.png)
+
+Roar and Whirlwind can drive a wild opponent away. Teleport lets the user flee. Although the three moves use the same battle routine, INFO describes who leaves in each case.
+
 ## Compare moves in FIGHT
 
 Press START on a move, then SELECT to read its effect. Press Down to read the next move’s effect without reopening INFO. Up/Down stops at the first or last occupied slot. You can inspect a disabled move or a move with zero PP. FIGHT applies its usual checks when you try to use it. If the battle goes straight to Struggle, there is no move list to inspect.

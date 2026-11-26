@@ -190,6 +190,9 @@ def main():
     add_check("tests/trainer_movesets.py", directory, *emulator, *rgbds)
 
     add_check("tests/learn_info_browsing.py", directory, *emulator)
+    add_check("tests/known_move_info.py", directory, *emulator, "--sgb-boot", sgb_boot)
+    add_check("tests/author_checks.py", directory, *emulator)
+    add_check("tests/author_build_options.py", directory.name, *emulator, *rgbds)
     run_checks(shard_checks(checks, index, count), args.jobs)
 
 

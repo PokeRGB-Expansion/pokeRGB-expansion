@@ -28,7 +28,7 @@ VermilionCity_Blocks: INCBIN "maps/VermilionCity.blk"
 INCLUDE "data/maps/headers/FuchsiaCity.asm"
 INCLUDE "data/maps/objects/FuchsiaCity.asm"
 FuchsiaCity_Blocks:
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 ; Open the closed house between Bill's grandpa and the Pokémon Center.
 	DEF deleter_door_block EQU 13 * FUCHSIA_CITY_WIDTH + 7
 	INCBIN "maps/FuchsiaCity.blk", 0, deleter_door_block
@@ -1111,7 +1111,7 @@ CopycatsHouse1F_Blocks: INCBIN "maps/CopycatsHouse1F.blk"
 CinnabarMart_Blocks:
 PewterMart_Blocks: INCBIN "maps/PewterMart.blk"
 
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 FuchsiaMoveDeletersHouse_Blocks:
 ENDC
 FuchsiaBillsGrandpasHouse_Blocks: INCBIN "maps/FuchsiaBillsGrandpasHouse.blk"
@@ -1151,7 +1151,7 @@ INCLUDE "data/maps/headers/FuchsiaBillsGrandpasHouse.asm"
 INCLUDE "scripts/FuchsiaBillsGrandpasHouse.asm"
 INCLUDE "data/maps/objects/FuchsiaBillsGrandpasHouse.asm"
 
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 INCLUDE "data/maps/headers/FuchsiaMoveDeletersHouse.asm"
 INCLUDE "scripts/FuchsiaMoveDeletersHouse.asm"
 INCLUDE "data/maps/objects/FuchsiaMoveDeletersHouse.asm"

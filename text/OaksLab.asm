@@ -25,23 +25,35 @@ _OaksLabThoseArePokeBallsText::
 	cont "contain #MON!"
 	done
 
-_OaksLabYouWantCharmanderText::
-	text "So! You want the"
-	line "fire #MON,"
-	cont "CHARMANDER?"
+MACRO starter_offer
+	IF \1 == CHARMANDER || \1 == SQUIRTLE || \1 == BULBASAUR
+		text "So! You want the"
+		IF \1 == CHARMANDER
+			line "fire #MON,"
+		ELIF \1 == SQUIRTLE
+			line "water #MON,"
+		ELSE
+			line "plant #MON,"
+		ENDC
+		cont "@"
+	ELSE
+		text "So! You want"
+		line "@"
+	ENDC
+	text_ram wNameBuffer
+	text "?"
 	done
+ENDM
+
+; Each ball can have its own hand-written text in place of starter_offer.
+_OaksLabYouWantCharmanderText::
+	starter_offer STARTER1
 
 _OaksLabYouWantSquirtleText::
-	text "So! You want the"
-	line "water #MON,"
-	cont "SQUIRTLE?"
-	done
+	starter_offer STARTER2
 
 _OaksLabYouWantBulbasaurText::
-	text "So! You want the"
-	line "plant #MON,"
-	cont "BULBASAUR?"
-	done
+	starter_offer STARTER3
 
 _OaksLabMonEnergeticText::
 	text "This #MON is"

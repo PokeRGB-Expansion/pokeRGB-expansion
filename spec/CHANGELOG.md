@@ -1,5 +1,11 @@
 # Specification changelog
 
+## Game release 0.5.0
+
+- Both presets show one selected move and its PP in STATS. Roar and Whirlwind now describe the wild opponent leaving. Core’s Move Deleter lets you inspect known moves before confirming a deletion. [Move INFO](docs/15-battle-information.md)
+- Check your party before buying an evolution stone and compare drinks at the Celadon vending machine. The Bag marks the registered Bicycle or rod. Core shows the state of EXP. ALL and names the action that will change it. [Player guide](docs/16-game-changes.md)
+- Change the lab starters and test the opening and trainer teams in a downstream game. Builds check encounter species and the space available for INFO descriptions. Authors can enable or disable the Move Deleter on either base. [Author guide](research/starter-and-trainer-authoring.md) · [Build options](../README.md#build)
+
 ## Game release 0.4.3
 
 - Compare a proposed move with any of the four old moves from the first learn question or the forget list. Browsing keeps the current stats or effect page. [Learning controls](docs/15-battle-information.md#compare-a-new-move)

@@ -98,16 +98,19 @@ DEF FIRST_PARTY_MENU_TEXT_ID EQU const_value
 	const LEVEL_UP_STATS_BOX      ; 1
 
 ; INFO shows a single move, known moves, or an item from one of these lists.
-; Machine views share a layout. The last two also support browsing offers.
+; From INFO_BROWSE_MART onward the player can browse offers with Up/Down.
 	const_def
 	const INFO_BROWSE_SINGLE
 	const INFO_BROWSE_FIGHT
 	const INFO_BROWSE_STATS
+	const INFO_BROWSE_DELETER
 	const INFO_BROWSE_LEARN
 	const INFO_BROWSE_SUPPLY
 	const INFO_BROWSE_MACHINE
 	const INFO_BROWSE_MART
 	const INFO_BROWSE_PRIZE
+	const INFO_BROWSE_STONE_MART
+	const INFO_BROWSE_VENDING
 
 ; Questions that accept START for move details.
 	const_def 1

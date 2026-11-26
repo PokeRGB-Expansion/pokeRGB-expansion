@@ -796,38 +796,35 @@ OaksLabRivalText:
 
 OaksLabCharmanderPokeBallText:
 	text_asm
-	ld a, STARTER2
-	ld [wRivalStarterTemp], a
-	ld a, OAKSLAB_SQUIRTLE_POKE_BALL
-	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER1
-	ld b, OAKSLAB_CHARMANDER_POKE_BALL
+	ld hl, OaksLabStarterBalls.first
 	jr OaksLabSelectedPokeBallScript
 
 OaksLabSquirtlePokeBallText:
 	text_asm
-	ld a, STARTER3
-	ld [wRivalStarterTemp], a
-	ld a, OAKSLAB_BULBASAUR_POKE_BALL
-	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER2
-	ld b, OAKSLAB_SQUIRTLE_POKE_BALL
+	ld hl, OaksLabStarterBalls.second
 	jr OaksLabSelectedPokeBallScript
 
 OaksLabBulbasaurPokeBallText:
 	text_asm
-	ld a, STARTER1
-	ld [wRivalStarterTemp], a
-	ld a, OAKSLAB_CHARMANDER_POKE_BALL
-	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER3
-	ld b, OAKSLAB_BULBASAUR_POKE_BALL
+	ld hl, OaksLabStarterBalls.third
+	jr OaksLabSelectedPokeBallScript
+
+OaksLabStarterBalls:
+	; Species and ball for the player, then species and ball for the rival.
+.first  db STARTER1, OAKSLAB_CHARMANDER_POKE_BALL, STARTER2, OAKSLAB_SQUIRTLE_POKE_BALL
+.second db STARTER2, OAKSLAB_SQUIRTLE_POKE_BALL, STARTER3, OAKSLAB_BULBASAUR_POKE_BALL
+.third  db STARTER3, OAKSLAB_BULBASAUR_POKE_BALL, STARTER1, OAKSLAB_CHARMANDER_POKE_BALL
 
 OaksLabSelectedPokeBallScript:
+	ld a, [hli]
 	ld [wCurPartySpecies], a
 	ld [wPokedexNum], a
-	ld a, b
+	ld a, [hli]
 	ld [wSpriteIndex], a
+	ld a, [hli]
+	ld [wRivalStarterTemp], a
+	ld a, [hl]
+	ld [wRivalStarterBallSpriteIndex], a
 	CheckEvent EVENT_GOT_STARTER
 	jp nz, OaksLabLastMonScript
 	CheckEventReuseA EVENT_OAK_ASKED_TO_CHOOSE_MON
@@ -861,6 +858,9 @@ OaksLabShowPokeBallPokemonScript:
 	call ReloadMapData
 	ld c, 10
 	call DelayFrames
+	ld a, [wCurPartySpecies]
+	ld [wNamedObjectIndex], a
+	call GetMonName
 	ld a, [wSpriteIndex]
 	cp OAKSLAB_CHARMANDER_POKE_BALL
 	jr z, OaksLabYouWantCharmanderText

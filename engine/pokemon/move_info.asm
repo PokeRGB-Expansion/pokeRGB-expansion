@@ -21,14 +21,6 @@ InspectFightMove:
 	ld [wCurrentMenuItem], a
 	ret
 
-InspectStatsMove:
-	xor a
-	ld [wMoveInfoSlot], a
-	ld a, INFO_BROWSE_STATS
-	ld [wMoveInfoBrowse], a
-	call SelectInfoMoveSlot
-	jp ShowMoveInfo
-
 WaitForStatsMoveInfo:
 	ld a, [wLinkState]
 	and a
@@ -60,6 +52,8 @@ WaitForStatsMoveInfo:
 
 SelectInfoMoveSlot:
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_DELETER
+	jp z, SelectReplacementInfoMove
 	cp INFO_BROWSE_FIGHT
 	ld hl, wBattleMonMoves
 	ld de, wBattleMonPP - wBattleMonMoves
@@ -130,6 +124,10 @@ HandleItemMoveInfoInput::
 	ld a, 1
 	jr HandleListInfoInput
 
+HandleVendingInfoInput::
+	ld a, 4
+	jr HandleListInfoInput
+
 HandlePrizeMoveInfoInput:
 	ld a, 2
 HandleListInfoInput:
@@ -190,9 +188,23 @@ DrawMoveInfoCursorHint::
 	ld a, [wMoveInfoHint]
 	cp 1
 	jp z, DrawMachineListHint
+	cp 4
+	jr z, .drink
 	cp 2
 	jr z, ReadPrizeInfoName
 	hlcoord 1, 15
+	ld de, MoveInfoStartText
+	jp PlaceString
+
+.drink
+	ld a, [wCurrentMenuItem]
+	cp 3 ; CANCEL has no drink to inspect
+	ret nc
+	hlcoord 1, 16
+	ld bc, SCREEN_WIDTH - 2
+	ld a, ' '
+	call FillMemory
+	hlcoord 1, 16
 	ld de, MoveInfoStartText
 	jp PlaceString
 
@@ -243,9 +255,27 @@ InspectListedMove::
 	jr InspectMachineMove
 .supply
 	ld [wMoveInfoMove], a
+	ld a, [wListMenuID]
+	cp PRICEDITEMLISTMENU
+	jr nz, .ordinary
+	ld a, [wMoveInfoMove]
+	call IsStoneOffer
+	jr nc, .ordinary
+	ld [wSelectedMachine], a ; shared vendor selection
+	ld a, INFO_BROWSE_STONE_MART
+	jr .openSupply
+.ordinary
 	ld a, INFO_BROWSE_SUPPLY
+.openSupply
 	ld [wMoveInfoBrowse], a
 	jp OpenInfoPanel
+InspectVendingDrink::
+	ldh a, [hVendingMachineItem]
+	ld [wMoveInfoMove], a
+	ld a, INFO_BROWSE_VENDING
+	ld [wMoveInfoBrowse], a
+	jp OpenInfoPanel
+
 InspectMachineMove:
 	ld [wSelectedMachine], a
 	ld a, b
@@ -319,7 +349,17 @@ FindListedInfoItem:
 .getItem
 	ld a, [hl]
 	cp HM01
-	jp c, FindSupplyDescription
+	jr nc, .machine
+	push af
+	call FindSupplyDescription
+	jr nc, .checkStone
+	pop af
+	scf
+	ret
+.checkStone
+	pop af
+	jp IsStoneOffer
+.machine
 	cp TM01 + NUM_TMS
 	jr nc, .absent
 	scf
@@ -371,6 +411,10 @@ OpenInfoPanel:
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_SUPPLY
 	jr z, .wait
+	cp INFO_BROWSE_STONE_MART
+	jr z, .offerKeys
+	cp INFO_BROWSE_VENDING
+	jr z, .offerDirection
 	ld a, b
 	bit B_PAD_SELECT, a
 	jp nz, .changePage
@@ -378,10 +422,12 @@ OpenInfoPanel:
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_MACHINE
 	jr c, .otherKeys
+.offerKeys
 	bit B_PAD_A, b
 	jp nz, .party
 	cp INFO_BROWSE_MART
 	jr c, .wait
+.offerDirection
 	ldh a, [hJoyFiltered]
 	and PAD_UP | PAD_DOWN
 	cp PAD_DOWN
@@ -396,16 +442,9 @@ OpenInfoPanel:
 	ld c, 2 ; restore the list before drawing its new selection
 	jp .uncover
 .otherKeys
-	cp INFO_BROWSE_FIGHT
-	jr nz, .checkStats
+	and a ; a single move has no neighbors
+	jp z, .wait
 	ldh a, [hJoyFiltered]
-	ld b, a
-	jr .slotKeys
-.checkStats
-	cp INFO_BROWSE_STATS
-	jp nz, .wait
-.slotKeys
-	ld a, b
 	and PAD_UP | PAD_DOWN
 	cp PAD_UP
 	jr z, .previousSlot
@@ -472,9 +511,11 @@ OpenInfoPanel:
 	bit 0, c
 	jr nz, .showParty
 	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_FIGHT
-	jr nz, .showList
-; FIGHT redraws its cursor and type/PP box together before accepting input.
+	and a
+	jr z, .showList
+	cp INFO_BROWSE_LEARN
+	jr nc, .showList
+; FIGHT, STATS and the Move Deleter restore the whole caller before taking input.
 	pop af
 	ret
 .showList
@@ -489,7 +530,9 @@ OpenInfoPanel:
 .showParty
 ; The restored list is the return destination. Keep it off screen during
 ; this transition so PARTY opens directly, even while A is still held.
-	call CacheMachinePartyEligibility
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
+	call nz, CacheMachinePartyEligibility
 	farcall ShowMachinePartyPreview
 	jr .restoreTransfer
 
@@ -497,15 +540,15 @@ OpenInfoPanel:
 ; Reuse the list renderer with its original background restored. Saving these
 ; rows again keeps the new item and price intact when the player closes INFO.
 	call RedrawMachineVendor
-	call LoadInspectedMachine
+	call LoadInspectedOffer
 	jp .saveBackground
 
 ReadInfoButtons::
 	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_FIGHT
-	jr z, .repeat
-	cp INFO_BROWSE_LEARN
-	jr z, .repeat
+	and a
+	jp z, Joypad
+	cp INFO_BROWSE_SUPPLY
+	jr c, .repeat
 	cp INFO_BROWSE_MART
 	jp c, Joypad
 .repeat
@@ -522,15 +565,19 @@ ReadInfoButtons::
 
 GetInfoPanelRows:
 	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_FIGHT
-	jr z, .large
-	cp INFO_BROWSE_LEARN
-	jr z, .large
-	cp INFO_BROWSE_MACHINE
+	and a
+	jr z, .small
+	cp INFO_BROWSE_VENDING
+	jr z, .small
+	cp INFO_BROWSE_SUPPLY
+	jr nz, .large
+.small
 	hlcoord 0, INFO_PANEL_FIRST_ROW
 	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
-	ret c
+	scf
+	ret
 .large
+	and a
 	hlcoord 0, BROWSE_PANEL_FIRST_ROW
 	ld b, SCREEN_WIDTH * BROWSE_PANEL_ROWS / 2
 	ret
@@ -539,12 +586,13 @@ WaitForInfoKeysReleased:
 	call DelayFrame
 	call Joypad
 	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_FIGHT
-	jr z, .allKeys
-	cp INFO_BROWSE_LEARN
-	jr z, .allKeys
+	and a
+	jr z, .actions
+	cp INFO_BROWSE_SUPPLY
+	jr c, .allKeys
 	cp INFO_BROWSE_MART
 	jr nc, .allKeys
+.actions
 	ldh a, [hJoyHeld]
 	and PAD_A | PAD_B | PAD_START | PAD_SELECT
 	jr .check
@@ -560,6 +608,12 @@ WaitForInfoKeysReleased:
 DrawMoveInfo:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STATS
+	call z, DrawKnownMoveCursor
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_DELETER
+	call z, DrawKnownMoveCursor
 	call GetInfoPanelRows
 	ld b, INFO_PANEL_ROWS - 2
 	jr c, .frame
@@ -568,6 +622,8 @@ DrawMoveInfo:
 	ld c, SCREEN_WIDTH - 2
 	call TextBoxBorder
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_STONE_MART
+	jp nc, .supply
 	cp INFO_BROWSE_SUPPLY
 	jp z, .supply
 	farcall ReadMoveInfoName
@@ -602,13 +658,9 @@ DrawMoveInfo:
 	ld de, MoveInfoStatsText
 .controls
 	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_FIGHT
-	jr z, .browseControls
-	cp INFO_BROWSE_LEARN
-	jr z, .browseControls
-	cp INFO_BROWSE_MACHINE
+	and a
 	hlcoord 1, 16
-	jp c, .show
+	jp z, .show
 .browseControls
 ; The shared move renderer lays out four rows (name, then stats or effect).
 ; Shift them up together in browsing views to fit both lines of controls.
@@ -633,9 +685,9 @@ DrawMoveInfo:
 	call PlaceString
 	jr .shortPageHint
 .notLearning
-	cp INFO_BROWSE_FIGHT
-	jr nz, .machineControls
-	call DrawFightBrowseHint
+	cp INFO_BROWSE_MACHINE
+	jr nc, .machineControls
+	call DrawKnownMoveBrowseHint
 	jr .shortPageHint
 .machineControls
 	cp INFO_BROWSE_MACHINE
@@ -673,15 +725,54 @@ DrawMoveInfo:
 	call PlaceString
 	ld a, [wMoveInfoMove]
 	call FindSupplyDescription
+	jr c, .hasDescription
+	; A custom stone can use the usual stone description. Other custom
+	; vending items can supply their own entry in SupplyInfoEntries.
+	ld a, [wMoveInfoMove]
+	call IsStoneOffer
+	ld de, .unnamedEffect
+	jr nc, .hasDescription
+	ld de, SupplyInfoEntries.FIRE_STONE
+.hasDescription
 	call PrintInfoDescription
 	hlcoord 1, 16
 	ld de, SupplyInfoBackText
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_VENDING
+	jr nz, .stoneHint
+	ld de, .drinkControls
+	jr .show
+.stoneHint
+	cp INFO_BROWSE_STONE_MART
+	jr nz, .show
+	push hl
+	call HasOtherMachineOffer
+	pop hl
+	ld de, .bagControls
+	jr nc, .show
+	; Keep all three description lines above the browsing controls.
+	hlcoord 1, 12
+	decoord 1, 11
+	ld bc, 4 * SCREEN_WIDTH - 2
+	call CopyData
+	hlcoord 1, 15
+	ld bc, SCREEN_WIDTH - 2
+	ld a, ' '
+	call FillMemory
+	hlcoord 1, 15
+	ld de, .stoneControls
+	call PlaceString
+	hlcoord 1, 16
+	ld de, .bagControls
 .show
 	call PlaceString
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
 
+.unnamedEffect db "No item notes.@", 0
+.drinkControls db "UP/DN:DRINK B:BACK@"
+.stoneControls db "UP/DOWN:STONE@"
 .oldLabel     db "OLD: @"
 .newLabel     db "NEW: @"
 .compareNew   db "UP/DN:MOVE L/R:NEW@"
@@ -713,7 +804,7 @@ UncoverBattleAboveMoveInfo:
 	ld bc, 11
 	jp CopyData
 
-DrawFightBrowseHint:
+DrawKnownMoveBrowseHint:
 	ld a, [wNumMovesMinusOne]
 	and a
 	jr z, .position
@@ -826,34 +917,37 @@ DrawMoveInfoAccuracy:
 
 DrawMoveInfoPP:
 	hlcoord 1, 15
+DrawMoveInfoPPAt:
 	ld de, MoveInfoPPText
 	call PlaceString
+	ld h, b
+	ld l, c
+	inc hl
 	ld a, [wMoveInfoPP]
 	cp INFO_UNKNOWN_PP
 	jr nz, .known
-	hlcoord 4, 15
 	ld de, wMoveInfoData + MOVE_PP
 	lb bc, 1, 2
 	jp PrintNumber
 .known
 	and PP_MASK
 	ld [wMoveInfoNumber], a
-	hlcoord 4, 15
 	ld de, wMoveInfoNumber
 	lb bc, 1, 2
 	call PrintNumber
-	hlcoord 6, 15
-	ld [hl], '/'
+	ld a, '/'
+	ld [hli], a
 	call CalculateMoveInfoMaxPP
 	ld [wMoveInfoNumber], a
-	hlcoord 7, 15
 	ld de, wMoveInfoNumber
 	lb bc, 1, 2
 	call PrintNumber
-	hlcoord 10, 15
+	inc hl
 	ld de, MoveInfoBasePPText
 	call PlaceString
-	hlcoord 15, 15
+	ld h, b
+	ld l, c
+	inc hl
 	ld de, wMoveInfoData + MOVE_PP
 	lb bc, 1, 2
 	jp PrintNumber
@@ -922,6 +1016,7 @@ DrawMoveInfoTraitLabel:
 .both db "PRIO/CRIT@"
 
 INCLUDE "engine/pokemon/learn_move_info.asm"
+INCLUDE "engine/pokemon/known_move_info.asm"
 INCLUDE "engine/pokemon/machine_party_info.asm"
 
 INCLUDE "data/moves/info_effects.asm"

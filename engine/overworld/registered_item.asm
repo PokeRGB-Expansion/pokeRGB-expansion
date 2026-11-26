@@ -102,17 +102,23 @@ CanUseRegisteredItem::
 	ret
 
 HasRegisteredItem:
-	ld a, [wRegisteredItemTag]
-	cp REGISTERED_ITEM_TAG
-	jr nz, .unavailable
-	ld a, [wRegisteredItem]
-	call IsRegistrableFieldItem
-	jr nc, .unavailable
+	call GetRegisteredFieldItem
+	ret nc
 	ld b, a
 	call IsItemInBag
 	jr z, .unavailable
 	scf
 	ret
+.unavailable
+	and a
+	ret
+
+GetRegisteredFieldItem::
+	ld a, [wRegisteredItemTag]
+	cp REGISTERED_ITEM_TAG
+	jr nz, .unavailable
+	ld a, [wRegisteredItem]
+	jp IsRegistrableFieldItem
 .unavailable
 	and a
 	ret

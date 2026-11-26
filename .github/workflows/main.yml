@@ -9,12 +9,16 @@ on:
 permissions:
   contents: read
 
+env:
+  TEST_SUITE: ${{ vars.POKERGB_TEST_SUITE || (github.repository == 'PokeRGB-Expansion/pokeRGB-expansion' && 'reference' || 'author') }}
+
 jobs:
   build:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        shard: [1, 2, 3, 4, 5, 6, 7, 8]
+        # A downstream hack runs one content-aware check per preset.
+        shard: ${{ fromJSON((vars.POKERGB_TEST_SUITE || (github.repository == 'PokeRGB-Expansion/pokeRGB-expansion' && 'reference' || 'author')) == 'reference' && '[1,2,3,4,5,6,7,8]' || '[1]') }}
         preset: [core, minimal]
         include:
           - os: macos-latest
@@ -23,6 +27,12 @@ jobs:
             preset: minimal
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Check test suite selection
+        if: env.TEST_SUITE != 'author' && env.TEST_SUITE != 'reference'
+        run: |
+          echo "Set the POKERGB_TEST_SUITE repository variable to author or reference." >&2
+          exit 1
+
       - name: Check out PokéRGB Expansion
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -52,7 +62,7 @@ jobs:
         run: make -j4 PRESET=${{ matrix.preset }} RGBDS="$GITHUB_WORKSPACE/.rgbds/"
 
       - name: Check reference color data
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && env.TEST_SUITE == 'reference'
         run: python3 tools/check_reference_colors.py build/${{ matrix.preset }}
 
       - name: Check out SameBoy 1.0.5
@@ -68,7 +78,7 @@ jobs:
         run: make -C .sameboy -j4 build/lib/libsameboy.so bootroms CONF=release RGBDS="$GITHUB_WORKSPACE/.rgbds/"
 
       - name: Test the built game
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && env.TEST_SUITE == 'reference'
         run: >-
           python3 tests/run.py build/${{ matrix.preset }}
           --shard ${{ matrix.shard }} 8 --jobs 4
@@ -77,8 +87,15 @@ jobs:
           --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
           --sgb-boot .sameboy/build/bin/BootROMs/sgb_boot.bin
 
+      - name: Check the hack's game data in the emulator
+        if: runner.os == 'Linux' && env.TEST_SUITE == 'author'
+        run: >-
+          python3 tests/author_checks.py build/${{ matrix.preset }}
+          --sameboy .sameboy/build/lib/libsameboy.so
+          --boot .sameboy/build/bin/BootROMs/dmg_boot.bin
+
       - name: Check specification references
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && env.TEST_SUITE == 'reference'
         run: python3 spec/tools/validate_spec.py
 
       - name: Check tracked files

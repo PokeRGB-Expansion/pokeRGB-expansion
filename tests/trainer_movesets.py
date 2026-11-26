@@ -1,16 +1,18 @@
 """Build a sample trainer team and use its custom moves in a Route 3 battle."""
 
 import argparse
-from io import BytesIO
 from pathlib import Path
+import re
+import shutil
 import subprocess
-import tarfile
 from tempfile import TemporaryDirectory
 
 from adventure_checkpoints import advance_text_until, seed_water_party
 from battle_stats_return import battle_ready
 from cartridge_smoke import Game
 from move_info_authoring import shows
+from pokedex_area import linked_offset
+from author_walkthrough import check_lab
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,16 +32,30 @@ SAMPLE = (
 def customize(source):
     path = source / PARTIES
     original = path.read_text()
-    changes = (
-        ("YoungsterData:\n; Route 3\n\tdb 11, RATTATA, EKANS, 0",
-         "YoungsterData:\n; Route 3\n\t" + SAMPLE),
-        ("BrockData:\n\tdb $FF, 12, GEODUDE, 14, ONIX, 0",
-         "BrockData:\n\ttrainer_party $ff, 12, GEODUDE, 14, ONIX\n\ttrainer_moves 2, SURF"),
-    )
-    for before, after in changes:
-        assert original.count(before) == 1
-        original = original.replace(before, after)
+    # Prepend our own teams. Authors can change the original members and their
+    # moves, or use trainer_party, without breaking the regression fixture.
+    fixtures = {
+        "YoungsterData": SAMPLE,
+        "BrockData": "trainer_party $ff, 12, GEODUDE, 14, ONIX\n\ttrainer_moves 2, SURF",
+    }
+    for label, team in fixtures.items():
+        anchor = f"{label}:\n"
+        assert original.count(anchor) == 1, f"Missing trainer class label {label}"
+        original = original.replace(anchor, f"{anchor}\t{team}\n")
     path.write_text(original)
+
+    path = source / "constants/pokemon_constants.asm"
+    constants = path.read_text()
+    for slot, species in enumerate(("PIKACHU", "EEVEE", "POLIWAG"), 1):
+        constants, count = re.subn(rf"^DEF STARTER{slot} EQU .+$", f"DEF STARTER{slot} EQU {species}", constants, flags=re.M)
+        assert count == 1, f"Missing STARTER{slot} definition"
+    path.write_text(constants)
+    path = source / "text/OaksLab.asm"
+    text = path.read_text()
+    anchor = "_OaksLabYouWantSquirtleText::\n"
+    start = text.index(anchor) + len(anchor)
+    end = text.index("\n_OaksLabYouWantBulbasaurText::", start)
+    path.write_text(text[:start] + '\ttext "Your partner:"\n\tline "@"\n\ttext_ram wNameBuffer\n\ttext "?"\n\tdone\n' + text[end:])
 
 
 def load_team(game, trainer, number=1, signature=0, starter=0):
@@ -59,26 +75,35 @@ def load_team(game, trainer, number=1, signature=0, starter=0):
     return team, game.get_bytes("wAmountMoneyWon", 3)
 
 
-def check_teams(stock, edited):
+def check_teams(stock, edited, base_rom, sample_rom):
     for game in (stock, edited):
         game.new_game()
         game.put("wIsInBattle", (2,))
         game.put("wTrainerBaseMoney", (0, 0x12, 0))
     # The Champion's three teams use different rival starter values.
+    def starters(game, path):
+        offset = linked_offset(game, "OaksLabStarterBalls")
+        return path.read_bytes()[offset:offset + 12:4]
+
+    base_starters = starters(stock, base_rom)
+    new_starters = starters(edited, sample_rom)
     cases = [(YOUNGSTER, 1, 0, 0), (YOUNGSTER, 2, 0, 0), (BROCK, 1, 1, 0),
              (0x23, 1, 2, 0), (0x2C, 1, 0, 0), (0x21, 1, 0, 0),
              (0x2E, 1, 0, 0), (0x2F, 1, 0, 0),
-             (RIVAL3, 1, 0, 0xB1), (RIVAL3, 2, 0, 0x99), (RIVAL3, 3, 0, 0xB0)]
-    for case in cases:
-        expected, money = load_team(stock, *case)
-        actual, custom_money = load_team(edited, *case)
-        if case[:2] == (YOUNGSTER, 1):
-            expected[0] = (*expected[0][:2], RATTATA_MOVES, RATTATA_PP)
-            expected[1] = (*expected[1][:2], EKANS_MOVES, EKANS_PP)
-        elif case[0] == BROCK:
-            assert expected[1][2][2] == 0x75  # Bide on the stock Onix
-            expected[1] = (*expected[1][:2], bytes((0x39, 0, 0, 0)), bytes((15, 0, 0, 0)))
-        assert (actual, custom_money) == (expected, money), (case, actual, expected)
+             (RIVAL3, 1, 0, base_starters[1]), (RIVAL3, 2, 0, base_starters[2]), (RIVAL3, 3, 0, base_starters[0])]
+    for trainer, number, signature, starter in cases:
+        expected, money = load_team(stock, trainer, number, signature, starter)
+        # The original Youngster and Brock teams follow our fixture team.
+        shifted = number + (trainer in (YOUNGSTER, BROCK))
+        # The Champion uses the rival's chosen starter to select a signature move.
+        sample_starter = new_starters[base_starters.index(starter)] if trainer == RIVAL3 else starter
+        actual = load_team(edited, trainer, shifted, signature, sample_starter)
+        assert actual == (expected, money), (trainer, number, actual, expected)
+
+    team, _ = load_team(edited, YOUNGSTER)
+    assert team == [(0xA5, 11, RATTATA_MOVES, RATTATA_PP), (0x6C, 11, EKANS_MOVES, EKANS_PP)]
+    team, _ = load_team(edited, BROCK, signature=1)
+    assert team[1] == (0x22, 14, bytes((0x39, 0, 0, 0)), bytes((15, 0, 0, 0)))
 
     # Keep a peer's moves and PP, even when its party matches an authored team.
     edited.put("wLinkState", (4,))
@@ -140,11 +165,17 @@ def main():
     args = parser.parse_args()
     preset = args.directory.name
     assert preset in ("core", "minimal")
-    archive = subprocess.check_output(["git", "archive", "HEAD"], cwd=ROOT)
     with TemporaryDirectory(prefix="pokergb-trainer-moves-") as folder:
         source = Path(folder)
-        with tarfile.open(fileobj=BytesIO(archive)) as files:
-            files.extractall(source, filter="data")
+        # Use the same files the author built, including edits since the last commit.
+        files = subprocess.check_output(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=ROOT,
+        ).decode().split("\0")
+        for name in files:
+            if name and (ROOT / name).is_file():
+                target = source / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / name, target)
         customize(source)
         command = ["make", "-j4", f"PRESET={preset}"]
         if args.rgbds:
@@ -157,10 +188,12 @@ def main():
             params = (args.sameboy.resolve(), args.boot.resolve())
             sample = source / "build" / preset / rom
             with Game(*params, args.directory / rom) as stock, Game(*params, sample) as edited:
-                check_teams(stock, edited)
+                check_teams(stock, edited, args.directory / rom, sample)
             with Game(*params, sample) as edited:
                 play_route3(edited)
             print(f"{preset} {color}: trainer teams, moves, PP and actual battle passed", flush=True)
+        check_lab(*params, args.directory / "pokered.gbc")
+        check_lab(*params, source / "build" / preset / "pokered.gbc", custom_second=True)
         if preset == "core":
             reject_invalid(source, command)
 

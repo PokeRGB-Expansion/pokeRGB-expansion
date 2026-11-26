@@ -249,7 +249,7 @@ MapHeaderPointers::
 	dw LoreleisRoom_h
 	dw BrunosRoom_h
 	dw AgathasRoom_h
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 	dw FuchsiaMoveDeletersHouse_h
 ENDC
 	assert_table_length NUM_MAPS

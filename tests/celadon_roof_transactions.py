@@ -8,7 +8,7 @@ from cartridge_smoke import Game
 from shop_carry_count import bag
 
 
-A, B, DOWN = 4, 5, 3
+A, B, START, UP, DOWN = 4, 5, 7, 2, 3
 ROOF, CELADON = 0x7E, 0x06
 POTION = 0x14
 DRINKS = (
@@ -65,9 +65,48 @@ def vending_menu(game):
     assert game.get("wMaxMenuItem") == 3
 
 
+def check_drink_info(game):
+    setup_bag(game, [])
+    game.put("wPlayerMoney", money_bytes(400))
+    vending_menu(game)
+    assert game.visible_text().splitlines()[16].strip() == "START INFO"
+    game.press(START)
+    for row, hp in enumerate((50, 60, 80)):
+        if row:
+            game.press(DOWN)
+        _, price, name, *_ = DRINKS[row]
+        shows(game, name, f"{hp} HP", "B BACK")
+        lines = game.visible_text().splitlines()
+        assert name in lines[12] and str(price) in lines[6 + 2 * row], lines
+        assert game.get("wCurrentMenuItem") == row
+    game.press(DOWN)  # CANCEL is outside the three-drink comparison.
+    game.tick(18)
+    game.press(A)
+    shows(game, "LEMONADE", "80 HP")
+    game.press(B)
+    shows(game, "START INFO", "CANCEL")
+    assert game.get("wCurrentMenuItem") == 2
+    assert_bag(game, [])
+    assert game.get_bytes("wPlayerMoney", 3) == money_bytes(400)
+    game.press(DOWN)
+    game.wait(lambda: game.get("wCurrentMenuItem") == 3)
+    game.tick(24)
+    assert "START INFO" not in game.visible_text()
+    game.press(START)
+    game.tick(30)
+    assert "B BACK" not in game.visible_text()
+    game.press(UP)
+    shows(game, "START INFO")
+    game.press(A)
+    finish(game, ("popped out",))
+    assert_bag(game, [(DRINKS[2][0], 1)])
+    assert game.get_bytes("wPlayerMoney", 3) == money_bytes(50)
+
+
 def check_vending(library, boot, rom, *, core):
     with Game(library, boot, rom) as game:
         enter_roof(game, 10, 2)
+        check_drink_info(game)
         for row, (drink, price, _, _, _) in enumerate(DRINKS):
             for cash in (0, price - 1, price, price + 1):
                 setup_bag(game, [])

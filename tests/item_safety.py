@@ -27,7 +27,7 @@ def check_bag_toss(game):
     shows(game, "EXP", "ALL")
     game.tick(12)
     game.press(A)
-    shows(game, "USE", "TOSS")
+    shows(game, "TOSS")
     game.tick(8)
     game.press(DOWN)
     game.press(A)

@@ -248,7 +248,7 @@ WildDataPointers:
 	dw NothingWildMons
 	dw NothingWildMons
 	dw NothingWildMons
-IF DEF(_POKERGB_CORE)
+IF DEF(_MOVE_DELETER)
 	dw NothingWildMons ; FUCHSIA_MOVE_DELETERS_HOUSE
 ENDC
 	assert_table_length NUM_MAPS

@@ -200,10 +200,14 @@
 
 DEF NUM_POKEMON_INDEXES EQU const_value - 1
 
-; starters
+; Starter balls from left to right in Oak's Lab.
 DEF STARTER1 EQU CHARMANDER
 DEF STARTER2 EQU SQUIRTLE
 DEF STARTER3 EQU BULBASAUR
+ASSERT STARTER1 != STARTER2 && STARTER2 != STARTER3 && STARTER3 != STARTER1, "Choose three different starters."
+FOR n, 1, 4
+	ASSERT STARTER{d:n} >= 1 && STARTER{d:n} <= NUM_POKEMON_INDEXES, "Invalid starter species."
+ENDR
 
 ; ghost Marowak in Pokémon Tower
 DEF RESTLESS_SOUL EQU MAROWAK

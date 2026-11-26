@@ -39,21 +39,10 @@ FuchsiaMoveDeleterText:
 	and a
 	ld hl, .onlyMoveText
 	jr z, .done
-	ld hl, .whichMoveText
-	call PrintText
-	ld a, 2 ; party member's move list with PP and B to cancel
-	ld [wMoveMenuType], a
-	xor a
-	ld [wPlayerMoveListIndex], a
-	callfar MoveSelectionMenu
+	farcall ChooseMoveToDelete
+	jr c, .chooseMon
+	ld a, [wMoveInfoSlot]
 	push af
-	call LoadScreenTilesFromBuffer2
-	pop af
-	jr nz, .chooseMon
-	ld a, [wPlayerMoveListIndex]
-	push af
-	xor a
-	ld [wPlayerMoveListIndex], a
 	call GetPartyMonName2
 	call CopyToStringBuffer
 	call .partyMoves
@@ -128,10 +117,6 @@ FuchsiaMoveDeleterText:
 	text "Which #MON"
 	line "should forget"
 	cont "a move?"
-	prompt
-.whichMoveText
-	text "Which move should"
-	line "be forgotten?"
 	prompt
 .onlyMoveText
 	text_ram wStringBuffer

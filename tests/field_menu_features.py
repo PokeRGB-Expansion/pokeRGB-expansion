@@ -191,7 +191,7 @@ def check_complete_index(game):
 def check_rod(game, rod):
     game.new_game()
     seed_party(game)
-    game.put("wNumBagItems", (1, rod, 1, 0xff))
+    game.put("wNumBagItems", (2, rod, 1, 6, 1, 0xff))
     game.put("wRegisteredItemTag", (0xd6, 6))  # existing Bicycle registration
     shore(game)
     game.press(START)
@@ -200,12 +200,15 @@ def check_rod(game, rod):
     game.tick(12)
     game.press(A)
     shows(game, {0x4c: "OLD ROD", 0x4d: "GOOD ROD", 0x4e: "SUPER ROD"}[rod], "CANCEL")
+    assert game.visible_text().splitlines()[7].strip() == "SELECT"  # Bicycle
     game.press(A)
     shows(game, "REGISTER")
     game.press(DOWN)
     game.tick(12)
     game.press(A)
     game.wait(lambda: game.get("wRegisteredItem") == rod)
+    game.wait(lambda: game.visible_text().splitlines()[5].strip() == "SELECT")
+    assert "SELECT" not in game.visible_text().splitlines()[7]
     game.tick(20)
     game.press(B)
     shows(game, "OPTION")

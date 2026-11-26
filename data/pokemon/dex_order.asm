@@ -191,3 +191,4 @@ PokedexOrder:
 	db DEX_WEEPINBELL
 	db DEX_VICTREEBEL
 	assert_table_length NUM_POKEMON_INDEXES
+.end

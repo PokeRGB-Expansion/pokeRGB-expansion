@@ -502,15 +502,26 @@ IsPokemonBitSet:
 	and a
 	ret
 
-; function to display pokedex data from outside the pokedex
-ShowPokedexData:
+LoadExternalDexScreen:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call UpdateSprites
-	callfar LoadPokedexTilePatterns ; load pokedex tiles
+	farjp LoadPokedexTilePatterns
 
-; function to display pokedex data from inside the pokedex
+; Oak shows a full entry without changing the player's seen or owned flags.
+StarterDex:
+	call LoadExternalDexScreen
+	ld b, 1
+	jr DrawPokedexEntry
+
+ShowPokedexData:
+	call LoadExternalDexScreen
 ShowPokedexDataInternal:
+	ld b, 0 ; outside the lab, only owned species have full entries
+DrawPokedexEntry:
+	ldh a, [hTileAnimations]
+	push af
+	push bc ; remember the lab preview until the picture and cry have finished
 	ld hl, wStatusFlags2
 	set BIT_NO_AUDIO_FADE_OUT, [hl]
 	ld a, $33 ; 3/7 volume
@@ -524,8 +535,6 @@ ShowPokedexDataInternal:
 	call RunPaletteCommand
 	pop af
 	ld [wPokedexNum], a
-	ldh a, [hTileAnimations]
-	push af
 	xor a
 	ldh [hTileAnimations], a
 
@@ -624,9 +633,10 @@ ShowPokedexDataInternal:
 	pop bc
 	pop af
 
-	ld a, c
-	and a
-	jp z, .waitForButtonPress ; if the pokemon has not been owned, don't print the height, weight, or description
+	ld a, c ; owned bit
+	pop bc
+	or b ; or a full lab preview
+	jp z, .waitForButtonPress
 	inc de ; de = address of feet (height)
 	ld a, [de] ; reads feet, but a is overwritten without being used
 	hlcoord 12, 6

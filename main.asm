@@ -292,11 +292,6 @@ SECTION "Saffron Guards", ROMX
 INCLUDE "engine/events/saffron_guards.asm"
 
 
-SECTION "Starter Dex", ROMX
-
-INCLUDE "engine/events/starter_dex.asm"
-
-
 SECTION "Hidden Events 3", ROMX
 
 INCLUDE "engine/pokemon/set_types.asm"

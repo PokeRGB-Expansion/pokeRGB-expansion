@@ -357,13 +357,24 @@ StartMenu_Item::
 	jp c, .useItem_closeMenu
 	jp ItemMenuLoop
 .otherItem
+IF DEF(_POKERGB_CORE)
+	ld a, [wCurItem]
+	cp EXP_ALL
+	jr nz, .useToss
+	farcall DrawExpAllActions
+	ld c, 9
+	jr .actionCursor
+.useToss
+ENDC
 	ld a, USE_TOSS_MENU_TEMPLATE
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
+	ld c, 14
+.actionCursor
 	ld hl, wTopMenuItemY
 	ld a, 11
 	ld [hli], a ; top menu item Y
-	ld a, 14
+	ld a, c
 	ld [hli], a ; top menu item X
 	xor a
 	ld [hli], a ; current menu item ID

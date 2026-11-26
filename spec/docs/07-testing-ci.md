@@ -154,6 +154,8 @@ The [GitHub workflow](../../.github/workflows/main.yml) runs on pushes to `maste
 | Release verification | Check the five pristine upstream hashes, rebuild from clean inputs, reapply all six public patches and test imports from the named older games. For all nine ordered Core cable pairs, pass `--all-link-pairs` to the runner. For Minimal, run [the cable test](../../tests/link_cable_smoke.py) directly on the selected pair and room. |
 | Future features | Extend tests for new content, build options and hardware claims as those features become available. |
 
+In a downstream repository, GitHub builds both presets and runs the [author checks](../../tests/author_checks.py) on Linux. They read that hack’s teams and starters from the built game. The `POKERGB_TEST_SUITE` repository variable accepts `author` or `reference`. PokéRGB itself defaults to the reference suite. The reference suite also tests author edits, including the lab and a real Route 3 battle, the Move Deleter option in both directions, and errors for invalid encounters and clipped descriptions. [Author walkthrough](../research/starter-and-trainer-authoring.md) · [Build option tests](../../tests/author_build_options.py)
+
 The spec validator checks local links, anchors and research records. Assembly checks and sample hacks cover selected game-data references. Rebuilding twice from clean inputs is a separate release check.
 
 Pin tool/emulator versions and CI actions by revision. Preserve test binaries privately or as permitted by the release policy, symbols, map summaries, inputs and failure traces. Do not upload consumer ROMs as routine build artifacts without an explicit distribution decision.
