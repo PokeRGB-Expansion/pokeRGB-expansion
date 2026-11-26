@@ -1,8 +1,9 @@
 # Specification changelog
 
-## Game release 0.3.0
+## Game release 0.3.0 — 2026-11-26
 
-- [Player-facing changes](docs/16-game-changes.md) cover the v0.2.0 sweep, the Core field EXP. ALL switch, Fuchsia Move Deleter and Quick battle pace.
+- All six public patches reproduced the tested builds byte for byte. All 18 release checks passed. [Downloads and checksums](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases/tag/v0.3.0) · [CI run](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/actions/runs/45791157984)
+- The [player guide](docs/16-game-changes.md) covers the shared field, menu and battle improvements and Core's EXP. ALL switch, Fuchsia Move Deleter and Quick battle pace.
 - D65 and D66 settle the new preset choices and defer individual move history to Extended. Historical research records retain the alternatives and original reproduction steps.
 
 ## Earlier game releases
