@@ -2,6 +2,8 @@
 
 The fixes and smaller improvements below are accepted for the listed presets, including the lower-priority alphabetical Pokédex view. They are included in v0.3.0. The original comparison and reproduction results below refer to v0.2.0. D65 also adds the Core field EXP. ALL switch. [Decision follow-up and new evidence](exp-pacing-and-move-services.md) The comparisons below use the [v0.2.0 source](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/tree/v0.2.0). Cartridge checks used SameBoy 1.0.5, isolated saves or new games, and controlled starting states where needed. Some checks used Red only. No physical hardware test was part of this review.
 
+For the next review, see the [proposals based on the released v0.3.0 games](v030-core-candidates.md).
+
 ## Fixes and information worth adding first
 
 | Candidate | Presets | What happens now and what should change |

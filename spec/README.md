@@ -1,6 +1,8 @@
 # PokéRGB Expansion
 
-**PokéRGB Expansion is a buildable foundation for English Generation I ROM hacks.** Core and Minimal each build Red, Blue and Green. This specification tracks the game source. Version 0.1.48 was the original implementation baseline. Older measurements, rejected alternatives and donor comparisons are retained under `research/`. For current behavior, start with the [player guide](docs/16-game-changes.md) or [build instructions](../README.md#build).
+**Core and Minimal each build English Red, Blue and Green.** To see what changes in play, start with the [player guide](docs/16-game-changes.md). To make a hack, start with the [build instructions](../README.md#build) and [first three edits](../README.md#make-your-first-hack).
+
+These documents track the game source. The [changelog](CHANGELOG.md) lists game releases separately from the earlier specification revisions, which ended at 0.1.48. The research files retain the measurements and alternatives behind each decision.
 
 ## Charter
 
@@ -11,8 +13,8 @@ Give hack authors a dependable Red/Blue engine for both small edits and new adve
 | Preset | Scope |
 |---|---|
 | **Minimal** | Preserves battle rules, team-building costs and progression choices. Includes accurate feedback, save safeguards and shortcuts to actions the player already qualifies for. |
-| **Core** | Adds evidenced corrections and selected conveniences. It fixes Focus Energy, keeps original critical-hit and trapping rules, and offers a Fuchsia Move Deleter, field EXP. ALL switch and optional Quick battle pace. |
-| **Extended** | Planned developer features include larger rosters, additional types, and a Party-menu Move Reminder with per-Pokémon move history. There is no Extended build target. |
+| **Core** | Fixes documented bugs and adds selected conveniences. It fixes Focus Energy, keeps original critical-hit and trapping rules, and offers a Fuchsia Move Deleter, field EXP. ALL switch and optional Quick battle pace. |
+| **Extended** | Planned developer features include larger rosters, additional types, and a Move Reminder in the party menu that remembers moves each Pokémon has learned. There is no Extended build target. |
 
 Both released presets keep the twenty-slot Bag and manual box selection. An author can independently select the two [battle displays](research/battle-hud-displays.md). Automatic box overflow, direct box-to-box moves and wide species IDs remain future options. [Feature catalog](docs/14-features-and-extensions.md)
 

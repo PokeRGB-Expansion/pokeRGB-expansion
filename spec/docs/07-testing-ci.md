@@ -131,23 +131,22 @@ The release records state which of these checks apply to the released source and
 
 ## CI and release jobs
 
-GitHub Actions builds both presets and all three colors on Linux and macOS. Linux runs the game tests in eight groups per preset. macOS checks color data and the spec. A normal CI run checks one ordered Core cable pairing. Use `--all-link-pairs` in release testing for all nine. Run pristine-ROM and cross-version save tests with the matching reference inputs. The table also lists checks to add when optional systems become available. [Workflow](../../.github/workflows/main.yml)
+The [GitHub workflow](../../.github/workflows/main.yml) runs on pushes to `master`, pull requests and manual requests. Both platforms build Red, Blue and Green with RGBDS 1.0.4. The [test runner](../../tests/run.py) lists the exact cases.
 
-| Job | Frequency | Purpose |
-|---|---|---|
-| Documentation/data validation | Every change | Links, record IDs, invalid species/move/type references, table terminators and build selections |
-| Linux clean builds | Every code change | Red/Blue/Green, isolated objects, warnings, link maps and reproducibility |
-| Default core and customization example | Optional-system changes and release | Build without optional gameplay systems; check the protected contract and a documented small data edit |
-| Focused regressions plus protected mechanics | Every relevant code change | Defect-specific cases and shared behavior guards |
-| macOS build | Release and build/tooling changes; every change if affordable | Detect supported-platform drift |
-| Two-endpoint link suite | Battle/link changes and release | Detect shared-state and RNG mismatch |
-| Extended adventure/hardware-mode suite | Release; scheduled only once an implementation schedule is chosen | Broader integration and presentation coverage |
+| Where | What runs |
+|---|---|
+| Linux CI | Eight groups per preset run the emulator and source checks. Core also tests a Red/Green cable trade and battle, and sample hacks with changed move data, trainer dialogue and name tables. |
+| macOS CI | Each preset has one job that builds the three colors, checks reference color data and validates the spec. |
+| Release verification | Check the five pristine upstream hashes, rebuild from clean inputs, reapply all six public patches and test imports from the named older games. For all nine ordered Core cable pairs, pass `--all-link-pairs` to the runner. For Minimal, run [the cable test](../../tests/link_cable_smoke.py) directly on the selected pair and room. |
+| Future features | Extend tests for new content, build options and hardware claims as those features become available. |
+
+The spec validator checks local links, anchors and research records. Assembly checks and sample hacks cover selected game-data references. Rebuilding twice from clean inputs is a separate release check.
 
 Pin tool/emulator versions and CI actions by revision. Preserve test binaries privately or as permitted by the release policy, symbols, map summaries, inputs and failure traces. Do not upload consumer ROMs as routine build artifacts without an explicit distribution decision.
 
 Adding an optional system must keep the default builds working. Test its disabled state against the accepted core behavior. Test each advertised enabled configuration separately, with its declared dependencies. Developer tools and presentation features must not need expanded species or modern battle rules unless a specific feature depends on them.
 
-Test the stock active-box gate in Minimal and Core. Test automatic placement separately with direct MOVE POKÉMON both on and off. Include eligible catches and gifts, the first box switch, the last unsaved arrival, interrupted saves, and link trades. [Storage cases](../research/box-overflow-contract.md) · [Distinct save paths](../research/storage-policy-and-code.md)
+Test the stock active-box gate in Minimal and Core. When automatic placement is implemented, test it separately with direct MOVE POKÉMON both on and off. Include eligible catches and gifts, the first box switch, the last unsaved arrival, interrupted saves, and link trades. [Storage cases](../research/box-overflow-contract.md) · [Distinct save paths](../research/storage-policy-and-code.md)
 
 For an alternative trainer AI or random-number generator, test the original path and the alternative separately. Compare trainer decisions and generator state/output under controlled initial state and inputs. Exercise the actual routines: supplied random bytes test battle calculations, but do not prove that the generator itself is unchanged. When an unrelated feature is advertised as independent, include a build using that feature with the baseline AI and generator.
 

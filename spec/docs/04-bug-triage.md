@@ -19,7 +19,7 @@ These records are examples from the complete Core inventory. The [roadmap](09-ro
 
 | ID | Exact issue | Evidence / disposition | Required display check |
 |---|---|---|---|
-| RGB-010c | Oak's 60–69-owned-species Pokédex rating misspells getting as geting. | P2; source-confirmed; spelling correction accepted for Core. [E82](../research/evidence.md#e82), [PN-005](13-playthrough-intake.md#pn-005) | Correct the word and reflow as needed. Check the PC, Oak's Lab, and Hall of Fame display paths; preserve rating thresholds, other text, and game behavior. |
+| RGB-010c | Oak's 60–69-owned-species Pokédex rating misspells getting as geting. | P2. Both presets correct this source-confirmed typo. [E82](../research/evidence.md#e82), [PN-005](13-playthrough-intake.md#pn-005) | Correct the word and reflow as needed. Check the PC, Oak's Lab, and Hall of Fame display paths; preserve rating thresholds, other text, and game behavior. |
 
 ## Accepted item-safety safeguard
 

@@ -1,164 +1,32 @@
-# Instructions
+# Build PokéRGB Expansion
 
-These instructions explain how to set up the tools required to build **PokéRGB Expansion**, including [**rgbds**](https://github.com/gbdev/rgbds), which assembles the source files into a ROM.
+The game builds with Git, GNU Make, a C17 compiler and RGBDS 1.0.4. RGBDS assembles the game and converts its graphics. To play a released version, follow the [patch instructions](README.md#play-a-release).
 
-If you run into trouble, ask for help on IRC or Discord (see [README.md](README.md)).
+## Set up the tools
 
+- **macOS.** Install Apple’s command line tools with `xcode-select --install` if needed. They include Git, Make and the compiler. Use the macOS download for RGBDS 1.0.4. If building RGBDS from source with Homebrew, the [project workflow](.github/workflows/main.yml) lists the required packages and Bison path.
+- **Linux.** Install Git, GNU Make, and GCC or Clang. On Debian or Ubuntu, run `sudo apt update` and `sudo apt install git build-essential`. On openSUSE, use `sudo zypper install git make gcc`. On Arch, use `sudo pacman -S git make gcc`. Use the RGBDS 1.0.4 Linux download on x86-64, or build that version from source for your system.
+- **Windows with WSL.** Install WSL and open its Linux terminal. Follow the Linux steps for your distribution. Build in your WSL home directory for faster access. To open that directory in Windows File Explorer, run `explorer.exe .` in WSL. [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) · [Working with WSL files](https://learn.microsoft.com/en-us/windows/wsl/filesystems)
+- **Windows with Cygwin.** In the Cygwin installer’s Select Packages screen, choose `git`, `make` and `gcc-core`. Extract the matching RGBDS 1.0.4 Windows archive. Add the directory with the four EXE files to your path, or pass its Cygwin path with `RGBDS` as shown below. Run the build in the Cygwin terminal. For older Windows versions, check which Cygwin installer supports your system. [Cygwin](https://www.cygwin.com/)
+- **Android with Termux.** Install the build tools with `pkg install git make clang sed rgbds`. Check the installed version with `rgbasm --version`. If your package manager supplies a different version, build RGBDS 1.0.4 from source. [Termux package](https://github.com/termux/termux-packages/blob/master/packages/rgbds/build.sh)
 
-## Windows 10, 11, or newer
+Install all four RGBDS programs together. Run `rgbasm --version` to check the version on your path. If you keep the programs in another directory, use the local-tool option below. The RGBDS source build has additional dependencies, including libpng. [RGBDS 1.0.4 downloads and source](https://github.com/gbdev/rgbds/releases/tag/v1.0.4) · [RGBDS installation instructions](https://rgbds.gbdev.io/install)
 
-Download and install [**Windows Subsystem for Linux**](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Then open the **WSL terminal**.
+## Build the game
 
-Update WSL's software before continuing. If you chose Debian, Ubuntu, or another distribution that uses `apt-get`, then enter this command:
-
-```bash
-apt-get update && apt-get upgrade
-```
-
-WSL has its own file system that's not accessible from Windows, but Windows files *are* accessible from WSL. So you're going to want to install pokered within Windows. You'll have to change the **current working directory** every time you open WSL.
-
-For example, if you want to store the source in **C:\Users\\*\<user>*\Desktop**, enter this command:
-
-```bash
-cd /mnt/c/Users/<user>/Desktop
-```
-
-(The Windows `C:\` drive is called `/mnt/c/` in WSL. Replace *\<user>* in the example path with your username.)
-
-If this works, then follow [the instructions for **Linux**](#linux) below for whatever distribution you installed for WSL.
-
-Otherwise, continue reading below for [the older Windows instructions](#windows-8-or-older).
-
-
-## Windows 8 or older
-
-Download [**Cygwin**](http://cygwin.com/install.html): **setup-x86_64.exe** for 64-bit Windows, **setup-x86.exe** for 32-bit.
-
-Run setup and leave the default settings. At the "**Select Packages**" step, choose to install the following, all of which are in the "**Devel**" category:
-
-- `make`
-- `git`
-- `gcc-core`
-
-Double click on the text that says "**Skip**" next to each package to select the most recent version to install.
-
-Then follow the [**rgbds** install instructions](https://rgbds.gbdev.io/install#pre-built) for Windows with Cygwin to install **rgbds 1.0.4**.
-
-**Note:** If you already have an installed rgbds older than 1.0.0, you will need to update to 1.0.4. Ignore this if you have never installed rgbds before. If a version newer than 1.0.4 does not work, try downloading 1.0.4.
-
-Now open the **Cygwin terminal** and enter the following commands.
-
-Cygwin has its own file system that's within Windows, at **C:\cygwin64\home\\*\<user>***. If you don't want to store the source there, you'll have to change the **current working directory** every time you open Cygwin.
-
-For example, if you want to store the source in **C:\Users\\*\<user>*\Desktop**:
-
-```bash
-cd /cygdrive/c/Users/<user>/Desktop
-```
-
-(The Windows `C:\` drive is called `/cygdrive/c/` in Cygwin. Replace *\<user>* in the example path with your username.)
-
-Now you're ready to [build **PokéRGB Expansion**](#build-pokérgb-expansion).
-
-
-## macOS
-
-Install [**Homebrew**](https://brew.sh/). Follow the official instructions.
-
-Open **Terminal** and prepare to enter commands.
-
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#pre-built) for macOS to install **rgbds 1.0.4**.
-
-Now you're ready to [build **PokéRGB Expansion**](#build-pokérgb-expansion).
-
-
-## Linux
-
-Open **Terminal** and enter the following commands, depending on which distro you're using.
-
-### Debian or Ubuntu
-
-To install the software required for **PokéRGB Expansion**:
-
-```bash
-sudo apt-get install make gcc git
-```
-
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 1.0.4** from source.
-
-### OpenSUSE
-
-To install the software required for **PokéRGB Expansion**:
-
-```bash
-sudo zypper install make gcc git
-```
-
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 1.0.4** from source.
-
-### Arch Linux
-
-To install the software required for **PokéRGB Expansion**:
-
-```bash
-sudo pacman -S make gcc git rgbds
-```
-
-If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 1.0.4** from source.
-
-### Termux
-
-To install the software required for **PokéRGB Expansion**:
-
-```bash
-pkg install make clang git sed
-```
-
-To install **rgbds**:
-
-```bash
-pkg install rgbds
-```
-
-If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 1.0.4** from source.
-
-### Other distros
-
-If your distro is not listed here, try to find the required software in its repositories:
-
-- `make`
-- `gcc` (or `clang`)
-- `git`
-- `rgbds`
-
-If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 1.0.4** from source.
-
-Now you're ready to [build **PokéRGB Expansion**](#build-pokérgb-expansion).
-
-
-## Build PokéRGB Expansion
-
-To download the **PokéRGB Expansion** source files:
-
-```bash
+```sh
 git clone https://github.com/PokeRGB-Expansion/pokeRGB-expansion.git
 cd pokeRGB-expansion
 ```
 
-If you cloned with GitHub CLI, run `gh repo set-default --view` from the checkout. If it shows `pret/pokered`, run `gh repo set-default PokeRGB-Expansion/pokeRGB-expansion`. If you are developing in your own fork, set the default to that fork.
+If your system provides only Clang, including a Termux setup without a `gcc` command, first run `make -C tools CC=clang` here. Then build all three Core games.
 
-To build the Core reference colors:
-
-```bash
-make
+```sh
+make -j4
 ```
 
-The Red, Blue, and Green outputs are in `build/core/`. Use `make PRESET=minimal` for the Minimal builds in `build/minimal/`. Add `red`, `blue`, or `green` to build one color.
+Open `build/core/pokered.gbc`, `pokeblue.gbc` or `pokegreen.gbc` in a Game Boy emulator. Use `make -j4 PRESET=minimal` for all three Minimal games in `build/minimal/`. Add a color to build just that game, for example `make -j4 PRESET=minimal green`.
 
-### Build with a local rgbds version
+To use a local copy of RGBDS, pass the directory containing `rgbasm`, `rgblink`, `rgbfix` and `rgbgfx` with a trailing slash. For example, use `make -j4 RGBDS=/path/to/rgbds-1.0.4/`.
 
-If you have different projects that require different versions of `rgbds`, it might not be convenient to install rgbds 1.0.4 globally. Instead, you can put its files in a directory in the project, such as `rgbds-1.0.4/`. Then specify it when you run `make`:
-
-```bash
-make RGBDS=rgbds-1.0.4/
-```
+If you use GitHub CLI to open issues or pull requests, run `gh repo set-default --view` in your checkout. Set the project as the default with `gh repo set-default PokeRGB-Expansion/pokeRGB-expansion`, or choose your own fork if you intend to work there. [Make your first hack](README.md#make-your-first-hack)

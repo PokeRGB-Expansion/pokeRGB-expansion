@@ -101,7 +101,7 @@ A downstream edition is a choice of content and rules independent of game color.
 
 The [build and test guide](../../README.md) covers a first content edit and the full cartridge suite. Each script in `tests/` can also run independently.
 
-Select color, product preset, and release/debug mode independently. Core is the default preset. Keep gameplay repairs small enough that Minimal can select the original rule from the same tree. Add a build switch when the second supported behavior needs it. Validate each supported selection before assembly. A debug build should expose enough battle state to reproduce a bug while keeping debug controls out of release builds. Recheck important scenarios in the normal release build; debug hooks can change timing or memory use.
+Both presets build all three release colors. For a debug build, use `make blue_debug` and choose the preset with `PRESET`. Core is the default. Keep gameplay repairs small enough that Minimal can select the original rule from the same tree. Add a build switch when the second supported behavior needs it. Validate each supported selection before assembly. A debug build should expose enough battle state to reproduce a bug while keeping debug controls out of release builds. Recheck important scenarios in the normal release build; debug hooks can change timing or memory use.
 
 Add diagnostics in small steps:
 
@@ -151,13 +151,13 @@ Normal is the initial setting for Core. Any future CGB-only acceleration must de
 
 ## STATS view and return context
 
-D26 requires one navigation contract across the existing STATS pages. Keep the selected Pokémon and selected page separate. A caller provides its data context, valid list, selection, scroll position, and return destination. A small page table is a proposal that lets a developer add a page without replacing the controls. The default retains the existing two pages; DV/stat EXP views remain extension examples.
+Both presets share the same two STATS pages and navigation controls. To add a page, append its drawing routine to `StatusScreen.pageTable`. The table length sets the number of pages. Keep the moves page second because START uses that page to open move INFO. A new page inherits Left/Right page navigation, Up/Down Pokémon selection where the caller allows it, and B to return. [STATS controller](../../engine/pokemon/status_screen.asm)
 
-The source has party, PC, battle, and trade callers. Preserve each caller's allowed data and action state. A common controller must not turn browsing into a transfer, release, battle switch, or trade choice. PC action menus currently overwrite shared list cursor state, so preserve browsing context before entering them. Protect the original medicine flow while changing shared menu helpers. See the [source audit](../research/menu-navigation.md) and [regressions](07-testing-ci.md#stats-and-menu-regression-coverage).
+Party, PC, battle and trade callers have different rules for which Pokémon can be viewed. Preserve each caller’s list position and permitted actions. Leaving STATS must return the player to the relevant list without transferring, releasing, switching or trading a Pokémon. See the [source audit](../research/menu-navigation.md) and [regressions](07-testing-ci.md#stats-and-menu-regression-coverage).
 
 ## Move INFO and optional battle information
 
-Use one read-only move lookup for machines, known moves and learning offers. Pass the move ID and, for a known move, the correct party, box or battle slot. Display the active preset’s data and effect descriptions. The live type overlay is an independent author feature. [Controls and acceptance cases](15-battle-information.md)
+Use one read-only move lookup for machines, known moves and learning offers. Pass the move ID and, for a known move, the correct party, box or battle slot. Display the active preset’s data and effect descriptions. The live type overlay is a planned author option. [Controls and acceptance cases](15-battle-information.md)
 
 ## Optional item capacity
 

@@ -48,7 +48,7 @@ Record actual steps instead of broad labels such as “softlocks” or “Transf
 
 ## Typo corrections
 
-Unambiguous spelling and typing errors belong in Core. Correct the smallest amount of text needed. Preserve meaning, character voice, puns, deliberate informal speech, and game terms. Record each confirmed error and check its layout and shared uses. Reflow lines when a corrected word needs more space. A display check is sufficient for a spelling-only repair; a new game test harness is not required.
+Both presets correct unambiguous spelling and typing errors. Correct the smallest amount of text needed. Preserve meaning, character voice, puns, deliberate informal speech, and game terms. Record each confirmed error and check its layout and shared uses. Reflow lines when a corrected word needs more space. A display check is sufficient for a spelling-only repair; a new game test harness is not required.
 
 Minimal preserves the characters’ original writing. For an accepted typo or false statement, correct the affected words or use an existing line that fits. A prompt for a new control, such as pressing A to Cut, belongs to that action. A mechanic that works as designed needs no new lesson from an NPC. Document its rules in the guide when an explanation helps. [Day Care example](../research/day-care-history.md)
 
@@ -72,7 +72,7 @@ For an invalid-state fix, preserve valid-state behavior. For example, stopping S
 
 The default data contract and explicitly accepted features govern inclusion in the core. SELECT item registration is an accepted default usability feature, not a claim that the original control scheme is a bug. It keeps the Bicycle's acquisition, speed, and use restrictions. The checks below are a proposed review method for other features. They do not prescribe the rules of downstream games or narrow the expansion mission.
 
-The [Core and Extensions guide](14-features-and-extensions.md) records defaults and supported choices. Both faithful presets keep manual box selection. Direct MOVE POKÉMON and automatic placement are independent build options.
+The [Core and Extensions guide](14-features-and-extensions.md) records defaults and supported choices. Both faithful presets keep manual box selection. Direct MOVE POKÉMON and automatic placement are planned as separate author options.
 
 Judge a change by its effect on the game's meaningful constraints and choices. Neither a small patch nor the labels “quality of life” and “basic usability” establish that it belongs in the default core. More options do not by themselves improve a game.
 

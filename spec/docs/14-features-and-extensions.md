@@ -38,7 +38,7 @@ A preset chooses the game’s defaults at build time. Authors can edit shared da
 
 For a new proposal, record what a player can do, what the opponent can do, and the result in each preset. **Minimal** preserves the outcome of the same gameplay choices from the same state with the same random inputs. Keep the original generator, roll triggers, and interpretation of each roll. Text and animation timing may differ during play. Correcting information a player sees can qualify even if it influences their next choice.
 
-**Core** accepts evidenced repairs and selected improvements that keep the character of Gen 1. **Extended** offers additional systems to authors. Minimal also includes eligible action shortcuts such as contextual HMs and a registered Bicycle or fishing rod. For a disputed shortcut, compare what the player can do, when, at what cost, and how the opponent can respond. [Minimal examples](../research/minimal-action-review.md)
+**Core** accepts evidenced repairs and selected improvements that keep the character of Gen 1. **Extended** is the planned set of additional systems for authors. Minimal also includes eligible action shortcuts such as contextual HMs and a registered Bicycle or fishing rod. For a disputed shortcut, compare what the player can do, when, at what cost, and how the opponent can respond. [Minimal examples](../research/minimal-action-review.md)
 
 ## Core
 
@@ -138,7 +138,7 @@ Support the default, each feature alone, and both together. Test each before adv
 
 Repel renewal is an accepted optional extension and stretch goal. When enabled by a developer, expiry can offer another of the same Repel kind if one remains. Confirmation consumes one item; cancellation leaves the expired state. Preserve the original durations, leading-Pokémon level rule, and expiry timing. Remember the kind used rather than guessing from the remaining counter, and verify save/reload behavior for that state. No new player setting or Core requirement follows from this extension. [E87](../research/evidence.md#e87)
 
-The Core STATS controller must support additional pages with the same controls. DV and stat EXP views are possible later developer pages; neither is added to the default display. Tests may use a temporary page to verify this boundary without delivering an information extension.
+Authors can append a STATS page in either preset. A downstream page could show DVs or stat experience. The reference games keep the two original pages. [Adding a page](02-architecture.md#stats-view-and-return-context)
 
 ## Build and documentation structure
 

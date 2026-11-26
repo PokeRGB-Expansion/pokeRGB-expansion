@@ -2,7 +2,7 @@
 
 ## Build identity
 
-Select game color separately from product preset and release/debug mode. Within each supported preset and feature configuration, Green uses Blue gameplay. Build only the combinations advertised for that release. Include color, preset, and selected features in the build record and keep their generated objects separate.
+Choose Red, Blue or Green with either preset. The separate debug target builds Blue. Within each supported preset and feature configuration, Green uses Blue gameplay. Build only the combinations advertised for that release. Include color, preset, and selected features in the build record and keep their generated objects separate.
 
 | Build | Gameplay data | Visual identity | Language |
 |---|---|---|---|
@@ -30,7 +30,7 @@ The `red`, `blue`, and `green` targets write `pokered.gbc`, `pokeblue.gbc`, and 
 
 Reuse the shared engine and shared graphics inputs, with variant-safe dependency tracking. A source or asset change must invalidate the correct objects for every target. Build in isolated per-target directories or fix shared generated-file races. Verify clean parallel builds, sequential Red→Green→Blue builds, and rebuilds after a variant-specific edit.
 
-Keep Blue debug support available during development. A Green debug build is useful after its visual overrides exist, but it is not a fourth consumer release or separate engine.
+Use `make blue_debug PRESET=core` or `make blue_debug PRESET=minimal` for Blue with the upstream debug features.
 
 ## Gameplay differences to preserve
 

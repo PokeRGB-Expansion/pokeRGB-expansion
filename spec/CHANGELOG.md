@@ -1,5 +1,9 @@
 # Specification changelog
 
+## Documentation after v0.3.0
+
+The [player guide](docs/16-game-changes.md) explains preset differences and the [README](../README.md#play-a-release) shows which patch to use. The [feature review](research/v030-core-candidates.md) records proposals for the next round.
+
 ## Game release 0.3.0 — 2026-11-26
 
 - All six public patches reproduced the tested builds byte for byte. All 18 release checks passed. [Downloads and checksums](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases/tag/v0.3.0) · [CI run](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/actions/runs/45791157984)

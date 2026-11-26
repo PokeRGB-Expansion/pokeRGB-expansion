@@ -110,7 +110,7 @@ In both presets, press A at a valid target and confirm Cut, Surf or Strength. A 
 
 **Acceptance:** test one-member and full parties; one-entry and full/scrolled boxes; first/last entries; both pages; B from each page; page retention when changing Pokémon; and returning to the correct highlighted entry. Test empty contexts without reading nonexistent entries. A temporary third page must use the same controls. Protect battle replacement rules and trade context. Browsing must not transfer, release, switch, or alter Pokémon data.
 
-**Delivery:** The directional controls work across the original STATS pages. [Cartridge checks](../../tests/cartridge_smoke.py) · [Menu inventory](../research/menu-navigation.md)
+**Delivery:** Both presets use the shared controller for the two stock pages. A separate SameBoy 1.0.5 check added a third page to v0.3.0 Red Core and Red Minimal. Left and Right wrapped across all three pages, Down kept the third page on the next Pokémon, START still opened move INFO on page two, and A or B closed the final page. CI tests the two shipped pages. [Controller and author instructions](02-architecture.md#stats-view-and-return-context) · [Cartridge checks](../../tests/cartridge_smoke.py) · [Menu inventory](../research/menu-navigation.md)
 
 <a id="pn-007"></a>
 

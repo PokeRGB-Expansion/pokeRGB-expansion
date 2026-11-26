@@ -1,19 +1,20 @@
 # What changes when you play?
 
-Minimal preserves Red/Blue’s battle outcomes and team-building choices. Core also repairs mechanics and adds a few choices for players. Both include the menu, information and display improvements below. [Full scope and release checks](09-roadmap.md#what-counts-toward-core)
+Choose **Minimal** for the original Red/Blue battle and team-building rules with clearer menus, displays and safeguards. Choose **Core** if you also want fixes to battle rules and conveniences such as switching EXP. ALL off between battles. Red and Blue keep their version differences. Green plays like Blue in either preset. [Play a release](../../README.md#play-a-release)
 
 ## Battle examples
 
-| Change | What players will notice | Why |
+| Change | Preset | What happens |
 |---|---|---|
-| Focus Energy and Dire Hit | They raise the user’s critical-hit chance. Red/Blue can make it lower. | The original effect runs in the wrong direction. Ordinary critical hits keep their Gen 1 rules. |
-| Blaine’s Super Potion | Blaine no longer spends a potion use and a turn healing a Pokémon at full HP. | At full HP the item restores nothing. His other item rules stay the same. |
-| Damage feedback on two-type targets | The message and sound reflect both types. A weakness and a resistance that cancel give neutral feedback. | Red/Blue can report the effect of only one type even when the damage already accounts for both. |
-| Gust and Ghost attacks | Core makes Gust Flying and Ghost attacks strong against Psychic. Minimal keeps the original type data. | The early Japanese guide supports those two changes. [Evidence](../research/core-rule-precedents.md) |
-| Disable and Struggle | Core forces Struggle when no enabled move has usable PP, including PP Up cases. | An empty counter can retain upgrade bits. Those bits do not grant extra uses. |
-| Thunder and Soul Badges | Thunder boosts Speed. Soul boosts Defense. | This matches what the Gym Leaders tell the player. The original size of the boosts and their stacking rules still apply. |
+| Damage feedback on two-type targets | Both | The message and sound account for both types. If one weakness and one resistance cancel out, you get neutral feedback. The original game could announce only one of the two. |
+| Focus Energy and Dire Hit | Core | Both raise the user’s critical-hit chance. The original calculation can lower it. Ordinary critical hits keep their Gen 1 rules. |
+| Blaine’s Super Potion | Core | At full HP, Blaine takes his normal action and keeps the potion use. |
+| Gust and Ghost attacks | Core | Gust is Flying. Lick deals double damage against a pure Psychic type. Night Shade still deals damage equal to the user’s level. Minimal retains Normal Gust and the original type chart. [Evidence](../research/core-rule-precedents.md) |
+| Disable and Struggle | Core | If all usable moves are out of PP and the only move with PP is disabled, the Pokémon uses Struggle. PP Ups cannot make an empty move selectable. |
+| Thunder and Soul Badges | Core | Thunder boosts Speed and Soul boosts Defense, matching the Gym Leaders’ dialogue. The size of the boosts and the original badge-stacking rules still apply. |
+| New level-one Pokémon on the Medium Slow growth curve | Core | It starts with zero EXP. In Minimal, the original calculation can take it straight to level 100 on a small first award. |
 
-Minimal includes the feedback correction. It keeps the original critical-hit, badge and trainer-item outcomes. A level-one Pokémon on the Medium Slow growth curve also keeps its original experience in Minimal. Core starts it at zero, so a small first award cannot take it straight to level 100. [Battle evidence and acceptance tests](04-bug-triage.md#battle-calculation-and-trainer-repairs)
+[Battle rules and tests](04-bug-triage.md#battle-calculation-and-trainer-repairs)
 
 ## Battle displays
 
@@ -31,8 +32,8 @@ Core also adds **BATTLE PACE** to OPTION. NORMAL is the default. QUICK shortens 
 |---|---|
 | Face a cuttable tree, a usable shore or a pushable boulder | Press A and confirm Cut, Surf or Strength if a party member can use it here. Fly and Flash keep their existing menu commands. |
 | Register a Bicycle or a fishing rod from the Bag | Press SELECT in the field to use the registered item. All three rods work. The shortcut follows the same fishing and riding rules as USE. There is one registration slot. |
-| Reorder a party of two or more in the field | Press SELECT on one Pokémon, move to the other and confirm. B cancels. The explicit SWITCH command also works. |
-| Fill the selected box with six Pokémon in the party | Change boxes at a PC before catching another Pokémon. The box chooser shows how many spaces are occupied. |
+| Reorder a party of two or more in the field | Press SELECT on one Pokémon, move to the other and press A or SELECT to swap them. B cancels. The explicit SWITCH command also works. |
+| Fill both your six-member party and your current box | Change boxes at a PC before catching another Pokémon. The box chooser shows how many spaces are occupied. |
 | Leave the first box change without choosing a box | Your previous save keeps its party and its stored Pokémon. Retail Red/Blue can mark its inactive boxes empty. |
 | Want to forget a move, including an HM | In Core, visit the Move Deleter in the Fuchsia house between the Pokémon Center and Bill’s family. He asks which Pokémon and move, confirms the choice and refuses to remove the last move. Minimal keeps the original HM commitment. |
 
@@ -40,7 +41,7 @@ Passing up Recover at level 31 still matters for Alakazam in both presets. A par
 
 ## Menus and travel
 
-- Press SELECT in the Pokédex to switch from number order to an alphabetical list of species you have seen. A seen species stays selected across the two views. If you started on an unseen number, returning to number order restores that row. Seen-only entries still conceal owned-only data.
+- Press SELECT in the Pokédex to switch from number order to an alphabetical list of species you have seen. A seen species stays selected across the two views. If you started on an unseen number, returning to number order restores that row. Species you have only seen still hide the details that require catching them.
 - The Bag and item PC show the item and chosen quantity when you confirm TOSS. You can cancel before losing anything.
 - In an unlit Rock Tunnel, OPTION is readable and the map is dark again when you close it. On the Town Map, the first directional press advances from Route 1 and the Power Plant.
 - In Core, both Cycling Road guards turn you back if you have no Bicycle, even when you hold Left through the warning. Minimal keeps the original gate behavior.
@@ -49,11 +50,13 @@ Passing up Recover at level 31 still matters for Alakazam in both presets. A par
 
 ## Protecting EXP. ALL
 
-Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and still let you deposit or withdraw it at the item PC. Core starts with sharing on. Choose USE on EXP. ALL in the field to switch it off or back on. While it is on and in the Bag, Core calculates the participants’ share and the party’s share separately. Minimal uses the original awards whenever the item is in the Bag. [Item protection](13-playthrough-intake.md#pn-001) · [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
+Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and still let you deposit or withdraw it at the item PC. Core starts with sharing on. Choose USE on EXP. ALL in the field to switch it off or back on. While it is on and in the Bag, Pokémon that fought can earn both a battle share and a party share. Other party members can earn the party share. Fainted Pokémon earn neither. Minimal starts sharing when you carry the item and stops when you deposit it. It keeps the original award calculation. [Item protection](13-playthrough-intake.md#pn-001) · [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
 
 ## Inspect a move
 
-Highlight a machine in the bag, item PC, shop or prize list. The row identifies both number and move, for example **TM24 Thunderbolt**. Press **START — INFO** to see type, power, listed accuracy, PP and effect. Press **B** to return to the same row. You can also inspect moves from STATS or FIGHT. When a Pokémon with four moves is offered a new one, you can read the new move and compare the old ones before choosing what to forget. Move INFO also marks moves with priority or a high critical-hit chance. If Slash is changed in a hack, its label follows that hack’s battle rules. For ordinary supplies, START in the Bag, Mart or item PC shows the item’s effect, such as a Potion’s healing amount. B returns to the same selection. [Move and supply INFO](15-battle-information.md)
+Highlight a TM or HM in the Bag, item PC, shop or prize list to see its move name. Press START for its type, power, accuracy and PP. Press SELECT for its effect, or B to return. The same controls work on your moves in STATS and FIGHT. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
+
+START also shows what an ordinary supply does before you buy, use or withdraw it. For example, a Potion tells you how much HP it restores in the game you are playing. [Move and supply INFO](15-battle-information.md)
 
 ## Hidden coins at the Game Corner
 

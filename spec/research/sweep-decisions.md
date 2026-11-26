@@ -1,6 +1,6 @@
 # What the preset review changes for a player
 
-The following placements are settled for the public Core, the later Minimal preset and the Extended base that inherits Core. The tables keep the player effects and origins of the decisions. The [move INFO contract](../docs/15-battle-information.md) covers every screen and its tests.
+This pre-release review records the decisions behind Core and Minimal. Both presets now ship. Extended remains planned. The tables keep the player effects and origins of the decisions. The [move INFO contract](../docs/15-battle-information.md) covers every screen and its tests.
 
 ## Decisions already in place
 
@@ -58,8 +58,6 @@ These are engineering judgments under the agreed preset rules. An inventory entr
 
 The archive retains each report’s acceptance tests, including evidence limits where only routine calls or data comparisons have run. [Catalog and measured comparisons](catalog-decisions.md#evidence-from-the-full-preset-review) · [Stock and prototype results](scope-sweep-checks.json)
 
-## What needs a decision
+## Release follow-up
 
-**Every display in this review has a preset decision.** Core implementation can proceed. Layout, integrated game tests and the release checks below remain.
-
-Before publication, settle Green’s actual art and credits, and publish only the save, trade, battle and hardware support that integrated tests establish. The emulator, interface layouts, matching-build tests and interrupted-save design are implementation work. If preserving saves or an original link feature proves incompatible with an accepted change, bring back the specific tradeoff before dropping support. [Open work](../docs/10-open-decisions.md) · [Release requirements](../docs/09-roadmap.md#public-release-checks)
+The review settled the placement of every display listed above. Green’s title art and credits, the INFO layouts and supported save and link paths now have their own records. Compatibility outside the tested combinations still needs separate evidence. [Build variants](../docs/06-build-variants.md) · [Verified configurations](../docs/07-testing-ci.md#verified-reference-configurations)

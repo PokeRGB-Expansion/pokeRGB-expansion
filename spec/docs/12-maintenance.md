@@ -1,10 +1,10 @@
 # Adoption, maintenance, and contribution plan
 
-This is the proposed workflow for the game repository. It does not imply that a remote repository, contribution service, or release pipeline already exists.
+The public fork keeps one development branch, `master`, and tags game releases. [Source and build instructions](../../README.md) · [Release history](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases)
 
 ## Contribution workflow
 
-Use issues for precise bug reports and feature proposals, pull requests for changes, and a short contribution guide for the build/test workflow. Use a decision record when a change affects a protected rule, saved data, supported builds, or a major engine interface. Routine fixes do not need a separate governance process.
+Submit changes through a [pull request](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/pulls). Include the steps to reproduce a bug or a concrete use case for a feature. The [build and test guide](../../README.md#tests) gives the commands to check a change. Use a decision record when a change affects a protected rule, saved data, supported builds, or a major engine interface. Routine fixes do not need a separate governance process.
 
 A correction request should explain the problem, source/reproduction evidence, narrow change, affected behavior, verification, and provenance. Link its stable RGB record. Show failing-before and passing-after results when executable tests are required. The [bug policy](03-bug-fix-policy.md) defines review depth and the [test plan](07-testing-ci.md) defines the evidence.
 
@@ -31,8 +31,6 @@ Do not change the upstream pin just to make a conflict disappear. A donor update
 ## Release record
 
 Document every difference from upstream, including a build option or a change with identical player behavior. Use one record with its original result, new result, affected presets, reason, evidence and first released game version. Link that record from the release notes. Keep storage internals and historical uncertainty behind the player-facing explanation. [Change guide and examples](16-game-changes.md)
-
-Keep one maintained development line initially and tag releases. Create a separate maintenance branch only when supporting an older release requires it.
 
 Each feature review records its behavior in Minimal, Core, and Extended, including inherited rules and any options. Use the [preset examples](14-features-and-extensions.md#product-presets) and attach the test for any gameplay difference.
 

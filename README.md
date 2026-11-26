@@ -1,8 +1,14 @@
 # PokéRGB Expansion
 
-PokéRGB Expansion is a developer foundation for English Generation I Pokémon ROM hacks. It builds Red, Blue, and a cosmetic Green from one source tree. Green uses Blue's gameplay with a Bulbasaur title and its own Super Game Boy colors.
+Build English Gen 1 ROM hacks from a shared Red and Blue engine. Green plays like Blue and opens with Bulbasaur on its own English title screen.
 
-Core is the default preset. Minimal keeps the original battle rules and inventory limits while sharing selected interface and safety fixes. [Downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases) · [Project specification](spec/README.md) · [Core release checks](spec/docs/09-roadmap.md)
+Choose **Core** for bug fixes and conveniences such as the Fuchsia Move Deleter. Choose **Minimal** for the original battle and team-building rules with shared menu and safety improvements. Both keep the original Bag and box limits. [Player guide](spec/docs/16-game-changes.md) · [Project specification](spec/README.md)
+
+## Play a release
+
+1. Download the BPS patch for your preset and color. For example, Green uses `pokergb-green.bps` for Core or `pokergb-minimal-green.bps` for Minimal. [Release downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases/latest)
+2. Open a BPS patcher. Select a clean English **Red** ROM for a Red patch, or a clean English **Blue** ROM for a Blue or Green patch. Select the downloaded patch and choose **Apply patch**. [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/)
+3. Open the resulting game file in your Game Boy emulator. When upgrading from v0.2.0 to v0.3.0, use your previous color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
 
 ## New in v0.3.0
 
@@ -12,14 +18,14 @@ Core adds a Move Deleter in Fuchsia and a field USE action for EXP. ALL. For sho
 
 ## Build
 
-Install GNU Make, a C compiler, libpng, and RGBDS 1.0.4. [Platform instructions](INSTALL.md)
+Install GNU Make, a C compiler and RGBDS 1.0.4. Run these commands from the checkout. [Setup and download instructions](INSTALL.md)
 
 ```sh
 make -j4
 make -j4 PRESET=minimal
 ```
 
-Each command builds all three colors. To build just one, pass `red`, `blue`, or `green` to Make. The cartridge and matching map and symbol files go under `build/core/` or `build/minimal/`. If RGBDS is outside your path, set `RGBDS` to its tool directory with a trailing slash.
+Each command builds all three colors. To build just one, pass `red`, `blue`, or `green` to Make. The game file (`.gbc`) and matching map and symbol files go under `build/core/` or `build/minimal/`. If RGBDS is outside your path, set `RGBDS` to its tool directory with a trailing slash.
 
 Both presets show a Pokédex ball for a previously owned, identified wild species and a progress bar for the active Pokémon’s EXP. Authors can disable either display. For example, `make red BATTLE_CAUGHT_MARKER=0` keeps the EXP bar. Use `BATTLE_EXP_BAR=0` to hide the bar. Each switch accepts 0 or 1 and defaults to 1. Custom builds go in `build/hud-<marker>-<bar>/<preset>/`, so switching options keeps each configuration’s files separate. [Battle display rules](spec/research/battle-hud-displays.md)
 
@@ -44,7 +50,7 @@ python3 tests/run.py build/core --sameboy /path/to/library \
   --boot /path/to/dmg_boot.bin --sgb-boot /path/to/sgb_boot.bin
 ```
 
-Use `build/minimal` for Minimal. Pass `--all-link-pairs` to test all Core color pairings in both cable roles. Pass `--rgbds /path/to/rgbds` when the tools are outside your path.
+Use `build/minimal` for Minimal. Pass `--all-link-pairs` to test all Core color pairings in both cable roles. Pass `--rgbds /path/to/rgbds` when the tools are outside your path. Keep the SameBoy Color boot file, `cgb_boot.bin`, beside `dmg_boot.bin`, or pass `--cgb-boot` with its path.
 
 Core's checks include a separate sample hack with a changed TM and move. The shop, item PC, Bag, prize counter, STATS, FIGHT, and level-up prompt all display the sample's move data. [Test plan](spec/docs/07-testing-ci.md)
 

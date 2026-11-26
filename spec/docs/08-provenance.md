@@ -46,6 +46,6 @@ The source tree also builds each color directly. See the [build instructions](..
 
 Public project text can identify the project as an unofficial fan effort and credit the original game rights holders and community sources. Do not claim Nintendo, Game Freak, Creatures, or The Pokémon Company approval. Do not invent special wording that supposedly prevents enforcement.
 
-## Boundaries still requiring engineering evidence
+## Compatibility evidence
 
-Patch compatibility, save interoperability and link compatibility are technical test claims. They are not established by provenance or by keeping a familiar cartridge title. Resolve them in the implementation and publish only the tested support matrix.
+The [release checks](07-testing-ci.md#verified-reference-configurations) identify the game versions, save imports, cable pairings and emulator modes tested. The patch manifests identify the exact input and output games.

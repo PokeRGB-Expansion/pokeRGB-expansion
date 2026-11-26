@@ -2,6 +2,8 @@
 
 Core and Minimal have working Red, Blue and Green builds. Use the [player guide](16-game-changes.md) for current behavior and the [release checks](09-roadmap.md#public-release-checks) for the evidence required to publish it.
 
+The [v0.3.0 follow-up](../research/v030-core-candidates.md) proposes three additions for consideration: inspecting TM compatibility before purchase, previewing other boxes at a PC, and authoring custom trainer moves.
+
 ## Decisions for future features
 
 | Feature | Agreed direction | Work before shipping it |
@@ -12,27 +14,39 @@ Core and Minimal have working Red, Blue and Green builds. Use the [player guide]
 | More species | Design for a large roster when Extended needs it. | Select the ID and bank layout from measured requirements. Test high IDs through the game, save format and any advertised cable exchange. [Species design](../research/species-id-architecture.md) |
 | Other developer options | Extra move-replacement prompts, a contextual Flute prompt at Snorlax and a live type overlay can be considered separately. Manual Flute use preserves the puzzle in both current presets. | Define the effect on player choices, a disabled control and a test through the actual game. [Battle information](15-battle-information.md) |
 
-## Q01
+<a id="q01"></a>
+
+## Q01 · Focus Energy
 
 **Closed.** Core calculates the ordinary or high-critical threshold as Red/Blue does. Focus Energy multiplies that threshold by four, capped at 255. The game compares it with the original rotated random byte. The multiplier is the project's interpretation of the described benefit and the stock arithmetic. [Threshold audit](../research/critical-hit-analysis.md) · [Cartridge tests](../../tests/critical_hits.py)
 
-## Q02
+<a id="q02"></a>
+
+## Q02 · Badge boosts
 
 **Closed.** Both presets retain repeated badge boosts. Core assigns Thunder to Speed and Soul to Defense to match the descriptions. Stacking applies in single-player battles. A future author option could change it after testing stat rounding and medicine interactions. RGB-027 covers burn and paralysis separately. [Mechanics contract](05-mechanics-contract.md)
 
-## Q03
+<a id="q03"></a>
 
-**Closed for the reference games.** Same-release Core trades and battles have a tested profile. Save imports cover the pinned English Red and Blue bases, with Blue imports for Green. Check the release record for the exact builds and combinations tested. [Verified configurations](07-testing-ci.md#verified-reference-configurations)
+## Q03 · Save and link compatibility
 
-## Q04
+**Closed for the reference games.** v0.3.0 tested all nine color pairings for trades and battles within each preset. Original save imports cover the pinned English Red and Blue cartridges, with Blue imports for Green. [Results and limits](07-testing-ci.md#verified-reference-configurations)
+
+<a id="q04"></a>
+
+## Q04 · Test hardware and emulator
 
 **Closed.** The cartridge tests use SameBoy 1.0.5. The release records distinguish Game Boy, Super Game Boy and Game Boy Color compatibility mode. [Verified configurations](07-testing-ci.md#verified-reference-configurations)
 
-## Q05
+<a id="q05"></a>
+
+## Q05 · Green’s title screen
 
 **Closed.** Green opens with Bulbasaur on the English title, the Green cartridge name, and the original Green Super Game Boy border. Its title lettering and colors have their own reference checks. [Green presentation](06-build-variants.md#green-presentation-scope)
 
-## Q06
+<a id="q06"></a>
+
+## Q06 · Unsupported glitch states
 
 **Deferred research.** The reference games protect normal play. Review unsupported legacy states individually when a reproducible case identifies affected data. Arbitrary glitch Pokémon, code execution and malformed saves are outside the supported profile. [Case decisions](../research/catalog-decisions.md)
 

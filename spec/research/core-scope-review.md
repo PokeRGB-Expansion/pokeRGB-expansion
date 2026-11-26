@@ -16,7 +16,7 @@ Gold/Silver explicitly rejects a hidden opponent in Transform. Its ordinary hit 
 
 ## Core battle and progression repairs
 
-The following are planned Core outcomes. Minimal preserves the original gameplay in these cases. Extended inherits the Core repairs. Implementation and patch testing are pending for every row.
+These were Core’s acceptance criteria before implementation. Minimal retains each original rule. The [current mechanics contract](../docs/05-mechanics-contract.md) and [cartridge checks](../docs/07-testing-ci.md) track the released behavior.
 
 | Area | Core behavior and test boundary |
 |---|---|
