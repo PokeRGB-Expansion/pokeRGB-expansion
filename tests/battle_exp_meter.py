@@ -94,6 +94,11 @@ def check_wild_battle(game, enabled):
     game.put("wPartyMon1Nick", name_bytes("VAPOREON"))
     game.put("wPartyMon2Nick", name_bytes("SQUIRTLE"))
     game.put("wPartyMon2Species", (0xb1,))
+    # Give each level-45 Pokémon its ordinary battle stats at zero DVs
+    # and stat experience. An enemy attack after SWITCH uses these fields.
+    for slot, stats in ((1, (63, 59, 63, 104)), (2, (48, 63, 43, 50))):
+        for field, value in zip(("Attack", "Defense", "Speed", "Special"), stats):
+            game.put(f"wPartyMon{slot}{field}", value.to_bytes(2, "big"))
     for slot, curve, percent in ((1, 0, 25), (2, 3, 75)):
         low, high = threshold(curve, 45), threshold(curve, 46)
         xp = low + (high - low) * percent // 100

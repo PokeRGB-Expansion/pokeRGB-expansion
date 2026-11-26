@@ -36,7 +36,7 @@ A fixture records test ID, RGB/MC requirement, game and tool revisions, variant,
 | Group | Required checks | Passing evidence |
 |---|---|---|
 | Build baseline | Pinned RGBDS 1.0.4; pristine Red/Blue and appropriate reference debug/patch hashes | Complete build log and hash manifest |
-| Critical-hit threshold | Speeds 0–255 for robustness, ordinary/high-critical, unpumped/pumped, RNG 0–255 | Exact critical flag and RNG-call count; compare unpumped outputs with vanilla |
+| Critical-hit threshold | Both actors, all 256 Speed values, ordinary and high-critical moves, with and without Focus Energy | At each threshold, check the critical flag and random-byte count against the expected result for the preset. |
 | Critical-hit damage | Physical/special, stat boosts/drops, badge effects, burn/paralysis, screens, level and byte boundaries | Original preserved results; approved invalid-state corrections listed |
 | Hyper Beam | KO, survives, miss, Substitute survives/breaks; both actors; next turn | Recharge/action trace |
 | Fixed damage | Night Shade→Normal, Seismic Toss→Ghost, Dragon Rage/SonicBoom/Psywave/Super Fang; target checks | HP difference, hit/miss, no type multiplier, same RNG use where preserved |
@@ -52,7 +52,7 @@ A fixture records test ID, RGB/MC requirement, game and tool revisions, variant,
 | Adventure | Start, starters, gym/progression gates, Tower/Silph, Safari, League, postgame, normal save/load | Saved route/checkpoint evidence and smoke-test record |
 | Link | Both host roles; all supported variant pairs; RNG rejection loops, status, switching, fainting, copied moves, trade | Endpoint states agree at defined turn boundaries |
 
-The threshold grid has 262,144 inputs per actor/build (`256 × 2 × 2 × 256`). An equivalent batched routine test can reduce setup cost, but it must still check all combinations. Legal Gen 1 species are a subset; synthetic byte values expose rounding and overflow assumptions.
+CI tests the roll at each threshold and the one just below it when the threshold is positive. It does this for both actors at every Speed, including byte values outside the original species data. The earlier research checked the calculation and the final comparison separately in temporary builds. All 8,192 observed thresholds matched the expected values. The comparison then passed all 262,144 cases across the tested builds, covering every threshold and every random byte. [Current cartridge tests](../../tests/critical_hits.py) · [Compiled research results](../research/critical-hit-analysis.md#compiled-threshold-check)
 
 Important critical-hit examples include Speed 55 and saturation boundaries. Test the actual high-critical move IDs and zero-power/set-damage paths as well as a generic high-critical flag. Dire Hit and Focus Energy must reach the same state behavior. The unpumped matrix must be bit-for-bit equivalent even after the corrected path is added.
 
@@ -117,14 +117,14 @@ Publish the tested subset, exact rules/save versions, and known incompatibilitie
 
 ### Verified reference configurations
 
-The checks below use the Core Red, Blue and Green reference builds in SameBoy 1.0.5. Each test identifies the cartridge mode and operation it covers.
+These checks use SameBoy 1.0.5. The v0.3.0 release checks covered Red, Blue and Green in both Core and Minimal. Each test identifies the cartridge mode and operation it covers.
 
 | Configuration | Checks |
 | --- | --- |
 | Game Boy mode | Adventure checkpoints, Move INFO, box operations, legacy save imports and re-saves. [Adventure checks](../../tests/adventure_checkpoints.py) · [Reference imports](../../tests/reference_save_import.py) |
 | Super Game Boy mode | The first title Pokémon, English title tiles, the Green border and battle slide timing on all three colors. [Title checks](../../tests/title_smoke.py) · [Slide checks](../../tests/battle_slide_timing.py) |
 | Game Boy Color compatibility mode | New Game, Bag TM INFO, and a save followed by CONTINUE on a fresh CGB-E instance. [Color compatibility checks](../../tests/cgb_compatibility.py) |
-| Core cable connection | The nine ordered Red, Blue and Green pairings in both Trade Center and Colosseum, with each endpoint checked for the expected party record, battle state or save. The sessions start from seeded parties. [Cable checks](../../tests/link_cable_smoke.py) |
+| Cable trade and battle | All nine ordered color pairings within each preset completed a Trade Center session and a Colosseum battle, for 36 sessions. Both endpoints were checked for the expected party record, battle state or save. The sessions start from seeded parties. [Cable checks](../../tests/link_cable_smoke.py) |
 | Interrupted save | Detection before CONTINUE after incomplete main, box, link or Hall of Fame writes. Valid older records still load. Restore a backup when the game reports an interruption. [Save checks](../../tests/interrupted_save_smoke.py) |
 
 The release records state which of these checks apply to the released source and package hashes. Use the matrix above to decide when another game version, emulator or physical device needs its own check.
@@ -232,7 +232,9 @@ Use [PN-019](13-playthrough-intake.md#pn-019) to verify selected entry, visible 
 
 Before advertising the 64-slot bag profile, run [PN-020](13-playthrough-intake.md#pn-020) at the 20/21 and 63/64/65 entry boundaries. Test stack space separately from free entries, all insertion/removal callers, the rooftop exchange, PN-019 selection retention, memory guards, and neighboring saved fields. Build Core with its unchanged layout and the bag-64/PC-50 profile; test PC alternatives and combined profiles only when advertised. Save/load and supported import/conversion need explicit evidence. These are future game checks, not results of the source/allocation calculation.
 
-For the accepted separate-reserve design, compare all other existing WRAM field addresses and save-block offsets with Core. Preserve the original 42-byte bag footprint and `wGameProgressFlagsEnd`. Assert the full 134-byte range and its single owner; reject an enabled feature that overlaps it. Audit bulk reads, clearing, and copying of the former reserve, initialization, save hooks, and inventory callers. Run the advertised combinations rather than assuming a fixed layout alone makes their code compatible. The repeatable [RAM allocation check](../research/bag-memory.md#repeat-the-allocation-check) is one input to these game tests.
+The proposed 64-slot bag needs all 134 bytes of the original reserve. The current games already use two of those bytes for the registered SELECT item and its tag. If the bag takes that range, give the registration its own storage and carry it over when importing a save. Test imports with the Bicycle registered, a rod registered and no registration. Save, reload and use SELECT to verify each result. [Current memory layout](../../ram/wram.asm) · [Allocation study](../research/bag-memory.md)
+
+Preserve the original 42-byte bag footprint and `wGameProgressFlagsEnd`. Compare other field addresses and save offsets with the reference layout. Check that each byte has one owner in every supported feature combination. Audit reads, clears and copies of the old reserve, plus initialization and saving. [Repeatable allocation check](../research/bag-memory.md#repeat-the-allocation-check)
 
 For the enabled bag, start a new game and verify the empty count, end marker, and format marker after the game-progress clear. Fill all 64 entries, save, reload, and verify the final entry and terminator without changing neighboring flags. The 65th new stack must be refused. Check the same initialization and save paths with each advertised feature combination. [E109](../research/evidence.md#e109) identifies the initialization order to repair; these game checks remain pending.
 

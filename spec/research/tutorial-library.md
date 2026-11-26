@@ -1,6 +1,6 @@
 # A shared library for hack developers
 
-Minimal, Core and Extended are named, tested build presets in one repository. Start with a preset, then choose the changes a particular game needs. A developer can start with Core, keep Charizard’s Fly permission, restore the original Ghost matchup and set custom trainer moves independently. The build produces one game with those rules.
+Minimal and Core build today. Extended is a design for more author options in the same source tree. Start with a supported preset and edit its game data. For example, a Core hack can keep Charizard’s Fly permission and restore the original Ghost matchup by editing that type-chart entry. The table below describes the intended design for further options. [Available builds and author examples](../../README.md#build)
 
 ## What developers should configure
 

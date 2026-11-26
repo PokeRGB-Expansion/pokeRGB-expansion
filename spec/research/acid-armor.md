@@ -2,7 +2,7 @@
 
 Review date **2026-11-22**. See [E116–E119](evidence.md#e116) for source revisions and file fingerprints.
 
-D41 accepts the Core display repair. Keep the original melt and restore the same sprite at animation end. The return-path tests point to a missing redraw in the original animation. [PN-025](../docs/13-playthrough-intake.md#pn-025)
+D41 adopted the display repair for Core. Both Core and Minimal restore the same sprite at the end of the original melt. Tests of the original games point to a missing redraw in their animation. [PN-025](../docs/13-playthrough-intake.md#pn-025)
 
 ## What the original game does
 
@@ -63,6 +63,6 @@ The 76 return-path cases exercised STATS, party cancellation, switching, Haze, a
 
 ## Core correction
 
-Keep the original sinking frames and sound. Hide the picture briefly, then use the existing draw path to show it before the animation returns. Preserve the current picture tiles so Acid Armor shows the correct Pokémon, transformed form, Minimize picture, or active Substitute. A fresh species picture would lose those distinctions.
+Both presets keep the original sinking frames and sound, then show the sprite that was visible when Acid Armor began. The player and enemy cartridge tests observe the picture disappearing, compare the restored tiles with the original ones, and check the two-stage Defense increase. They cover the normal Pokémon, Transform, Minimize and Substitute. [Animation source](../../engine/battle/animations.asm) · [Cartridge checks](../../tests/acid_armor.py)
 
-Test both battle sides, successful and capped use, animations off, repeated use, Minimize, Substitute and its break, Transform, party redraws, switching, and fainting. Preserve the two-stage Defense effect, PP, RNG calls, damage rules, and link protocol. Check Fly and Dig as controls. The implementation and its regression results are pending. [Test plan](../docs/07-testing-ci.md#acid-armor-picture-checks)
+The broader acceptance cases include repeated and capped use, animations off, breaking a Substitute, later damage, STATS, switching, fainting and both link roles. Keep the original PP use, random draws and damage rules. Fly and Dig provide controls for actual invulnerability. [Test plan](../docs/07-testing-ci.md#acid-armor-picture-checks)

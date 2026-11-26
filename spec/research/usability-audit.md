@@ -130,7 +130,7 @@ The table separates accepted scope, supported proposals, and deferred changes. N
 | UA-14 | **Left/right quantity changes of ten.** | Accepted PN-014. Up/down already changes one and wraps to the maximum; retain both. Do not auto-buy the largest affordable amount or change caps. Specify endpoints and price recomputation. [E97](evidence.md#e97) |
 | UA-15 | **Clear confirmation before overwriting a learned move.** | Safety candidate with a real tradeoff: one more step for every replacement. The current selection commits after choosing a non-HM move, though B can abandon learning. Show old/new move and Pokémon, with No/B returning to selection; retain single-use consumption only after success. The accepted release safeguard does not already approve this prompt. [E97](evidence.md#e97) |
 
-A caught-status marker in battle is another reasonable information proposal. It shows a recorded fact rather than new species data. It still needs a UI design and Ghost/Transform/Dex-ownership checks. It is less urgent than incorrect feedback and is not included as an automatic Core requirement.
+Both presets include the caught marker. It uses the Pokédex owned record for an identified wild Pokémon and keeps concealed encounters hidden. Authors can disable it. [Display and visibility rules](battle-hud-displays.md)
 
 Static move details are included in both reference presets. Hidden DV/stat EXP displays, encounter guides and Itemfinder directions each have separate information rules.
 
