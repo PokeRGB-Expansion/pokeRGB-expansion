@@ -10,13 +10,11 @@ Choose **Core** for bug fixes and conveniences such as the Fuchsia Move Deleter.
 2. Open a BPS patcher. Select a clean English **Red** ROM for a Red patch, or a clean English **Blue** ROM for a Blue or Green patch. Select the downloaded patch and choose **Apply patch**. [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/)
 3. Open the resulting game file in your Game Boy emulator. When upgrading, choose the same color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
 
-## New in v0.4.0
+## TM shopping in v0.4.1
 
-- At a Mart or the Game Corner TM counter, highlight a TM and press **START** for INFO. Read the move’s type, power, accuracy and PP. Press **SELECT** for its effect, then again to see which teammates can learn it or already know it. **B** returns to the same item before you spend anything.
-- At Bill’s PC, choose **CHANGE BOX**, highlight a box and press **START** to view its Pokémon. **B** returns to the chooser. Selecting a box with **A** asks you to confirm before the game saves and changes your active box.
-- An author can give a specific Pokémon on a trainer’s team its own moves. [Trainer authoring guide](spec/research/tutorial-library.md#give-one-trainer-pokémon-a-custom-moveset)
+Highlight a TM at a Mart or the Game Corner prize counter and press **START**. Use **Up/Down** to compare offers in the counter’s order. The cursor and price follow you. **SELECT** switches between the move’s stats and its effect. Press **A** from either page to see all six party members and their compatibility. **B** returns to the last TM you inspected. Press A at the counter when you want to buy or redeem it.
 
-Both presets include these features. In Core, the Route 15 aide also explains which teammates can receive EXP.ALL’s shared experience. [Player guide](spec/docs/16-game-changes.md) · [Release history](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases)
+In the Bag or item PC, use the same START, SELECT and A controls to inspect the highlighted machine. [Screens and controls](spec/docs/15-battle-information.md#before-buying-a-tm) · [Box previews and other game changes](spec/docs/16-game-changes.md) · [Custom trainer movesets](spec/research/tutorial-library.md#give-one-trainer-pokémon-a-custom-moveset)
 
 ## Build
 

@@ -1,5 +1,9 @@
 # Specification changelog
 
+## Game release 0.4.1
+
+- Compare TMs at a Mart or the Game Corner with Up/Down. Keep the stats, effect or party view open while browsing. A opens one read-only screen for the whole party, with the move and its price. B returns to the last inspected offer. The move name and START hint now replace the previous prompt cleanly. [Controls](docs/15-battle-information.md#before-buying-a-tm)
+
 ## Game release 0.4.0
 
 - Inspect a TM’s type, power, accuracy, PP, effect and its compatibility with each party member before buying it or spending Game Corner coins. Bill’s PC can preview the contents of a highlighted box before saving or changing boxes. [Player guide](docs/16-game-changes.md)

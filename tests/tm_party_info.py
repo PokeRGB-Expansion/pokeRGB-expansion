@@ -39,6 +39,7 @@ def setup(game):
         game.put(f"wPartyMon{slot}Species", (species,))
         game.put(f"wPartyMon{slot}Moves", (move, 0, 0, 0))
         game.put(f"wPartyMon{slot}PP", (12, 0, 0, 0))
+        game.put(f"wPartyMon{slot}Level", (24 + slot,))
         game.put(f"wPartyMon{slot}HP", (0, 30))
         game.put(f"wPartyMon{slot}MaxHP", (0, 30))
         game.put(f"wPartyMon{slot}Nick", name_bytes(nick))
@@ -70,27 +71,41 @@ def inspect(game, prize, *, duplicate=False):
         ("wCurrentMenuItem", 1), ("wListScrollOffset", 1),
     )}
     name, detail = ("DRAGON RAGE", "Deals 40 damage") if prize else ("MEGA PUNCH", "Deals damage")
+    # Only bank 0's sprite workspace is temporary. All actual save data,
+    # including the Hall of Fame and both box banks, must survive inspection.
+    sprite_buffer_size = game.addresses["sSpriteBuffer1"][1] - game.addresses["sSpriteBuffer0"][1]
+    end_of_workspace = 3 * sprite_buffer_size
+    old_save = bytes(game.battery()[end_of_workspace:])
+    field_map = game.get_bytes("wOverworldMap", 1300)
     press(game, START)
+    shows(game, name, "A PARTY", "SEL", "EFFECT")
     if prize:
-        shows(game, name, "DRAGON", "POW", "ACC100", "PP 10", "SELECT EFFECT")
-        assert game.get("wTileMap", 14 * 20 + 5) == 0xe3  # no standard base power
+        shows(game, "DRAGON", "POW", "ACC100", "PP 10")
+        assert game.get("wTileMap", 13 * 20 + 5) == 0xe3  # no standard base power
     else:
-        shows(game, name, "NORMAL", "POW  80", "ACC 85", "PP 20", "SELECT EFFECT")
+        shows(game, "NORMAL", "POW  80", "ACC 85", "PP 20")
     press(game, SELECT)
-    shows(game, detail, "SELECT PARTY")
-    press(game, SELECT)
-    rows = (("UNABLE", "UNABLE", "UNABLE", "ABLE", "KNOWS", "UNABLE") if prize
-            else ("UNABLE" if duplicate else "ABLE", "UNABLE", "KNOWS", "ABLE", "UNABLE", "UNABLE"))
-    for start in (0, 3):
-        shows(game, "SELECT MORE" if start == 0 else "SELECT STATS")
-        screen = game.visible_text().splitlines()
-        for rank in range(3):
-            row = rank + start
-            assert screen[13 + rank].split() == [MEMBERS[row][1], rows[row]], game.visible_text()
-        press(game, SELECT)
-    shows(game, name, "SELECT EFFECT")
+    shows(game, detail, "A PARTY", "STATS")
+    press(game, A)
+    shows(game, name, "B BACK", MEMBERS[-1][1])
+    game.tick(18)
+    rows = (("NOT ABLE", "NOT ABLE", "NOT ABLE", "ABLE", "KNOWS", "NOT ABLE") if prize
+            else ("NOT ABLE" if duplicate else "ABLE", "NOT ABLE", "KNOWS", "ABLE", "NOT ABLE", "NOT ABLE"))
+    screen = game.visible_text().splitlines()
+    for slot, (member, status) in enumerate(zip(MEMBERS, rows)):
+        assert screen[2 * slot].split() == [member[1], str(25 + slot)], screen
+        assert screen[2 * slot + 1].strip() == status, screen
+    press(game, A)
+    assert game.visible_text().splitlines() == screen
     press(game, B)
     shows(game, "START INFO", name)
+    assert bytes(game.battery()[end_of_workspace:]) == old_save
+    # Disabled cartridge RAM reads as open bus. A write must reach no bank.
+    bank_starts = bytes(game.battery()[::8192])
+    probe = next(value for value in range(5) if value not in bank_starts)
+    game.write(0xa000, (probe,))
+    assert bytes(game.battery()[::8192]) == bank_starts
+    assert game.get_bytes("wOverworldMap", 1300) == field_map
     for label, old in snapshot.items():
         assert game.get_bytes(label, len(old)) == old, label
 
@@ -178,17 +193,15 @@ def check_stored_hm(game, *, core, empty):
     game.invoke("PlayerPCWithdraw")
     shows(game, "HM02", "FLY", "START INFO", accept=True)
     press(game, START)
-    shows(game, "FLY", "FLYING", "SELECT EFFECT")
-    press(game, SELECT)
-    shows(game, "SELECT PARTY")
-    press(game, SELECT)
-    shows(game, "SELECT STATS")
+    shows(game, "FLY", "FLYING", "A PARTY")
+    press(game, A)
+    shows(game, "FLY", "B BACK")
     if empty:
-        assert "No party" in game.visible_text()
+        assert "No party" in game.visible_text(), game.visible_text()
     else:
-        assert game.visible_text().splitlines()[13].split() == [
-            "CHARIZARD", "ABLE" if core else "UNABLE"
-        ]
+        screen = game.visible_text().splitlines()
+        assert screen[0].split() == ["CHARIZARD", "25"], screen
+        assert screen[1].strip() == ("ABLE" if core else "NOT ABLE"), screen
     press(game, B)
     shows(game, "HM02", "START INFO")
     assert game.get_bytes("wNumBoxItems", 4) == bag([(HM02, 1)])
@@ -200,10 +213,10 @@ def check_counter_power(game):
     game.invoke("PlayerPCWithdraw")
     shows(game, "TM18", "COUNTER", "START INFO", accept=True)
     press(game, START)
-    shows(game, "COUNTER", "FIGHTING", "POW", "SELECT EFFECT")
-    assert game.get("wTileMap", 14 * 20 + 5) == 0xe3
+    shows(game, "COUNTER", "FIGHTING", "POW", "A PARTY")
+    assert game.get("wTileMap", 13 * 20 + 5) == 0xe3
     press(game, SELECT)
-    shows(game, "Returns double", "SELECT PARTY")
+    shows(game, "Returns double", "A PARTY")
 
 
 def main():

@@ -55,49 +55,46 @@ GetMachineName::
 	push bc
 	ld a, [wNamedObjectIndex]
 	push af
-	cp TM01 ; is this a TM? [not HM]
-	jr nc, .WriteTM
-; if HM, then write "HM" and add NUM_HMS to the item ID, so we can reuse the
-; TM printing code
-	add NUM_HMS
-	ld [wNamedObjectIndex], a
-	ld hl, HiddenPrefix ; points to "HM"
-	ld bc, 2
-	jr .WriteMachinePrefix
-.WriteTM
-	ld hl, TechnicalPrefix ; points to "TM"
-	ld bc, 2
-.WriteMachinePrefix
 	ld de, wNameBuffer
-	call CopyData
+	call WriteMachineName
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
 
-; now get the machine number and convert it to text
-	ld a, [wNamedObjectIndex]
+; Write TMnn or HMnn and a terminator at DE for the item ID in A.
+; Leave DE on the terminator so a caller can append the move name.
+WriteMachineName::
+	ld hl, TechnicalPrefix
+	cp TM01
+	jr nc, .prefix
+	add NUM_HMS
+	ld hl, HiddenPrefix
+.prefix
 	sub TM01 - 1
-	ld b, '0'
-.FirstDigit
-	sub 10
-	jr c, .SecondDigit
-	inc b
-	jr .FirstDigit
-.SecondDigit
-	add 10
 	push af
+	ld bc, 2
+	call CopyData
+	pop af
+	ld b, '0'
+.tens
+	sub 10
+	jr c, .ones
+	inc b
+	jr .tens
+.ones
+	add 10
+	add '0'
+	ld c, a
 	ld a, b
 	ld [de], a
 	inc de
-	pop af
-	ld b, '0'
-	add b
+	ld a, c
 	ld [de], a
 	inc de
 	ld a, '@'
 	ld [de], a
-	pop af
-	ld [wNamedObjectIndex], a
-	pop bc
-	pop de
-	pop hl
 	ret
 
 TechnicalPrefix::

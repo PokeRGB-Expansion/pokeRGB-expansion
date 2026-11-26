@@ -344,10 +344,11 @@ PrintStatusConditionNotFainted::
 ; hl = destination address
 ; [wLoadedMonLevel] = level
 PrintLevel::
-	ld a, '<LV>' ; ":L" tile ID
-	ld [hli], a
+	ld a, [wLoadedMonLevel]
+PrintPartyLevelFromA::
+	ld [hl], '<LV>'
+	inc hl
 	ld c, 2 ; number of digits
-	ld a, [wLoadedMonLevel] ; level
 	cp 100
 	jr c, PrintLevelCommon
 ; if level at least 100, write over the ":L" tile

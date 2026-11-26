@@ -129,8 +129,16 @@ LoadMonPartySpriteGfxWithLCDDisabled:
 ; Load mon party sprite tile patterns into VRAM immediately by disabling the
 ; LCD.
 	call DisableLCD
-	ld hl, MonPartySpritePointers
 	ld a, $1c
+	call CopyPartySpritePatterns
+	jp EnableLCD
+
+; The preview has no selected row to animate. It uses the normal first frame
+; of each party icon and leaves the other sprite patterns in VRAM untouched.
+LoadStaticPartyIconPatterns::
+	ld a, (StaticPartyIconPointersEnd - MonPartySpritePointers) / 6
+CopyPartySpritePatterns:
+	ld hl, MonPartySpritePointers
 	ld bc, $0
 .loop
 	push af
@@ -160,7 +168,7 @@ LoadMonPartySpriteGfxWithLCDDisabled:
 	pop af
 	dec a
 	jr nz, .loop
-	jp EnableLCD
+	ret
 
 INCLUDE "data/icon_pointers.asm"
 
@@ -232,8 +240,38 @@ UnusedPartyMonSpriteFunction:
 	jp CopyVideoData
 
 WriteMonPartySpriteOAM:
-; Write the OAM blocks for the first animation frame into the OAM buffer and
-; make a copy at wMonPartySpritesSavedOAM.
+	call WriteMonPartySpriteFirstFrame
+; The interactive party menu keeps a copy for its second animation frame.
+	ld hl, wShadowOAM
+	ld de, wMonPartySpritesSavedOAM
+	ld bc, OBJ_SIZE * 4 * PARTY_LENGTH
+	jp CopyData
+
+DrawStaticPartyIcons::
+	ld hl, wPartySpecies
+	ld a, [wPartyCount]
+	and a
+	ret z
+	ld b, a
+	xor a
+	ldh [hPartyMonIndex], a
+.loop
+	ld a, [hli]
+	push hl
+	push bc
+	call GetPartyMonSpriteID
+	ld [wOAMBaseTile], a
+	call WriteMonPartySpriteFirstFrame
+	pop bc
+	pop hl
+	ldh a, [hPartyMonIndex]
+	inc a
+	ldh [hPartyMonIndex], a
+	dec b
+	jr nz, .loop
+	ret
+
+WriteMonPartySpriteFirstFrame:
 	push af
 	ld c, $10
 	ld h, HIGH(wShadowOAM)
@@ -244,18 +282,8 @@ WriteMonPartySpriteOAM:
 	ld b, a
 	pop af
 	cp ICON_HELIX << 2
-	jr z, .helix
-	call WriteSymmetricMonPartySpriteOAM
-	jr .makeCopy
-.helix
-	call WriteAsymmetricMonPartySpriteOAM
-; Make a copy of the OAM buffer with the first animation frame written so that
-; we can flip back to it from the second frame by copying it back.
-.makeCopy
-	ld hl, wShadowOAM
-	ld de, wMonPartySpritesSavedOAM
-	ld bc, OBJ_SIZE * 4 * PARTY_LENGTH
-	jp CopyData
+	jp z, WriteAsymmetricMonPartySpriteOAM
+	jp WriteSymmetricMonPartySpriteOAM
 
 GetPartyMonSpriteID:
 	ld [wPokedexNum], a

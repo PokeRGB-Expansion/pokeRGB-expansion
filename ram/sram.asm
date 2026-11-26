@@ -1,8 +1,17 @@
 SECTION "Sprite Buffers", SRAM
 
+UNION
 sSpriteBuffer0:: ds SPRITEBUFFERSIZE
 sSpriteBuffer1:: ds SPRITEBUFFERSIZE
 sSpriteBuffer2:: ds SPRITEBUFFERSIZE
+NEXTU
+; No sprite is decompressed during TM inspection. These three presentation
+; buffers are outside the Hall of Fame, saved adventure, and stored boxes.
+sTMPreviewScreen:: ds SCREEN_AREA
+sTMPreviewOAM:: ds OAM_COUNT * OBJ_SIZE
+sTMPreviewIconTiles:: ds ((ICON_QUADRUPED + 1) * 4) tiles
+	ASSERT @ - sTMPreviewScreen <= 3 * SPRITEBUFFERSIZE
+ENDU
 
 	ds $100
 

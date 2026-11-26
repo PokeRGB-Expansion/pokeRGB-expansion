@@ -4,21 +4,17 @@ In Minimal and Core, INFO describes the move in the game you are playing. A hack
 
 ## What the player does
 
-**Press START wherever you see the INFO hint.** SELECT shows the effect after the move’s numbers. For a machine in an item list or at the prize counter, another SELECT shows who in your party can learn it. B returns directly to the same menu from any page. Inspecting a row never requires confirmation of a purchase, withdrawal, move use or replacement.
+**Press START wherever you see the INFO hint.** SELECT switches between the move’s stats and effect. When inspecting a machine, A opens the party compatibility screen. B closes INFO. A purchase, withdrawal, move use or replacement still requires its usual confirmation.
 
 | Where | What INFO opens | Where B returns |
 |---|---|---|
 | A TM/HM in the bag or item PC | The list shows its number and displays the highlighted machine’s move name underneath. START opens the move, even if the bag is full or nobody can learn it. | The same machine and scroll position. |
-| A machine for sale or offered as a prize | The offer shows the machine number and price. The highlighted machine’s move name appears below. START opens its details. | The same offer with its price and currency visible. |
+| A machine for sale or offered as a prize | The offer shows the machine number and price. The highlighted machine’s move name appears below. START opens its details. | The last offer inspected, with its price and currency visible. |
 | A Pokémon’s STATS moves page | START opens its first occupied move. Up/down within INFO browses that Pokémon’s known moves in slot order. Outside INFO, the STATS controls continue to change Pokémon and pages. Available for your party and current box outside a link session. | The same Pokémon and STATS page. |
 | FIGHT | START opens the highlighted player move, including a copied move in its current slot. Available when choosing a move in a link battle too. | The same battle choice and cursor. No move has been selected. |
 | A level-up or machine-teaching decision | At the learn/replace question, START shows the incoming move. At the forget list, START shows the highlighted old move. Inside INFO, left/right switches between the highlighted old move and the incoming move. Label each as known or new. | The same unanswered question or highlighted forget slot, before any write. |
 
 A free move slot still fills automatically at level-up. There is no decision to interrupt. The player can inspect the learned move in STATS. An already-known move or a level with no offer produces no new prompt. Inspecting a known HM is allowed even where forgetting it is forbidden. The unattended Day Care retains its original learning rules. [Stock level-up checks](../research/move-info-stock-checks.json) [Level-up eligibility](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/evos_moves.asm#L323-L375) · [Open slot, replacement, cancellation and HM checks](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/engine/pokemon/learn_move.asm#L11-L181)
-
-![Three Game Boy screens at the Celadon Mart show TM17 Submission's stats, recoil effect and party compatibility.](../research/tm17-shop-info.png)
-
-TM17 costs 3,000 at the Celadon Department Store. In this test party, the three results appear together. Machop can learn it, Pidgey cannot, and Clefairy already knows it.
 
 ## What INFO shows
 
@@ -30,9 +26,15 @@ On the move’s stats page, HIGH CRIT identifies a move with an elevated critica
 
 ## Before buying a TM
 
-Highlight a machine at the Mart or the Game Corner prize counter and press START. The first page shows the move name, type, power, listed accuracy and base PP. SELECT opens the effect, including special rules such as Dragon Rage dealing 40 damage. Press SELECT again for your party. The same pages work when highlighting a machine in the Bag or item PC.
+At a Mart or the Game Corner TM counter, press **START** on a machine. Use **Up/Down** to compare machines without closing INFO. The move, highlighted offer and price change together. A Mart with mixed stock skips ordinary items in this view. Browsing stops at the first and last machine.
 
-Each row shows a nickname and its result. **ABLE** means this Pokémon can learn the selected machine. **UNABLE** means it cannot. **KNOWS** means it already has the move, even if this species normally cannot learn the machine. With four to six party members, SELECT MORE shows the remaining names. B closes INFO without buying or teaching the move. A full Bag still permits inspection.
+**SELECT** changes between stats and effect. The page stays open as you browse: if you are reading what Reflect does, press Down to read Razor Wind’s effect. **A** from either page opens the full party. Each member’s nickname, icon, level and compatibility use the teaching screen layout. **ABLE** means the Pokémon can learn the machine. **NOT ABLE** means it cannot. **KNOWS** means it already has the move, including one acquired through a trade. The footer identifies the machine and the move. At a counter it also shows the price in money or coins. Up/Down compares the same party against another TM.
+
+**B** from any view returns to the latest offer. Your money, coins, Bag and party stay as they were. When checking a TM from the Bag or the item PC, B returns to the item you opened. Regular teaching starts from USE in the Bag.
+
+![Four Game Boy screens show Reflect’s stats and effect, Razor Wind’s effect after pressing Down, then all six party members and the price of TM02.](../research/tm-shop-comparison.png)
+
+At the Celadon Department Store, Reflect costs 1,000. One press of Down compares Razor Wind at 2,000 while the effect stays open. A shows the whole party for Razor Wind.
 
 Authors can assign two machines the same move and give a species different compatibility for each machine. Preview and teaching both check the selected machine’s own species flag. [Eligibility lookup](../../engine/items/tms.asm) · [Mart, prize and teaching checks](../../tests/tm_party_info.py)
 

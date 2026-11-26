@@ -54,7 +54,7 @@ Oak’s aide gives EXP. ALL once. Both presets refuse to toss or sell it and sti
 
 ## Inspect a move
 
-Highlight a TM or HM in the Bag, item PC, shop or prize list to see its move name. Press START for its type, power, accuracy and PP. Press SELECT for its effect, then again to check the party before buying or redeeming the machine. Each nickname shows ABLE, UNABLE or KNOWS. B returns to the highlighted item. You can also inspect your moves in STATS and FIGHT. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
+Highlight a TM or HM and press START for its move’s type, power, listed accuracy and PP. SELECT switches to the effect and back. At a Mart or the Game Corner, press Up/Down to compare offers on the same page. A shows your whole party and who can learn the move. B returns to the last machine you inspected, ready to buy if you choose. You can also inspect your moves in STATS and FIGHT. When a Pokémon with four moves can learn another, use INFO to compare the new move with one you might forget.
 
 START also shows what an ordinary supply does before you buy, use or withdraw it. For example, a Potion tells you how much HP it restores in the game you are playing. [Move and supply INFO](15-battle-information.md)
 

@@ -28,8 +28,8 @@ def check_mode(game):
     assert not game.core.GB_is_cgb_in_cgb_mode(game.gb)
 
 
-def display_pixels(game):
-    pixels = (C.c_uint32 * (160 * 144))()
+def display_pixels(game, width=160, height=144):
+    pixels = (C.c_uint32 * (width * height))()
     game.core.GB_set_pixels_output.argtypes = [C.c_void_p, C.POINTER(C.c_uint32)]
     game.core.GB_set_pixels_output.restype = None
     game.core.GB_set_pixels_output(game.gb, pixels)

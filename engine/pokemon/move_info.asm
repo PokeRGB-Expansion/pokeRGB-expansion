@@ -3,9 +3,14 @@ DEF INFO_BROWSE_STATS EQU 1
 DEF INFO_BROWSE_LEARN EQU 2
 DEF INFO_BROWSE_SUPPLY EQU 3
 DEF INFO_BROWSE_MACHINE EQU 4
+DEF INFO_BROWSE_MART EQU 5
+DEF INFO_BROWSE_PRIZE EQU 6
 DEF INFO_UNKNOWN_PP EQU $ff
 DEF INFO_PANEL_FIRST_ROW EQU 11
 DEF INFO_PANEL_ROWS EQU SCREEN_HEIGHT - INFO_PANEL_FIRST_ROW
+; Machine cards add one row for controls, below the last visible price.
+DEF MACHINE_PANEL_FIRST_ROW EQU INFO_PANEL_FIRST_ROW - 1
+DEF MACHINE_PANEL_ROWS EQU SCREEN_HEIGHT - MACHINE_PANEL_FIRST_ROW
 
 InspectFightMove:
 	ld a, [wCurrentMenuItem]
@@ -113,42 +118,72 @@ SelectReplacementInfoMove:
 
 
 HandleItemMoveInfoInput::
+	ld a, [wListMenuID]
+	cp ITEMLISTMENU
+	jr z, .inspectable
+	cp PRICEDITEMLISTMENU
+	jr z, .inspectable
+	call HandleMenuInput
+	ld [wMoveInfoNumber], a
+	ret
+.inspectable
 	ld a, 1
-	jr HandleMoveInfoInput
+	jr HandleListInfoInput
+
 HandlePrizeMoveInfoInput:
 	ld a, 2
-	jr HandleMoveInfoInput
+HandleListInfoInput:
+; Cover the whole bottom window so short names never leave old dialogue
+; behind. CANCEL and items without INFO restore exactly what was underneath.
+	ld [wMoveInfoHint], a
+	add sp, -6 * SCREEN_WIDTH
+	ld hl, sp + 0
+	call ReadMenuWithInfoHint
+	add sp, 6 * SCREEN_WIDTH
+	jr FinishMenuWithInfoHint
+
 HandleLearnerMoveInfoInput:
 	ld a, 3
-HandleMoveInfoInput:
 	ld [wMoveInfoHint], a
 	add sp, -2 * SCREEN_WIDTH
 	ld hl, sp + 0
-	ld a, l
-	ld [wMoveInfoData], a
-	ld e, l
-	ld a, h
-	ld [wMoveInfoData + 1], a
-	ld d, h
-	hlcoord 0, 14
-	ld bc, 2 * SCREEN_WIDTH
-	call CopyData
-	call HandleMenuInput
-	ld [wMoveInfoNumber], a
-	call RestoreMoveInfoHintRows
+	call ReadMenuWithInfoHint
 	add sp, 2 * SCREEN_WIDTH
+FinishMenuWithInfoHint:
 	xor a
 	ld [wMoveInfoHint], a
 	ret
 
+ReadMenuWithInfoHint:
+	ld a, l
+	ld [wMoveInfoData], a
+	ld a, h
+	ld [wMoveInfoData + 1], a
+	push hl
+	call GetInfoHintArea
+	pop de
+	call CopyData
+	call HandleMenuInput
+	ld [wMoveInfoNumber], a
 RestoreMoveInfoHintRows:
-	ld a, [wMoveInfoData]
+	call GetInfoHintArea
+	ld d, h
+	ld e, l
+	ld hl, wMoveInfoData
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wMoveInfoData + 1]
-	ld h, a
-	decoord 0, 14
-	ld bc, 2 * SCREEN_WIDTH
 	jp CopyData
+
+GetInfoHintArea:
+	ld a, [wMoveInfoHint]
+	cp 3
+	hlcoord 0, 14
+	ld bc, 2 * SCREEN_WIDTH
+	ret z
+	hlcoord 0, 12
+	ld bc, 6 * SCREEN_WIDTH
+	ret
 
 DrawMoveInfoCursorHint::
 	call RestoreMoveInfoHintRows
@@ -164,20 +199,7 @@ DrawMoveInfoCursorHint::
 ReadPrizeInfoName:
 	call FindPrizeMachine
 	ret nc
-	ld [wMoveInfoMove], a
-	farcall ReadMoveInfoMachine
-	ld a, [wMoveInfoMove]
-	and a
-	ret z
-	cp NUM_ATTACKS + 1
-	ret nc
-	farcall ReadMoveInfoName
-	hlcoord 1, 14
-	ld de, wMoveInfoName
-	call PlaceString
-	hlcoord 1, 15
-	ld de, MoveInfoStartText
-	jp PlaceString
+	jp DrawMachineHintName
 
 FindPrizeMachine:
 	ld a, [wWhichPrizeWindow]
@@ -202,34 +224,53 @@ FindPrizeMachine:
 InspectPrizeMove:
 	call FindPrizeMachine
 	ret nc
+	ld b, INFO_BROWSE_PRIZE
 	jr InspectMachineMove
 
 InspectListedMove::
 	call FindListedInfoItem
 	ret nc
 	cp HM01
-	jr nc, InspectMachineMove
+	jr c, .supply
+	ld b, INFO_BROWSE_MACHINE
+	ld c, a
+	ld a, [wListMenuID]
+	cp PRICEDITEMLISTMENU
+	jr nz, .machine
+	ld b, INFO_BROWSE_MART
+.machine
+	ld a, c
+	jr InspectMachineMove
+.supply
 	ld [wMoveInfoMove], a
 	ld a, INFO_BROWSE_SUPPLY
 	ld [wMoveInfoBrowse], a
 	jp OpenInfoPanel
 InspectMachineMove:
 	ld [wSelectedMachine], a
-	ld [wMoveInfoMove], a
-	farcall ReadMoveInfoMachine
-	call CacheMachinePartyEligibility
-	ld a, INFO_BROWSE_MACHINE
+	ld a, b
 	ld [wMoveInfoBrowse], a
+	call LoadInspectedMachine
 	ld a, [wMoveInfoMove]
 	ld b, a
 	ld c, INFO_UNKNOWN_PP
 	jp ShowMoveInfo
 
+LoadInspectedMachine:
+	ld a, [wSelectedMachine]
+	ld [wMoveInfoMove], a
+	farjp ReadMoveInfoMachine
+
 DrawMachineListHint:
 	call FindListedInfoItem
 	ret nc
 	cp HM01
-	jr c, .hint
+	jr nc, DrawMachineHintName
+	ld [wMoveInfoMove], a
+	farcall ReadSupplyInfoName
+	jr DrawListInfoHint
+
+DrawMachineHintName:
 	ld [wMoveInfoMove], a
 	farcall ReadMoveInfoMachine
 	ld a, [wMoveInfoMove]
@@ -238,11 +279,14 @@ DrawMachineListHint:
 	cp NUM_ATTACKS + 1
 	ret nc
 	farcall ReadMoveInfoName
+DrawListInfoHint:
+	hlcoord 0, 12
+	lb bc, 4, SCREEN_WIDTH - 2
+	call TextBoxBorder
 	hlcoord 1, 14
 	ld de, wMoveInfoName
 	call PlaceString
-.hint
-	hlcoord 1, 15
+	hlcoord 1, 16
 	ld de, MoveInfoStartText
 	jp PlaceString
 
@@ -296,13 +340,14 @@ ShowMoveInfo:
 	xor a
 	ld [wMoveInfoPage], a
 OpenInfoPanel:
+	call WaitForInfoKeysReleased
 ; Save only the tile rows used by the panel. Leave both caller buffers alone.
 	ldh a, [hAutoBGTransferEnabled]
 	push af
+.saveBackground
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 0, INFO_PANEL_FIRST_ROW
-	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
+	call GetInfoPanelRows
 .saveRows
 	ld a, [hli]
 	ld d, a
@@ -311,12 +356,11 @@ OpenInfoPanel:
 	push de
 	dec b
 	jr nz, .saveRows
-	call WaitForInfoKeysReleased
 .redraw
 	call DrawMoveInfo
 .wait
 	call DelayFrame
-	call Joypad
+	call ReadInfoButtons
 	ldh a, [hJoyPressed]
 	bit B_PAD_B, a
 	jp nz, .close
@@ -329,6 +373,26 @@ OpenInfoPanel:
 	jp nz, .changePage
 	ld b, a
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	jr c, .otherKeys
+	bit B_PAD_A, b
+	jp nz, .party
+	cp INFO_BROWSE_MART
+	jr c, .wait
+	ldh a, [hJoyFiltered]
+	and PAD_UP | PAD_DOWN
+	cp PAD_DOWN
+	ld c, 1
+	jr z, .browse
+	cp PAD_UP
+	jr nz, .wait
+	ld c, -1
+.browse
+	call StepMachineOffer
+	jr nc, .wait
+	ld c, 2 ; restore the list before drawing its new selection
+	jp .uncover
+.otherKeys
 	cp INFO_BROWSE_STATS
 	jr z, .statsKeys
 	cp INFO_BROWSE_LEARN
@@ -351,16 +415,16 @@ OpenInfoPanel:
 	bit B_PAD_UP, b
 	jr nz, .previousSlot
 	bit B_PAD_DOWN, b
-	jr z, .wait
+	jp z, .wait
 	ld a, [wMoveInfoSlot]
 	inc a
 	cp NUM_MOVES
-	jr nc, .wait
+	jp nc, .wait
 	jr .trySlot
 .previousSlot
 	ld a, [wMoveInfoSlot]
 	and a
-	jr z, .wait
+	jp z, .wait
 	dec a
 .trySlot
 	ld hl, wMoveInfoSlot
@@ -374,7 +438,7 @@ OpenInfoPanel:
 	jr nz, .refreshMove
 	ld a, d
 	ld [wMoveInfoSlot], a
-	jr .wait
+	jp .wait
 .refreshMove
 	ld a, b
 	ld [wMoveInfoMove], a
@@ -382,30 +446,21 @@ OpenInfoPanel:
 	ld [wMoveInfoPP], a
 	jp .redraw
 .changePage
-	ld b, 2 ; stats and effect
-	ld a, [wMoveInfoBrowse]
-	cp INFO_BROWSE_MACHINE
-	jr nz, .advance
-	inc b ; party members 1 through 3
-	ld a, [wPartyCount]
-	cp 4
-	jr c, .advance
-	inc b ; party members 4 through 6
-.advance
 	ld hl, wMoveInfoPage
 	ld a, [hl]
-	inc a
-	cp b
-	jr c, .storePage
-	xor a
-.storePage
+	xor 1
 	ld [hl], a
 	jp .redraw
+.party
+	ld c, 1
+	jr .uncover
 .close
+	ld c, 0
+.uncover
 	xor a
 	ldh [hAutoBGTransferEnabled], a
+	call GetInfoPanelRows
 	ld hl, wTileMap + SCREEN_AREA - 1
-	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
 .restoreRows
 	pop de
 	ld a, e
@@ -414,19 +469,67 @@ OpenInfoPanel:
 	ld [hld], a
 	dec b
 	jr nz, .restoreRows
+	bit 1, c
+	jr nz, .newOffer
+	bit 0, c
+	jr nz, .showParty
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call WaitForInfoKeysReleased
+.restoreTransfer
 	pop af
 	ldh [hAutoBGTransferEnabled], a
+	ret
+.showParty
+; The restored list is the return destination. Keep it off screen during
+; this transition so PARTY opens directly, even while A is still held.
+	call CacheMachinePartyEligibility
+	farcall ShowMachinePartyPreview
+	jr .restoreTransfer
+
+.newOffer
+; Reuse the list renderer with its original background restored. Saving these
+; rows again keeps the new item and price intact when the player closes INFO.
+	call RedrawMachineVendor
+	call LoadInspectedMachine
+	jp .saveBackground
+
+ReadInfoButtons::
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MART
+	jp c, Joypad
+; Use the normal menu repeat delay for Up/Down at both counters. Action
+; buttons still use hJoyPressed and never repeat into a sale.
+	ldh a, [hJoy7]
+	push af
+	ld a, 1
+	ldh [hJoy7], a
+	call JoypadLowSensitivity
+	pop af
+	ldh [hJoy7], a
+	ret
+
+GetInfoPanelRows:
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	hlcoord 0, INFO_PANEL_FIRST_ROW
+	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
+	ret c
+	hlcoord 0, MACHINE_PANEL_FIRST_ROW
+	ld b, SCREEN_WIDTH * MACHINE_PANEL_ROWS / 2
 	ret
 
 WaitForInfoKeysReleased:
 	call DelayFrame
 	call Joypad
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MART
 	ldh a, [hJoyHeld]
+	jr nc, .vendor
 	and PAD_A | PAD_B | PAD_START | PAD_SELECT
+.vendor
+	and a
 	jr nz, WaitForInfoKeysReleased
 	xor a
 	ldh [hJoyFiltered], a
@@ -435,12 +538,16 @@ WaitForInfoKeysReleased:
 DrawMoveInfo:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 0, INFO_PANEL_FIRST_ROW
-	lb bc, INFO_PANEL_ROWS - 2, SCREEN_WIDTH - 2
+	call GetInfoPanelRows
+	ld b, INFO_PANEL_ROWS - 2
+	jr c, .frame
+	ld b, MACHINE_PANEL_ROWS - 2
+.frame
+	ld c, SCREEN_WIDTH - 2
 	call TextBoxBorder
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_SUPPLY
-	jr z, .supply
+	jp z, .supply
 	farcall ReadMoveInfoName
 	call ReadMoveInfoData
 	hlcoord 1, 12
@@ -459,8 +566,6 @@ DrawMoveInfo:
 	call PlaceString
 .choosePage
 	ld a, [wMoveInfoPage]
-	cp 2
-	jr nc, .party
 	and a
 	jr nz, .effect
 	farcall DrawMoveInfoType
@@ -468,20 +573,52 @@ DrawMoveInfo:
 	call DrawMoveInfoPower
 	call DrawMoveInfoAccuracy
 	call DrawMoveInfoPP
-	hlcoord 1, 16
 	ld de, MoveInfoEffectText
-	jr .show
+	jr .controls
 .effect
 	call DrawMoveInfoEffect
-	hlcoord 1, 16
 	ld de, MoveInfoStatsText
+.controls
 	ld a, [wMoveInfoBrowse]
 	cp INFO_BROWSE_MACHINE
-	jr nz, .show
-	ld de, MoveInfoPartyText
-	jr .show
-.party
-	call DrawMachineInfoParty
+	hlcoord 1, 16
+	jr c, .show
+; The shared move renderer lays out four rows (name, then stats or effect).
+; Shift them up together on machine cards to fit both lines of controls.
+	hlcoord 0, 12
+	decoord 0, 11
+	ld bc, 4 * SCREEN_WIDTH
+	call CopyData
+	hlcoord 1, 15
+	ld bc, SCREEN_WIDTH - 2
+	ld a, ' '
+	call FillMemory
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	ld de, .bagControls
+	jr z, .machineHint
+	call HasOtherMachineOffer
+	ld de, .oneOfferControls
+	jr nc, .machineHint
+	ld de, .shopControls
+.machineHint
+	hlcoord 1, 15
+	call PlaceString
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	ld de, .selectEffect
+	jr z, .nextPage
+	ld de, .shopEffect
+.nextPage
+	ld a, [wMoveInfoPage]
+	and a
+	jr z, .placePage
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_MACHINE
+	ld de, .selectStats
+	jr z, .placePage
+	ld de, .shopStats
+.placePage
 	hlcoord 1, 16
 	jr .show
 .supply
@@ -499,6 +636,14 @@ DrawMoveInfo:
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
+
+.bagControls  db "A:PARTY     B:BACK@"
+.oneOfferControls db "A:PARTY@"
+.shopControls db "UP/DOWN:TM A:PARTY@"
+.selectEffect db "SELECT:EFFECT@"
+.selectStats  db "SELECT:STATS@"
+.shopEffect   db "SEL:EFFECT B:BACK@"
+.shopStats    db "SEL:STATS  B:BACK@"
 
 ReadMoveInfoData:
 	ld a, [wMoveInfoMove]
@@ -671,7 +816,6 @@ MoveInfoPPText:       db "PP@"
 MoveInfoBasePPText:   db "BASE@"
 MoveInfoEffectText:   db "SELECT EFFECT  B@"
 MoveInfoStatsText:    db "SELECT STATS   B@"
-MoveInfoPartyText:    db "SELECT PARTY   B@"
 
 DrawMoveInfoTraitLabel:
 	farcall ReadMoveInfoTraits
@@ -696,3 +840,5 @@ INCLUDE "engine/pokemon/machine_party_info.asm"
 
 INCLUDE "data/moves/info_effects.asm"
 INCLUDE "data/items/supply_info.asm"
+
+INCLUDE "engine/pokemon/tm_offer_browsing.asm"

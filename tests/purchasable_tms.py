@@ -48,18 +48,20 @@ def check_counter(game, *, prize):
         if row:
             press(game, DOWN)
         shows(game, f"TM{number:02}", name, "START INFO")
+        # The selected name replaces the whole prompt, even when it is short.
+        assert [panel_row(game, y) for y in (14, 15, 16)] == [name, "", "START INFO"]
         selection = (game.get("wCurrentMenuItem"), game.get("wListScrollOffset"))
         press(game, START)
-        shows(game, name, element, "SELECT EFFECT")
-        assert panel_row(game, 12) == name
-        assert panel_row(game, 13) == element
-        shown_power, _, shown_accuracy = panel_row(game, 14).partition("ACC")
+        shows(game, name, element, "SEL EFFECT", "B BACK")
+        assert panel_row(game, 11) == name
+        assert panel_row(game, 12) == element
+        shown_power, _, shown_accuracy = panel_row(game, 13).partition("ACC")
         assert shown_power.split() == ["POW", str(power)], (name, shown_power)
         assert shown_accuracy.strip() == f"{accuracy}/100", (name, shown_accuracy)
-        assert panel_row(game, 15).split() == ["PP", str(pp)]
+        assert panel_row(game, 14).split() == ["PP", str(pp)]
         press(game, SELECT)
-        shows(game, "SELECT PARTY")
-        displayed = " ".join(filter(None, (panel_row(game, y) for y in (13, 14, 15))))
+        shows(game, "SEL STATS", "A PARTY")
+        displayed = " ".join(filter(None, (panel_row(game, y) for y in (12, 13, 14))))
         assert displayed == effect, (name, displayed)
         press(game, B)
         shows(game, f"TM{number:02}", name, "START INFO")
@@ -67,6 +69,10 @@ def check_counter(game, *, prize):
         assert game.get_bytes("wPlayerMoney", 3) == bytes(3)
         assert game.get_bytes("wPlayerCoins", 2) == bytes(2)
         assert game.get_bytes("wNumBagItems", 42) == contents
+
+    press(game, DOWN)
+    shows(game, "Which prize" if prize else "Take your time")
+    assert "START INFO" not in game.visible_text()
 
 
 def main():

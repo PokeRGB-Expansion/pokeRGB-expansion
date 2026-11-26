@@ -83,16 +83,19 @@ RedrawPartyMenu_::
 .teachMoveMenu
 	push hl
 	farcall SelectedMonKnowsMove
-	ld de, .knowsMoveText
+	ld a, 2
 	jr c, .moveStatus
 	farcall CanLearnSelectedMachine
 	ld a, e
 	and a
-	ld de, .ableToLearnMoveText
-	jr nz, .moveStatus
-	ld de, .notAbleToLearnMoveText
+	jr z, .moveStatus
+	ld a, 1
 .moveStatus
 	pop hl
+	push hl
+	call PlaceTMPartyStatus
+	pop hl
+	jr .printLevel
 .placeMoveLearnabilityString
 	ld bc, SCREEN_WIDTH + 9 ; 1 row down and 9 columns right
 	push hl
@@ -111,12 +114,6 @@ RedrawPartyMenu_::
 	pop bc
 	inc c
 	jp .loop
-.knowsMoveText
-	db "KNOWS@"
-.ableToLearnMoveText
-	db "ABLE@"
-.notAbleToLearnMoveText
-	db "NOT ABLE@"
 .evolutionStoneMenu
 	push hl
 	ld hl, EvosMovesPointerTable
@@ -220,6 +217,84 @@ RedrawPartyMenu_::
 	pop hl
 	call PrintText
 	jr .done
+
+DrawTMPreviewRows::
+	xor a
+	ldh [hPartyMonIndex], a
+	hlcoord 3, 0
+.row
+	push hl
+	ldh a, [hPartyMonIndex]
+	ld hl, wPartyMonNicks
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	pop hl
+	push hl
+	call PlaceString
+	ldh a, [hPartyMonIndex]
+	ld hl, wPartyMon1Level
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
+	ld a, [hl]
+	pop hl
+	push hl
+	ld bc, 10
+	add hl, bc
+	call PrintPartyLevelFromA
+	call .status
+	pop hl
+	push hl
+	call PlaceTMPartyStatus
+	pop hl
+	ld de, 2 * SCREEN_WIDTH
+	add hl, de
+	ldh a, [hPartyMonIndex]
+	inc a
+	ldh [hPartyMonIndex], a
+	ld b, a
+	ld a, [wPartyCount]
+	cp b
+	jr nz, .row
+	ret
+
+.status
+	ldh a, [hPartyMonIndex]
+	ld e, a
+	ld a, [wMoveInfoMove]
+	ld d, a
+	farcall PartySlotKnowsMove
+	ld a, 2
+	ret c
+	ldh a, [hPartyMonIndex]
+	ld c, a
+	ld hl, wMachineInfoAble
+	ld b, FLAG_TEST
+	predef FlagActionPredef
+	ld a, c
+	and a
+	ret z
+	ld a, 1
+	ret
+
+; Both party screens use the same status words and row layout.
+; A = 0 for unable, 1 for able, 2 for known. HL = nickname position.
+PlaceTMPartyStatus:
+	ld bc, SCREEN_WIDTH + 9
+	add hl, bc
+	and a
+	ld de, PartyNotAbleText
+	jr z, .print
+	dec a
+	ld de, PartyAbleText
+	jr z, .print
+	ld de, PartyKnowsMoveText
+.print
+	jp PlaceString
+
+PartyKnowsMoveText:: db "KNOWS@"
+PartyAbleText:: db "ABLE@"
+PartyNotAbleText:: db "NOT ABLE@"
 
 PartyMenuItemUseMessagePointers:
 	dw AntidoteText

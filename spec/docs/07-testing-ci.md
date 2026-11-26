@@ -4,7 +4,7 @@ The [test runner](../../tests/run.py) lists the checks that run on the current s
 
 ## TM shopping, box previews and custom trainers
 
-- At the Celadon Mart and Game Corner, check move details and party eligibility before spending. Check all nine department store TMs and all three at the coin counter. Cover a full Bag, an already-known move, and two machines that teach the same move with different learnsets. [Stock TM counters](../../tests/purchasable_tms.py) · [TM party checks](../../tests/tm_party_info.py)
+- At the Celadon Mart and Game Corner, check move details and party eligibility before spending. Check all nine department store TMs and all three at the coin counter. Cover a full Bag, an already-known move, and two machines that teach the same move with different learnsets. [Counter navigation](../../tests/tm_browsing.py) · [Input and display checks](../../tests/tm_inspection_controls.py) · [Stock TM counters](../../tests/purchasable_tms.py) · [TM party checks](../../tests/tm_party_info.py)
 - View nicknames and species in all twelve boxes. Include unsaved catches in the active box and an older adventure on the same cartridge. Detect writes to cartridge RAM while viewing or cancelling. [Box preview checks](../../tests/box_preview.py)
 - Build a sample hack with explicit trainer moves. Test the edited Route 3 battle, an unchanged trainer of the same class, signature moves and invalid source entries. [Trainer authoring checks](../../tests/trainer_movesets.py)
 
