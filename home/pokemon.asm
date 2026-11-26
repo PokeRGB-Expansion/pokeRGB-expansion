@@ -227,7 +227,17 @@ PartyMenuInit::
 	ld a, [wForcePlayerToChooseMon]
 	and a
 	ld a, PAD_A | PAD_B
-	jr z, .next
+	jr nz, .forced
+	ld a, [wPartyMenuTypeOrMessageID]
+	cp FIELD_REORDER_PARTY_MENU
+	jr z, .allowSelect
+	cp SWAP_MONS_PARTY_MENU
+	ld a, PAD_A | PAD_B
+	jr nz, .next
+.allowSelect
+	ld a, PAD_A | PAD_B | PAD_SELECT
+	jr .next
+.forced
 	xor a
 	ld [wForcePlayerToChooseMon], a
 	inc a ; a = PAD_A
@@ -284,6 +294,7 @@ HandlePartyMenuInput::
 	farcall ErasePartyMenuCursors
 	xor a
 	ld [wMenuItemToSwap], a
+	ld a, FIELD_REORDER_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	call RedrawPartyMenu
 	jr HandlePartyMenuInput

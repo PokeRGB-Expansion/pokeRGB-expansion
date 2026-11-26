@@ -1,7 +1,13 @@
 # Specification changelog
 
-## Unreleased
+## Game release 0.3.0
 
+- [Player-facing changes](docs/16-game-changes.md) cover the v0.2.0 sweep, the Core field EXP. ALL switch, Fuchsia Move Deleter and Quick battle pace.
+- D65 and D66 settle the new preset choices and defer individual move history to Extended. Historical research records retain the alternatives and original reproduction steps.
+
+## Earlier game releases
+
+- v0.2.0 added the caught marker and battle EXP bar to both presets. [Display rules and tests](research/battle-hud-displays.md)
 - Protect the one-time EXP. ALL reward from tossing and selling in Minimal and Core. Core calculates the two experience shares independently under RGB-017. Minimal keeps the original awards.
 
 ## 0.1.48 — 2026-11-23

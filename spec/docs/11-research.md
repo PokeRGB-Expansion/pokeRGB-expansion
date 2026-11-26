@@ -116,7 +116,7 @@ Red/Blue already shows move type and PP during battle selection, and some NPCs i
 
 ## Selected bag reserve
 
-D36 selects the separate 134-byte reserve rather than shifting surrounding fields. [E108](../research/evidence.md#e108) and the [RAM allocation review](../research/bag-memory.md) verify that the original bag has no adjacent spare bytes and that the separate reserve can hold 64 entries with a four-byte format marker. Sixty-four is both the selected preset and the bound of this allocation; it is not a tested engine-wide maximum. The RAM-only audit keeps every other existing WRAM label fixed. Feature overlap, shared routines, and save conversion still need implementation evidence.
+D36 selects the separate 134-byte reserve rather than shifting surrounding fields. [E108](../research/evidence.md#e108) and the [RAM allocation review](../research/bag-memory.md) verify that the original bag has no adjacent spare bytes and that the separate reserve can hold 64 entries with a four-byte format marker. Sixty-four is both the selected preset and the bound of this allocation; it is not a tested engine-wide maximum. The RAM-only audit keeps every other existing WRAM label fixed. Released builds use two bytes of that reserve for the registered item. The optional 64-slot design needs a compatible home for that record and tests for importing existing saves.
 
 ## Expanded-bag initialization
 
@@ -124,7 +124,7 @@ D36 selects the separate 134-byte reserve rather than shifting surrounding field
 
 ## Move cursor, box order, and Mansion trainers
 
-[E110](../research/evidence.md#e110) traces SELECT redraws to an older saved move index. [E111](../research/evidence.md#e111) confirms the separate prepend/append paths, the boxed-gift caller, and the nickname's slot-one assumption. [E112](../research/evidence.md#e112) checks all six Mansion trainer settings and the shared sight path. The [review](../research/cursor-box-and-trainers.md) separates source facts, selected usability policies, and unknown original design reasons. No game patch or runtime reproduction is claimed.
+[E110](../research/evidence.md#e110) traces SELECT redraws to an older saved move index. [E111](../research/evidence.md#e111) confirms the separate prepend/append paths, the boxed-gift caller, and the nickname's slot-one assumption. [E112](../research/evidence.md#e112) checks all six Mansion trainer settings and the shared sight path. The [review](../research/cursor-box-and-trainers.md) separates source facts, selected usability policies, and unknown original design reasons. That source review predates the implementation. The game now has [Mansion encounter checks](../../tests/mansion_sight.py).
 
 ## Mansion intent comparison
 
@@ -134,7 +134,7 @@ D36 selects the separate 134-byte reserve rather than shifting surrounding field
 
 ## Viridian Forest star-grass recognition
 
-[E115](../research/evidence.md#e115) checks Red/Blue encounter and sprite routines against Yellow, then decodes the identical map and blockset. The lower-right encounter check misses 114 grass squares that the lower-left sprite check recognizes. The [review](../research/forest-encounters.md) and [audit](../research/forest-encounter-audit.json) support a likely-oversight conclusion. D40/PN-024 accepts the scoped Core repair. Original intent is strongly inferred; no original developer statement or running-game test is established.
+[E115](../research/evidence.md#e115) checks Red/Blue encounter and sprite routines against Yellow, then decodes the identical map and blockset. The lower-right encounter check misses 114 grass squares that the lower-left sprite check recognizes. The [review](../research/forest-encounters.md) and [audit](../research/forest-encounter-audit.json) support a likely-oversight conclusion. D40/PN-024 accepts the scoped Core repair. The evidence supports a likely oversight. The [cartridge checks](../../tests/forest_encounters.py) cover the affected tiles. The original developers’ intent remains an inference.
 
 ## Acid Armor picture visibility
 

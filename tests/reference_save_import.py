@@ -47,6 +47,7 @@ def check_records(game, bag):
     assert game.get("wBoxMon1BoxLevel") == 7
     assert game.get_bytes("wNumBagItems", len(bag)) == bag
     assert game.get("wRegisteredItemTag") == 0
+    assert game.get("wExpAllDisabled") == 0
 
 
 def check_import(library, boot, rom, reference_save):

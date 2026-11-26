@@ -1,14 +1,14 @@
 DEF REGISTERED_ITEM_TAG EQU $d6
 
-ShowBicycleActions::
-; Carry means use the Bicycle. Registration and cancellation return to the bag.
+ShowRegisteredItemActions::
+; Carry means use the item. Registration and cancellation return to the bag.
 	hlcoord 8, 10
 	lb bc, 4, 10
 	call TextBoxBorder
-	call IsBicycleRegistered
-	ld de, BicycleRegisterActions
+	call IsCurrentItemRegistered
+	ld de, ItemRegisterActions
 	jr nz, .draw
-	ld de, BicycleClearActions
+	ld de, ItemClearActions
 .draw
 	hlcoord 10, 11
 	call PlaceString
@@ -30,11 +30,11 @@ ShowBicycleActions::
 	ld a, [wCurrentMenuItem]
 	and a
 	jr z, .use
-	call IsBicycleRegistered
+	call IsCurrentItemRegistered
 	jr z, .clear
 	ld a, REGISTERED_ITEM_TAG
 	ld [wRegisteredItemTag], a
-	ld a, BICYCLE
+	ld a, [wCurItem]
 	ld [wRegisteredItem], a
 	jr .back
 .clear
@@ -48,23 +48,41 @@ ShowBicycleActions::
 	scf
 	ret
 
-BicycleRegisterActions:
+ItemRegisterActions:
 	db "USE"
 	next "REGISTER@"
 
-BicycleClearActions:
+ItemClearActions:
 	db "USE"
 	next "CLEAR@"
 
-IsBicycleRegistered:
+IsCurrentItemRegistered:
 	ld a, [wRegisteredItemTag]
 	cp REGISTERED_ITEM_TAG
 	ret nz
 	ld a, [wRegisteredItem]
-	cp BICYCLE
+	ld hl, wCurItem
+	cp [hl]
 	ret
 
-CanUseRegisteredBicycle::
+IsCurrentFieldItemRegistrable::
+	ld a, [wCurItem]
+IsRegistrableFieldItem:
+	cp BICYCLE
+	jr z, .allowed
+	cp OLD_ROD
+	jr c, .unavailable
+	cp SUPER_ROD + 1
+	jr nc, .unavailable
+	ASSERT GOOD_ROD == OLD_ROD + 1 && SUPER_ROD == GOOD_ROD + 1
+.allowed
+	scf
+	ret
+.unavailable
+	and a
+	ret
+
+CanUseRegisteredItem::
 ; The overworld checks transitions and pending battles before calling here.
 	ldh a, [hJoyPressed]
 	bit B_PAD_SELECT, a
@@ -77,16 +95,20 @@ CanUseRegisteredBicycle::
 	ld a, [wLinkState]
 	dec a ; match the bag's Cable Club restriction
 	jr z, .unavailable
-	call HasRegisteredBicycle
+	call HasRegisteredItem
 	ret
 .unavailable
 	and a
 	ret
 
-HasRegisteredBicycle:
-	call IsBicycleRegistered
+HasRegisteredItem:
+	ld a, [wRegisteredItemTag]
+	cp REGISTERED_ITEM_TAG
 	jr nz, .unavailable
-	ld b, BICYCLE
+	ld a, [wRegisteredItem]
+	call IsRegistrableFieldItem
+	jr nc, .unavailable
+	ld b, a
 	call IsItemInBag
 	jr z, .unavailable
 	scf
@@ -95,12 +117,12 @@ HasRegisteredBicycle:
 	and a
 	ret
 
-UseRegisteredBicycle::
-	call HasRegisteredBicycle
+UseRegisteredItem::
+	call HasRegisteredItem
 	ret nc
 	xor a
 	ld [wPseudoItemID], a
-	ld a, BICYCLE
+	ld a, [wRegisteredItem]
 	ld [wCurItem], a
 	call UseItem
 .waitForRelease

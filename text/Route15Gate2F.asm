@@ -10,9 +10,15 @@ _Route15Gate2FOaksAideExpAllText::
 	cont "of EXP for each"
 	cont "#MON."
 
+IF DEF(_POKERGB_CORE)
+	para "Use EXP.ALL in"
+	line "your ITEM list to"
+	cont "turn it on or off."
+ELSE
 	para "If you don't need"
 	line "it, you should "
 	cont "store it via PC."
+ENDC
 	done
 
 _Route15Gate2FBinocularsText::

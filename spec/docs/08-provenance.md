@@ -2,7 +2,7 @@
 
 ## Settled scope
 
-No project-wide MIT license is added. This decision applies to the proposed derived project; it does not remove existing notices or make someone else's code or assets newly licensed.
+No project-wide MIT license is added. Keep the notices attached to inherited and imported files.
 
 Keep this process small and factual. Preserve source history, credit the work used, retain applicable file-level notices, and avoid claims of rights the project has not established. A disclaimer does not create rights or guarantee protection from a takedown.
 
@@ -14,7 +14,7 @@ The pinned `pret/pokered`, Solus, Shin Lite, PureRGB and Solid Red trees have no
 
 Pokéemerald Expansion asks users to credit RHH and contributors. That is useful evidence for its attribution practice; it is not an MIT declaration for the whole project. [E35](../research/evidence.md#e35)
 
-This specification imports no donor game code or artwork. Source repositories were read for research. The future implementation should retain upstream Git history and distinguish inherited disassembly, imported contributor work, independently written fixes, tools, and assets.
+The repository retains upstream Git history. Keep research comparisons distinct from actual imports and distinguish inherited disassembly, imported contributor work, independently written fixes, tools, and assets.
 
 ## Record each imported change
 

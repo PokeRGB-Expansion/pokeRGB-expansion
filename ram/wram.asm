@@ -202,6 +202,20 @@ wOverworldMapEnd::
 
 NEXTU
 wTempPic:: ds PIC_SIZE tiles
+; The Pokédex owns the map buffer until ReloadMapData. Keep its list above
+; the temporary Pokémon picture so looking at DATA cannot damage the order.
+wDexAlphaMode:: db
+wDexReturnToUnseen:: db
+wDexNumericRow:: db
+wDexNumericOffset:: db
+wDexNumericMax:: db
+wDexListRank:: db
+wDexAlphaCount:: db
+wDexSortGap:: db
+wDexSortKey:: db
+wDexAlphaOrder:: ds NUM_POKEMON
+wDexNamePointers:: ds NUM_POKEMON * 2
+	ASSERT @ - wOverworldMap <= wOverworldMapEnd - wOverworldMap
 ENDU
 
 
@@ -809,6 +823,9 @@ NEXTU
 wOptionsTextSpeedCursorX:: db
 wOptionsBattleAnimCursorX:: db
 wOptionsBattleStyleCursorX:: db
+IF DEF(_POKERGB_CORE)
+wOptionsBattlePaceCursorX:: db
+ENDC
 wOptionsCancelCursorX:: db
 
 NEXTU
@@ -2052,7 +2069,8 @@ wCeruleanCaveB1FCurScript:: db
 wVictoryRoad1FCurScript:: db
 	ds 1
 wLancesRoomCurScript:: db
-	ds 4
+wExpAllDisabled:: db ; zero in the original game-progress padding
+	ds 3
 wSilphCo10FCurScript:: db
 wSilphCo11FCurScript:: db
 	ds 1

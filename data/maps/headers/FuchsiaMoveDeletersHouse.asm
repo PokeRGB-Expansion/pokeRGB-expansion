@@ -1,0 +1,2 @@
+	map_header FuchsiaMoveDeletersHouse, FUCHSIA_MOVE_DELETERS_HOUSE, HOUSE
+	end_map_header

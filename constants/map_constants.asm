@@ -396,6 +396,10 @@ DEF FIRST_INDOOR_MAP EQU const_value
 	map_const BRUNOS_ROOM,                    5,  6 ; $F6
 	map_const AGATHAS_ROOM,                   5,  6 ; $F7
 	end_indoor_group POKEMON_LEAGUE_3
+IF DEF(_POKERGB_CORE)
+	map_const FUCHSIA_MOVE_DELETERS_HOUSE,    4,  4 ; $F8
+	end_indoor_group FUCHSIA_CITY_4
+ENDC
 DEF NUM_MAPS EQU const_value
 
 ; Indoor maps, such as houses, use this as the Map ID in their exit warps

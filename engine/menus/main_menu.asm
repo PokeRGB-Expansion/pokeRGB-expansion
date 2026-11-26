@@ -460,29 +460,58 @@ SaveScreenInfoText:
 	next "#DEX    "
 	next "TIME@"
 
+IF DEF(_POKERGB_CORE)
+	DEF OPTION_BOX_HEIGHT EQU 2
+	DEF OPTION_CANCEL_Y EQU 17
+ELSE
+	DEF OPTION_BOX_HEIGHT EQU 3
+	DEF OPTION_CANCEL_Y EQU 16
+ENDC
+
+DEF OPTION_STRIDE EQU OPTION_BOX_HEIGHT + 2
+DEF OPTION_TEXT_Y EQU OPTION_BOX_HEIGHT
+DEF OPTION_ANIM_Y EQU OPTION_STRIDE + OPTION_BOX_HEIGHT
+DEF OPTION_STYLE_Y EQU 2 * OPTION_STRIDE + OPTION_BOX_HEIGHT
+IF DEF(_POKERGB_CORE)
+	DEF OPTION_PACE_Y EQU 3 * OPTION_STRIDE + OPTION_BOX_HEIGHT
+ENDC
+
 DisplayOptionMenu:
 	hlcoord 0, 0
-	ld b, 3
-	ld c, 18
+	lb bc, OPTION_BOX_HEIGHT, 18
 	call TextBoxBorder
-	hlcoord 0, 5
-	ld b, 3
-	ld c, 18
+	hlcoord 0, OPTION_STRIDE
+	lb bc, OPTION_BOX_HEIGHT, 18
 	call TextBoxBorder
-	hlcoord 0, 10
-	ld b, 3
-	ld c, 18
+	hlcoord 0, 2 * OPTION_STRIDE
+	lb bc, OPTION_BOX_HEIGHT, 18
 	call TextBoxBorder
+IF DEF(_POKERGB_CORE)
+	hlcoord 0, 3 * OPTION_STRIDE
+	lb bc, OPTION_BOX_HEIGHT, 18
+	call TextBoxBorder
+	ldh a, [hUILayoutFlags]
+	push af
+	set BIT_SINGLE_SPACED_LINES, a
+	ldh [hUILayoutFlags], a
+ENDC
 	hlcoord 1, 1
 	ld de, TextSpeedOptionText
 	call PlaceString
-	hlcoord 1, 6
+	hlcoord 1, OPTION_STRIDE + 1
 	ld de, BattleAnimationOptionText
 	call PlaceString
-	hlcoord 1, 11
+	hlcoord 1, 2 * OPTION_STRIDE + 1
 	ld de, BattleStyleOptionText
 	call PlaceString
-	hlcoord 2, 16
+IF DEF(_POKERGB_CORE)
+	hlcoord 1, 3 * OPTION_STRIDE + 1
+	ld de, BattlePaceOptionText
+	call PlaceString
+	pop af
+	ldh [hUILayoutFlags], a
+ENDC
+	hlcoord 2, OPTION_CANCEL_Y
 	ld de, OptionMenuCancelText
 	call PlaceString
 	xor a
@@ -492,7 +521,7 @@ DisplayOptionMenu:
 	inc a ; 1 << BIT_FAST_TEXT_DELAY
 	ld [wLetterPrintingDelayFlags], a
 	ld [wOptionsCancelCursorX], a
-	ld a, 3 ; text speed cursor Y coordinate
+	ld a, OPTION_TEXT_Y
 	ld [wTopMenuItemY], a
 	call SetCursorPositionsFromOptions
 	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
@@ -500,6 +529,8 @@ DisplayOptionMenu:
 	ld a, $01
 	ldh [hAutoBGTransferEnabled], a ; enable auto background transfer
 	call Delay3
+	ld a, %11100100 ; the complete menu now covers the field
+	ldh [rBGP], a
 .loop
 	call PlaceMenuCursor
 	call SetOptionsFromCursorPositions
@@ -517,7 +548,7 @@ DisplayOptionMenu:
 	jr z, .checkDirectionKeys
 ; A was pressed
 	ld a, [wTopMenuItemY]
-	cp 16 ; is the cursor on Cancel?
+	cp OPTION_CANCEL_Y ; is the cursor on Cancel?
 	jr nz, .loop
 .exitMenu
 	ld a, SFX_PRESS_AB
@@ -533,52 +564,65 @@ DisplayOptionMenu:
 	jr nz, .downPressed
 	bit B_PAD_UP, b
 	jr nz, .upPressed
-	cp 8 ; cursor in Battle Animation section?
+	cp OPTION_ANIM_Y
 	jr z, .cursorInBattleAnimation
-	cp 13 ; cursor in Battle Style section?
+	cp OPTION_STYLE_Y
 	jr z, .cursorInBattleStyle
-	cp 16 ; cursor on Cancel?
+IF DEF(_POKERGB_CORE)
+	cp OPTION_PACE_Y
+	jr z, .cursorInBattlePace
+ENDC
+	cp OPTION_CANCEL_Y ; cursor on Cancel?
 	jr z, .loop
 ; cursor in Text Speed
 	bit B_PAD_LEFT, b
 	jp nz, .pressedLeftInTextSpeed
 	jp .pressedRightInTextSpeed
 .downPressed
-	cp 16
-	ld b, -13
-	ld hl, wOptionsTextSpeedCursorX
-	jr z, .updateMenuVariables
-	ld b, 5
-	cp 3
-	inc hl
-	jr z, .updateMenuVariables
-	cp 8
-	inc hl
-	jr z, .updateMenuVariables
-	ld b, 3
-	inc hl
-	jr .updateMenuVariables
+	ld c, 1
+	jr .changeRow
 .upPressed
-	cp 8
-	ld b, -5
-	ld hl, wOptionsTextSpeedCursorX
-	jr z, .updateMenuVariables
-	cp 13
+	ld c, -1
+.changeRow
+	ld hl, .rows
+	ld b, 0
+.findRow
+	cp [hl]
+	jr z, .foundRow
 	inc hl
-	jr z, .updateMenuVariables
-	cp 16
-	ld b, -3
-	inc hl
-	jr z, .updateMenuVariables
-	ld b, 13
-	inc hl
-.updateMenuVariables
-	add b
+	inc b
+	jr .findRow
+.foundRow
+	ld a, b
+	add c
+	cp -1
+	jr nz, .checkLastRow
+	ld a, .rowsEnd - .rows - 1
+.checkLastRow
+	cp .rowsEnd - .rows
+	jr c, .setRow
+	xor a
+.setRow
+	ld e, a
+	ld d, 0
+	ld hl, .rows
+	add hl, de
+	ld a, [hl]
 	ld [wTopMenuItemY], a
+	ld hl, wOptionsTextSpeedCursorX ; one cursor X per row
+	add hl, de
 	ld a, [hl]
 	ld [wTopMenuItemX], a
 	call PlaceUnfilledArrowMenuCursor
 	jp .loop
+
+.rows
+	db OPTION_TEXT_Y, OPTION_ANIM_Y, OPTION_STYLE_Y
+IF DEF(_POKERGB_CORE)
+	db OPTION_PACE_Y
+ENDC
+	db OPTION_CANCEL_Y
+.rowsEnd
 .cursorInBattleAnimation
 	ld a, [wOptionsBattleAnimCursorX] ; battle animation cursor X coordinate
 	xor 1 ^ 10 ; toggle between 1 and 10
@@ -589,6 +633,13 @@ DisplayOptionMenu:
 	xor 1 ^ 10 ; toggle between 1 and 10
 	ld [wOptionsBattleStyleCursorX], a
 	jp .eraseOldMenuCursor
+IF DEF(_POKERGB_CORE)
+.cursorInBattlePace
+	ld a, [wOptionsBattlePaceCursorX]
+	xor 1 ^ 10 ; cursor before NORMAL or QUICK
+	ld [wOptionsBattlePaceCursorX], a
+	jp .eraseOldMenuCursor
+ENDC
 .pressedLeftInTextSpeed
 	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
 	cp 1
@@ -626,6 +677,12 @@ BattleStyleOptionText:
 	db   "BATTLE STYLE"
 	next " SHIFT    SET@"
 
+IF DEF(_POKERGB_CORE)
+BattlePaceOptionText:
+	db   "BATTLE PACE"
+	next " NORMAL   QUICK@"
+ENDC
+
 OptionMenuCancelText:
 	db "CANCEL@"
 
@@ -661,6 +718,13 @@ SetOptionsFromCursorPositions:
 .battleStyleShift
 	res BIT_BATTLE_SHIFT, d
 .storeOptions
+IF DEF(_POKERGB_CORE)
+	ld a, [wOptionsBattlePaceCursorX]
+	cp 10
+	jr nz, .paceReady
+	set BIT_QUICK_BATTLES, d
+.paceReady
+ENDC
 	ld a, d
 	ld [wOptions], a
 	ret
@@ -670,7 +734,11 @@ SetCursorPositionsFromOptions:
 	ld hl, TextSpeedOptionData + 1
 	ld a, [wOptions]
 	ld c, a
+IF DEF(_POKERGB_CORE)
+	and TEXT_DELAY_MASK
+ELSE
 	and $3f
+ENDC
 	push bc
 	ld de, 2
 	call IsInArray
@@ -678,7 +746,7 @@ SetCursorPositionsFromOptions:
 	dec hl
 	ld a, [hl]
 	ld [wOptionsTextSpeedCursorX], a ; text speed cursor X coordinate
-	hlcoord 0, 3
+	hlcoord 0, OPTION_TEXT_Y
 	call .placeUnfilledRightArrow
 	sla c
 	ld a, 1 ; On
@@ -686,7 +754,7 @@ SetCursorPositionsFromOptions:
 	ld a, 10 ; Off
 .storeBattleAnimationCursorX
 	ld [wOptionsBattleAnimCursorX], a ; battle animation cursor X coordinate
-	hlcoord 0, 8
+	hlcoord 0, OPTION_ANIM_Y
 	call .placeUnfilledRightArrow
 	sla c
 	ld a, 1
@@ -694,10 +762,21 @@ SetCursorPositionsFromOptions:
 	ld a, 10
 .storeBattleStyleCursorX
 	ld [wOptionsBattleStyleCursorX], a ; battle style cursor X coordinate
-	hlcoord 0, 13
+	hlcoord 0, OPTION_STYLE_Y
 	call .placeUnfilledRightArrow
+IF DEF(_POKERGB_CORE)
+	ld a, [wOptions]
+	bit BIT_QUICK_BATTLES, a
+	ld a, 1
+	jr z, .storePace
+	ld a, 10
+.storePace
+	ld [wOptionsBattlePaceCursorX], a
+	hlcoord 0, OPTION_PACE_Y
+	call .placeUnfilledRightArrow
+ENDC
 ; cursor in front of Cancel
-	hlcoord 0, 16
+	hlcoord 0, OPTION_CANCEL_Y
 	ld a, 1
 .placeUnfilledRightArrow
 	ld e, a

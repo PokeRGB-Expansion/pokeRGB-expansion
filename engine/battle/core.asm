@@ -6,6 +6,30 @@ INCLUDE "data/battle/residual_effects_2.asm"
 INCLUDE "data/battle/always_happen_effects.asm"
 INCLUDE "data/battle/special_effects.asm"
 
+IF DEF(_POKERGB_CORE)
+DisabledBattleAnimationDelay::
+	ld c, 30
+BattlePresentationDelay::
+	ld a, [wOptions]
+	bit BIT_QUICK_BATTLES, a
+	jp z, DelayFrames
+	ld a, [wIsInBattle]
+	and a
+	jp z, DelayFrames
+	ld a, [wLinkState]
+	and a
+	jp nz, DelayFrames
+	ld a, [wBattleType]
+	and a
+	jp nz, DelayFrames ; retain Safari and tutorial pacing
+	; Shorten only the idle waits whose callers select this routine.
+	srl c
+	srl c
+	jp nz, DelayFrames
+	inc c
+	jp DelayFrames
+ENDC
+
 SlidePlayerAndEnemySilhouettesOnScreen:
 	call LoadPlayerBackPic
 	ld a, MESSAGE_BOX ; the usual text box at the bottom of the screen
@@ -156,7 +180,7 @@ StartBattle:
 	dec a ; is it a trainer battle?
 	call nz, EnemySendOutFirstMon ; if it is a trainer battle, send out enemy mon
 	ld c, 40
-	call DelayFrames
+	call BattlePresentationDelay
 	call SaveScreenTilesToBuffer1
 .checkAnyPartyAlive
 	call AnyPartyAlive
@@ -842,7 +866,11 @@ ENDC
 	ld b, EXP_ALL
 	call IsItemInBag
 IF DEF(_POKERGB_CORE)
-	jr nz, .shareExperience
+	jr z, .noExpAll
+	ld a, [wExpAllDisabled]
+	and a
+	jr z, .shareExperience
+.noExpAll
 ENDC
 	push af
 IF DEF(_POKERGB_CORE)
@@ -2041,64 +2069,22 @@ ENDC
 .skipPrintLevel
 	ld hl, wEnemyMonHP
 	ld a, [hli]
-	ldh [hMultiplicand + 1], a
-	ld a, [hld]
-	ldh [hMultiplicand + 2], a
-	or [hl] ; is current HP zero?
+	ld b, a
+	ld c, [hl]
+	or c
 	jr nz, .hpNonzero
-; current HP is 0
-; set variables for DrawHPBar
 	ld c, a
 	ld e, a
-	ld d, $6
-	jp .drawHPBar
+	jr .barLengthReady
 .hpNonzero
-	xor a
-	ldh [hMultiplicand], a
-	ld a, 48
-	ldh [hMultiplier], a
-	call Multiply ; multiply current HP by 48
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
-	ld b, a
-	ld a, [hl]
-	ldh [hDivisor], a
-	ld a, b
-	and a ; is max HP > 255?
-	jr z, .doDivide
-; if max HP > 255, scale both (current HP * 48) and max HP by dividing by 4 so that max HP fits in one byte
-; (it needs to be one byte so it can be used as the divisor for the Divide function)
-	ldh a, [hDivisor]
-	srl b
-	rr a
-	srl b
-	rr a
-	ldh [hDivisor], a
-	ldh a, [hProduct + 2]
-	ld b, a
-	srl b
-	ldh a, [hProduct + 3]
-	rr a
-	srl b
-	rr a
-	ldh [hProduct + 3], a
-	ld a, b
-	ldh [hProduct + 2], a
-.doDivide
-	ldh a, [hProduct + 2]
-	ldh [hDividend], a
-	ldh a, [hProduct + 3]
-	ldh [hDividend + 1], a
-	ld a, $2
-	ld b, a
-	call Divide ; divide (current HP * 48) by max HP
-	ldh a, [hQuotient + 3]
-; set variables for DrawHPBar
-	ld e, a
-	ld a, $6
 	ld d, a
-	ld c, a
-.drawHPBar
+	ld e, [hl]
+	predef HPBarLength
+	ld c, 1 ; show at least a sliver
+.barLengthReady
+	ld d, 6
 	xor a
 	ld [wHPBarType], a
 	hlcoord 2, 2
@@ -2590,7 +2576,7 @@ PartyMenuOrRockOrRun:
 SwitchPlayerMon:
 	callfar RetreatMon
 	ld c, 50
-	call DelayFrames
+	call BattlePresentationDelay
 	call AnimateRetreatingPlayerMon
 	ld a, [wWhichPokemon]
 	ld [wPlayerMonNumber], a
@@ -4199,7 +4185,7 @@ PrintCriticalOHKOText:
 	ld [wCriticalHitOrOHKO], a
 .done
 	ld c, 20
-	jp DelayFrames
+	jp BattlePresentationDelay
 
 CriticalOHKOTextPointers:
 	dw CriticalHitText
@@ -5058,6 +5044,22 @@ ENDC
 	ret
 
 INCLUDE "data/battle/critical_hit_moves.asm"
+
+; Return bit 0 for high critical odds and bit 1 for Quick Attack priority.
+ReadMoveInfoTraits::
+	ld a, [wMoveInfoMove]
+	ld hl, HighCriticalMoves
+	ld de, 1
+	call IsInArray
+	ld e, 0
+	jr nc, .priority
+	inc e
+.priority
+	ld a, [wMoveInfoMove]
+	cp QUICK_ATTACK
+	ret nz
+	set 1, e
+	ret
 
 ; function to determine if Counter hits and if so, how much damage it does
 HandleCounterMove:

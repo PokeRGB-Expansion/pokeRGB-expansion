@@ -55,9 +55,9 @@ Evaluate usefulness through reproducible builds, understandable corrections, and
 
 ## Adoption and visibility
 
-Developer adoption and public attention are project goals. Plan visibility for the public launch. PokéRGB Expansion is the preferred working name. Its description must make clear that small Gen 1 hacks can use the base as directly as projects with later-generation systems.
+Developer adoption and public attention are project goals. Publish worked examples and release notes under the PokéRGB Expansion name. Its description must make clear that small Gen 1 hacks can use the base as directly as projects with later-generation systems.
 
-Proposed release and outreach plan:
+Use these practices for releases and outreach.
 
 1. Lead with a clear project description and a short demonstration of delivered work. Explain the broad ambition through the roadmap, with planned capabilities labeled.
 2. Provide a quick start that reaches a working small customization. Include the default example and, when available, one optional-feature example. Each uses the shared engine.

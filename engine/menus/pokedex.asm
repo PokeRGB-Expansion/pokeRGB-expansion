@@ -1,4 +1,8 @@
 ShowPokedexMenu:
+	xor a
+	ld [wDexAlphaMode], a
+	dec a
+	ld [wDexAlphaCount], a ; build the seen-name index on first use in this session
 	ld a, [wCurrentMenuItem]
 	push af
 	ld a, [wLastMenuItem]
@@ -32,10 +36,13 @@ ShowPokedexMenu:
 	inc hl
 	ld a, 6
 	ld [hli], a ; max menu item ID
-	ld [hl], PAD_LEFT | PAD_RIGHT | PAD_B | PAD_A
+	ld [hl], PAD_LEFT | PAD_RIGHT | PAD_SELECT | PAD_B | PAD_A
 	call HandlePokedexListMenu
 	jr c, .goToSideMenu ; if the player chose a pokemon from the list
 .exitPokedex
+	ld a, [wDexAlphaMode]
+	and a
+	call nz, ReturnToNumericDex
 	ld a, [wCurrentMenuItem]
 	ld [wPokedexSavedRow], a
 	ld a, [wListScrollOffset]
@@ -78,7 +85,7 @@ HandlePokedexSideMenu:
 	ld a, [wListScrollOffset]
 	push af
 	add b
-	inc a
+	call GetDexNumberAtRank
 	ld [wPokedexNum], a
 	ld a, [wPokedexNum]
 	push af
@@ -166,6 +173,8 @@ HandlePokedexSideMenu:
 ; handles the list of pokemon on the left of the pokedex screen
 ; sets carry flag if player presses A, unsets carry flag if player presses B
 HandlePokedexListMenu:
+	ld a, 6
+	ld [wMaxMenuItem], a
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 ; draw the horizontal line separating the seen and owned amounts from the menu
@@ -203,11 +212,30 @@ HandlePokedexListMenu:
 	ld de, PokedexOwnText
 	call PlaceString
 	hlcoord 1, 1
+	ld a, [wDexAlphaMode]
+	and a
 	ld de, PokedexContentsText
+	jr z, .heading
+	ld de, PokedexAlphabeticalText
+.heading
+	call PlaceString
+	hlcoord 1, 17
+	ld a, [wDexAlphaMode]
+	and a
+	ld de, PokedexAlphabeticalHint
+	jr z, .hint
+	ld de, PokedexNumericHint
+.hint
 	call PlaceString
 	hlcoord 16, 10
 	ld de, PokedexMenuItemsText
 	call PlaceString
+	ld a, [wDexAlphaMode]
+	and a
+	jr z, .findNumericMax
+	ld a, [wDexAlphaCount]
+	jr .setMaxSeenPokemon
+.findNumericMax
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -240,9 +268,16 @@ HandlePokedexListMenu:
 	call ClearScreenArea
 	hlcoord 1, 3
 	ld a, [wListScrollOffset]
-	ld [wPokedexNum], a
+	ld [wDexListRank], a
 	ld d, 7
 	ld a, [wDexMaxSeenMon]
+	and a
+	jr nz, .hasEntries
+	ld [wMaxMenuItem], a
+	ld de, PokedexNoneSeenText
+	call PlaceString
+	jr .readInput
+.hasEntries
 	cp 7
 	jr nc, .printPokemonLoop
 	ld d, a
@@ -251,10 +286,10 @@ HandlePokedexListMenu:
 ; loop to print pokemon pokedex numbers and names
 ; if the player has owned the pokemon, it puts a pokeball beside the name
 .printPokemonLoop
-	ld a, [wPokedexNum]
-	inc a
-	ld [wPokedexNum], a
+	ld a, [wDexListRank]
 	push af
+	call GetDexNumberAtRank
+	ld [wPokedexNum], a
 	push de
 	push hl
 	ld de, -SCREEN_WIDTH
@@ -294,9 +329,11 @@ HandlePokedexListMenu:
 	add hl, bc
 	pop de
 	pop af
-	ld [wPokedexNum], a
+	inc a
+	ld [wDexListRank], a
 	dec d
 	jr nz, .printPokemonLoop
+.readInput
 	ld a, 01
 	ldh [hAutoBGTransferEnabled], a
 	call Delay3
@@ -304,6 +341,16 @@ HandlePokedexListMenu:
 	call HandleMenuInput
 	bit B_PAD_B, a
 	jp nz, .buttonBPressed
+	bit B_PAD_SELECT, a
+	jr z, .checkNavigation
+	call ToggleDexOrder
+	jp HandlePokedexListMenu
+.checkNavigation
+	ld b, a
+	ld a, [wDexMaxSeenMon]
+	and a
+	jp z, .loop
+	ld a, b
 ; check if Up pressed
 	bit B_PAD_UP, a
 	jr z, .checkIfDownPressed
@@ -368,6 +415,13 @@ HandlePokedexListMenu:
 ClampPokedexListPosition:
 ; Clamp both parts of the cursor to the current list before drawing it.
 	ld a, [wDexMaxSeenMon]
+	and a
+	jr nz, .nonEmpty
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
+	ret
+.nonEmpty
 	ld b, a
 	sub 7
 	jr nc, .checkOffset
@@ -393,6 +447,8 @@ ClampPokedexListPosition:
 	ld [wLastMenuItem], a
 	ret
 
+INCLUDE "engine/menus/pokedex_order.asm"
+
 DrawPokedexVerticalLine:
 	ld c, 9 ; height of line
 	ld de, SCREEN_WIDTH
@@ -412,7 +468,19 @@ PokedexOwnText:
 	db "OWN@"
 
 PokedexContentsText:
-	db "CONTENTS@"
+	db "CONTENTS    @"
+
+PokedexAlphabeticalText:
+	db "A-Z CONTENTS@"
+
+PokedexAlphabeticalHint:
+	db "SELECT: A-Z@"
+
+PokedexNumericHint:
+	db "SELECT: NUM@"
+
+PokedexNoneSeenText:
+	db "NONE SEEN@"
 
 PokedexMenuItemsText:
 	db   "DATA"

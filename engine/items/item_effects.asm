@@ -91,7 +91,11 @@ ItemUsePtrTable:
 	dw UnusableItem      ; SILPH_SCOPE
 	dw ItemUsePokeFlute  ; POKE_FLUTE
 	dw UnusableItem      ; LIFT_KEY
+IF DEF(_POKERGB_CORE)
+	dw ItemUseExpAll     ; EXP_ALL
+ELSE
 	dw UnusableItem      ; EXP_ALL
+ENDC
 	dw ItemUseOldRod     ; OLD_ROD
 	dw ItemUseGoodRod    ; GOOD_ROD
 	dw ItemUseSuperRod   ; SUPER_ROD
@@ -1166,19 +1170,19 @@ ENDC
 .notUsingSoftboiled2
 	ld a, [wCurItem]
 	cp SODA_POP
-	ld b, 60 ; Soda Pop heal amount
+	ld b, SODA_POP_HP
 	jr z, .addHealAmount
-	ld b, 80 ; Lemonade heal amount
+	ld b, LEMONADE_HP
 	jr nc, .addHealAmount
 	cp FRESH_WATER
-	ld b, 50 ; Fresh Water heal amount
+	ld b, FRESH_WATER_HP
 	jr z, .addHealAmount
 	cp SUPER_POTION
-	ld b, 200 ; Hyper Potion heal amount
+	ld b, HYPER_POTION_HP
 	jr c, .addHealAmount
-	ld b, 50 ; Super Potion heal amount
+	ld b, SUPER_POTION_HP
 	jr z, .addHealAmount
-	ld b, 20 ; Potion heal amount
+	ld b, POTION_HP
 .addHealAmount
 	pop de
 	pop hl
@@ -1653,7 +1657,7 @@ ItemUseEscapeRope:
 INCLUDE "data/tilesets/escape_rope_tilesets.asm"
 
 ItemUseRepel:
-	ld b, 100
+	ld b, REPEL_STEPS
 
 ItemUseRepelCommon:
 	ld a, [wIsInBattle]
@@ -1743,11 +1747,11 @@ ItemUseGuardSpec:
 	jp PrintItemUseTextAndRemoveItem
 
 ItemUseSuperRepel:
-	ld b, 200
+	ld b, SUPER_REPEL_STEPS
 	jp ItemUseRepelCommon
 
 ItemUseMaxRepel:
-	ld b, 250
+	ld b, MAX_REPEL_STEPS
 	jp ItemUseRepelCommon
 
 ItemUseDireHit:
@@ -1929,6 +1933,28 @@ PlayedFluteHadEffectText:
 	call PlayDefaultMusic ; start playing normal music again
 .done
 	jp TextScriptEnd ; end text
+
+IF DEF(_POKERGB_CORE)
+ItemUseExpAll:
+	ld a, [wIsInBattle]
+	and a
+	jp nz, ItemUseNotTime
+	ld a, [wExpAllDisabled]
+	xor 1
+	ld [wExpAllDisabled], a
+	ld hl, .off
+	jr nz, .show
+	ld hl, .on
+.show
+	jp PrintText
+
+.on
+	text "EXP.ALL is ON."
+	prompt
+.off
+	text "EXP.ALL is OFF."
+	prompt
+ENDC
 
 ItemUseCoinCase:
 	ld a, [wIsInBattle]
@@ -2183,7 +2209,7 @@ ENDC
 	and PP_MASK
 	cp b ; does current PP equal max PP?
 	ret z ; if so, return
-	add 10 ; increase current PP by 10
+	add ETHER_RESTORE_PP
 ; b holds the max PP amount and b will hold the new PP amount.
 ; So, if the new amount meets or exceeds the max amount,
 ; cap the amount to the max amount by leaving b unchanged.
@@ -2963,7 +2989,11 @@ ENDC
 	push de
 	ld a, [wCurEnemyLevel]
 	ld d, a
+IF DEF(_POKERGB_CORE)
+	callfar CalcInitialExperience
+ELSE
 	callfar CalcExperience
+ENDC
 	pop de
 	ldh a, [hExperience]
 	ld [de], a

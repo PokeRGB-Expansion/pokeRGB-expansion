@@ -34,9 +34,11 @@ _ThrewAwayItemText::
 	prompt
 
 _IsItOKToTossItemText::
-	text "Is it OK to toss"
+	text "Throw away"
 	line "@"
 	text_ram wStringBuffer
+	text " ×@"
+	text_decimal wItemQuantity, 1, 2
 	text "?"
 	prompt
 

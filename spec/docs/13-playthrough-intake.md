@@ -1,126 +1,70 @@
 # Playthrough findings
 
-Keep new reports and accepted requirements here. Source confirmation, default inclusion, and implementation are separate states. The [feature catalog](14-features-and-extensions.md#feature-catalog) distinguishes these default requirements from accepted optional extensions. A report does not claim a tested game patch. These records supplement the archived bug catalog without changing its entry count.
+Each entry records the original behavior, the preset decision and its checks. The [feature catalog](14-features-and-extensions.md#feature-catalog) includes later additions and planned extensions.
 
 | Note | Date | Requirement | Default disposition | Delivery |
 |---|---|---|---|---|
-| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | One-time reward safeguard in Minimal and Core | Implemented |
-| [PN-002](#pn-002) | 2026-10-14 | Register a key item to SELECT, including the Bicycle | Accepted usability feature | Implemented |
-| [PN-003](#pn-003) | 2026-10-14 | Browse the current box with a full party | Accepted usability feature | Implemented |
-| [PN-004](#pn-004) | 2026-10-14 | Contextual HM prompts from A at a suitable target | Accepted interface feature | Implemented |
-| [PN-005](#pn-005) / RGB-010c | 2026-10-14 | Correct Oak's geting spelling error | Accepted Core text correction | Implemented |
-| [PN-006](#pn-006) | 2026-10-14 | Directional STATS navigation and page support | Accepted Core interface feature | Implemented |
-| [PN-007](#pn-007) | 2026-10-14 | Clear release identity and No default | Accepted Core safety feature | Implemented |
-| [PN-008](#pn-008) | 2026-10-15 | Return shop refusals and failed purchases to the relevant item list | Accepted Core interface feature | Implemented |
-| [PN-009](#pn-009) | 2026-10-15 | Make party action-menu CANCEL return to the Pokémon list | Accepted Core interface feature | Implemented |
+| [PN-001](#pn-001) / RGB-029 | 2026-10-14 | EXP. ALL cannot be tossed or sold | Minimal and Core | Implemented |
+| [PN-002](#pn-002) | 2026-10-14 | Register the Bicycle or a fishing rod on SELECT | Minimal and Core | Implemented |
+| [PN-003](#pn-003) | 2026-10-14 | Browse the current box with a full party | Minimal and Core | Implemented |
+| [PN-004](#pn-004) | 2026-10-14 | Contextual HM prompts from A at a suitable target | Minimal and Core | Implemented |
+| [PN-005](#pn-005) / RGB-010c | 2026-10-14 | Correct Oak's geting spelling error | Minimal and Core | Implemented |
+| [PN-006](#pn-006) | 2026-10-14 | Directional STATS navigation and page support | Minimal and Core | Implemented |
+| [PN-007](#pn-007) | 2026-10-14 | Clear release identity and No default | Minimal and Core | Implemented |
+| [PN-008](#pn-008) | 2026-10-15 | Return shop refusals and failed purchases to the relevant item list | Minimal and Core | Implemented |
+| [PN-009](#pn-009) | 2026-10-15 | Make party action-menu CANCEL return to the Pokémon list | Minimal and Core | Implemented |
 | [PN-010](#pn-010) / RGB-031 | 2026-10-15 | Correct selected vending-price checks | Accepted Core defect repair | Implemented |
-| [PN-011](#pn-011) / RGB-032 | 2026-10-15 | Make Flute feedback reflect actual wake-ups | Accepted Core feedback repair | Implemented |
-| [PN-012](#pn-012) / RGB-010b | 2026-10-15 | Correct the Raichu trade evolution claim | Accepted Core text repair | Implemented |
-| [PN-013](#pn-013) | 2026-10-15 | Mark the current floor and prevent same-floor travel | Accepted Core interface requirement | Implemented |
-| [PN-014](#pn-014) | 2026-10-15 | Left/right quantity steps of ten | Accepted Core control shortcut | Implemented |
+| [PN-011](#pn-011) / RGB-032 | 2026-10-15 | Make Flute feedback reflect actual wake-ups | Minimal and Core | Implemented |
+| [PN-012](#pn-012) / RGB-010b | 2026-10-15 | Correct the Raichu trade evolution claim | Minimal and Core | Implemented |
+| [PN-013](#pn-013) | 2026-10-15 | Mark the current floor and prevent same-floor travel | Minimal and Core | Implemented |
+| [PN-014](#pn-014) | 2026-10-15 | Left/right quantity steps of ten | Minimal and Core | Implemented |
 | [PN-015](#pn-015) / RGB-030 | 2026-10-15 | Preserve rooftop payment when TM delivery fails | Core defect repair under the existing bug policy | Implemented |
-| [PN-016](#pn-016) | 2026-10-15 | TM/HM names and move INFO before and after ownership | Minimal and Core under D61 | Implemented |
-| [PN-017](#pn-017) | 2026-10-15 | Bag, item-PC and Pokémon-box capacity counts | Minimal and Core under D53/D62 | Implemented |
-| [PN-018](#pn-018) | 2026-10-15 | Known and offered move INFO, optional live types | INFO in Minimal and Core. Live types are optional. | Implemented |
-| [PN-019](#pn-019) | 2026-10-20 | Preserve item-list selection and scroll after actions | Accepted Core interface requirement | Implemented |
+| [PN-016](#pn-016) | 2026-10-15 | TM/HM names and move INFO before and after ownership | Minimal and Core | Implemented |
+| [PN-017](#pn-017) | 2026-10-15 | Bag, item-PC and Pokémon-box capacity counts | Minimal and Core | Implemented |
+| [PN-018](#pn-018) | 2026-10-15 | Known and offered move INFO, optional live types | Minimal and Core | Move INFO implemented. Live types planned. |
+| [PN-019](#pn-019) | 2026-10-20 | Preserve item-list selection and scroll after actions | Minimal and Core | Implemented |
 | [PN-020](#pn-020) | 2026-10-20 | Optional item capacity with a 64-slot bag target | Accepted Extension and separate reserve; save/runtime design pending | Not implemented |
 | [PN-021](#pn-021) | 2026-10-24 | Retain the battle move cursor through SELECT reordering | Accepted Core interface requirement | Implemented |
 | [PN-022](#pn-022) | 2026-10-24 | Append new boxed Pokémon consistently with deposits | Accepted Core usability policy | Implemented |
 | [PN-023](#pn-023) | 2026-10-24; revised 2026-10-25 | Restore normal Mansion Burglar sight engagement | Accepted scoped Core correction; original intent unproven | Implemented |
 | [PN-024](#pn-024) | 2026-10-25 | Viridian Forest star grass produces no encounters | Source-confirmed; accepted scoped Core correction | Implemented |
-| [PN-025](#pn-025) | 2026-11-22 | Acid Armor leaves the active picture invisible | Stock ROMs confirmed. Restore the same sprite at animation end in Core under D41. | Implemented |
+| [PN-025](#pn-025) | 2026-11-22 | Acid Armor leaves the active picture invisible | Minimal and Core | Implemented |
 
 <a id="pn-001"></a>
 
 ## PN-001 — Protect EXP. ALL from tossing and selling
 
-**Requirement:** both Minimal and Core refuse tossing EXP. ALL from the Bag and item PC and selling it in shops. Toss attempts use the existing important-item refusal. The shop says “I can't put a price on that.” The refusal preserves the item and money. Oak's aide still gives the one-time reward, and the item PC still allows deposit and withdrawal. RGB-017 defines each preset’s experience awards.
+Oak’s aide gives EXP. ALL once. In retail Red/Blue its key-item flag is clear, so the Bag and item PC allow TOSS. A shop can buy it for zero. The aide records the reward and cannot replace the item. [TOSS and reward](../research/evidence.md#e68) · [Shop sale](../research/evidence.md#e74)
 
-**Evidence:** reported during a Red playthrough; source-confirmed at the pinned English Red/Blue reference. `EXP_ALL` has a false key-item flag. The shared toss routine protects HMs and key items, so EXP. ALL passes those guards. Oak's aide sets a reward event after giving it; subsequent conversations do not offer another copy when that event is set. The PC toss menu uses the same protected routine. [E68](../research/evidence.md#e68)
+Both presets mark EXP. ALL as a key item. Tossing it gives the normal important-item refusal. A shop says “I can't put a price on that.” The player can still deposit or withdraw it. Minimal shares experience whenever the player carries it. Core also requires the field switch to be on, its initial setting. RGB-017 defines how Core divides experience. [Experience awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants) · [Switch and award checks](../../tests/core_services.py)
 
-The follow-up playthrough report identifies selling EXP. ALL for zero. Its listed price is zero and its key-item flag is false. The shop checks key-item and HM status before offering a sale; confirmed sales then add the proceeds and remove the item. The Bicycle is flagged as a key item and takes the existing refusal path. A zero price alone does not give EXP. ALL that protection. These paths and the refusal text are source-checked, not an executable reproduction. [E74](../research/evidence.md#e74)
-
-**Classification:** shared safeguard for a reward Oak's aide gives once. The original designer’s intent is uncertain.
-
-**Implementation:** set EXP. ALL's key-item flag in both presets. This uses the existing toss and sale guards and transfers one copy at a time at the item PC.
-
-**Regression requirements:**
-
-- Bag and PC toss attempts refuse the action and leave inventory contents unchanged.
-- PC deposit, withdrawal, full-storage rejection, and save/reload retain the item correctly.
-- The aide still gives one copy under the existing requirement, with the original full-bag retry behavior.
-- EXP. ALL affects awards while it is in the Bag. Test that depositing it in the item PC stops that effect. Core calculates the two awards independently under RGB-017. Minimal keeps the original awards. [EXP. ALL results](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants)
-- Selecting EXP. ALL for sale gives exactly the existing important-item refusal, without offering a zero-price sale. Bag entries, quantities, and money remain unchanged, including on repeated attempts and after save/reload.
-- Ordinary sales still remove the chosen quantity and pay the expected amount. Ordinary discardable items still work. Existing key items and HMs remain protected.
-
-**Configuration:** Minimal and Core enable the safeguard by default. Provide an author option when it is straightforward to maintain.
-
-**Cartridge checks:** test the Bag, item PC and shop in both presets. [Item safety tests](../../tests/item_safety.py)
+Check the aide’s full-Bag retry and single reward, repeated refusals in the Bag, PC and Mart, and PC transfers across save/reload. Verify the item, money and quantities after each attempt. Ordinary sales and discards still work. [Item safety checks](../../tests/item_safety.py)
 
 <a id="pn-002"></a>
 
 ## PN-002 — Register an item to SELECT
 
-**Requirement:** register one eligible field-usable key item, then press SELECT in the overworld to use it without navigating the bag. The Bicycle is a required use case. Allow changing or clearing the registered choice. Keep normal menu use available.
+In both presets, choose REGISTER on the Bicycle, Old Rod, Good Rod or Super Rod in the Bag. Press SELECT in the field to use it. Registering a different item replaces the previous choice. CLEAR removes the shortcut. The save holds the item ID so reordering the Bag keeps the choice. The shortcut checks possession on each use. A deposited item is unavailable until withdrawn.
 
-**Evidence:** the checked overworld input handler handles START and A before directional checks, with no registered-item action. SELECT already swaps entries in item lists. The Bicycle effect rejects use in battle, while surfing, or where riding is not allowed. The item menu separately prevents getting off the Bicycle when `BIT_ALWAYS_ON_BIKE` is set. A shortcut must retain that menu guard as well as the effect's checks. [E69](../research/evidence.md#e69)
+The Bicycle keeps the usual map, surfing and forced-riding checks. A rod uses its own fishing routine, including its shore, bite, species and level rules. Retail SELECT already reorders items in the Bag. The field shortcut only handles a fresh press when the player controls the character. A talk or scripted action keeps its usual input. [Original inputs](../research/evidence.md#e69) · [Field input](../../engine/overworld/registered_item.asm)
 
-**Classification:** accepted default usability feature. This does not change when the Bicycle is earned, movement speed, map permissions, or combat rules.
-
-**Proposed implementation:** add a register/clear action for eligible items and a context-aware overworld input path. Store the item ID, not its bag index. Use an explicit eligibility list; being a key item does not make a passive quest item usable. Reuse item-use behavior with shared validity checks rather than copying a Bicycle-only toggle. The exact menu layout and supported item list are implementation details; every advertised eligible item needs its own use case.
-
-**Regression requirements:**
-
-- Register the Bicycle and use SELECT to mount and dismount where allowed. A held button does not repeatedly toggle it.
-- Refuse riding in prohibited places, while surfing, or without the Bicycle in the bag. Keep Cycling Road's forced-riding restriction.
-- Menus, dialogue, battles, scripted movement, and transitions do not trigger the overworld shortcut. Existing SELECT menu controls still work.
-- Changing or clearing registration works. Reordering the bag keeps the same registered item. Depositing it prevents shortcut use while it is absent.
-- Save/load retains a valid choice. New games and supported imports without registration start safely with no item registered. Invalid stored IDs cannot dispatch an arbitrary item effect.
-- Other advertised eligible items use their normal checks and behavior. Passive key items cannot be registered as usable items.
-
-**Configuration:** enabled in the default core. Provide developer configuration when straightforward. Registering an item is a player control, not a choice between competing battle rules.
-
-**Status:** The Bicycle is eligible in both presets. The game saves its item ID and checks the Bag before use. [Cartridge checks](../../tests/bicycle_shortcut.py)
+Check replacement, clearing, save/reload, invalid saved IDs and repeated or simultaneous button presses. Verify the Bicycle in and out of Cycling Road, all three rods at the shore and a refusal inland. Passive quest items have no registration action. [Bicycle checks](../../tests/bicycle_shortcut.py) · [Bag and fishing checks](../../tests/field_menu_features.py)
 
 <a id="pn-003"></a>
 
 ## PN-003 — Browse the box with a full party
 
-**Requirement:** choosing WITHDRAW at Bill's PC opens the current box list even when the party is full. Selecting a Pokémon still offers the existing WITHDRAW, STATS, and CANCEL actions. Only choosing WITHDRAW for that Pokémon triggers the existing full-party error. Browsing, viewing stats, and cancelling remain available. Leaving STATS or cancelling the selected-Pokémon action returns to the Pokémon list, retaining its selection and scroll context. Apply the same return behavior to the accessible DEPOSIT browsing flow without changing its eligibility or transfer rules.
+WITHDRAW opens the current box in both presets even with six party members. The original capacity check ran before the list opened. The game now checks after the player picks a Pokémon and chooses WITHDRAW. A full party gets the existing error and keeps every party and box record. Empty boxes retain their original message. [Original guard](../research/evidence.md#e70)
 
-**Evidence:** `BillsPCWithdraw` checks `wPartyCount` against `PARTY_LENGTH` before `DisplayMonListMenu`, blocking the list when the party has six members. The selected-Pokémon menu already supports STATS and returns carry only for the deposit/withdraw action. The withdrawal path then calls `MoveMon` and `RemovePokemon`. The existing capacity error asks the player to deposit Pokémon first. [E70](../research/evidence.md#e70)
+In both WITHDRAW and DEPOSIT, leaving STATS or cancelling a Pokémon’s action menu returns to the list. The last Pokémon viewed stays selected, with the same scroll position where possible. Confirmed transfers still follow the ordinary capacity rules. Direct MOVE and automatic storage are separate extension designs. [Menu evidence](../research/evidence.md#e83) · [Storage choices](14-features-and-extensions.md#storage-extensions)
 
-**Classification:** Minimal and Core may browse before checking room in the party. Both keep manual box selection. A direct MOVE POKÉMON interface and automatic placement remain separately selectable. [Storage choices](14-features-and-extensions.md#storage-extensions)
-
-**Proposed implementation:** move the full-party check after `DisplayDepositWithdrawMenu` returns an actual withdrawal choice, before the transfer or removal calls. Reuse `CantTakeMonText`. Cancellation and STATS must not reach this guard. Retain the existing empty-box response and ordinary successful-withdrawal path. Preserve list context separately from the selected-Pokémon action menu, which currently resets shared cursor/scroll state. Returning from STATS and action cancellation must reach the list rather than BillsPCMenu. [E83](../research/evidence.md#e83)
-
-**Regression requirements:**
-
-- With six party members and a nonempty box, WITHDRAW opens the list. STATS displays the selected boxed Pokémon and returns to the list at that Pokémon, retaining scroll position.
-- Choosing the selected Pokémon's WITHDRAW action with a full party shows the existing error. Party and box counts and Pokémon records remain unchanged.
-- Cancelling the list or selected-Pokémon menu causes no capacity error or data change. Repeated browsing and failed withdrawal remain usable.
-- With fewer than six party members, withdrawal transfers exactly the selected Pokémon and removes exactly that box entry. Check first, middle, and last entries and retained Pokémon data.
-- An empty box keeps its existing message. Deposit eligibility, successful transfer destinations, and change-box behavior remain unchanged; only the specified browsing returns change.
-- Save/reload after browsing or a refused withdrawal retains the original party and box contents. No save-format change is required by this proposal.
-- Check action-menu B and CANCEL, first/middle/last visible rows, and a scrolled full box. After navigation, returning to the list highlights the Pokémon last viewed; no transfer occurs. Repeat within the accessible DEPOSIT list.
-
-**Configuration:** enabled in the default core. Provide developer configuration when straightforward; a toggle is not required to deliver the feature.
-
-**Status:** The list opens with a full party. The capacity check runs when the player chooses a Pokémon to withdraw. [Cartridge checks](../../tests/pc_browsing.py)
+Check full, nearly full and one-member parties, empty and full boxes, first/middle/last entries, repeated cancellation, scrolling, both exit buttons and save/reload. A successful withdrawal moves the selected record once. Browsing and a refused withdrawal move nothing. [Cartridge checks](../../tests/pc_browsing.py)
 
 <a id="pn-004"></a>
 
 ## PN-004 — Contextual HM use
 
-D54 includes these shortcuts in Minimal and Core. The party-menu commands remain available. The [field-action contract](../research/field-shortcut-contract.md) covers object priority, valid targets and actor checks.
-
-**Requirement:** press A while facing a suitable field-move target, then confirm whether to use the move. Choose a party Pokémon that knows the move without opening the Pokémon menu. Cuttable trees, Surf entry from a valid shore, and Strength activation at a boulder are required cases. Keep manual party-menu use available.
-
-**Classification:** accepted Core interface improvement. Preserve the need to teach and carry the move, its use of a move slot, the required badge, valid targets, and existing map/progression restrictions. The shortcut does not grant an HM ability merely because the player owns the HM item or has once learned the move. Do not add an HM-item possession requirement where the existing move use does not have one.
-
-**Evidence:** the party menu builds field-move options from the selected Pokémon's moves. It checks badges before Cut, Fly, Surf, Strength, and Flash. Surf also calls a map-permission routine before the Surfboard effect checks shore/water and tile-pair collisions. Cut checks the facing tile and tileset; Strength activates a state bit, with boulder movement handled separately. The A-button interaction path already handles hidden events, objects, and signs. These are separate checks and contexts; calling a low-level effect alone is insufficient. [E73](../research/evidence.md#e73)
-
-**Proposed implementation:** add a context-aware interaction path and share field-move validation with the menu. Refresh the facing target, find an eligible party user, set the same selected-Pokémon state used by the menu, and show a Yes/No prompt. Revalidate before applying the effect. Preserve existing interaction priority and guard against scripted input. The routine split and exact text are engineering choices.
+In both presets, press A at a valid target and confirm Cut, Surf or Strength. A party member must know the move and have its usual field permission. Owning the HM alone grants no shortcut. Manual use from the party menu still works. The field interaction checks the facing target, party, badge and map restrictions and gives existing NPCs, signs and events their normal priority. [Field-action contract](../research/field-shortcut-contract.md) · [Source evidence](../research/evidence.md#e73)
 
 | HM | Scope of this requirement |
 |---|---|
@@ -140,15 +84,13 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 - NPCs, signs, hidden items, doors, dialogue, battles, transitions, and scripted movement keep their behavior. Test prompts beside overlapping interaction targets.
 - Menu use still works. Check relevant progression gates, return visits, and save/reload; no acquisition, badge, party, or move data changes arise from merely opening or cancelling a prompt.
 
-**Configuration:** enabled in Core. Provide a developer control when straightforward; it is not a player rule setting or a prerequisite to deliver the feature.
-
-**Status:** The field offers Cut, Surf, and Strength through A at eligible targets. [Surf and Strength checks](../../tests/field_shortcuts.py) · [Route 14 Cut check](../../tests/route_cut_tree.py)
+[Surf and Strength checks](../../tests/field_shortcuts.py) · [Route 14 Cut check](../../tests/route_cut_tree.py)
 
 <a id="pn-005"></a>
 
 ## PN-005 — Correct Oak's Pokédex rating typo
 
-**Requirement:** correct geting to getting in Oak's 60–69-owned-species rating. Unambiguous typos are Core corrections under D06 and the [text policy](03-bug-fix-policy.md#typo-corrections).
+**Requirement:** correct geting to getting in Oak's 60–69-owned-species rating. Both presets correct unambiguous typos under D06 and the [text policy](03-bug-fix-policy.md#typo-corrections).
 
 **Evidence:** the pinned English Red/Blue text contains the reported misspelling. The PC calls the shared rating routine, which counts owned species and selects this rating for 60–69. Oak's Lab and the Hall of Fame also call the routine. [E82](../research/evidence.md#e82)
 
@@ -162,7 +104,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Requirement:** up/down selects the previous/next Pokémon in the available party or current-box list, retaining the selected page. Left/right selects pages for the same Pokémon. B leaves any STATS page for its browsing context. Restore the Pokémon last viewed and keep list scroll position where possible. The default keeps the two existing pages and their information.
 
-**Developer support:** adding a page must reuse the navigation controls. DV and stat EXP pages are future extension examples, not default information or first-release content requirements. A small page table or equivalent is an implementation proposal; no general plug-in framework is required.
+**Developer support:** adding a page must reuse the navigation controls. DV and stat EXP pages remain possible extensions.
 
 **Evidence:** the original pages wait for A/B, and party, PC, battle, and trade callers invoke both in sequence. The PC caller has the separate return-path issue covered by PN-003. [E83–E84](../research/evidence.md#e83)
 
@@ -188,7 +130,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Requirement:** after refusing an unsellable item, return to the SELL list. After a purchase fails for insufficient money or bag space, return to the BUY list. Retain the selected item and scroll position. Keep the refusal message and require a new explicit choice before attempting any transaction.
 
-**Evidence:** the checked original paths send these cases to BUY/SELL/QUIT. Quantity cancellation, final price refusal, and completed transactions already loop back to the respective item lists. Those existing loops are narrow implementation candidates; review their cursor state before reusing them. [E86](../research/evidence.md#e86)
+**Evidence:** the checked original paths send these cases to BUY/SELL/QUIT. Quantity cancellation, final price refusal, and completed transactions already loop back to the respective item lists. [E86](../research/evidence.md#e86)
 
 **Scope:** preserve prices, quantity limits, bag capacity and stacking, key-item/HM protection, confirmation, and normal exit behavior. A refusal or failed purchase changes no money, inventory, or completed-transaction state. EXP. ALL sale protection continues to use its existing important-item message. Empty SELL lists keep their existing response and return to the main shop menu.
 
@@ -202,9 +144,9 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Requirement:** in Start → POKéMON → choose a Pokémon, selecting CANCEL returns to the party list with the same Pokémon highlighted, matching B.
 
-**Evidence:** the original overworld action menu sends B to the party-list loop and CANCEL to the exit path that restores Start. These explicit branches establish the mismatch, not the original team's reason for it. Reusing the B destination is a narrow implementation candidate; selection and screen restoration still need game checks. [E86](../research/evidence.md#e86)
+**Evidence:** the original overworld action menu sends B to the party-list loop and CANCEL to the exit path that restores Start. The source does not explain the difference. [E86](../research/evidence.md#e86)
 
-**Scope:** include this interface repair in Core. Preserve B from the party list to Start, STATS, SWITCH, field moves, and other callers' cancellation rules. This is not a global rule to change every CANCEL destination.
+**Scope:** both presets use the party-list return. Preserve B from the party list to Start, STATS, SWITCH, field moves, and other callers' cancellation rules. This is not a global rule to change every CANCEL destination.
 
 **Acceptance:** check one, two, and six party members, first/middle/last selections, and action menus with and without field moves. Both cancellation methods must retain the selected Pokémon and leave party records unchanged. Check repeated cancellation, choosing a different Pokémon afterwards, normal actions, and the normal party-list exit. Preserve battle, forced-replacement, item-targeting, trade, and PC flows.
 
@@ -226,7 +168,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Requirement:** feedback must reflect actual sleep cleared, including when only the wild opponent is asleep. Keep the existing wake targets and turn cost. This does not approve a contextual Snorlax prompt or different sleep rules.
 
-**Evidence/status:** the source clears the wild opponent's sleep after party scans but does not set the response flag from that change. It can omit wake-up confirmation and show the alternate catchy-tune response. It does not literally say “no effect.” [E94](../research/evidence.md#e94) Core selects the message from actual wake-ups.
+**Evidence/status:** the source clears the wild opponent's sleep after party scans but does not set the response flag from that change. It can omit wake-up confirmation and show the alternate catchy-tune response. It does not literally say “no effect.” [E94](../research/evidence.md#e94) Both presets select the message from actual wake-ups.
 
 **Regression:** opponent alone asleep, party alone asleep, both, neither, trainer battle, unused party slots, and other status bits. Compare statuses, text, sound, action cost, and RNG use.
 
@@ -244,7 +186,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 ## PN-013 — Current elevator floor
 
-**Requirement:** indicate the actual current floor in the floor menu. Selecting it must not trigger travel animation, travel sound, or destination changes. Prefer an entry that cannot be selected or that navigation skips. Preserve all other floors and cancellation.
+**Requirement:** indicate the actual current floor in the floor menu. Selecting it must not trigger travel animation, travel sound, or destination changes. Preserve all other floors and cancellation.
 
 **Evidence/status:** Red/Blue's shared menu treats a noncancel destination as travel without a same-floor exclusion. FireRed displays the current floor and skips animation for a same-floor Department Store selection, while still allowing that entry to be chosen. [E103](../research/evidence.md#e103) The game marks the current floor and skips travel when selected.
 
@@ -256,7 +198,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Requirement:** left decreases ten and right increases ten in the shared quantity selector. Preserve up/down unit steps and their wrap behavior, A confirmation, B cancellation, item limits, affordability checks, and transaction validation.
 
-**Proposed endpoints:** left clamps at one, right at the current maximum, as in the checked Gold/Silver and FireRed handlers. Recompute displayed totals after any change. An unchanged endpoint must not accidentally confirm the action. This is a control change, not automatic purchase of the maximum.
+**Bounds:** left clamps at one, right at the current maximum, as in the checked Gold/Silver and FireRed handlers. Recompute displayed totals after any change. An unchanged endpoint must not accidentally confirm the action. For a Bag or item-PC discard, the final TOSS question shows the item name and selected quantity. [TOSS checks](../../tests/field_menu_features.py)
 
 **Evidence/status:** Red/Blue handles unit steps but ignores left/right here. Both comparison games provide tens. This does not establish a universal rule across every later game. [E103](../research/evidence.md#e103) The game accepts left and right for steps of ten.
 
@@ -272,7 +214,7 @@ D54 includes these shortcuts in Minimal and Core. The party-menu commands remain
 
 **Classification/status:** source-confirmed exchange defect, included under D06/D30. The reported duplication remains unverified and requires its own sequence. Core checks the whole exchange before spending the drink. [Cartridge checks](../../tests/celadon_roof_transactions.py) A nearby-guard screen does not establish payment order; [the comparison](../research/remake-usability-comparison.md#rooftop-transaction-boundary) records that correction.
 
-**Proposed design:** check capacity for the final exchange state, then commit safely, or use a verified rollback. Do not reject all full bags before accounting for the drink slot. Review stack insertion/splitting separately; a helper's success/failure branch is not by itself proof of atomicity, meaning all changes succeed together or none take effect.
+A last drink in the stack frees its slot for the TM. A full Bag can also accept the reward in an existing TM stack with room. Validate the final inventory, including the 99-unit stack limit.
 
 **Regression:** every drink; 19/20 occupied slots; drink stack 1/2; absent target TM, existing TM stack with room, and 98/99 boundary stacks; other duplicate stacks where supported; completed reward, cancel, retry, repeated talk, and save/reload. Check exact drink/TM quantities and event bits on success/refusal. No payment loss, accidental duplicate reward, or false success text. Use disposable fixtures and supported saves.
 
@@ -300,7 +242,7 @@ For example, show BAG 18/20, ITEM PC 42/50 and BOX 7/20. Bag and item-PC counts 
 
 ## PN-018 — Move INFO and optional live types
 
-Both presets include static INFO for a move currently offered, known or selected. Live types for the two active battlers remain an independent developer option. D61 supersedes the earlier extension-only placement for viewing one’s own move. [Input and release tests](15-battle-information.md) · [Emerald Expansion precedent](../research/evidence.md#e104)
+Both presets include static INFO for a move currently offered, known or selected. Live types for the two active battlers remain a planned, independent extension. [Input and release tests](15-battle-information.md) · [Emerald Expansion precedent](../research/evidence.md#e104)
 
 <a id="pn-019"></a>
 
@@ -310,11 +252,11 @@ Both presets include static INFO for a move currently offered, known or selected
 
 **Position after changes:** if the selected entry remains, keep that exact entry and viewport. If it is removed, select the entry that takes its place; if it was last, select the preceding item. Preserve the old viewport when that choice remains visible and valid; otherwise move it only enough to show the selected entry without invalid rows. An empty list must have a valid empty/cancel state and follow its caller's exit policy. Do not jump to the top merely because a count changed.
 
-**Evidence:** the pinned Red/Blue item-PC loops already return to the correct lists. The shared inventory-removal routine resets both current and saved row/scroll values when the last unit of a stack is removed. It skips that reset when units remain. Withdrawals, sales, and tossing also use the routine. Shop buy/sell loops separately reset the visible cursor row, even when returning from quantity cancellation or a declined price. A destination-only review missed these separate state changes. [E106](../research/evidence.md#e106)
+**Evidence:** the pinned Red/Blue item-PC loops already return to the correct lists. The shared inventory-removal routine resets both current and saved row/scroll values when the last unit of a stack is removed. It skips that reset when units remain. Withdrawals, sales, and tossing also use the routine. Shop buy/sell loops separately reset the visible cursor row, even when returning from quantity cancellation or a declined price. [E106](../research/evidence.md#e106)
 
-**Classification/status:** accepted Core usability requirement. This removes repeated navigation while retaining inventory management, quantities, prices, capacity, item consumption, and confirmations. The Bag, shop, and item PC preserve the item position as the list changes. [Item PC checks](../../tests/menu_returns.py)
+**Classification/status:** both presets keep the same list position. This removes repeated navigation while retaining inventory management, quantities, prices, capacity, item consumption, and confirmations. The Bag, shop, and item PC preserve the item position as the list changes. [Item PC checks](../../tests/menu_returns.py)
 
-**Proposed design:** each list owner retains its own list identity, selected entry, visible row, and scroll offset across child menus and data changes. Restore a valid position after applying the known mutation. Two stacks of the same item are separate entries; an item ID alone is insufficient. Do not simply remove every reset from the shared inventory routine: scripted rewards, battles, and other callers may depend on its current behavior. Review those callers before changing the helper. Cursor state can remain temporary; no new saved field or cross-session position promise is required.
+**Implementation boundary:** keep the selected row and scroll offset within the list that owns them. Two stacks of the same item are separate entries. After a removal, restore the nearest valid row. Scripted rewards, battles and other list owners keep their own state. Cursor memory here lasts for the current interaction.
 
 **Acceptance:**
 
@@ -322,7 +264,7 @@ Both presets include static INFO for a move currently offered, known or selected
 - Cover PC withdrawal/toss, bag use/toss, and shop buy/sell returns. Check both quantity cancellation and declined confirmations, protected-item refusals, insufficient funds/capacity, and successful actions. Existing PN-008 refusal destinations remain required.
 - Check first/middle/last entries, every visible row, empty/one-entry lists, 20-slot bag and 50-slot item PC boundaries, and repeated deletion through the end. No off-list cursor, stale index, or automatic follow-up action is permitted.
 - Verify each chosen item, exact quantity, inventory order, money, and refusal state. A held confirmation button must not act on the new adjacent item. Keep unrelated list contexts separate and recheck non-list callers of shared removal.
-- Preserve medicine's return to the bag, ordinary B exits, successful Pokémon-transfer destinations, and existing save data. These are future game checks; specification validation does not establish them.
+- Preserve medicine's return to the bag, ordinary B exits, successful Pokémon-transfer destinations, and existing save data.
 
 <a id="pn-020"></a>
 
@@ -346,13 +288,13 @@ Both presets include static INFO for a move currently offered, known or selected
 
 ## PN-021 — Retain the battle move cursor during SELECT reordering
 
-The original cursor also writes move history that enemy Counter reads. Keep the stock interaction in Minimal until equivalence is verified. Test this side effect before shipping the Core cursor change, including marking a move, cancelling and switching without completing the swap. [Measured turns](../research/minimal-action-review.md)
+The original cursor also writes move history that enemy Counter reads. Minimal keeps the stock interaction. Core keeps the visible cursor at the marked row while preserving the history Counter reads. Regression cases include marking a move, cancelling and switching before completing a swap. [Measured turns](../research/minimal-action-review.md)
 
 **Requirement:** retain the cursor row when SELECT marks a move and when a second SELECT completes the swap. Marking move three leaves the cursor on three. Moving to four and pressing SELECT swaps three/four and leaves the cursor on four. Keep the source marker visible and separate from the active cursor. A repeat SELECT on the source is a no-op swap with the existing completion behavior.
 
 **Evidence:** both SELECT paths jump back to the menu initializer, which restores a previous `wPlayerMoveListIndex`. The result is often move one, but the source does not hard-code a first-row reset. [E110](../research/evidence.md#e110)
 
-**Classification/status:** accepted Core interface requirement. This is the same position-retention principle as PN-019, applied to a list without scrolling. Core keeps the visible move cursor and the effect of the remembered row on Counter. [Cartridge checks](../../tests/move_swap_smoke.py)
+**Classification/status:** accepted Core interface requirement. This is the same position-retention principle as PN-019, applied to a list without scrolling. [Cartridge checks](../../tests/move_swap_smoke.py)
 
 **Implementation boundary:** preserve the current cursor across the redraw without treating SELECT as an attack choice. Retain the existing battle/party move and complete PP-byte swaps, Disable slot/duration handling, and A/B behavior. Keep existing rules for Transform, Mimic, empty move slots, unavailable moves, and link battles. Cursor storage must not change battle-history semantics or another caller's menu state.
 
@@ -382,21 +324,21 @@ The original cursor also writes move history that enemy Counter reads. Keep the 
 
 **Classification/status:** accepted scoped Core correction under D39. Treat the passive behavior as a likely oversight for this project. The original developer intent and the reason for the remake change remain unproven. This supersedes the earlier preserve-in-Core disposition for these three Burglars; it does not change the general uncertain-change policy. The Core map data sets the three sight ranges. [Cartridge checks](../../tests/mansion_sight.py)
 
-**Proposed implementation:** set each of these three view ranges to one, following the remake's minimal positive range, and use the existing engagement path. Keep trainer classes, parties, levels, rewards, dialogue, movement patterns, map layout, switches, doors, and defeat flags unchanged. Do not enable sight battles for all zero-range trainers or replace the trainer engine.
+**Implementation:** Core uses a one-square sight range for each Burglar, as in the remake. Keep trainer classes, parties, levels, rewards, dialogue, movement patterns, map layout, switches, doors, and defeat flags unchanged. Do not enable sight battles for all zero-range trainers or replace the trainer engine.
 
-**Acceptance:** exercise all three Burglars at the proposed range, including facing/alignment, hidden or off-screen states, talking, and post-defeat behavior. Check the two wandering Burglars while moving and at movement boundaries. Battle must start once, restore valid map state, and award the existing reward once. Confirm that engagement and post-battle position do not block an exit, corner the player, or bypass a gate. Test narrow paths and the 3F table area. Preserve ordinary Scientist sight, map progress, save/reload, and unrelated zero-range trainers such as the Route 6 pair and Route 21 Fishers. These are release requirements, not completed checks.
+**Acceptance:** exercise all three Burglars one square away, including facing/alignment, hidden or off-screen states, talking, and post-defeat behavior. Check the two wandering Burglars while moving and at movement boundaries. Battle must start once, restore valid map state, and award the existing reward once. Confirm that engagement and post-battle position do not block an exit, corner the player, or bypass a gate. Test narrow paths and the 3F table area. Preserve ordinary Scientist sight, map progress, save/reload, and unrelated zero-range trainers such as the Route 6 pair and Route 21 Fishers.
 
 <a id="pn-024"></a>
 
 ## PN-024 — Recognize Viridian Forest star grass for encounters
 
-**Report:** some grass squares in Viridian Forest never produce wild encounters. The supplied [GameFAQs report](https://gamefaqs.gamespot.com/gameboy/367023-pokemon-red-version/faqs/64175/viridian-forest-encounter-rate-glitch) describes the star pattern and says Yellow is unaffected. Its text was available through the search index; the direct page fetch failed. The conclusion below was checked independently against source.
+**Report:** some grass squares in Viridian Forest never produce wild encounters. The supplied [GameFAQs report](https://gamefaqs.gamespot.com/gameboy/367023-pokemon-red-version/faqs/64175/viridian-forest-encounter-rate-glitch) describes the star pattern and says Yellow is unaffected. The source comparison below checks that report.
 
 **Evidence:** Red/Blue checks the lower-right graphic tile for grass encounters. The Forest's star-pattern squares have ordinary grass at lower-left and decorative `0x34` at lower-right. The sprite code treats them as grass; the encounter gate rejects them. Yellow reads lower-left, with identical Forest map and blockset bytes and the same grass ID. The decoded map has 114 affected squares. [E115](../research/evidence.md#e115)
 
 **Disposition:** source-confirmed mismatch; accepted scoped Core correction under D40. Treat the encounter effect as a likely oversight. Original intent is strongly inferred from the internal mismatch and Yellow comparison, without an original developer statement. Core treats the star grass as an eligible encounter tile in the forest. [Cartridge checks](../../tests/forest_encounters.py)
 
-**Required behavior:** affected grass can produce encounters under the existing rate, tables, species, levels, slot weights, and Repel rules. Preserve graphics, map layout, and ordinary non-grass paths. Review a narrow Forest recognition change against the broader Yellow corner change before choosing code; do not silently combine the separate Cinnabar-shore case.
+**Required behavior:** affected grass can produce encounters under the existing rate, tables, species, levels, slot weights, and Repel rules. Preserve graphics, map layout, and ordinary non-grass paths. Core limits the rule to the affected Forest grass. Cinnabar shore has a separate decision.
 
 **Acceptance:** check all affected and ordinary grass squares, controlled encounter thresholds, slot selection, Repel, direction changes, warps, scripted movement, and post-battle return. Check water, shores, Safari Zone maps sharing the tileset, and all three project variants. Preserve unrelated random-number behavior and save format. See the [review](../research/forest-encounters.md).
 
@@ -408,4 +350,4 @@ Acid Armor can leave an active battler or its Substitute invisible across later 
 
 The original Japanese releases have the same animation. Viewing STATS in the battle party menu reloads the enemy picture while its Defense boost stays active. Haze can remove the Defense boost while the picture stays blank. Gold and Silver and the remakes restore the picture at animation end. A missing restoration is the best fit for this evidence. The intended duration in Gen I remains unknown. [E117](../research/evidence.md#e117), [E119](../research/evidence.md#e119)
 
-Accepted for Core under D41. Keep the original melt. At animation end, restore the sprite that was visible when the melt began. Preserve the move mechanics and battle animation setting. Implementation and regression tests are pending. [Test plan](07-testing-ci.md#acid-armor-picture-checks)
+In both presets, the original melt ends by restoring the sprite that was visible when it began. The move’s effect and animation setting still work as before. [Cartridge checks](../../tests/acid_armor.py) · [Acceptance criteria](07-testing-ci.md#acid-armor-picture-checks)

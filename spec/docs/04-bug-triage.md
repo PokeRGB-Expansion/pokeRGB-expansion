@@ -1,6 +1,6 @@
 # Bug triage and repair inventory
 
-The inventory links to source, reports, and stock-ROM checks where available. Each record gives the scope of its evidence and the status of the proposed game change.
+The inventory links to source, reports, and stock-ROM checks where available. Each record gives the scope of its evidence and the preset that includes the change or the reason it remains open.
 
 **P0** means a reproducible crash, corrupted state, or progression failure on a supported path. **P1** means a wrong calculation or failed existing function. **P2** means misleading output or a visual/audio fault. Severity does not determine inclusion: a protected mechanic remains protected.
 
@@ -33,7 +33,7 @@ This is a loss-prevention safeguard, not a progression softlock or the separate 
 
 The [Core scope review](../research/core-scope-review.md#core-battle-and-progression-repairs) identifies the accepted Core repairs in this inventory, including RGB-002 through RGB-006, RGB-011/012, and RGB-014. Other candidates retain their individual review status. Every implementation needs a failing stock case and a passing patched case.
 
-| ID | Problem and narrow proposed repair | Priority | Evidence | Boundary cases and protected behavior |
+| ID | Problem and scope | Priority | Evidence | Boundary cases and protected behavior |
 |---|---|---|---|---|
 | RGB-002 | A battle assigns the final gained level and checks that level's learnset once. Check each gained level for moves. | P1 | [E26](../research/evidence.md#e26) | Gain 0/1/many levels; several move prompts; duplicates; declined moves; four slots; evolution ordering; Rare Candy and daycare separately. |
 | RGB-003 | Healing ignores the result of the high-byte HP comparison. Compare the complete HP values. | P1 | [E15](../research/evidence.md#e15) | Missing HP 254/255/256 and 510/511/512; full HP; small HP; Rest with existing statuses; player/enemy. |
@@ -49,9 +49,9 @@ The [Core scope review](../research/core-scope-review.md#core-battle-and-progres
 | RGB-027 | A stat-up path rebuilds the user's chosen stat without its burn/paralysis penalty, then reapplies penalties to the opposite actor. Stat-down paths can also reapply a penalty to an already penalized stat. | P1; deferred research, correction excluded from the current core | [E50](../research/evidence.md#e50) | Both actors and link roles; burn/paralysis; Attack/Speed and unrelated stat changes; stages −6…+6; repeated changes; rounding/minimum stats; critical damage; badges tested separately. |
 | RGB-028 | Shared Itemfinder boundary repair for valid zero coordinates in author data. The stock 54 placements give identical results. | Shared engine | [E51](../research/evidence.md#e51) | Compare both axes, edges, radius limits and collection state. [CAT-038](../research/catalog-decisions.md#cat-038) |
 
-Psywave's recommended range is 1 through `floor(3 × level / 2) − 1` for legal levels where that range exists. This follows the original attacker path. Core assigns exactly 1 damage at level 1 to avoid an empty-range loop. That safeguard belongs in the repair record, not an undocumented formula change. Glitch-level behavior is a separate input-bounds policy.
+Core’s Psywave range is 1 through `floor(3 × level / 2) − 1` for legal levels where that range exists. This follows the original attacker path. Core assigns exactly 1 damage at level 1 to avoid an empty-range loop. That safeguard belongs in the repair record, not an undocumented formula change. Glitch-level behavior is a separate input-bounds policy.
 
-RGB-027 is separate from status-medicine rebuilding (RGB-013) and the settled badge-stacking baseline. The penalty paths are not excluded from link battles by the badge routine's guard. Source confirms the calculation paths; the default core retains them while the proposed repair's fit remains unclear. A later narrow repair or developer extension needs its own evidence and tests. Do not import an entire replacement stat system or delay the initial release for this record.
+RGB-027 is separate from status-medicine rebuilding (RGB-013) and the settled badge-stacking baseline. The penalty paths are not excluded from link battles by the badge routine's guard. Source confirms the calculation paths; the default Core retains them. A later change needs its own evidence and tests.
 
 For RGB-028, all 54 entries in the pinned hidden-item coordinate table have positive X and Y values. The zero-coordinate defect is confirmed conditionally from source; an ordinary vanilla-play failure was not established. Keep it visible as a data-expansion boundary. Do not label the archived report a reproduced vanilla failure or a verified donor patch.
 
@@ -69,14 +69,14 @@ The [scope review](../research/core-scope-review.md) specifies D46 (Transform), 
 
 | ID | Report / current disposition | Next concrete step |
 |---|---|---|
-| RGB-007 | Item-stack splitting can walk past the inventory terminator. The source path and catalog patch are identified; memory writes were not traced here. P0 safety boundary for both presets. [E30](../research/evidence.md#e30) | Bag and PC fixtures with stack 99, room/no room, repeated stacks, and memory guards; prove the out-of-bounds write before accepting a patch. |
+| RGB-007 | Item-stack splitting can walk past the inventory terminator. Both presets bound insertion. The historical archive reports memory corruption without a stock write trace. [E30](../research/evidence.md#e30) | Check Bag and PC fixtures at 98/99, repeated stacks, full destinations and surrounding memory. [CAT-030](../research/catalog-decisions.md#cat-030) |
 | RGB-008a | Oak-follow movement can leave the player in a wall. Catalog report. | Reproduce the exact map position and input sequence; prove the script/collision fault. |
 | RGB-008b | Core. The Mt. Moon fossil area can set a shared no-battles flag before leaving the floor. | Compare a direct exit with walking out of the marked area and protect other suppression owners. |
 | RGB-008c | Both presets clear inherited Cycling Road restrictions on New Game. | Check starting controls and older-save integrity. [CAT-061](../research/catalog-decisions.md#cat-061) |
 | RGB-008d | Core. Keep actual cut-tree collision and its visible state in agreement at the map connection. | Record the Route 14 connection and distinguish legitimate regrowth after a reload. |
 | RGB-016 | Core. A cured target must regain a legal turn after an interrupted action. | Test Haze after freeze during recharge or a multi-turn move. Preserve the ordinary wake turn and target-only major status cure. |
 | RGB-017 | Core. EXP. ALL reuses the first division for the second award. Stock under-awards both XP and stat experience. [Measured awards](../research/foundation-audit.md#exp-all-gives-too-little-to-a-party-with-multiple-participants) | Calculate each share independently. Cover rounding, 1–6 recipients, fainting, trade and trainer bonuses. |
-| RGB-018 | Planned Core repair. Disable skips its own slot but counts PP Up bits as available PP in another empty slot, preventing forced Struggle. Reproduced in Red and Blue. [E124](../research/evidence.md#e124) | Test with and without Disable, all slots, all PP Up counts, zero PP and one usable PP. Keep the existing enemy PP rules. |
+| RGB-018 | Core repairs forced Struggle. The original Disable check skips its own slot but counts PP Up bits as available PP in another empty slot, preventing forced Struggle. Reproduced in Red and Blue. [E124](../research/evidence.md#e124) | Check Disable, slots, PP Up counts, zero PP and one usable PP. Enemy PP rules stay intact. [Cartridge checks](../../tests/bide_struggle.py) |
 | RGB-019 | Core. Prevent last-PP wrap on forced reuse. Require matching peers after a copied trapping move and switch. | Compare both seats, consumed PP, turn choice and next random draw. Keep original trapping and switching. |
 | RGB-020 | Core. Prevent a zero defensive divisor and a wrapped effective defense under Reflect or Light Screen. | Test both arithmetic boundaries independently. [Bounds and tests](../research/foundation-audit.md#damage-multi-turn-moves-and-link-play-beyond-the-catalog) |
 | RGB-021 | Core. Charge the selected doll on the correct side for self-confusion and Jump Kick crash. | Use both actors with neither, either or both dolls active. Preserve ordinary recoil. |
@@ -115,30 +115,30 @@ Every archived topic now has a [decision, reason and test](../research/catalog-d
 
 The [final sweep](../research/final-scope-audit.md) updates shared-engine, menu, information and save-safety placements. For hidden coins, both builds report a dropped coin only after a real loss. Core’s separate 40-coin reward repair still applies.
 
-D53 addresses a reproduced save-data loss during an abandoned first box change. Both presets should defer persistent writes until confirmation. The refused Surf dismount should return to the party list in Minimal and Core, subject to the unchanged-state tests. [Box picker](../research/box-picker-safety.md) · [Field move cases](../research/field-shortcut-contract.md)
+Both presets write box data only after the player confirms a box change. Cancelling a new adventure’s first box change leaves the old save intact. Refusing to dismount Surf returns to the party list. [Box picker](../research/box-picker-safety.md) · [Field move cases](../research/field-shortcut-contract.md)
 
-Core should repair CAT-039’s blocked southward return and the Pokédex AREA list that records the same map repeatedly past its declared size. Minimal and Core should correct the Guard Spec. tip and the Safari East Area 1 sign. Review the Saffron Ghost hint against the active chart and localize the actual rules. Each scope has separate tests, and none expands the first-release list. [Yellow corrections](../research/yellow-rules-review.md) · [Hack comparison and AREA evidence](../research/developer-hack-comparison.md)
+Core restores CAT-039’s blocked southward step and bounds the Pokédex AREA list. Both presets correct the Guard Spec. tip and the Safari East Area 1 sign. Saffron’s hint follows each preset’s Ghost matchup. [Yellow corrections](../research/yellow-rules-review.md) · [AREA evidence](../research/developer-hack-comparison.md) · [AREA tests](../../tests/pokedex_area.py)
 
-The [small-fix audit](../research/usability-audit.md) supplies precise scope and required checks for the following findings. The disposition column distinguishes accepted Core repairs from recommendations. None is implemented in this specification.
+The [small-fix audit](../research/usability-audit.md) records how each case was first identified. The table lists its current scope.
 
 | Audit ID | Finding | Evidence | Disposition |
 |---|---|---|---|
-| UA-01 / CAT-057 | The encoded hidden 40-coin reward takes the 20-coin branch. | [E88](../research/evidence.md#e88) | Plan the narrow amount correction for Core. |
+| UA-01 / CAT-057 | The encoded hidden 40-coin reward takes the 20-coin branch. | [E88](../research/evidence.md#e88) | Core gives the encoded 40 coins. |
 | UA-02 | Vending affordability is checked against ¥200 for every drink. | [E89](../research/evidence.md#e89) | Accepted PN-010 / RGB-031: check the selected price; preserve prices and capacity. |
 | UA-03 | Oak commits his five-ball gift before delivery and ignores failure. | [E90](../research/evidence.md#e90) | Core requires successful delivery before the gift is marked received. Distinguish normal reachability from an injected full bag. |
 | UA-04 / CAT-084 / RGB-010b | Trade follow-up says Raichu evolved. | [E91](../research/evidence.md#e91) | Accepted PN-012: truthful text, preserving trade and evolution data. |
-| UA-05 / CAT-083 | Oak's throwing instructions overwrite a line. | [E92](../research/evidence.md#e92) | Recommend line-command repair; verify the displayed paragraph. |
-| UA-06 / CAT-082 / RGB-025 | Introductory Nidorino uses Nidorina's cry. | [E93](../research/evidence.md#e93) | Recommend matching cry; check shared command users and listen to the build. |
+| UA-05 / CAT-083 | Oak's throwing instructions overwrite a line. | [E92](../research/evidence.md#e92) | Both presets display the complete instructions. |
+| UA-06 / CAT-082 / RGB-025 | Introductory Nidorino uses Nidorina's cry. | [E93](../research/evidence.md#e93) | Both presets play Nidorino’s cry. |
 | UA-07 | Flute can wake a wild opponent without its wake-up confirmation. | [E94](../research/evidence.md#e94) | Accepted PN-011 / RGB-032: accurate feedback; preserve effect and battle cost. |
-| UA-08 / CAT-025 / RGB-024 | Trainer cure paths lack a status-area redraw. | [E95](../research/evidence.md#e95) | Source-supported; capture exact stale display and verify the correction. |
-| UA-09 / CAT-037 | Escape/teleport spin reads from the wrong pointer. | [E96](../research/evidence.md#e96) | Source-confirmed pointer mismatch; original Game Boy/Super Game Boy display checks remain. |
+| UA-08 / CAT-025 / RGB-024 | Trainer cure paths lack a status-area redraw. | [E95](../research/evidence.md#e95) | Both presets redraw the status display after a trainer uses a cure. |
+| UA-09 / CAT-037 | Escape/teleport spin reads from the wrong pointer. | [E96](../research/evidence.md#e96) | Both presets use the facing-list pointer for the spin. |
 | UA-16 / RGB-030 | Rooftop girl removes a drink before a failed TM delivery. | [E101](../research/evidence.md#e101) | Core defect repair PN-015; preserve payment on refusal and one-time reward semantics. |
 
-UA-13/UA-14 are accepted interface changes under PN-013/PN-014. UA-10 is deferred outside the default; UA-11/UA-12 are shared display requirements under PN-016/017; the extra UA-15 move-forgetting prompt stays optional. Money-gate recovery and interrupted-save safety require further design and evidence. The release gate uses the accepted disposition of each case.
+UA-13/UA-14 cover elevators and quantities under PN-013/PN-014. UA-11/UA-12 cover TM details and capacity counters under PN-016/PN-017. Both presets keep the manual Snorlax puzzle (UA-10). The extra warning when learning over a move (UA-15) remains optional. Core’s fixed-location Move Deleter has its own confirmation. The original money gates remain pending evidence of an unrecoverable state. Both presets detect interrupted saves. [Power-cut checks](../../tests/interrupted_save_smoke.py)
 
 ## Star-grass encounter recognition
 
-CAT-028/[PN-024](13-playthrough-intake.md#pn-024) is source-confirmed. [E115](../research/evidence.md#e115) demonstrates a mismatch between the encounter corner and grass rendering, with Yellow recognizing the unchanged map correctly. D40 accepts the scoped Core repair in the [review](../research/forest-encounters.md). Delivery is not started; the exact change needs Forest, Safari Zone, shore, RNG, and Repel checks. Keep the separate CAT-027 shore case explicit.
+CAT-028/[PN-024](13-playthrough-intake.md#pn-024) is source-confirmed. [E115](../research/evidence.md#e115) demonstrates a mismatch between the encounter corner and grass rendering, with Yellow recognizing the unchanged map correctly. D40 accepts the scoped Core repair in the [review](../research/forest-encounters.md). [Cartridge checks](../../tests/forest_encounters.py) cover Forest and Safari grass, shore, random draws and Repel. CAT-027 remains a separate shore case.
 
 ## Donor survey dispositions
 
@@ -152,3 +152,7 @@ D43 accepts the four Core repairs below. The [Gen 1 bug-fix survey](../research/
 | Empty SHIFT prompt / P2 | Ask to switch before the next opposing Pokémon only when a living reserve can enter. Keep SET and forced replacements unchanged. | Reproduced in stock Red and Blue. Also tested a living reserve at 1 HP. [E121](../research/evidence.md#e121) |
 
 **CAT-018 ships in Core under D44.** The [battle records](#battle-calculation-and-trainer-repairs) give the repair and tests. Minimal retains the original trainer choice.
+
+## Player controls and move services
+
+The [feature sweep](../research/v020-feature-sweep.md) records field, menu and encounter changes by preset. Core’s EXP. ALL switch and the Fuchsia Move Deleter retain the existing item and move formats. [Evidence and preset decisions](../research/exp-pacing-and-move-services.md) · [Cartridge checks](../../tests/core_services.py)

@@ -1,6 +1,6 @@
 # Move INFO and battle information
 
-**Minimal and Core include move INFO.** Players can look up the move they own, are offered, or are choosing. Read its data from the build they are playing. A guide to retail Red would give the wrong type for a move changed by Core or by a hack author. Static information may help a player make a better choice. The engine still uses the same moves, opponents, prices and battle rules when the player acts. Extended inherits the same reader.
+**Minimal and Core include move INFO.** Players can look up the move they own, are offered, or are choosing. Read its data from the build they are playing. A guide to retail Red would give the wrong type for a move changed by Core or by a hack author. Static information may help a player make a better choice. The engine still uses the same moves, opponents, prices and battle rules when the player acts. The planned Extended preset will use this reader too.
 
 ## What the player does
 
@@ -10,7 +10,7 @@
 |---|---|---|
 | A TM/HM in the bag or item PC | Show its number and move name in the list. START opens the move directly, even if the bag is full or nobody can learn it. | The same machine and scroll position. |
 | A machine for sale or offered as a prize | Show the number and move name alongside the actual price. START inspects the highlighted offer before any payment. | The same offer with its price and currency visible. |
-| A Pokémon’s STATS moves page | START opens its first occupied move. Up/down within INFO browses that Pokémon’s known moves in slot order. Outside INFO, the agreed STATS controls continue to change Pokémon and pages. Use the party or boxed Pokémon already being viewed. | The same Pokémon and STATS page. |
+| A Pokémon’s STATS moves page | START opens its first occupied move. Up/down within INFO browses that Pokémon’s known moves in slot order. Outside INFO, the STATS controls continue to change Pokémon and pages. Use the party or boxed Pokémon already being viewed. | The same Pokémon and STATS page. |
 | FIGHT | START opens the highlighted player move, including a copied move in its current slot. Reuse the same reader. Keep ordinary targets, forced turns and link choices intact. | The same battle choice and cursor. No move has been selected. |
 | A level-up or machine-teaching decision | At the learn/replace question, START shows the incoming move. At the forget list, START shows the highlighted old move. Inside INFO, left/right switches between the highlighted old move and the incoming move. Label each as known or new. | The same unanswered question or highlighted forget slot, before any write. |
 
@@ -18,9 +18,15 @@ A free move slot still fills automatically at level-up. There is no decision to 
 
 ## What INFO shows
 
-Show the name, type, base power, listed accuracy, base PP and a short description of the actual effect. Identify physical, special or status where useful. For regular damage in the reference games, the move’s type determines whether Attack or Special is used. A fixed-damage move should explain its own rule. For a known move, also show current/max PP from the selected slot, including PP Ups. A TM or incoming move has base PP and no personal PP balance. For example, **TM24 Thunderbolt** in English Red/Blue is Electric, has 95 power, 100% listed accuracy and 15 base PP, and can paralyze the target. Retain the machine number so older guides still work. Keep the chosen row’s name, price or quantity legible on the original 160×144 screen. Long names may use a separate selected-row line. [TM mapping](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/constants/item_constants.asm#L160-L185) · [Move data](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/data/moves/moves.asm#L89-L104)
+Show the name, type, base power, listed accuracy, base PP and a short description of the actual effect. For regular damage in the reference games, the move’s type determines whether Attack or Special is used. A fixed-damage move should explain its own rule. For a known move, also show current/max PP from the selected slot, including PP Ups. A TM or incoming move has base PP and no personal PP balance. For example, **TM24 Thunderbolt** in English Red/Blue is Electric, has 95 power, 100% listed accuracy and 15 base PP, and can paralyze the target. Retain the machine number so older guides still work. Keep the chosen row’s name, price or quantity legible on the original 160×144 screen. Long names may use a separate selected-row line. [TM mapping](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/constants/item_constants.asm#L160-L185) · [Move data](https://github.com/pret/pokered/blob/ba9c0568f64ae602fadda577a08c66639f93082a/data/moves/moves.asm#L89-L104)
 
 Use meaningful values when the normal power or accuracy formula does not apply. Dragon Rage deals a fixed 40 damage when it connects. Printing the internal power byte as “1 power” would mislead the player. Use a dash for a status move’s power and explain the effect in words. Listed accuracy describes the move’s data, even when the Gen 1 hit calculation can miss at the nominal maximum. Describe special hit rules where relevant. Show Gust’s type and Focus Energy’s effect as they work in the selected preset. A custom move or rule needs matching text. [Fixed-damage rules](05-mechanics-contract.md) · [Core and Minimal differences](14-features-and-extensions.md#product-presets)
+
+On the move’s stats page, HIGH CRIT identifies a move with an elevated critical-hit rate. PRIORITY identifies a move that goes before ordinary attacks. PRIO/CRIT marks both properties. A tie between two Quick Attacks still uses the game’s normal ordering rules. SELECT opens the effect page. For a high-critical poison move, the stats page shows HIGH CRIT and the effect page still describes poisoning. Both properties follow the author’s battle rules. [Reader and labels](../../engine/pokemon/move_info.asm) · [Author and battle checks](../../tests/supply_and_move_info.py)
+
+## Supply INFO
+
+In the Bag, Mart and item PC, START also opens a short description for supported supplies. A Potion shows its healing amount and a Repel shows its step count. The descriptions use the same values as their item effects. B returns to the highlighted row and leaves the purchase, transfer or use unconfirmed. Puzzle key items get no new hints. The [supply table](../../data/items/supply_info.asm) lists the supported items.
 
 ## Controls and battle state
 
@@ -30,7 +36,7 @@ Inspection leaves inventory, money, coins, PP, selection for SELECT swaps, last-
 
 ## Separate developer choices
 
-The live overlay identifying both battlers’ types remains an independent author option, off in the reference presets. It can reveal a disguised opponent or a type changed during battle. Its visibility policy must account for ghosts, switching, Transform and Conversion. Matchup advice, hidden opponent data and damage forecasts also fall outside the static move reference. An author can provide these separately. Emerald Expansion’s move-description and type-indicator settings illustrate this separation. Its GBA L-button binding is specific to that hardware. [Emerald Expansion source comparison](../research/evidence.md#e104)
+The planned live overlay identifying both battlers’ types is a separate developer feature. It can reveal a disguised opponent or a type changed during battle. Its visibility policy must account for ghosts, switching, Transform and Conversion. Matchup advice, hidden opponent data and damage forecasts also fall outside the static move reference. An author can provide these separately. Emerald Expansion’s move-description and type-indicator settings illustrate this separation. Its GBA L-button binding is specific to that hardware. [Emerald Expansion source comparison](../research/evidence.md#e104)
 
 ## Acceptance criteria
 
@@ -38,4 +44,4 @@ The live overlay identifying both battlers’ types remains an independent autho
 - At level-up with four moves, inspect the incoming move, inspect each old move, then decline. Repeat and replace one legal move. Test an HM refusal and return, an empty slot, a duplicate move, and the next level-up during a battle. Use the actual prompt and check that only the confirmed replacement writes data.
 - In battle, exercise zero PP, copied moves, an item target, a pending swap, the next Counter, both battle sides and matching link builds in both roles. Opening INFO on one endpoint must not submit a command to its peer. Test stock timing separately from matched-roll outcomes.
 - Verify descriptions for fixed damage, status, variable power, special accuracy and preset-specific effects. Change a machine mapping and a move’s type in an author build. Verify bag, PC, shop, prize, STATS, FIGHT and learning screens agree. Check long names and text at original resolution.
-- Test the type overlay separately with static INFO available. Preserve concealed identities when disabled or unknown. Release the integrated builds only after these checks pass in the relevant colors and modes. [Core release checks](09-roadmap.md#public-release-checks)
+- When implementing the optional type overlay, test it separately with static INFO available. Preserve concealed identities when disabled or unknown. [Core release checks](09-roadmap.md#public-release-checks)

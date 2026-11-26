@@ -1,6 +1,7 @@
 ; A read-only panel. Its data lives outside the active menu and battle state.
 DEF INFO_BROWSE_STATS EQU 1
 DEF INFO_BROWSE_LEARN EQU 2
+DEF INFO_BROWSE_SUPPLY EQU 3
 DEF INFO_UNKNOWN_PP EQU $ff
 DEF INFO_PANEL_FIRST_ROW EQU 11
 DEF INFO_PANEL_ROWS EQU SCREEN_HEIGHT - INFO_PANEL_FIRST_ROW
@@ -199,8 +200,14 @@ InspectPrizeMove:
 	jr InspectMachineMove
 
 InspectListedMove::
-	call FindListedMachine
+	call FindListedInfoItem
 	ret nc
+	cp HM01
+	jr nc, InspectMachineMove
+	ld [wMoveInfoMove], a
+	ld a, INFO_BROWSE_SUPPLY
+	ld [wMoveInfoBrowse], a
+	jp OpenInfoPanel
 InspectMachineMove:
 	ld [wMoveInfoMove], a
 	farcall ReadMoveInfoMachine
@@ -212,8 +219,10 @@ InspectMachineMove:
 	jp ShowMoveInfo
 
 DrawMachineListHint:
-	call FindListedMachine
+	call FindListedInfoItem
 	ret nc
+	cp HM01
+	jr c, .hint
 	ld [wMoveInfoMove], a
 	farcall ReadMoveInfoMachine
 	ld a, [wMoveInfoMove]
@@ -225,11 +234,12 @@ DrawMachineListHint:
 	hlcoord 1, 14
 	ld de, wMoveInfoName
 	call PlaceString
+.hint
 	hlcoord 1, 15
 	ld de, MoveInfoStartText
 	jp PlaceString
 
-FindListedMachine:
+FindListedInfoItem:
 	ld a, [wListMenuID]
 	cp ITEMLISTMENU
 	jr z, .itemList
@@ -258,7 +268,7 @@ FindListedMachine:
 .getItem
 	ld a, [hl]
 	cp HM01
-	jr c, .absent
+	jp c, FindSupplyDescription
 	cp TM01 + NUM_TMS
 	jr nc, .absent
 	scf
@@ -279,6 +289,7 @@ ShowMoveInfo:
 	xor a
 	ld [wMoveInfoPage], a
 	ld [wMoveInfoIncoming], a
+OpenInfoPanel:
 ; Save only the tile rows used by the panel. Leave both caller buffers alone.
 	ldh a, [hAutoBGTransferEnabled]
 	push af
@@ -303,6 +314,11 @@ ShowMoveInfo:
 	ldh a, [hJoyPressed]
 	bit B_PAD_B, a
 	jp nz, .close
+	ld b, a
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_SUPPLY
+	jr z, .wait
+	ld a, b
 	bit B_PAD_SELECT, a
 	jp nz, .changePage
 	ld b, a
@@ -399,11 +415,14 @@ WaitForInfoKeysReleased:
 DrawMoveInfo:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	farcall ReadMoveInfoName
-	call ReadMoveInfoData
 	hlcoord 0, INFO_PANEL_FIRST_ROW
 	lb bc, INFO_PANEL_ROWS - 2, SCREEN_WIDTH - 2
 	call TextBoxBorder
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_SUPPLY
+	jr z, .supply
+	farcall ReadMoveInfoName
+	call ReadMoveInfoData
 	hlcoord 1, 12
 	ld de, wMoveInfoName
 	call PlaceString
@@ -423,6 +442,7 @@ DrawMoveInfo:
 	and a
 	jr nz, .effect
 	farcall DrawMoveInfoType
+	call DrawMoveInfoTraitLabel
 	call DrawMoveInfoPower
 	call DrawMoveInfoAccuracy
 	call DrawMoveInfoPP
@@ -433,6 +453,17 @@ DrawMoveInfo:
 	call DrawMoveInfoEffect
 	hlcoord 1, 16
 	ld de, MoveInfoStatsText
+	jr .show
+.supply
+	farcall ReadSupplyInfoName
+	hlcoord 1, 12
+	ld de, wMoveInfoName
+	call PlaceString
+	ld a, [wMoveInfoMove]
+	call FindSupplyDescription
+	call PrintInfoDescription
+	hlcoord 1, 16
+	ld de, SupplyInfoBackText
 .show
 	call PlaceString
 	ld a, 1
@@ -608,4 +639,24 @@ MoveInfoBasePPText:   db "BASE@"
 MoveInfoEffectText:   db "SELECT EFFECT  B@"
 MoveInfoStatsText:    db "SELECT STATS   B@"
 
+DrawMoveInfoTraitLabel:
+	farcall ReadMoveInfoTraits
+	ld a, e
+	and a
+	ret z
+	ld de, .high
+	dec a
+	jr z, .print
+	ld de, .priority
+	dec a
+	jr z, .print
+	ld de, .both
+.print
+	hlcoord 10, 13
+	jp PlaceString
+.high db "HIGH CRIT@"
+.priority db "PRIORITY@"
+.both db "PRIO/CRIT@"
+
 INCLUDE "data/moves/info_effects.asm"
+INCLUDE "data/items/supply_info.asm"

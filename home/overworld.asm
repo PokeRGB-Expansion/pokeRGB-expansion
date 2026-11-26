@@ -83,7 +83,7 @@ OverworldLoopLessDelay::
 	jr nz, .interact
 	bit B_PAD_SELECT, a
 	jp z, .checkIfDownButtonIsPressed
-	farcall CanUseRegisteredBicycle
+	farcall CanUseRegisteredItem
 	jp nc, .checkIfDownButtonIsPressed
 	ld a, TEXT_REGISTERED_ITEM
 	jr .shortcut

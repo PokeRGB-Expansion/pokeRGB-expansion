@@ -40,9 +40,14 @@ Route16Gate1FDefaultScript:
 	ld [wRoute16Gate1FCurScript], a
 	ret
 .next_to_counter
+IF DEF(_POKERGB_CORE)
+; Start the refusal before held movement gets another overworld turn.
+	jp Route16Gate1FGuardScript
+ELSE
 	ld a, SCRIPT_ROUTE16GATE1F_GUARD
 	ld [wRoute16Gate1FCurScript], a
 	ret
+ENDC
 
 .StopsPlayerCoords:
 	dbmapcoord  4,  7

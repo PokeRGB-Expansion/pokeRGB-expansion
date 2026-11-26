@@ -1,30 +1,24 @@
 # PokéRGB Expansion
 
-**A shared base for making Generation I Pokémon ROM hacks.** Specification **0.1.48**, revised November 23, 2026. This is the implementation baseline. The [source tree](../README.md) builds the game. The [release checks](docs/09-roadmap.md) track what must pass before publication.
+**PokéRGB Expansion is a buildable foundation for English Generation I ROM hacks.** Core and Minimal each build Red, Blue and Green. This specification tracks the game source. Version 0.1.48 was the original implementation baseline. Older measurements, rejected alternatives and donor comparisons are retained under `research/`. For current behavior, start with the [player guide](docs/16-game-changes.md) or [build instructions](../README.md#build).
 
 ## Charter
 
-Build on the English Red/Blue engine so authors can make a small original-style hack or a new adventure. One source tree produces Red, Blue and Green. Red and Blue keep their version differences. Green uses Blue’s gameplay with its own presentation. The project targets English releases. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a) · [Build variants](docs/06-build-variants.md)
-
-Keep shared fixes, tools and commonly requested features in one place. An author chooses the rules when building their game. Changing an encounter or adding graphics should be easy with the original roster, trainer AI and battle system. The base should be worth choosing even when moving an existing hack requires a rewrite.
+Give hack authors a dependable Red/Blue engine for both small edits and new adventures. Preserve the original version differences and the single Special stat. Green uses Blue gameplay with its own title, palette and border. A developer should have reason to choose this foundation even when adopting it requires a rewrite. [Upstream source](https://github.com/pret/pokered/tree/ba9c0568f64ae602fadda577a08c66639f93082a) · [Build variants](docs/06-build-variants.md)
 
 ## Core, Minimal, and Extended
 
-| Preset | What players can expect |
+| Preset | Scope |
 |---|---|
-| **Minimal** | Keep the strength of each Pokémon, opponents’ choices, and the costs and preparation behind a strategy. Shorten the controls for actions the player can already take. An eligible Pokémon can Cut a tree from the map with the same badge, move and result as using the party menu. |
-| **Core** | Keep Gen 1’s character and add selected corrections and usability improvements. Ghost beats Psychic, Gust is Flying and Charizard can learn Fly. Hyper Beam’s KO exception, ordinary critical hits, trapping and the single Special stat remain part of the game. |
-| **Extended** | Start from Core and select additional features. Later species, types, battle information and alternative trainer AI can be developed and enabled independently where their data permits. |
+| **Minimal** | Preserves battle rules, team-building costs and progression choices. Includes accurate feedback, save safeguards and shortcuts to actions the player already qualifies for. |
+| **Core** | Adds evidenced corrections and selected conveniences. It fixes Focus Energy, keeps original critical-hit and trapping rules, and offers a Fuchsia Move Deleter, field EXP. ALL switch and optional Quick battle pace. |
+| **Extended** | Planned developer features include larger rosters, additional types, and a Party-menu Move Reminder with per-Pokémon move history. There is no Extended build target. |
 
-Both Minimal and Core keep the twenty-slot bag and manual box selection. If the party and selected box are full, the player needs to make room or change boxes at a PC. Automatic placement, direct MOVE POKÉMON and move relearning are separate author choices. The [guide to game changes](docs/16-game-changes.md) explains what players see. The [build settings](docs/14-features-and-extensions.md) give the boundaries for each choice.
-
-**Core is ready for the public when every accepted Core change works in Red, Blue and Green.** Internal builds can cover one system at a time. All three colors ship with the same Core feature set. The [release gate](docs/09-roadmap.md#public-release-checks) spells out what must pass. The [preset review](research/sweep-decisions.md) records what each change does for a player and the scope chosen for each preset.
+Both released presets keep the twenty-slot Bag and manual box selection. An author can independently select the two [battle displays](research/battle-hud-displays.md). Automatic box overflow, direct box-to-box moves and wide species IDs remain future options. [Feature catalog](docs/14-features-and-extensions.md)
 
 ### Developer features
 
-An author can publish two editions of the same hack from one revision. A hypothetical Yellow Rogue could share maps and quests across a classic roster and an expanded roster, with one Special stat in both. [Emerald Rogue comparison and downstream example](research/emerald-rogue-builds.md)
-
-A developer can keep stock battle rules, choose a different box policy or use later Pokémon without enabling every modern mechanic. Share routines that need to agree across builds. Enable costly storage and roster formats only for builds that use them. [Developer library](research/tutorial-library.md) · [Code changes by size](research/refactor-scope.md)
+One source tree supports paired editions. The proposed Yellow Rogue example describes how a future author could share maps and quests across a classic and an expanded roster. [Paired-edition example](research/emerald-rogue-builds.md) · [Developer library](research/tutorial-library.md) · [Changes by size](research/refactor-scope.md)
 
 ## Read the specification
 
@@ -51,4 +45,4 @@ A developer can keep stock battle rules, choose a different box policy or use la
 
 Document every change from stock in the same update that introduces it. Give the player-facing result first. Link the reason, affected presets and test once. Use the [individual decisions](research/catalog-decisions.md) to see why other reported changes stay out. [Contributor and release process](docs/12-maintenance.md) · [Sources](research/evidence.md) · [Changelog](CHANGELOG.md)
 
-Run `python3 tools/validate_spec.py` to check the documents and research records. The Git history tracks the specification. The project adds no blanket MIT license. [Provenance](docs/08-provenance.md)
+From the repository root, run `python3 spec/tools/validate_spec.py` to check the documents and research records. The Git history tracks the specification. The project adds no blanket MIT license. [Provenance](docs/08-provenance.md)

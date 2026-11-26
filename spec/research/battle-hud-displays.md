@@ -35,7 +35,7 @@ The EXP label and fill patterns use tiles `$C0` through `$CA` in the English fon
 
 ## Cartridge checks
 
-1. Build all four on/off combinations. With both off, compare the battle panels with v0.1.2. With either enabled, compare matched actions and rolls, party records, EXP and stat EXP, inventory, catch outcome, move learning and turn order. Exercise linked consoles with both cable roles.
+1. Build all four on/off combinations. For the v0.2.0 comparison, disabling both displays restores the v0.1.2 panel. From v0.3.0 onward, the last HP pixel requires full health even with both displays disabled. With either enabled, compare matched actions and rolls, party records, EXP and stat EXP, inventory, catch outcome, move learning and turn order. Exercise linked consoles with both cable roles.
 2. Test an unknown species, seen-only, traded, evolved and released species, with and without the Pokédex. Recheck on a full box, in Safari, in the tutorial, before and after a Tower reveal, after Transform, and after returning from STATS or INFO. Assert both the presence and the absence of the ball.
 3. Test zero progress, just below a threshold, one level, multiple levels and the cap across the supported growth curves. Cover switches, fainted and benched recipients, traded Pokémon, EXP. ALL, no gain and a new move offered mid-award. Compare to the party/STATS numbers after every settled award.
 4. Capture the mixed cases on DMG and Super Game Boy across the reference colors. Check status text, long names, maximum HP digits, fainting, low HP and redraws with animations on and off. Verify live tile use and measure the frame and memory cost on the built game. Use the built cartridge for display and gameplay checks.

@@ -1,3 +1,6 @@
+IF !DEF(_POKERGB_CORE)
+BattlePresentationDelay::
+ENDC
 DelayFrames::
 ; wait c frames
 	call DelayFrame

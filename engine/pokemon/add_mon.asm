@@ -201,7 +201,11 @@ _AddPartyMon::
 	push de
 	ld a, [wCurEnemyLevel]
 	ld d, a
+IF DEF(_POKERGB_CORE)
+	callfar CalcInitialExperience
+ELSE
 	callfar CalcExperience
+ENDC
 	pop de
 	inc de
 	ldh a, [hExperience] ; write experience

@@ -233,6 +233,12 @@ PartyMenuMessagePointers:
 	dw PartyMenuUseTMText
 	dw PartyMenuSwapMonText
 	dw PartyMenuItemUseText
+	dw FieldPartyMenuText
+
+FieldPartyMenuText:
+	text "Choose a #MON."
+	line "SELECT to switch."
+	done
 
 PartyMenuNormalText:
 	text_far _PartyMenuNormalText

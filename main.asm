@@ -132,6 +132,7 @@ ENDC
 SECTION "Pokémon Names", ROMX
 
 INCLUDE "data/pokemon/names.asm"
+INCLUDE "engine/menus/sort_dex_names.asm"
 INCLUDE "engine/movie/oak_speech/clear_save.asm"
 INCLUDE "engine/events/elevator.asm"
 

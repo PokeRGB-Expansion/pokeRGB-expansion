@@ -429,8 +429,12 @@ MoveAnimation:
 	vc_hook_blue Stop_reducing_move_anim_flashing_Spore
 	jr .next
 .animationsDisabled
+IF DEF(_POKERGB_CORE)
+	farcall DisabledBattleAnimationDelay
+ELSE
 	ld c, 30
 	call DelayFrames
+ENDC
 .next
 	vc_hook_red Stop_reducing_move_anim_flashing
 	vc_hook_blue Stop_reducing_move_anim_flashing_Rock_Slide_Dream_Eater

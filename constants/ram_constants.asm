@@ -31,6 +31,9 @@ DEF BIT_FONT_LOADED EQU 0
 
 ; wOptions
 DEF TEXT_DELAY_MASK EQU %111
+IF DEF(_POKERGB_CORE)
+	DEF BIT_QUICK_BATTLES EQU 4 ; outside the text-delay nibble
+ENDC
 	const_def 6
 	const BIT_BATTLE_SHIFT     ; 6
 	const BIT_BATTLE_ANIMATION ; 7

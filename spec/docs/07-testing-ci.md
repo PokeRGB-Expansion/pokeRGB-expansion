@@ -1,6 +1,17 @@
 # Testing and continuous integration
 
-The [build and test instructions](../../README.md#tests) show how to run the checks that exist today. The [GitHub workflow](../../.github/workflows/main.yml) builds each color and preset and runs cartridge tests on Linux. This document gives the full test plan for release.
+The [test runner](../../tests/run.py) lists the checks that run on the current source. The [build instructions](../../README.md#tests) show how to run them. The rest of this document describes the cases to check when changing a feature or making a release.
+
+## Field, menu and battle checks added after v0.2.0
+
+| Area | What the game checks |
+|---|---|
+| Field and map | Open OPTION in dark Rock Tunnel, after Flash and outdoors. Trace Town Map pins from Route 1 and the Power Plant. At both Cycling Road gates, try held and released direction input with and without a Bicycle. [Field tests](../../tests/field_sweep.py) |
+| Party, items and Pokédex | Use SELECT in the party, confirm the item and amount in a TOSS prompt, register and use fishing rods, and browse the Pokédex by name. [Field menu tests](../../tests/field_menu_features.py) |
+| Supply and move INFO | Open supply details in the Bag, item PC and at a Mart. Read a move’s priority or high-critical property through FIGHT. Check the menu cursor, inventory and PP on return. [INFO tests](../../tests/supply_and_move_info.py) |
+| HP and level-one EXP | Compare full and damaged HP meters at high maximum HP. Catch and receive a level-one Pokémon into the party and an active box. Award its first seven EXP and check the resulting level. Check all six growth curves at levels one and two. [HP and EXP tests](../../tests/hp_and_level_one.py) |
+| Core services | Enter the Fuchsia Move Deleter’s house, cancel and confirm deletions, and check moves and PP. Switch EXP. ALL in the Bag and test its supported and refused uses. Compare Minimal’s paths. [Service tests](../../tests/core_services.py) |
+| Battle pace | Choose Quick through OPTION, save and Continue. Compare the same attack in Normal and Quick. Check damage, PP, input, music state and play-clock ticks. A link battle, tutorial or Safari battle keeps its ordinary pauses. [Pace tests](../../tests/battle_pace.py) |
 
 ## Baselines and test oracles
 
@@ -8,7 +19,7 @@ An oracle is the independent expected result for a test. Use the pinned vanilla 
 
 Keep two independent builds: pristine upstream and the modified foundation. First establish upstream byte identity using its published hashes. After fixes, stop expecting the modified builds to match vanilla hashes. Instead compare protected behavior and list the intended changes.
 
-Upstream's `compare` target checks Red, Blue, Blue debug and VC patch outputs. Its CI runs hash comparison only when the owner is `pret`; forks take a build-only branch. A fork must add an explicit pristine-reference comparison job if it wants that guarantee. [E01–E03](../research/evidence.md#e01)
+The upstream comparison covers five outputs: Red, Blue, Blue debug and two Virtual Console patches. Use `make compare BASELINE_DIR=/path/to/upstream/outputs` to verify a pristine build against those hashes. The modified games have their own release hashes. [E01–E03](../research/evidence.md#e01)
 
 ## Cartridge tests
 
@@ -87,9 +98,9 @@ Link tests require two simulated or real endpoints. A single client reporting th
 
 Save tests verify data after reopening the game, changing boxes and transferring Pokémon. Run fault injection before calling a save scheme power-loss safe. A check in a save routine is not proof that partially written data can be recovered.
 
-The following support matrix is a proposal for Q03, not a claim that any interaction has passed:
+Use these criteria for each compatibility claim. The next table records the configurations covered by the reference tests.
 
-| Interaction | Proposed release objective | Evidence needed before claiming support |
+| Interaction | Scope | Evidence needed |
 |---|---|---|
 | Single-player and save/load within one release | Required for the advertised paths in the public Core release | Adventure checkpoints and reopened save data |
 | Trade between matching PokéRGB builds | Stable-core target | Both host roles, supported variant pairs, party/box data, cancellation and recovery |
@@ -116,7 +127,9 @@ The checks below use the Core Red, Blue and Green reference builds in SameBoy 1.
 
 The release records state which of these checks apply to the released source and package hashes. Use the matrix above to decide when another game version, emulator or physical device needs its own check.
 
-## Proposed CI jobs
+## CI and release jobs
+
+GitHub Actions builds both presets and all three colors on Linux and macOS. Linux runs the game tests in eight groups per preset. macOS checks color data and the spec. A normal CI run checks one ordered Core cable pairing. Use `--all-link-pairs` in release testing for all nine. Run pristine-ROM and cross-version save tests with the matching reference inputs. The table also lists checks to add when optional systems become available. [Workflow](../../.github/workflows/main.yml)
 
 | Job | Frequency | Purpose |
 |---|---|---|
@@ -152,7 +165,7 @@ No tests should be added merely to mirror implementation or inflate counts. Boun
 
 ## Contextual HM regression coverage
 
-PN-004's shortcuts need executable comparisons with menu use. Cover Cut trees, Surf entry, and Strength activation with and without the required move and badge. Check cancellation, correct party-user selection, invalid targets, repeated input, and competing NPC/sign/hidden-event interactions. Exercise the real map and collision guards, including Cycling Road, Seafoam currents, gym trees, and boulder puzzles. Verify manual field use and normal reset/save behavior. The detailed [PN-004 cases](13-playthrough-intake.md#pn-004) are release criteria, not tests completed by this specification.
+PN-004's shortcuts need executable comparisons with menu use. Cover Cut trees, Surf entry, and Strength activation with and without the required move and badge. Check cancellation, correct party-user selection, invalid targets, repeated input, and competing NPC/sign/hidden-event interactions. Exercise the real map and collision guards, including Cycling Road, Seafoam currents, gym trees, and boulder puzzles. Verify manual field use and normal reset/save behavior. The game tests cover [route trees](../../tests/route_cut_tree.py) and [Surf and Strength](../../tests/field_shortcuts.py). See [PN-004](13-playthrough-intake.md#pn-004) for the full contract.
 
 Keep inventory-management coverage separate: the default bag still has 20 slots. Check a full bag receiving a new item, an addition to an existing quantity, bag/PC transfers, and save/reload. Accepted item safeguards must work within that limit rather than silently adding slots or a key-item pocket.
 
@@ -166,7 +179,7 @@ Integration cases must award Thunder and Soul separately, in both orders, and to
 
 Keep stacking tests separate from the mapping correction. Repeated boosts and unrelated stat changes must retain the original stacking behavior with the corrected assignment. Test burn/paralysis and the separately scoped status-medicine path. Link-battle fixtures must receive no badge bonus for any mask. Verify the mapping repair does not consume random bytes or change other badge, field-move, or obedience checks.
 
-PureRGB's mapping is useful donor evidence, but its helper also changes stacking. Do not import that complete stat system as this repair. These are required implementation regressions, not tests completed by the specification.
+PureRGB's mapping is useful donor evidence, but its helper also changes stacking. Do not import that complete stat system as this repair. Use the [battle tests](../../tests/battle_fixes.py) and [status-medicine tests](../../tests/status_medicine.py) to check the implemented paths.
 
 ## STATS and menu regression coverage
 
@@ -178,21 +191,21 @@ PN-007 must show the selected nickname/species and default to No. B/No must leav
 
 Keep medicine returning to the bag after each outside-battle use, with one item consumed per successful use and original battle action costs. The overworld party-CANCEL case in the [audit](../research/menu-navigation.md) is accepted under PN-009 and has focused requirements below. Shop refusal/failure returns are now accepted under PN-008 and have separate regression requirements below. Existing quantity-cancel and PC item-transfer return paths remain protection cases.
 
-When the Repel extension is implemented, test disabled Core behavior, same-kind ownership/consumption, cancellation, all three durations, expiry timing, leading-Pokémon level checks, map changes, and save/reload. It is not a Core release gate. These are future executable checks, not tests passed by this specification.
+When the Repel extension is implemented, test disabled Core behavior, same-kind ownership/consumption, cancellation, all three durations, expiry timing, leading-Pokémon level checks, map changes, and save/reload. It is not a Core release gate. Track these cases with the optional feature.
 
 ## Shop return regression coverage
 
 PN-008 must restore SELL after a protected-item refusal and BUY after insufficient money or inventory capacity. Check selection and scroll position before and after each message. Cover key items, HMs, protected EXP. ALL, insufficient money, full-bag new stacks, quantity limits, and additions to existing stacks under the original rules. Refused transactions must leave inventory, money, and completed-transaction state unchanged.
 
-Repeated failures must not trigger an automatic retry or stale transaction. A subsequent valid transaction must use the newly selected item and quantity exactly once. Preserve B from the item list, quantity cancellation, final confirmation refusal, successful buy/sell loops, and empty SELL-list handling. These are implementation acceptance cases; no executable shop test is included in this specification.
+Repeated failures must not trigger an automatic retry or stale transaction. A subsequent valid transaction must use the newly selected item and quantity exactly once. Preserve B from the item list, quantity cancellation, final confirmation refusal, successful buy/sell loops, and empty SELL-list handling. The game tests cover [refused sales](../../tests/item_safety.py) and [purchases](../../tests/shop_carry_count.py).
 
 ## Party action-menu cancellation coverage
 
 PN-009 must return both B and selecting CANCEL to the overworld party list, with the same Pokémon highlighted. Check parties of one, two, and six Pokémon; first, middle, and last selections; and action menus with and without learned field moves. Repeat cancellation and then open another Pokémon's action menu. Cancellation must not switch Pokémon, use a field move, or change party records.
 
-B from the party list must still return to Start. Check STATS, SWITCH, and available field moves after cancellation. Preserve battle selection, forced replacement, item targeting, trade, and PC return rules. These are implementation acceptance cases, not executable tests completed by this specification.
+B from the party list must still return to Start. Check STATS, SWITCH, and available field moves after cancellation. Preserve battle selection, forced replacement, item targeting, trade, and PC return rules. The [menu return tests](../../tests/menu_returns.py) exercise B and CANCEL.
 
-## Further audit candidates
+## Feedback and reward checks
 
 The [small-fix audit](../research/usability-audit.md) records specific required checks for each new recommendation. In particular, pair visible reward/feedback checks with data checks: encoded coins versus credited coins, selected vending price versus money deducted, gift receipt versus its completion flag, and Flute wake-up feedback versus actual status. Rendered text, cry playback, and original Game Boy/Super Game Boy spin checks require a built game. The source review does not satisfy those release checks.
 
@@ -227,11 +240,11 @@ For [PN-021](13-playthrough-intake.md#pn-021), test marking and completing a thr
 
 For [PN-022](13-playthrough-intake.md#pn-022), verify stable existing box positions after captures, gifts, and deposits. Use distinct complete records, duplicate names/species, nickname Yes/No, and empty/one/19/20-entry states. Check save/reload, box changes, removal compaction, full-box refusal, and supported storage-feature combinations. A correct species list alone does not establish aligned nicknames, OTs, or records.
 
-For [PN-023](13-playthrough-intake.md#pn-023), test sight-triggered battles for all three Mansion Burglars, using range one as the proposed target. Cover facing/alignment, visibility, wandering movement boundaries, ordinary talk, defeated state, save/reload, and unchanged parties/rewards. Check narrow paths, doors, and the 3F table area so engagement and post-battle position cannot trap the player. Preserve the Scientists and unrelated zero-range trainers. These are future game checks.
+For [PN-023](13-playthrough-intake.md#pn-023), test sight-triggered battles for all three Mansion Burglars, at the implemented range of one square. Cover facing/alignment, visibility, wandering movement boundaries, ordinary talk, defeated state, save/reload, and unchanged parties/rewards. Check narrow paths, doors, and the 3F table area so engagement and post-battle position cannot trap the player. Preserve the Scientists and unrelated zero-range trainers. [Mansion tests](../../tests/mansion_sight.py)
 
 ## Star-grass encounter regression
 
-For [PN-024](13-playthrough-intake.md#pn-024), verify all 114 missed squares under controlled random inputs, ordinary grass and safe paths, unchanged encounter data, slot selection, and Repel. Cover direction changes, warps, scripts, and post-battle return. Check water, shores, and other Forest maps including the Safari Zone; any wider Yellow-style change needs its own scope. Run for Red, Blue, and cosmetic Green. These are release requirements for the accepted Core repair, not results of the static map audit.
+For [PN-024](13-playthrough-intake.md#pn-024), verify all 114 missed squares under controlled random inputs, ordinary grass and safe paths, unchanged encounter data, slot selection, and Repel. Cover direction changes, warps, scripts, and post-battle return. Check water, shores, and other Forest maps including the Safari Zone; any wider Yellow-style change needs its own scope. Run for Red, Blue, and cosmetic Green. Core’s [Forest checks](../../tests/forest_encounters.py) exercise the repaired encounter rule and nearby controls. Minimal keeps the original rule.
 
 ## Acid Armor picture checks
 

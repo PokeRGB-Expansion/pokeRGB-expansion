@@ -4,6 +4,17 @@ HPBarLength:
 ; calculates bc * 48 / de, the number of pixels the HP bar has
 ; the result is always at least 1
 GetHPBarLength:
+	; Reserve the last pixel for full HP. Scaling a large maximum down to
+	; one byte can otherwise round a damaged Pokémon up to a full bar.
+	ld a, b
+	cp d
+	jr nz, .notFull
+	ld a, c
+	cp e
+	jr nz, .notFull
+	ld e, 48
+	ret
+.notFull
 	push hl
 	xor a
 	ld hl, hMultiplicand
@@ -39,6 +50,11 @@ GetHPBarLength:
 	ldh a, [hMultiplicand+2]
 	ld e, a            ; e = bc * 48 / de (num of pixels of HP bar)
 	pop hl
+	cp 48
+	jr c, .checkSliver
+	ld e, 47
+	ret
+.checkSliver
 	and a
 	ret nz
 	ld e, $1           ; make result at least 1

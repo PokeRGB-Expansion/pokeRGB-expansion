@@ -12,8 +12,13 @@ _Route14CooltrainerM1EndBattleText::
 _Route14CooltrainerM1AfterBattleText::
 	text "You have some HMs"
 	line "right? #MON"
+IF DEF(_POKERGB_CORE)
+	cont "can't forget those"
+	cont "moves easily."
+ELSE
 	cont "can't ever forget"
 	cont "those moves."
+ENDC
 	done
 
 _Route14CooltrainerM2BattleText::

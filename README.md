@@ -4,6 +4,12 @@ PokéRGB Expansion is a developer foundation for English Generation I Pokémon R
 
 Core is the default preset. Minimal keeps the original battle rules and inventory limits while sharing selected interface and safety fixes. [Downloads](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases) · [Project specification](spec/README.md) · [Core release checks](spec/docs/09-roadmap.md)
 
+## New in v0.3.0
+
+Both presets show the TOSS quantity before confirmation, describe ordinary supplies and move traits in INFO, support SELECT to reorder the overworld party or register a fishing rod, and provide a seen-only alphabetical Pokédex view. They also correct the Rock Tunnel OPTIONS palette, nearly full HP bars and Town Map browsing.
+
+Core adds a Move Deleter in Fuchsia, a field USE action for EXP. ALL, and optional Quick battle pacing. Set **BATTLE PACE** in OPTIONS. Normal is the default. Minimal retains the original HM and training rules. [Player guide](spec/docs/16-game-changes.md)
+
 ## Build
 
 Install GNU Make, a C compiler, libpng, and RGBDS 1.0.4. [Platform instructions](INSTALL.md)

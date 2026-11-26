@@ -12,16 +12,20 @@ StartMenu_Pokemon::
 	jp z, RedisplayStartMenu
 	xor a
 	ld [wMenuItemToSwap], a
-	ld [wPartyMenuTypeOrMessageID], a
 	ld [wUpdateSpritesEnabled], a
+	call SetFieldPartyMenuType
 	call DisplayPartyMenu
 	jr .checkIfPokemonChosen
 .loop
 	xor a
 	ld [wMenuItemToSwap], a
-	ld [wPartyMenuTypeOrMessageID], a
+	call SetFieldPartyMenuType
 	call GoBackToPartyMenu
 .checkIfPokemonChosen
+	push af
+	xor a
+	ld [wPartyMenuTypeOrMessageID], a
+	pop af
 	jr nc, .chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
@@ -29,6 +33,9 @@ StartMenu_Pokemon::
 	call LoadGBPal
 	jp RedisplayStartMenu
 .chosePokemon
+	ldh a, [hJoyFiltered]
+	bit B_PAD_SELECT, a
+	jr nz, .choseSwitch
 	call SaveScreenTilesToBuffer1
 	ld a, FIELD_MOVE_MON_MENU
 	ld [wTextBoxID], a
@@ -344,10 +351,9 @@ StartMenu_Item::
 	call PlaceUnfilledArrowMenuCursor
 	xor a
 	ld [wMenuItemToSwap], a
-	ld a, [wCurItem]
-	cp BICYCLE
-	jr nz, .otherItem
-	farcall ShowBicycleActions
+	farcall IsCurrentFieldItemRegistrable
+	jr nc, .otherItem
+	farcall ShowRegisteredItemActions
 	jp c, .useItem_closeMenu
 	jp ItemMenuLoop
 .otherItem
@@ -643,15 +649,29 @@ StartMenu_SaveReset::
 	jp HoldTextDisplayOpen
 
 StartMenu_Option::
+	ldh a, [rBGP]
+	push af
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	call UpdateSprites
 	callfar DisplayOptionMenu
+	pop af
+	ldh [rBGP], a ; restore the field palette before uncovering the map
 	call LoadScreenTilesFromBuffer2
 	call LoadTextBoxTilePatterns
 	call UpdateSprites
 	jp RedisplayStartMenu
+
+SetFieldPartyMenuType:
+	ld a, [wPartyCount]
+	cp 2
+	ld a, NORMAL_PARTY_MENU
+	jr c, .store
+	ld a, FIELD_REORDER_PARTY_MENU
+.store
+	ld [wPartyMenuTypeOrMessageID], a
+	ret
 
 SwitchPartyMon::
 	call SwitchPartyMon_InitVarOrSwapData ; swap data
@@ -698,7 +718,7 @@ SwitchPartyMon_InitVarOrSwapData:
 	ld [wMenuItemToSwap], a
 	ret
 .pickedMonsToSwap
-	xor a
+	ld a, FIELD_REORDER_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	ld a, [wMenuItemToSwap]
 	dec a
@@ -710,6 +730,7 @@ SwitchPartyMon_InitVarOrSwapData:
 ; can't swap a mon with itself
 	xor a
 	ld [wMenuItemToSwap], a
+	ld a, FIELD_REORDER_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	ret
 .swappingDifferentMons
@@ -798,6 +819,7 @@ SwitchPartyMon_InitVarOrSwapData:
 	ld [wSwappedMenuItem], a
 	xor a
 	ld [wMenuItemToSwap], a
+	ld a, FIELD_REORDER_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	pop de
 	pop hl

@@ -27,6 +27,24 @@ CalcLevelFromExperience::
 	dec d ; since the exp was too high on the last loop iteration, go back to the previous value and return
 	ret
 
+IF DEF(_POKERGB_CORE)
+; Only new records use this rule. A level-one polynomial can be negative,
+; but the party and box formats store experience as an unsigned number.
+CalcInitialExperience::
+	call CalcExperience
+	ld a, d
+	dec a
+	ret nz
+	ldh a, [hExperience]
+	bit 7, a
+	ret z
+	xor a
+	ldh [hExperience], a
+	ldh [hExperience + 1], a
+	ldh [hExperience + 2], a
+	ret
+ENDC
+
 ; calculates the amount of experience needed for level d
 CalcExperience::
 	ld a, [wMonHGrowthRate]

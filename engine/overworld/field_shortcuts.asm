@@ -91,7 +91,7 @@ IsSurfShortcutSurface:
 OfferOverworldShortcut::
 	ld a, [wSpriteIndex]
 	cp TEXT_REGISTERED_ITEM
-	jp z, UseRegisteredBicycle
+	jp z, UseRegisteredItem
 
 OfferTerrainShortcut::
 	call FindTerrainShortcut

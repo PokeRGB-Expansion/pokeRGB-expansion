@@ -1,6 +1,10 @@
 # Bag memory allocation
 
-## Accepted design
+## Status in Core and Minimal
+
+Both builds use 20 Bag slots. The upstream allocation studied below overlaps two bytes that released builds already use to remember the SELECT shortcut. A 64-slot build must find a safe home for those two bytes and preserve existing registrations when importing a save. The original allocation study is reproducible against its stated revision. [Current memory layout](../../ram/wram.asm) · [Architecture](../docs/02-architecture.md)
+
+## Proposed allocation for the larger bag
 
 The optional larger bag uses the separate 134-byte reserve at `$D66A–$D6EF`. Move the live bag there and retain the original 42-byte footprint. Keep all other existing fields and block boundaries at their original addresses, including `wGameProgressFlagsEnd`. Core retains its original allocation when this Extension is disabled. The selected capacity is 64 slots. Four marker bytes, one count byte, 128 entry bytes, and one end marker use all 134 bytes.
 

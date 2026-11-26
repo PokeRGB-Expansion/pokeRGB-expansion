@@ -99,3 +99,6 @@ ItemNames::
 	li "11F"
 	li "B4F"
 	assert_list_length NUM_ITEMS + NUM_FLOORS
+
+ReadSupplyInfoName::
+	read_info_name ItemNames

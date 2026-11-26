@@ -23,6 +23,21 @@ DrawMoveInfoEffect:
 	jr .findMove
 .byEffect
 	ld a, [wMoveInfoData + MOVE_EFFECT]
+	and a
+	jr nz, .lookupEffect
+	farcall ReadMoveInfoTraits
+	ld a, e
+	and a
+	jr z, .lookupEffect
+	ld de, MoveInfoHighCritical
+	dec a
+	jr z, .print
+	ld de, MoveInfoPriority
+	dec a
+	jr z, .print
+	ld de, MoveInfoBothTraits
+	jr .print
+.lookupEffect
 	cp NUM_MOVE_EFFECTS + 1
 	ld de, MoveInfoUnknownEffect
 	jr nc, .print
@@ -35,6 +50,7 @@ DrawMoveInfoEffect:
 	ld e, a
 	ld d, [hl]
 .print
+PrintInfoDescription:
 	hlcoord 1, 13
 	ld b, 3
 .row
@@ -365,3 +381,10 @@ MoveInfoSpecific_TOXIC:
 	db "Inflicts poison@", "that gets worse.@", 0
 MoveInfoSpecific_COUNTER:
 	db "Returns double@", "Normal or Fighting@", "physical damage.@", 0
+
+MoveInfoHighCritical:
+	db "High chance of a@", "critical hit.@", 0
+MoveInfoPriority:
+	db "Goes before most@", "other attacks.@", 0
+MoveInfoBothTraits:
+	db "Goes before most@", "attacks. High@", "critical-hit odds.@", 0

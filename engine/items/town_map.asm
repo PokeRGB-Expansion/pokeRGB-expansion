@@ -26,9 +26,22 @@ DisplayTownMap:
 	ld de, TownMapCursor
 	lb bc, BANK(TownMapCursor), (TownMapCursorEnd - TownMapCursor) / TILE_1BPP_SIZE
 	call CopyVideoDataDouble
-	xor a
-	ld [wWhichTownMapLocation], a
+	; The opening pin shows the current map. If it coincides with the first
+	; Up or Down destination, start browsing from that entry.
 	pop af
+	ld b, a
+	ld a, [TownMapOrder + 1]
+	cp b
+	ld a, 1
+	jr z, .haveCursor
+	ld a, [TownMapOrderEnd - 1]
+	cp b
+	ld a, TownMapOrderEnd - TownMapOrder - 1
+	jr z, .haveCursor
+	xor a
+.haveCursor
+	ld [wWhichTownMapLocation], a
+	ld a, b
 	jr .enterLoop
 
 .townMapLoop

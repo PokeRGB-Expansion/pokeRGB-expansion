@@ -1,10 +1,10 @@
 # Roadmap and acceptance criteria
 
-**Publish Core when the complete agreed Core is ready.** Build and review small changes throughout development. Those are internal milestones. The public release is the integrated English Red, Blue and cosmetic Green foundation with its accepted behavior, tests, source, patches and developer guide.
+Core and Minimal each ship English Red, Blue and cosmetic Green. Core v0.1.0 established the playable foundation. Both presets included the caught marker and battle EXP bar by v0.2.0. New releases keep the behavior, tests, source, patches and developer guide together. [Release history](https://github.com/PokeRGB-Expansion/pokeRGB-expansion/releases)
 
 ## What counts toward Core
 
-Use the current decisions for each feature. A fix shared by Minimal and Core is part of Core even if the standalone Minimal preset ships later. An optional feature, a downstream example for an unbuilt capability, or an unadopted research lead does not become a Core requirement merely by appearing in the specification.
+Use the current decisions for each feature. Test each shared fix in both presets. An optional feature, a downstream example for an unbuilt capability, or an unadopted research lead does not become a Core requirement merely by appearing in the specification.
 
 | What to include | Where the full requirements and tests live |
 |---|---|
@@ -19,10 +19,14 @@ For each accepted item, record its implementation revision, test result and any 
 
 ## Implementation sequence
 
-1. **Reproduce the reference.** Build the pinned upstream source with RGBDS 1.0.4, verify the cartridge hashes and keep pristine test inputs. Run tests on compiled code with controlled initial state and gameplay rolls. Produce separate build objects for each color and configuration. The upstream reproduction has passed locally. The buildable fork and GitHub Actions use the same tool version.
+1. **Reproduce the reference.** Build the pinned upstream source with RGBDS 1.0.4, verify the cartridge hashes and keep pristine test inputs. Run tests on compiled code with controlled initial state and gameplay rolls. Produce separate build objects for each color and configuration. The pristine reference build has matched all five upstream hashes. The buildable fork and GitHub Actions use the same tool version.
 2. **Work in independently testable groups.** Start with cases that lose saved data, block normal play or corrupt a party member. Group battle fixes by the state they share. Test map and menu changes through their real callers. Document evidence for likely-intent corrections and chosen conveniences separately. A completed group is ready to integrate. Use a small classic/alternate example when testing paired-edition support. Core’s reference game and its public release do not depend on building a separate adventure or a wide roster.
 3. **Test the whole game.** Build all three colors from the integrated source. Exercise starter selection, Gyms, Tower, Silph, Safari, fossils, League, postgame and saving. Include full inventories and boxes, a different trainer’s existing save, legal trades, map connections and cancelled actions. Compare Red/Blue differences and prove Green matches Blue wherever gameplay is concerned. [Test plan](07-testing-ci.md)
 4. **Run the release check.** Compare the release candidate against every accepted Core record above. Publish only after all pass, the advertised hardware and multiplayer support match actual results, and a second developer can reproduce the builds and customize an encounter or trainer from the instructions.
+
+## Current release scope
+
+The v0.3 changes cover field menus, item and move information, and the Core-only gameplay fixes and services described in the [player guide](16-game-changes.md). Core’s Move Deleter, EXP. ALL switch and battle pace option each have a Minimal preservation check. A party-menu Move Reminder and per-Pokémon move histories belong to Extended. Work on Extended follows the Core and Minimal releases.
 
 ## Public release checks
 
@@ -34,7 +38,7 @@ For each accepted item, record its implementation revision, test result and any 
 
 ## Minimal, Extended and downstream editions
 
-Ship Minimal when its shared fixes pass the Minimal equivalence checks. It keeps stock battle rules and resource limits, including the active-box limit, and shares the approved safeguards such as EXP. ALL protection. A developer can enable individual options on either base. Extended inherits Core and keeps unified Special as its starting point. Whole-generation rosters, extra types or a move-based damage category can be selected independently when their supporting code exists.
+Each Minimal release must pass the Minimal equivalence checks. It keeps stock battle rules and resource limits, including the active-box limit, and shares the approved safeguards such as EXP. ALL protection. A developer can enable the implemented HUD options independently on either base. Extended is planned work. It builds on Core’s design and keeps unified Special as its starting point. Whole-generation rosters, extra types or a move-based damage category can be selected independently when their supporting code exists.
 
 Provide a path for a downstream project to publish two editions of the same adventure. Share maps and scripts, name the two configurations, validate their content and produce separate, unambiguous patches. The hypothetical Yellow Rogue example is a test of the foundation’s authoring model. [Emerald Rogue prior art and build example](../research/emerald-rogue-builds.md)
 

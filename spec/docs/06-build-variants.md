@@ -20,13 +20,13 @@ Solus and PureRGB have cosmetic RGB variants because they consolidate availabili
 
 ## Build implementation
 
-Keep one source tree and use per-target object outputs. Upstream already assembles `_red.o`, `_blue.o`, and `_blue_debug.o` separately and defines `_RED` or `_BLUE` for each target. [E02](../research/evidence.md#e02)
+All targets share one source tree and use per-target object outputs. Upstream already assembles `_red.o`, `_blue.o`, and `_blue_debug.o` separately and defines `_RED` or `_BLUE` for each target. [E02](../research/evidence.md#e02)
 
 Green sets `_BLUE` for gameplay and `_GREEN_VISUALS` for presentation. The assembler checks that Green uses the Blue selection. Keep new Green cases in presentation code and data.
 
 Do not define `_RED` and `_BLUE` together. Upstream sometimes uses separate `IF DEF(...)` blocks, so defining both can emit both variants. Invalid or contradictory target selections must fail before assembly.
 
-The `red`, `blue`, and `green` targets write `pokered.gbc`, `pokeblue.gbc`, and `pokegreen.gbc` under the selected preset directory. The filename suffix is shared across Game Boy models.
+The `red`, `blue`, and `green` targets write `pokered.gbc`, `pokeblue.gbc`, and `pokegreen.gbc` under the selected preset directory. The [Makefile](../../Makefile) gives customized battle-display configurations their own directories. The filename suffix is shared across Game Boy models.
 
 Reuse the shared engine and shared graphics inputs, with variant-safe dependency tracking. A source or asset change must invalidate the correct objects for every target. Build in isolated per-target directories or fix shared generated-file races. Verify clean parallel builds, sequential Red→Green→Blue builds, and rebuilds after a variant-specific edit.
 
@@ -74,7 +74,7 @@ Run the same protected-mechanics fixtures on Red, Blue, and Green with equal ini
 
 A downstream project may also publish different content editions. Its expanded edition can keep one Special stat while selecting different species or battle rules. Advertise the actual settings for each artifact. [Paired-edition example and tests](../research/emerald-rogue-builds.md)
 
-Public Core includes Red, Blue and cosmetic Green. Apply these checks to all three integrated targets.
+Both released presets include Red, Blue and cosmetic Green. Apply the checks to all three colors. [Download and build instructions](../../README.md)
 
 1. All three targets build from one clean checkout with the pinned toolchain.
 2. Engine corrections and mechanics tests are shared and pass on every target.
