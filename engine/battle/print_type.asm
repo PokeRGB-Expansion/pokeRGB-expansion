@@ -58,10 +58,8 @@ DrawMoveInfoType::
 	hlcoord 1, 13
 	jp PrintType
 
-IF DEF(_POKERGB_CORE)
-PrintSwapMoveCursorType:
+PrintFightMoveCursorType:
 	; GetMaxPP loaded the visible move into wMoveData.
 	ld a, [wMoveData + MOVE_TYPE]
 	hlcoord 2, 10
 	jp PrintType
-ENDC

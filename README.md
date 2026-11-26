@@ -10,7 +10,11 @@ Choose **Core** for bug fixes and conveniences such as the Fuchsia Move Deleter.
 2. Open a BPS patcher. Select a clean English **Red** ROM for a Red patch, or a clean English **Blue** ROM for a Blue or Green patch. Select the downloaded patch and choose **Apply patch**. [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/)
 3. Open the resulting game file in your Game Boy emulator. When upgrading, choose the same color and preset and keep a backup of your in-game save. [Tested saves and systems](spec/docs/07-testing-ci.md#link-and-save-testing)
 
-## TM shopping in v0.4.1
+## Compare moves in battle
+
+In **FIGHT**, highlight a move and press **START**. **Up/Down** compares the active Pokémon’s moves on the current page. **SELECT** switches between stats and effect. **B** returns to FIGHT with the last move you inspected highlighted. Press **A** there to choose it. [In-game example](spec/docs/15-battle-information.md#compare-moves-in-fight)
+
+## TM shopping
 
 Highlight a TM at a Mart or the Game Corner prize counter and press **START**. Use **Up/Down** to compare offers in the counter’s order. The cursor and price follow you. **SELECT** switches between the move’s stats and its effect. Press **A** from either page to see all six party members and their compatibility. **B** returns to the last TM you inspected. Press A at the counter when you want to buy or redeem it.
 

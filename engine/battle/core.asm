@@ -2728,7 +2728,7 @@ ENDC
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .matchedkeyspicked
-	; Disable left, right, and START buttons in regular battles.
+	; Regular battles accept START for INFO and reserve Left/Right for TestBattle.
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
 	ld b, ~(PAD_LEFT | PAD_RIGHT)
@@ -2757,6 +2757,8 @@ SelectMenuItem:
 	call PlaceString
 	jr .select
 .battleselect
+	xor a ; normal FIGHT navigation records its own hover
+	ld [wMoveInfoBrowse], a
 	; Hide move swap cursor in TestBattle.
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
@@ -2770,17 +2772,7 @@ IF DEF(_POKERGB_CORE)
 	call nz, RestoreFightMoveHover
 ENDC
 	call PrintMenuItem
-	hlcoord 9, 7
-	ld de, FightMoveInfoHint
-	call PlaceString
-	ld a, [wMenuItemToSwap]
-	and a
-	jr z, .select
-	hlcoord 5, 13
-	dec a
-	ld bc, SCREEN_WIDTH
-	call AddNTimes
-	ld [hl], '▷'
+	call DrawFightMoveInputHints
 	jr .select
 .ppTarget
 	farcall DrawPPRestoreTargetInfo
@@ -2806,7 +2798,23 @@ ENDC
 	and a
 	jr nz, .select
 	farcall InspectFightMove
-	jr .select
+	ld a, [wStatusFlags7]
+	bit BIT_TEST_BATTLE, a
+	jr nz, .restoreCursor
+; Inspection changes the visible row without recording a move for Counter.
+	call DrawFightMoveHover
+	call DrawFightMoveInputHints
+.restoreCursor
+	ld hl, hUILayoutFlags
+	set BIT_DOUBLE_SPACED_MENU, [hl]
+	call PlaceMenuCursor
+	ld hl, hUILayoutFlags
+	res BIT_DOUBLE_SPACED_MENU, [hl]
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	call Delay3
+	farcall WaitForInfoKeysReleased
+	jp .select
 .ordinaryInput
 	bit B_PAD_B, a
 	push af
@@ -2863,6 +2871,14 @@ ENDC
 	add hl, bc
 	ld a, [hl]
 	ld [wPlayerSelectedMove], a
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr nz, .confirmed
+; A read-only hover did not load this attack's data. Commit it on A.
+	xor a
+	ldh [hWhoseTurn], a
+	call GetCurrentMove
+.confirmed
 	xor a
 	ret
 .disabled
@@ -3069,6 +3085,7 @@ RestoreFightMoveHover:
 	; move and its data even when the player backs out and switches Pokémon.
 	ld a, [wPlayerMoveListIndex]
 	inc a
+ENDC
 RecordEnabledFightMoveHover:
 	ld c, a
 	ld a, [wPlayerDisabledMove]
@@ -3081,6 +3098,7 @@ RecordEnabledFightMoveHover:
 	call RecordFightMoveHover
 	jp GetCurrentMove
 
+IF DEF(_POKERGB_CORE)
 ResolveFightSwapCursor:
 	ld c, a
 	ld a, [wMoveSwapCursor]
@@ -3100,6 +3118,20 @@ ResolveFightSwapCursor:
 ENDC
 
 PrintMenuItem:
+IF DEF(_POKERGB_CORE)
+	ld a, [wMoveSwapCursor]
+	and a
+	jr nz, .draw ; SELECT already recorded the stock hover
+ENDC
+	ld a, [wCurrentMenuItem]
+	call RecordEnabledFightMoveHover
+.draw
+	call DrawFightMoveHover
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	jp Delay3
+
+DrawFightMoveHover:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 0, 8
@@ -3122,14 +3154,6 @@ PrintMenuItem:
 .notDisabled
 	ld hl, wCurrentMenuItem
 	dec [hl]
-IF DEF(_POKERGB_CORE)
-	ld a, [wMoveSwapCursor]
-	and a
-	jr nz, .readPP
-ENDC
-	ld a, [wCurrentMenuItem]
-	call RecordFightMoveHover
-.readPP
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
 	ld a, BATTLE_MON_DATA
@@ -3160,21 +3184,9 @@ ENDC
 	ld de, wMaxPP
 	lb bc, 1, 2
 	call PrintNumber
-IF DEF(_POKERGB_CORE)
-	ld a, [wMoveSwapCursor]
-	and a
-	jr z, .printType
-	farcall PrintSwapMoveCursorType
-	jr .moveDisabled
-.printType
-ENDC
-	call GetCurrentMove
-	hlcoord 2, 10
-	predef PrintMoveType
+	farjp PrintFightMoveCursorType
 .moveDisabled
-	ld a, $1
-	ldh [hAutoBGTransferEnabled], a
-	jp Delay3
+	ret
 
 ; a = zero-based move row
 RecordFightMoveHover:
@@ -3186,6 +3198,20 @@ RecordFightMoveHover:
 	add hl, bc
 	ld a, [hl]
 	ld [wPlayerSelectedMove], a
+	ret
+
+DrawFightMoveInputHints:
+	hlcoord 9, 7
+	ld de, FightMoveInfoHint
+	call PlaceString
+	ld a, [wMenuItemToSwap]
+	and a
+	ret z
+	hlcoord 5, 13
+	dec a
+	ld bc, SCREEN_WIDTH
+	call AddNTimes
+	ld [hl], '▷'
 	ret
 
 FightMoveInfoHint: db "START INFO@"

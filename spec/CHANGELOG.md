@@ -1,5 +1,9 @@
 # Specification changelog
 
+## Game release 0.4.2
+
+- Compare the active Pokémon’s moves in FIGHT with Up/Down. The stats or effect page stays open. B returns to the last inspected row, and a separate A press chooses the attack. [Battle example](docs/15-battle-information.md#compare-moves-in-fight)
+
 ## Game release 0.4.1
 
 - Compare TMs at a Mart or the Game Corner with Up/Down. Keep the stats, effect or party view open while browsing. A opens one read-only screen for the whole party, with the move and its price. B returns to the last inspected offer. The move name and START hint now replace the previous prompt cleanly. [Controls](docs/15-battle-information.md#before-buying-a-tm)

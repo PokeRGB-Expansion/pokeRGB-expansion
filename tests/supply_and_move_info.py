@@ -82,11 +82,11 @@ def moves(game, *, custom=False):
             press(game, DOWN)
         shows(game, "START INFO")
         press(game, START)
-        shows(game, name, label, "SELECT EFFECT")
+        shows(game, name, label, "SEL EFFECT")
         if index == 2 and not custom:
             assert "HIGH CRIT" not in game.visible_text()
         press(game, SELECT)
-        shows(game, description, "SELECT STATS")
+        shows(game, description, "SEL STATS")
         press(game, B)
         shows(game, "START INFO")
     press(game, B)

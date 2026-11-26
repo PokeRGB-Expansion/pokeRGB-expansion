@@ -1,40 +1,32 @@
 ; A read-only panel. Its data lives outside the active menu and battle state.
-DEF INFO_BROWSE_STATS EQU 1
-DEF INFO_BROWSE_LEARN EQU 2
-DEF INFO_BROWSE_SUPPLY EQU 3
-DEF INFO_BROWSE_MACHINE EQU 4
-DEF INFO_BROWSE_MART EQU 5
-DEF INFO_BROWSE_PRIZE EQU 6
 DEF INFO_UNKNOWN_PP EQU $ff
 DEF INFO_PANEL_FIRST_ROW EQU 11
 DEF INFO_PANEL_ROWS EQU SCREEN_HEIGHT - INFO_PANEL_FIRST_ROW
-; Machine cards add one row for controls, below the last visible price.
-DEF MACHINE_PANEL_FIRST_ROW EQU INFO_PANEL_FIRST_ROW - 1
-DEF MACHINE_PANEL_ROWS EQU SCREEN_HEIGHT - MACHINE_PANEL_FIRST_ROW
+; The battle and machine browsers use a second line for controls.
+DEF BROWSE_PANEL_FIRST_ROW EQU INFO_PANEL_FIRST_ROW - 1
+DEF BROWSE_PANEL_ROWS EQU SCREEN_HEIGHT - BROWSE_PANEL_FIRST_ROW
 
 InspectFightMove:
 	ld a, [wCurrentMenuItem]
 	dec a
 	cp NUM_MOVES
 	ret nc
-	ld e, a
-	ld d, 0
-	ld hl, wBattleMonPP
-	add hl, de
-	ld c, [hl]
-	ld hl, wBattleMonMoves
-	add hl, de
-	ld b, [hl]
-	xor a
+	ld [wMoveInfoSlot], a
+	ld a, INFO_BROWSE_FIGHT
 	ld [wMoveInfoBrowse], a
-	jp ShowMoveInfo
+	call SelectInfoMoveSlot
+	call ShowMoveInfo
+	ld a, [wMoveInfoSlot]
+	inc a ; FIGHT uses one-based rows
+	ld [wCurrentMenuItem], a
+	ret
 
 InspectStatsMove:
 	xor a
 	ld [wMoveInfoSlot], a
 	ld a, INFO_BROWSE_STATS
 	ld [wMoveInfoBrowse], a
-	call SelectStatsInfoMove
+	call SelectInfoMoveSlot
 	jp ShowMoveInfo
 
 WaitForStatsMoveInfo:
@@ -66,16 +58,22 @@ WaitForStatsMoveInfo:
 	call InspectStatsMove
 	jr .wait
 
-SelectStatsInfoMove:
-	ld a, [wMoveInfoSlot]
-	ld e, a
-	ld d, 0
-	ld hl, wLoadedMonPP
-	add hl, de
-	ld c, [hl]
+SelectInfoMoveSlot:
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	ld hl, wBattleMonMoves
+	ld de, wBattleMonPP - wBattleMonMoves
+	jr z, .read
 	ld hl, wLoadedMonMoves
+	ld de, wLoadedMonPP - wLoadedMonMoves
+.read
+	ld a, [wMoveInfoSlot]
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld b, [hl] ; move
 	add hl, de
-	ld b, [hl]
+	ld c, [hl] ; PP including PP Ups
 	ret
 
 InspectIncomingMove:
@@ -356,6 +354,9 @@ OpenInfoPanel:
 	push de
 	dec b
 	jr nz, .saveRows
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	call z, UncoverBattleAboveMoveInfo
 .redraw
 	call DrawMoveInfo
 .wait
@@ -393,8 +394,14 @@ OpenInfoPanel:
 	ld c, 2 ; restore the list before drawing its new selection
 	jp .uncover
 .otherKeys
+	cp INFO_BROWSE_FIGHT
+	jr nz, .checkStats
+	ldh a, [hJoyFiltered]
+	ld b, a
+	jr .slotKeys
+.checkStats
 	cp INFO_BROWSE_STATS
-	jr z, .statsKeys
+	jr z, .slotKeys
 	cp INFO_BROWSE_LEARN
 	jr nz, .wait
 	ld a, b
@@ -411,11 +418,13 @@ OpenInfoPanel:
 .knownMove
 	call SelectReplacementInfoMove
 	jr .refreshMove
-.statsKeys
-	bit B_PAD_UP, b
-	jr nz, .previousSlot
-	bit B_PAD_DOWN, b
-	jp z, .wait
+.slotKeys
+	ld a, b
+	and PAD_UP | PAD_DOWN
+	cp PAD_UP
+	jr z, .previousSlot
+	cp PAD_DOWN
+	jp nz, .wait
 	ld a, [wMoveInfoSlot]
 	inc a
 	cp NUM_MOVES
@@ -431,11 +440,14 @@ OpenInfoPanel:
 	ld d, [hl]
 	ld [hl], a
 	push de
-	call SelectStatsInfoMove
+	call SelectInfoMoveSlot
 	pop de
 	ld a, b
 	and a
-	jr nz, .refreshMove
+	jr z, .invalidSlot
+	cp NUM_ATTACKS + 1
+	jr c, .refreshMove
+.invalidSlot
 	ld a, d
 	ld [wMoveInfoSlot], a
 	jp .wait
@@ -473,6 +485,13 @@ OpenInfoPanel:
 	jr nz, .newOffer
 	bit 0, c
 	jr nz, .showParty
+	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr nz, .showList
+; FIGHT redraws its cursor and type/PP box together before accepting input.
+	pop af
+	ret
+.showList
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	call Delay3
@@ -497,9 +516,12 @@ OpenInfoPanel:
 
 ReadInfoButtons::
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr z, .repeat
 	cp INFO_BROWSE_MART
 	jp c, Joypad
-; Use the normal menu repeat delay for Up/Down at both counters. Action
+.repeat
+; Use the normal menu repeat delay for browsing. Action
 ; buttons still use hJoyPressed and never repeat into a sale.
 	ldh a, [hJoy7]
 	push af
@@ -512,23 +534,31 @@ ReadInfoButtons::
 
 GetInfoPanelRows:
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr z, .large
 	cp INFO_BROWSE_MACHINE
 	hlcoord 0, INFO_PANEL_FIRST_ROW
 	ld b, SCREEN_WIDTH * INFO_PANEL_ROWS / 2
 	ret c
-	hlcoord 0, MACHINE_PANEL_FIRST_ROW
-	ld b, SCREEN_WIDTH * MACHINE_PANEL_ROWS / 2
+.large
+	hlcoord 0, BROWSE_PANEL_FIRST_ROW
+	ld b, SCREEN_WIDTH * BROWSE_PANEL_ROWS / 2
 	ret
 
 WaitForInfoKeysReleased:
 	call DelayFrame
 	call Joypad
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr z, .allKeys
 	cp INFO_BROWSE_MART
+	jr nc, .allKeys
 	ldh a, [hJoyHeld]
-	jr nc, .vendor
 	and PAD_A | PAD_B | PAD_START | PAD_SELECT
-.vendor
+	jr .check
+.allKeys
+	ldh a, [hJoyHeld]
+.check
 	and a
 	jr nz, WaitForInfoKeysReleased
 	xor a
@@ -541,7 +571,7 @@ DrawMoveInfo:
 	call GetInfoPanelRows
 	ld b, INFO_PANEL_ROWS - 2
 	jr c, .frame
-	ld b, MACHINE_PANEL_ROWS - 2
+	ld b, BROWSE_PANEL_ROWS - 2
 .frame
 	ld c, SCREEN_WIDTH - 2
 	call TextBoxBorder
@@ -580,11 +610,14 @@ DrawMoveInfo:
 	ld de, MoveInfoStatsText
 .controls
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr z, .browseControls
 	cp INFO_BROWSE_MACHINE
 	hlcoord 1, 16
-	jr c, .show
+	jp c, .show
+.browseControls
 ; The shared move renderer lays out four rows (name, then stats or effect).
-; Shift them up together on machine cards to fit both lines of controls.
+; Shift them up together in browsing views to fit both lines of controls.
 	hlcoord 0, 12
 	decoord 0, 11
 	ld bc, 4 * SCREEN_WIDTH
@@ -594,6 +627,11 @@ DrawMoveInfo:
 	ld a, ' '
 	call FillMemory
 	ld a, [wMoveInfoBrowse]
+	cp INFO_BROWSE_FIGHT
+	jr nz, .machineControls
+	call DrawFightBrowseHint
+	jr .shortPageHint
+.machineControls
 	cp INFO_BROWSE_MACHINE
 	ld de, .bagControls
 	jr z, .machineHint
@@ -608,6 +646,7 @@ DrawMoveInfo:
 	cp INFO_BROWSE_MACHINE
 	ld de, .selectEffect
 	jr z, .nextPage
+.shortPageHint
 	ld de, .shopEffect
 .nextPage
 	ld a, [wMoveInfoPage]
@@ -644,6 +683,44 @@ DrawMoveInfo:
 .selectStats  db "SELECT:STATS@"
 .shopEffect   db "SEL:EFFECT B:BACK@"
 .shopStats    db "SEL:STATS  B:BACK@"
+
+UncoverBattleAboveMoveInfo:
+	ld a, [wStatusFlags7]
+	bit BIT_TEST_BATTLE, a ; this mode omits the ordinary FIGHT hover box
+	ret nz
+; Restore just the controls above the card from the original battlefield.
+; FIGHT redraws them for the last inspected move when the card closes.
+	hlcoord 9, 7, wTileMapBackup
+	decoord 9, 7
+	ld bc, CHARLEN("START INFO")
+	call CopyData
+	hlcoord 0, 8, wTileMapBackup
+	decoord 0, 8
+	ld bc, 11
+	call CopyData
+	hlcoord 0, 9, wTileMapBackup
+	decoord 0, 9
+	ld bc, 11
+	jp CopyData
+
+DrawFightBrowseHint:
+	ld a, [wNumMovesMinusOne]
+	and a
+	jr z, .position
+	hlcoord 1, 15
+	ld de, .directions
+	call PlaceString
+.position
+	ld a, [wMoveInfoSlot]
+	add "1"
+	ldcoord_a 16, 15
+	ld a, "/"
+	ldcoord_a 17, 15
+	ld a, [wNumMovesMinusOne]
+	add "1"
+	ldcoord_a 18, 15
+	ret
+.directions db "UP/DOWN:MOVE@"
 
 ReadMoveInfoData:
 	ld a, [wMoveInfoMove]

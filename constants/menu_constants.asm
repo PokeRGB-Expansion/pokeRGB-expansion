@@ -96,3 +96,15 @@ DEF FIRST_PARTY_MENU_TEXT_ID EQU const_value
 	const_def
 	const STATUS_SCREEN_STATS_BOX ; 0
 	const LEVEL_UP_STATS_BOX      ; 1
+
+; INFO shows a single move, known moves, or an item from one of these lists.
+; Machine views share a layout. The last two also support browsing offers.
+	const_def
+	const INFO_BROWSE_SINGLE
+	const INFO_BROWSE_FIGHT
+	const INFO_BROWSE_STATS
+	const INFO_BROWSE_LEARN
+	const INFO_BROWSE_SUPPLY
+	const INFO_BROWSE_MACHINE
+	const INFO_BROWSE_MART
+	const INFO_BROWSE_PRIZE

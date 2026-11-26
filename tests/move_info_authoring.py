@@ -22,11 +22,11 @@ def shows(game, *words, accept=False):
     game.wait(lambda: all(word in game.visible_text() for word in words), accept=accept)
 
 
-def show_panel(game, expected_pp="PP 24", *, vendor=False):
+def show_panel(game, expected_pp="PP 24", *, short_footer=False):
     shows(game, MOVE_NAME, "WATER", "POW  73", "ACC 91", expected_pp,
-          "SEL EFFECT" if vendor else WAIT_HINT)
+          "SEL EFFECT" if short_footer else WAIT_HINT)
     game.press(6)
-    shows(game, "SEL STATS" if vendor else "SELECT STATS", "May paralyze")
+    shows(game, "SEL STATS" if short_footer else "SELECT STATS", "May paralyze")
     game.press(5)
     game.wait(lambda: "May paralyze" not in game.visible_text())
     game.tick(15)
@@ -52,7 +52,7 @@ def shop(game):
     money = game.get_bytes("wPlayerMoney", 3)
     bag = game.get_bytes("wNumBagItems", 6)
     game.press(7)
-    show_panel(game, vendor=True)
+    show_panel(game, short_footer=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wPlayerMoney", 3) == money
     assert game.get_bytes("wNumBagItems", 6) == bag
@@ -79,7 +79,7 @@ def fight(game):
     shows(game, MOVE_NAME, "START INFO")
     chosen = game.get("wPlayerSelectedMove")
     game.press(7)
-    show_panel(game, "18 24")
+    show_panel(game, "18 24", short_footer=True)
     shows(game, MOVE_NAME, "START INFO")
     assert game.get_bytes("wBattleMonPP", 4) == bytes((18, 35, 0, 0))
     assert game.get("wPlayerMoveListIndex") == 0
@@ -140,7 +140,7 @@ def prize(game):
     coins = game.get_bytes("wPlayerCoins", 2)
     bag = game.get_bytes("wNumBagItems", 6)
     game.press(7)
-    show_panel(game, vendor=True)
+    show_panel(game, short_footer=True)
     shows(game, MACHINE_NUMBER, MOVE_NAME, "START INFO")
     assert game.get_bytes("wPlayerCoins", 2) == coins
     assert game.get_bytes("wNumBagItems", 6) == bag

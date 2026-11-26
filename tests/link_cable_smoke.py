@@ -291,6 +291,56 @@ def finish_battle(cable):
                for game in cable.players)
 
 
+def battle_resources(game):
+    return (hp(game, "wBattleMon"), hp(game, "wEnemyMon"),
+            game.get_bytes("wBattleMonPP", 4), game.get("wLinkBattleRandomNumberListIndex"))
+
+
+def compare_while_peer_waits(cable, reader, peer, second_move, effect, *, use_second):
+    cable.tick(36)
+    cable.press(A, reader, peer)
+    cable.wait(lambda: all(game.get("wTopMenuItemY") == 12 and has_text(game, "SWIFT")
+                           for game in cable.players), "the two FIGHT move lists")
+    cable.tick(24)
+    cable.press(SELECT, reader, peer)
+    assert all(game.get("wMenuItemToSwap") == 0 for game in cable.players)
+
+    cable.press(START, reader)
+    cable.wait(lambda: has_text(reader, "SWIFT") and has_text(reader, "POW"), "Swift's INFO")
+    cable.press(A, peer)
+    cable.wait(lambda: has_text(peer, "Waiting"), "the other player to submit Swift")
+    resources = [battle_resources(game) for game in cable.players]
+    selected = reader.get("wPlayerSelectedMove")
+    index = reader.get("wPlayerMoveListIndex")
+    cable.press(SELECT, reader)
+    cable.wait(lambda: has_text(reader, "Skips the usual"), "Swift's effect")
+    cable.press(DOWN, reader)
+    cable.wait(lambda: has_text(reader, second_move) and has_text(reader, effect),
+               f"{second_move}'s effect")
+    cable.press(A, reader)
+    assert has_text(reader, effect) and has_text(peer, "Waiting")
+    if not use_second:
+        cable.press(UP, reader)
+        cable.wait(lambda: has_text(reader, "Skips the usual"), "Swift's effect again")
+
+    cable.press(B, reader)
+    cable.wait(lambda: has_text(reader, "SWIFT") and has_text(reader, second_move),
+               "the reader to return to the two FIGHT moves")
+    cable.tick(24)
+    assert reader.get("wCurrentMenuItem") == (2 if use_second else 1)
+    assert (reader.get("wPlayerSelectedMove"), reader.get("wPlayerMoveListIndex")) == (selected, index)
+    assert has_text(peer, "Waiting")
+    assert [battle_resources(game) for game in cable.players] == resources
+    slot = int(use_second)
+    reader_pp = reader.get("wBattleMonPP", slot)
+    peer_pp = peer.get("wBattleMonPP")
+    cable.press(A, reader)
+    cable.wait(lambda: all(in_battle_commands(game) for game in cable.players)
+               and reader.get("wBattleMonPP", slot) == reader_pp - 1
+               and peer.get("wBattleMonPP") == peer_pp - 1,
+               "both confirmed attacks to resolve", frames=2400)
+
+
 def check_battle(cable):
     left, right = cable.players
     choose_room(cable, COLOSSEUM)
@@ -301,29 +351,18 @@ def check_battle(cable):
         assert game.get("wBattleMonSpecies") == game.get("wPartyMon1Species")
         assert game.get("wEnemyMonSpecies") == peer.get("wPartyMon1Species")
         assert hp(game, "wBattleMon") == hp(peer, "wEnemyMon") == 160
-    cable.tick(36)
-    cable.press(A, left, right)
-    cable.wait(lambda: all(game.get("wTopMenuItemY") == 12 and has_text(game, "SWIFT")
-                           for game in cable.players), "the two FIGHT move lists")
-    cable.tick(24)
-    cable.press(SELECT, left, right)
-    assert [game.get("wMenuItemToSwap") for game in cable.players] == [0, 0]
-    cable.press(START, left)
-    cable.wait(lambda: has_text(left, "SELECT EFFECT"), "the left player's FIGHT Move INFO")
-    cable.press(A, right)
-    cable.tick(24)
-    assert hp(left, "wBattleMon") == hp(right, "wBattleMon") == 160
-    assert left.get("wBattleMonPP") == right.get("wBattleMonPP") == 20
-    cable.press(B, left)
-    cable.wait(lambda: not has_text(left, "SELECT EFFECT"), "the left player to return to FIGHT")
-    cable.tick(24)
-    cable.press(A, left)
-    cable.wait(lambda: all(in_battle_commands(game) and hp(game, "wBattleMon") < 160
-                           for game in cable.players), "both Swift attacks to resolve",
-               frames=2400)
+    compare_while_peer_waits(cable, right, left, "WATER GUN", "Deals damage", use_second=False)
     for game, peer in ((left, right), (right, left)):
         assert 0 < hp(game, "wBattleMon") == hp(peer, "wEnemyMon") < 160
         assert game.get("wBattleMonPP") == 19
+
+    # The internal-clock player now confirms Splash from the second slot.
+    left_hp, right_hp = hp(left, "wBattleMon"), hp(right, "wBattleMon")
+    compare_while_peer_waits(cable, left, right, "SPLASH", "Has no effect", use_second=True)
+    assert left.get_bytes("wBattleMonPP", 2) == bytes((19, 36))
+    assert right.get_bytes("wBattleMonPP", 2) == bytes((18, 0x57))
+    assert 0 < hp(left, "wBattleMon") == hp(right, "wEnemyMon") < left_hp
+    assert hp(right, "wBattleMon") == hp(left, "wEnemyMon") == right_hp
     finish_battle(cable)
 
 

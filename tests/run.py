@@ -94,6 +94,8 @@ def main():
                  "supply_and_move_info", "battle_pace", "tm_party_info", "purchasable_tms", "box_preview"):
         add_check(f"tests/{test}.py", directory, *emulator)
 
+    add_check("tests/fight_info_browsing.py", directory, *emulator)
+    add_check("tests/fight_info_display.py", directory, *emulator, "--sgb-boot", sgb_boot)
     add_check("tests/tm_browsing.py", directory, *emulator)
     add_check("tests/tm_inspection_controls.py", directory, *emulator, "--sgb-boot", sgb_boot)
     add_check("tests/trainer_movesets.py", directory, *emulator, *rgbds)

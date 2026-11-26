@@ -2,6 +2,10 @@
 
 The [test runner](../../tests/run.py) lists the checks that run on the current source. The [build instructions](../../README.md#tests) show how to run them. The rest of this document describes the cases to check when changing a feature or making a release.
 
+## Comparing battle moves
+
+The [FIGHT menu tests](../../tests/fight_info_browsing.py) exercise PP, disabled moves, Transform, move swaps, cancellation and a confirmed turn. The [display checks](../../tests/fight_info_display.py) compare battlefield pixels on Game Boy and Super Game Boy. The [cable tests](../../tests/link_cable_smoke.py) check both players can inspect while their opponent waits and that the confirmed move matches on both consoles.
+
 ## TM shopping, box previews and custom trainers
 
 - At the Celadon Mart and Game Corner, check move details and party eligibility before spending. Check all nine department store TMs and all three at the coin counter. Cover a full Bag, an already-known move, and two machines that teach the same move with different learnsets. [Counter navigation](../../tests/tm_browsing.py) · [Input and display checks](../../tests/tm_inspection_controls.py) · [Stock TM counters](../../tests/purchasable_tms.py) · [TM party checks](../../tests/tm_party_info.py)

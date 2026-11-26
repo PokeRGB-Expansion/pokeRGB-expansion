@@ -89,10 +89,10 @@ def check_counter(game, core):
                 assert "WATER" in game.visible_text()
                 assert "23 30" in game.visible_text(), game.visible_text()
                 game.press(START)
-                game.wait(lambda: "SELECT EFFECT" in game.visible_text())
+                game.wait(lambda: "SEL EFFECT" in game.visible_text())
                 assert "WATER GUN" in game.visible_text()
                 game.press(B)
-                game.wait(lambda: "SELECT EFFECT" not in game.visible_text())
+                game.wait(lambda: "SEL EFFECT" not in game.visible_text())
                 wait_row(game, 3)
         close_with_b(game, anchor if mark else 3)
         assert hover(game) == expected

@@ -36,12 +36,14 @@ def region(screen, x, y, width, height):
     return tuple(pixel for row in range(y, y + height) for pixel in screen[row * 160 + x:row * 160 + x + width])
 
 
-def write_gallery(path, screens):
-    # Nearest-neighbor scaling keeps the cartridge's individual pixels visible.
-    scale, gap = 2, 4
-    width, height = (320 + gap) * scale, (288 + gap) * scale
+def write_gallery(path, screens, *, scale=2):
+    # Arrange pairs of screens in reading order without blurring the pixels.
+    assert screens and len(screens) % 2 == 0
+    pairs, gap = len(screens) // 2, 4
+    width = (320 + gap) * scale
+    height = (144 * pairs + gap * (pairs - 1)) * scale
     rows = bytearray()
-    for index in (0, 2):
+    for index in range(0, len(screens), 2):
         if index:
             rows.extend((b"\x00" + b"\xff" * (3 * width)) * (gap * scale))
         for y in range(144):
