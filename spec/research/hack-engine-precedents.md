@@ -18,6 +18,8 @@ The GBA projects influenced one another. DizzyEgg published an Emerald source-ba
 
 **Two smaller-hardware precedents.** pokecrystal16 documents the limits and persistence costs of wider identifiers and warns authors that it rewrites its branch history. Polished Crystal ships default and faithful builds side by side. Emerald Rogue offers a complementary paired-edition model on GBA. Together these support stable release tags, a list of rules for each preset, and proof that a real project can maintain two editions of one adventure. [pokecrystal16](https://github.com/aaaaaa123456789/pokecrystal16/blob/b2400a44dfb6b65d75afb9f665312f49243b75a1/README.md#L7-L35) · [Polished Crystal release](https://github.com/Rangi42/polishedcrystal/releases/tag/v3.2.3) · [Emerald Rogue comparison](emerald-rogue-builds.md)
 
+The [v0.2.0 comparison](v020-feature-sweep.md#what-the-additional-projects-contribute) covers Modern Emerald, downstream use of Polished Crystal, pokegold-retro and CrystalShireEngine.
+
 ## What to prove in Extended
 
 These are proposed milestones for the developer foundation. Core keeps its own release criteria.
